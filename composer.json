@@ -1,0 +1,75 @@
+{
+    "name": "Townspot Zend Framework",
+    "description": "Townspot Zend Framework",
+	"minimum-stability" : "dev",
+	"repositories": [
+		{
+			"type": "package",	
+			"package": {
+				"name": "townspot/townspotbase",
+				"version": "0.0.1",
+				"source": {
+                    "url": "https://bitbucket.org/mike-hughes/townspotbase",
+					"type": "git",
+					"reference": "master"
+				}
+			}
+		}
+	],
+    "require": {
+        "php": ">=5.5.1",
+        "zendframework/zendframework": "2.3.*",
+		"zendframework/zend-developer-tools": "*",
+		"zendframework/zendgdata": "2.0.*",
+		"zendframework/zendoauth": "2.0.*",
+		"zendframework/zendservice-twitter": "2.0.*",
+		"phpunit/phpunit": "3.7.*",
+		"bjyoungblood/bjy-authorize": "1.2.*",
+		"bojaspus/zendsearch": "dev-master",
+        "doctrine/doctrine-orm-module": "0.7.*",
+        "doctrine/annotations": "dev-master",
+		"doctrine/data-fixtures": "dev-master",
+		"doctrine/migrations": "dev-master",
+		"leafo/lessphp": "0.3.9",
+		"leafo/scssphp": "dev-master",
+		"leafo/scssphp-compass": "dev-master",
+		"rwoverdijk/assetmanager": "dev-master",
+		"symfony/css-selector": "2.*",
+		"symfony/dom-crawler": "2.*",
+		"symfony/filesystem": "2.*",
+		"symfony/process": "2.*",
+		"symfony/yaml": "2.*",
+		"symfony/event-dispatcher": "2.*",
+		"components/underscore": "dev-master",
+		"components/backbone": "dev-master",		
+		"components/handlebars.js": "dev-master",
+		"components/qunit": "dev-master",
+		"koala-framework/library-css3pie": "dev-master",
+		"components/modernizr": "dev-master",
+		"natxet/CssMin": "dev-master",
+		"lmammino/jsmin4assetic": "1.0.*@dev",
+		"blanchonvincent/cdn-light": "dev-master",
+		"slm/google-analytics": "dev-master",
+		"zf-commons/zfc-base": "0.1.2",
+		"zf-commons/zfc-user": "2.0.*@dev",	
+		"zf-commons/zfc-admin": "dev-master",
+		"twitter/typeahead.js": "dev-master",
+		"ocramius/proxy-manager": "0.5.1",
+		"twig/twig": "1.16.*@dev",
+		"ptachoire/cssembed": "dev-master",
+		"bjyoungblood/bjy-profiler": "dev-master",
+		"ocramius/ocra-service-manager": "2.2.*@dev",
+		"ocramius/generated-hydrator": "1.0.*@dev",
+		"townspot/townspotbase": "0.0.1"
+    },
+    "autoload": {
+        "classmap": [
+			"vendor/blanchonvincent/cdn-light/Module.php",
+			"vendor/townspot/townspotbase/Module.php",
+			"vendor/townspot/townspotbase/src/TownspotBase/Doctrine/Entity/Container.php",
+			"vendor/townspot/townspotbase/src/TownspotBase/Doctrine/Mapper/AbstractEntityMapper.php",
+			"vendor/townspot/townspotbase/src/TownspotBase/Doctrine/Mapper/EntityMapperInterface.php",
+			"vendor/townspot/townspotbase/src/TownspotBase/Lucene/Index/SearchIndex.php"
+		]
+    }	
+}

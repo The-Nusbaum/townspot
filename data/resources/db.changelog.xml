@@ -1,0 +1,456 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
+    	http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+	<changeSet author="MikeH" id="08212014-01">
+        <createTable tableName="sessions">
+            <column name="id" type="VARCHAR(32)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+	        <column name="name" type="VARCHAR(255)" />
+	        <column name="modified" type="INT(11)" />
+	        <column name="lifetime" type="INT(11)" />
+			<column name="data" type="BLOB" />
+        </createTable>
+    </changeSet>
+    <changeSet author="MikeH" id="08062014-02">
+        <createTable tableName="category_type">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+			<column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="created" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+			<column name="updated" type="TIMESTAMP"/>
+        </createTable>
+		<insert tableName="category_type">
+			<column name="id" value="1" />
+			<column name="name" value="video" />
+		</insert>
+		<insert tableName="category_type">
+			<column name="id" value="2" />
+			<column name="name" value="series" />
+		</insert>
+		<insert tableName="category_type">
+			<column name="id" value="3" />
+			<column name="name" value="advertiser" />
+		</insert>
+ 		<insert tableName="category_type">
+			<column name="id" value="4" />
+			<column name="name" value="vendor" />
+		</insert>
+    </changeSet>
+    <changeSet author="MikeH" id="08062014-02">
+        <createTable tableName="category">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+			<column defaultValue="0" name="parent_id" type="INT(11)"/>
+			<column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="false" name="allow_freeform" type="TINYINT(1)"/>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="created" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+			<column name="updated" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+	<changeSet author="MikeH" id="08062014-01">
+        <createTable tableName="user">
+            <column name="user_id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+			<column name="username" type="VARCHAR(255)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+			<column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+			<column name="email" type="VARCHAR(255)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+			<column name="first_name" type="VARCHAR(50)"/>
+			<column name="last_name" type="VARCHAR(50)"/>
+			<column name="display_name" type="VARCHAR(255)"/>
+			<column name="activation_string" type="VARCHAR(255)"/>
+			<column name="security_key" type="VARCHAR(255)"/>
+			<column defaultValue="NULL" name="country_id" type="INT"/>
+			<column defaultValue="NULL" name="province_id" type="INT"/>
+			<column defaultValue="NULL" name="city_id" type="INT"/>
+			<column name="neighborhood" type="VARCHAR(255)"/>
+			<column name="about_me" type="VARCHAR(4000)"/>
+			<column name="interests" type="VARCHAR(4000)"/>
+			<column name="description" type="VARCHAR(4000)"/>
+			<column name="website" type="VARCHAR(4000)"/>
+			<column name="image_url" type="VARCHAR(255)"/>
+			<column name="upload_url" type="VARCHAR(255)"/>
+            <column defaultValueBoolean="false" name="allow_contact" type="TINYINT(1)"/>
+            <column defaultValueBoolean="false" name="terms_agreement" type="TINYINT(1)"/>
+            <column defaultValueBoolean="false" name="email_notifications" type="TINYINT(1)"/>
+			<column name="status" type="varchar(1)"/>
+			<column name="artistname" type="VARCHAR(255)"/>
+			<column name="state" type="INT"/>
+            <column name="latitude" type="FLOAT(9,6)"/>
+            <column name="longitude" type="FLOAT(9,6)"/>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="created" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+			<column name="updated" type="TIMESTAMP"/>
+			<column name="security_key_expires" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="MikeH" id="08062014-02">
+        <createTable tableName="user_role">
+            <column name="role_id" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValueBoolean="false" name="is_default" type="TINYINT(1)"/>
+			<column defaultValue="NULL" name="parent" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="MikeH" id="08062014-03">
+        <createTable tableName="user_role_linker">
+			<column name="user_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+			<column name="role_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+		<addPrimaryKey columnNames="user_id, role_id" tableName="user_role_linker"/>
+		<insert tableName="user_role">
+			<column name="role_id" value="guest" />
+			<column name="is_default" value="1" />
+			<column name="parent" value="" />
+		</insert>
+		<insert tableName="user_role">
+			<column name="role_id" value="user" />
+			<column name="is_default" value="0" />
+			<column name="parent" value="guest" />
+		</insert>
+		<insert tableName="user_role">
+			<column name="role_id" value="artist" />
+			<column name="is_default" value="0" />
+			<column name="parent" value="user" />
+		</insert>
+		<insert tableName="user_role">
+			<column name="role_id" value="admin" />
+			<column name="is_default" value="0" />
+			<column name="parent" value="user" />
+		</insert>
+    </changeSet>
+    <changeSet author="MikeH" id="08062014-02">
+        <createTable tableName="user_social_media">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+			<column defaultValue="NULL" name="source" type="VARCHAR(255)"/>
+			<column defaultValue="NULL" name="external_id" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="MikeH" id="08062014-02">
+        <createTable tableName="user_follows">
+			<column name="user_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+			<column name="target_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="false" name="share_email" type="TINYINT(1)"/>
+        </createTable>
+		<addPrimaryKey columnNames="user_id, target_id" tableName="user_follows"/>
+    </changeSet>
+    <changeSet author="MikeH" id="08062014-02">
+        <createTable tableName="user_event">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+			<column name="user_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+			<column name="title" type="VARCHAR(45)">
+                <constraints nullable="true"/>
+            </column>
+			<column name="url" type="VARCHAR(255)"/>
+			<column name="description" type="VARCHAR(4000)"/>
+			<column name="artistname" type="VARCHAR(45)"/>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="created" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+			<column name="updated" type="TIMESTAMP"/>
+			<column name="start" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+	<changeSet author="MikeH" id="08062014-01">
+        <createTable tableName="media">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+			<column name="title" type="VARCHAR(185)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="video" name="media_type" type="VARCHAR(50)">
+			<column name="logline" type="VARCHAR(50)"/>
+			<column name="description" type="VARCHAR(4000)"/>
+			<column name="why_we_choose" type="VARCHAR(4000)"/>
+			<column name="video_url" type="VARCHAR(255)"/>
+			<column name="video_image" type="VARCHAR(255)"/>
+            <column defaultValueBoolean="false" name="allow_contact" type="TINYINT(1)"/>
+            <column defaultValueBoolean="false" name="authorised" type="TINYINT(1)"/>
+            <column defaultValueBoolean="false" name="request_debut_time" type="TINYINT(1)"/>
+            <column defaultValueBoolean="false" name="approved" type="TINYINT(1)"/>
+            <column defaultValueBoolean="false" name="on_media_server" type="TINYINT(1)"/>
+			<column defaultValue="NULL" name="views" type="INT"/>
+			<column name="user_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+			<column name="admin_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+			<column defaultValue="NULL" name="duration" type="INT"/>
+			<column defaultValue="NULL" name="country_id" type="INT"/>
+			<column defaultValue="NULL" name="province_id" type="INT"/>
+			<column defaultValue="NULL" name="city_id" type="INT"/>
+			<column name="neighborhood" type="VARCHAR(255)"/>
+            <column name="latitude" type="FLOAT(9,6)"/>
+            <column name="longitude" type="FLOAT(9,6)"/>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="created" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+			<column name="updated" type="TIMESTAMP"/>
+			<column name="debut_time" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+	<changeSet author="MikeH" id="08062014-01">
+        <createTable tableName="encoding">
+			<column name="media_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+			<column name="encoding_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+			<column name="status" type="VARCHAR(45)" />
+        </createTable>
+		<addPrimaryKey columnNames="media_id, encoding_id" tableName="encodings"/>
+    </changeSet>
+	<changeSet author="MikeH" id="08062014-01">
+        <createTable tableName="rating">
+			<column name="media_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+			<column name="user_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+			<column name="rating" type="INT(1)" />
+        </createTable>
+		<addPrimaryKey columnNames="media_id, user_id" tableName="rating"/>
+    </changeSet>
+    <changeSet author="MikeH" id="08062014-03">
+        <createTable tableName="media_category_linker">
+			<column name="media_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+			<column name="category_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+		<addPrimaryKey columnNames="media_id, category_id" tableName="media_category_linker"/>
+    </changeSet>
+    <changeSet author="MikeH" id="08062014-03">
+        <createTable tableName="media_tags">
+			<column name="media_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+			<column name="tag" type="VARCHAR(45)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+		<addPrimaryKey columnNames="media_id, tag" tableName="media_tags"/>
+    </changeSet>
+    <changeSet author="MikeH" id="08062014-02">
+        <createTable tableName="user_activity">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+			<column name="user_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+			<column name="artist_id" type="INT" />
+			<column name="media_id" type="INT" />
+			<column name="action" type="VARCHAR(45)">
+                <constraints nullable="true"/>
+            </column>
+			<column name="value" type="VARCHAR(4000)"/>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="created" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+			<column name="updated" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="MikeH" id="08062014-02">
+        <createTable tableName="user_activity">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+			<column name="user_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+			<column name="artist_id" type="INT" />
+			<column name="media_id" type="INT" />
+			<column name="action" type="VARCHAR(45)">
+                <constraints nullable="true"/>
+            </column>
+			<column name="value" type="VARCHAR(4000)"/>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="created" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+			<column name="updated" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="MikeH" id="08062014-02">
+        <createTable tableName="users_favorite">
+			<column name="user_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+			<column name="media_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+		<addPrimaryKey columnNames="user_id, media_id" tableName="users_favorite"/>
+    </changeSet>
+    <changeSet author="MikeH" id="08062014-02">
+        <createTable tableName="series">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+			<column name="user_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+			<column name="name" type="VARCHAR(255)"/>
+			<column name="description" type="VARCHAR(4000)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="MikeH" id="08062014-02">
+        <createTable tableName="series_season">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+			<column name="series_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+			<column name="season_number" type="INT">
+                <constraints nullable="false"/>
+            </column>
+			<column name="name" type="VARCHAR(255)"/>
+			<column name="value" type="VARCHAR(4000)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="MikeH" id="08062014-02">
+        <createTable tableName="series_episodes">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+			<column name="series_season_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+			<column name="media_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+			<column name="episode_number" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="MikeH" id="08062014-02">
+        <createTable tableName="artist_comment">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+			<column name="target_id" type="INT(11)">
+                <constraints nullable="false"/>
+            </column>
+			<column name="user_id" type="INT(11)">
+                <constraints nullable="false"/>
+            </column>
+			<column name="comment" type="VARCHAR(4000)"/>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="created" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+			<column name="updated" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="MikeH" id="08062014-02">
+        <createTable tableName="media_comment">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+			<column name="target_id" type="INT(11)">
+                <constraints nullable="false"/>
+            </column>
+			<column name="user_id" type="INT(11)">
+                <constraints nullable="false"/>
+            </column>
+			<column name="comment" type="VARCHAR(4000)"/>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="created" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+			<column name="updated" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="MikeH" id="08062014-02">
+        <createTable tableName="media_schedule">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+			<column name="media_id" type="INT(11)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="created" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+			<column name="updated" type="TIMESTAMP"/>
+			<column name="debut_time" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="MikeH" id="08062014-02">
+        <createTable tableName="section_blocks">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+			<column name="block_name" type="VARCHAR(4000)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="created" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+			<column name="updated" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="MikeH" id="08062014-02">
+        <createTable tableName="section_media">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+			<column name="block_id" type="INT(11)">
+                <constraints nullable="false"/>
+            </column>
+			<column name="media_id" type="INT(11)">
+                <constraints nullable="false"/>
+            </column>
+			<column name="user_id" type="INT(11)">
+                <constraints nullable="false"/>
+            </column>
+			<column name="priority" type="INT(11)" />
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="created" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+			<column name="updated" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
