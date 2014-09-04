@@ -48,13 +48,133 @@ return array(
     ),
     'router' => array(
         'routes' => array(
-            'home' => array(
+            'admin_home' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
-                    'route'    => '/',
+                    'route'    => '/admin',
                     'defaults' => array(
-                        'controller' => 'Application\Controller\Index',
+                        'controller' => 'Admin\Controller\Index',
                         'action'     => 'index',
+                    ),
+                ),
+            ),
+            'admin_artists' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/artists',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Artist',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'admin_users' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/users',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\User',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'admin_user_add' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/users/add',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\User',
+                        'action'     => 'add',
+                    ),
+                ),
+            ),
+            'admin_series' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/series',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Series',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'admin_series_add' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/users/add',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Series',
+                        'action'     => 'add',
+                    ),
+                ),
+            ),
+            'admin_video' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/video',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Video',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'admin_video_add' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/video/add',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Video',
+                        'action'     => 'add',
+                    ),
+                ),
+            ),
+            'admin_video_categories' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/videocategories',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Video',
+                        'action'     => 'categories',
+                    ),
+                ),
+            ),
+            'admin_video_categories_add' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/videocategories/add',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Video',
+                        'action'     => 'addcategory',
+                    ),
+                ),
+            ),
+            'admin_locations' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/locations',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Location',
+                        'action'     => 'categories',
+                    ),
+                ),
+            ),
+            'admin_locations_add' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/stages',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Location',
+                        'action'     => 'stage',
+                    ),
+                ),
+            ),
+            'admin_reporting' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/reporting',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Reporting',
+                        'action'     => 'indec',
                     ),
                 ),
             ),

@@ -58,6 +58,434 @@ return array(
                     ),
                 ),
             ),
+            'search' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/search',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Search',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+			'video_player' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+				'options' => array(
+					'route'    => '/[videos[/]]:id[/:title]',
+					'constraints' => array(
+						'id' => '\d+',
+						'title' => '[a-zA-Z0-9_-]+',
+					),
+					'defaults' => array(
+						'controller' => 'Application\Controller\Video',
+						'action'     => 'player',
+					),
+				),
+			),	
+			'video_embed' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+				'options' => array(
+					'route'    => '/[videos[/]]embed/:id[/:title]',
+					'constraints' => array(
+						'id' => '\d+',
+						'title' => '[a-zA-Z0-9_-]+',
+					),
+					'defaults' => array(
+						'controller' => 'Application\Controller\Video',
+						'action'     => 'embed',
+					),
+				),
+			),	
+			'add-video' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/add-video',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Video',
+                        'action'     => 'upload',
+                    ),
+                ),
+			),
+			'upload' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/videos/upload',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Video',
+                        'action'     => 'upload',
+                    ),
+                ),
+			),
+			'video' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+				'options' => array(
+					'route' => '/videos',
+					'defaults' => array(
+						'controller' => 'Application\Controller\Video',
+						'action' => 'index'
+					)
+				),
+			),
+			'video_edit' => array(
+				'type' => 'Zend\Mvc\Router\Http\Segment',
+				'options' => array(
+					'route' => '/videos/edit/:id',
+					'constraints' => array(
+						'id' => '\d+',
+					),
+					'defaults' => array(
+						'controller' => 'Application\Controller\Video',
+						'action' => 'edit'
+					)
+				),			
+			),
+			'video_delete' => array(
+				'type' => 'Zend\Mvc\Router\Http\Segment',
+				'options' => array(
+					'route' => '/videos/delete/:id',
+					'constraints' => array(
+						'id' => '\d+',
+					),
+					'defaults' => array(
+						'controller' => 'Application\Controller\Video',
+						'action' => 'delete'
+					)
+				),			
+			),
+			'videos_related' => array(
+				'type' => 'Zend\Mvc\Router\Http\Segment',
+				'options' => array(
+					'route' => '/videos/related/:id',
+					'constraints' => array(
+						'id' => '\d+',
+					),
+					'defaults' => array(
+						'controller' => 'Application\Controller\Video',
+						'action' => 'related'
+					)
+				),			
+			),
+			'videos_ratings' => array(
+				'type' => 'Zend\Mvc\Router\Http\Segment',
+				'options' => array(
+					'route' => '/videos/ratings/:id',
+					'constraints' => array(
+						'id' => '\d+',
+					),
+					'defaults' => array(
+						'controller' => 'Application\Controller\Video',
+						'action' => 'ratings'
+					)
+				),			
+			),
+			'video_comments' => array(
+				'type' => 'Zend\Mvc\Router\Http\Segment',
+				'options' => array(
+					'route' => '/videos/comments/:id',
+					'constraints' => array(
+						'id' => '\d+',
+					),
+					'defaults' => array(
+						'controller' => 'Application\Controller\Video',
+						'action' => 'comments'
+					)
+				),			
+			),			
+			'video_success' => array(
+				'type' => 'Zend\Mvc\Router\Http\Literal',
+				'options' => array(
+					'route' => '/videos/success',
+					'defaults' => array(
+						'controller' => 'Application\Controller\Video',
+						'action' => 'success'
+					)
+				),			
+			),
+			'video_flag' => array(
+				'type' => 'Zend\Mvc\Router\Http\Literal',
+				'options' => array(
+					'route' => '/videosflag',
+					'defaults' => array(
+						'controller' => 'Application\Controller\Video',
+						'action' => 'flag'
+					)
+				),			
+			),
+			'videos_add_rating' => array(
+				'type' => 'Zend\Mvc\Router\Http\Segment',
+				'options' => array(
+					'route' => '/videos/ratings/add',
+					'constraints' => array(
+						'id' => '\d+',
+					),
+					'defaults' => array(
+						'controller' => 'Application\Controller\Video',
+						'action' => 'addrating'
+					)
+				),			
+			),
+			'video_add_comment' => array(
+				'type' => 'Zend\Mvc\Router\Http\Segment',
+				'options' => array(
+					'route' => '/videos/comments/add',
+					'constraints' => array(
+						'id' => '\d+',
+					),
+					'defaults' => array(
+						'controller' => 'Application\Controller\Video',
+						'action' => 'addcomment'
+					)
+				),			
+			),			
+			'video_remove_comment' => array(
+				'type' => 'Zend\Mvc\Router\Http\Segment',
+				'options' => array(
+					'route' => '/videos/comments/remove',
+					'constraints' => array(
+						'id' => '\d+',
+					),
+					'defaults' => array(
+						'controller' => 'Application\Controller\Video',
+						'action' => 'removecomment'
+					)
+				),			
+			),			
+			'video_explore' => array(
+				'type' => 'Zend\Mvc\Router\Http\Segment',
+				'options' => array(
+					'route' => '/videos/:param1[/:param2][/:param3][/:param4][/:param5][/:param6][/:param7][/:param8][/:param9][/:param10]',
+					'constraints' => array(
+						'param1' => '[a-zA-Z0-9_-]+',
+						'param2' => '[a-zA-Z0-9_-]+',
+						'param3' => '[a-zA-Z0-9_-]+',
+						'param4' => '[a-zA-Z0-9_-]+',
+						'param5' => '[a-zA-Z0-9_-]+',
+						'param6' => '[a-zA-Z0-9_-]+',
+						'param7' => '[a-zA-Z0-9_-]+',
+						'param8' => '[a-zA-Z0-9_-]+',
+						'param9' => '[a-zA-Z0-9_-]+',
+						'param10' => '[a-zA-Z0-9_-]+',
+					),
+					'defaults' => array(
+						'controller' => 'Application\Controller\Video',
+						'action' => 'index'
+					)
+				),			
+			),			
+            'stage' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/watch[/:param1][/:param2][/:param3][/:param4][/:param5][/:param6][/:param7][/:param8][/:param9][/:param10]',
+					'constraints' => array(
+						'param1' => '[a-zA-Z0-9_-]+',
+						'param2' => '[a-zA-Z0-9_-]+',
+						'param3' => '[a-zA-Z0-9_-]+',
+						'param4' => '[a-zA-Z0-9_-]+',
+						'param5' => '[a-zA-Z0-9_-]+',
+						'param6' => '[a-zA-Z0-9_-]+',
+						'param7' => '[a-zA-Z0-9_-]+',
+						'param8' => '[a-zA-Z0-9_-]+',
+						'param9' => '[a-zA-Z0-9_-]+',
+						'param10' => '[a-zA-Z0-9_-]+',
+					),
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Index',
+                        'action'     => 'stage',
+                    ),
+                ),
+            ),
+			'dashboard' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/dashboard',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\User',
+                        'action'     => 'index',
+                    ),
+                ),
+			),
+			'profile_short' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+				'options' => array(
+					'route'    => '/u/:id',
+					'constraints' => array(
+						'id' => '\d+',
+					),
+					'defaults' => array(
+						'controller' => 'Application\Controller\User',
+						'action'     => 'profile',
+					),
+				),
+			),	
+			'profile' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+				'options' => array(
+					'route'    => '/profile/:username',
+					'constraints' => array(
+						'username' => '\d+',
+					),
+					'defaults' => array(
+						'controller' => 'Application\Controller\User',
+						'action'     => 'profile',
+					),
+				),
+			),	
+			'forgot_password' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+				'options' => array(
+					'route'    => '/forgot_password',
+					'defaults' => array(
+						'controller' => 'Application\Controller\User',
+						'action'     => 'forgotpassword',
+					),
+				),
+			),	
+			'reset_password' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+				'options' => array(
+					'route'    => '/reset_password/:id',
+					'constraints' => array(
+						'id' => '[a-zA-Z0-9_-]+',
+					),
+					'defaults' => array(
+						'controller' => 'Application\Controller\User',
+						'action'     => 'resetpassword',
+					),
+				),
+			),	
+			'verify' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+				'options' => array(
+					'route'    => '/verify/:id',
+					'constraints' => array(
+						'id' => '[a-zA-Z0-9_-]+',
+					),
+					'defaults' => array(
+						'controller' => 'Application\Controller\User',
+						'action'     => 'verify',
+					),
+				),
+			),	
+			'series_player' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+				'options' => array(
+					'route'    => '/series[/:name[/:season[/:episode]]]',
+					'constraints' => array(
+						'name' => '[a-zA-Z0-9_-]+',
+						'season' => '\d+',
+						'episode' => '\d+',
+					),
+					'defaults' => array(
+						'controller' => 'Application\Controller\Series',
+						'action'     => 'index',
+					),
+				),
+			),	
+			'series_embed' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+				'options' => array(
+					'route'    => '/series/embed/:name[/:season[/:episode]]',
+					'constraints' => array(
+						'name' => '[a-zA-Z0-9_-]+',
+						'season' => '\d+',
+						'episode' => '\d+',
+					),
+					'defaults' => array(
+						'controller' => 'Application\Controller\Series',
+						'action'     => 'index',
+					),
+				),
+			),	
+			'what_is_townspot' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+				'options' => array(
+					'route'    => '/what-is-townspot',
+					'defaults' => array(
+						'controller' => 'Application\Controller\StaticPage',
+						'action'     => 'about',
+					),
+				),
+			),	
+			'what_makes_townspot_different' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+				'options' => array(
+					'route'    => '/what-makes-townspot-different',
+					'defaults' => array(
+						'controller' => 'Application\Controller\StaticPage',
+						'action'     => 'different',
+					),
+				),
+			),	
+			'privacy' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+				'options' => array(
+					'route'    => '/privacy',
+					'defaults' => array(
+						'controller' => 'Application\Controller\StaticPage',
+						'action'     => 'privacy',
+					),
+				),
+			),	
+			'terms' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+				'options' => array(
+					'route'    => '/terms-conditions',
+					'defaults' => array(
+						'controller' => 'Application\Controller\StaticPage',
+						'action'     => 'terms',
+					),
+				),
+			),	
+			'agreement' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+				'options' => array(
+					'route'    => '/video-submission-agreement',
+					'defaults' => array(
+						'controller' => 'Application\Controller\StaticPage',
+						'action'     => 'agreement',
+					),
+				),
+			),	
+			'standards' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+				'options' => array(
+					'route'    => '/community-standards',
+					'defaults' => array(
+						'controller' => 'Application\Controller\StaticPage',
+						'action'     => 'standards',
+					),
+				),
+			),	
+			'policy' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+				'options' => array(
+					'route'    => '/content-policy',
+					'defaults' => array(
+						'controller' => 'Application\Controller\StaticPage',
+						'action'     => 'policy',
+					),
+				),
+			),	
+			'tips' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+				'options' => array(
+					'route'    => '/video-submission-tips',
+					'defaults' => array(
+						'controller' => 'Application\Controller\StaticPage',
+						'action'     => 'tips',
+					),
+				),
+			),	
+			'contact' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+				'options' => array(
+					'route'    => '/contact-us',
+					'defaults' => array(
+						'controller' => 'Application\Controller\Index',
+						'action'     => 'contact',
+					),
+				),
+			),	
             'application' => array(
                 'type'    => 'Literal',
                 'options' => array(

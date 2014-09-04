@@ -50,6 +50,8 @@
 		"lmammino/jsmin4assetic": "1.0.*@dev",
 		"blanchonvincent/cdn-light": "dev-master",
 		"slm/google-analytics": "dev-master",
+		"snapshotpl/zf-snap-google-adsense": "dev-master",		
+		"thepixeldeveloper/sitemap": "dev-master",
 		"zf-commons/zfc-base": "0.1.2",
 		"zf-commons/zfc-user": "2.0.*@dev",	
 		"zf-commons/zfc-admin": "dev-master",
