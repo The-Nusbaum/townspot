@@ -19,6 +19,8 @@ class Module
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+		$app = $e->getParam('application'); 
+		$app->getEventManager()->attach('dispatch', array($this, 'setLayout')); // 
     }
 
     public function getConfig()
@@ -36,4 +38,15 @@ class Module
             ),
         );
     }
+	
+	public function setLayout($e) {
+		$matches = $e->getRouteMatch();
+		$controller = $matches->getParam('controller');
+		if (false !== strpos($controller, __NAMESPACE__)) {
+			// Set the layout template
+			$viewModel = $e->getViewModel();
+			$viewModel->setTemplate('application/layout');
+		}
+	} 	
+	
 }

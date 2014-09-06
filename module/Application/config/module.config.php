@@ -486,6 +486,16 @@ return array(
 					),
 				),
 			),	
+			'admin' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+				'options' => array(
+					'route'    => '/admin',
+					'defaults' => array(
+						'controller' => 'Admin\Controller\Index',
+						'action'     => 'index',
+					),
+				),
+			),	
             'application' => array(
                 'type'    => 'Literal',
                 'options' => array(
@@ -524,6 +534,7 @@ return array(
         ),
         'factories' => array(
             'cdnLinkBuilderContainer' => 'CdnLight\Generator\Service\LinkBuilderContainerFactory',
+			'navigation' => 'Zend\Navigation\Service\DefaultNavigationFactory',
         )
     ),
     'translator' => array(
@@ -548,7 +559,7 @@ return array(
         'not_found_template'       => 'error/404',
         'exception_template'       => 'error/index',
         'template_map' => array(
-            'layout/layout'           => APPLICATION_PATH . '/module/Application/view/layout/layout.phtml',
+            'application/layout'      => APPLICATION_PATH . '/module/Application/view/layout/layout.phtml',
             'application/index/index' => APPLICATION_PATH . '/module/Application/view/application/index/index.phtml',
             'error/404'               => APPLICATION_PATH . '/module/Application/view/error/404.phtml',
             'error/index'             => APPLICATION_PATH . '/module/Application/view/error/index.phtml',
@@ -556,6 +567,47 @@ return array(
         'template_path_stack' => array(
             APPLICATION_PATH . '/module/Application/view',
         ),
+    ),
+	'navigation' => array(
+		'default' => array(
+			array(
+				'label' 		=> '<img src="/img/pin_logo.png"> Town<span class="highlight">Spot</span>.tv',
+                'route' 		=> 'home',
+				'class'			=> 'nav-logo hidden-xs'
+            ),
+			array(
+				'label' 		=> 'Discover',
+                'route' 		=> 'video',
+            ),
+			array(
+				'label' 		=> 'Upload',
+                'route' 		=> 'add-video',
+            ),
+			array(
+				'label' 		=> 'Backstage',
+                'uri' 			=> 'http://backstage.townspot.tv/',
+				'target'	 	=> '_blank',
+            ),
+			array(
+				'label' 		=> 'What is Town<span class="highlight">Spot</span>?',
+                'route' 		=> 'what_is_townspot',
+				'class'			=> 'hidden-sm',
+            ),
+			array(
+				'label' 		=> 'View Profile',
+                'route' 		=> 'dashboard',
+				'class'			=> 'visible-xs',
+				'resource'		=> 'user-dashboard',
+				'priviledge'	=> 'user',
+            ),
+			array(
+				'label' 		=> '<i class="fa fa-cogs"></i> Admin',
+                'route' 		=> 'admin',
+				'class'			=> 'visible-xs',
+				'resource'		=> 'admin',
+				'priviledge'	=> 'admin',
+            ),
+        )
     ),
     'console' => array(
         'router' => array(

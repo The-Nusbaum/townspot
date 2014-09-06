@@ -2,41 +2,41 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <?= $this->headTitle('ZF2 '. $this->translate('Skeleton Application'))->setSeparator(' - ')->setAutoEscape(false) ?>
-        <?= $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0');	?>
-        <?= $this->headMeta()->appendHttpEquiv('X-UA-Compatible', 'IE=edge'); ?>
+        <?= $this->headTitle('townspot.tv')->setSeparator(' - ')->setAutoEscape(false) ?>
+        <?= $this->headMeta()
+				 ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+				 ->appendName('robots','NOODP')
+				 ->appendName('MSSmartTagsPreventParsing','true')
+				 ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+				 ->appendHttpEquiv('Pragma','no-cache')
+				 ->appendHttpEquiv('cache-control','no-cache')
+				 ->appendHttpEquiv('expires',date('r'))
+				 ->appendName('description',
+							  "TownSpot.tv is the Local Video Network spotlighting local talent across the country through a curated video directory.");
+		?>
         <?= $this->headLink(array(	'rel' => 'shortcut icon', 
 									'type' => 'image/vnd.microsoft.icon', 
 									'href' => $this->basePath() . '/img/favicon.ico'
-			));
+			))->appendStylesheet('//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css')	
+			  ->appendStylesheet('//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css')
+			  ->appendStylesheet('//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css')
+			  ->appendStylesheet('//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css','screen')
+			  ->prependStylesheet($this->basePath() . '/css/style.css');
 		?>
-		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">		
-		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
-		<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-        <?= $this->headLink()->prependStylesheet($this->basePath() . '/css/style.css'); ?>
-		<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-		<script src="//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
-		<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js"></script>
-		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+		<?= $this->headScript()->appendFile('//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js','text/javascript')
+		                       ->appendFile('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js','text/javascript');
+		?>
+		<?= $this->headScript()->appendFile('//jwpsrv.com/library/y3klzqiFEeKGEyIACpYGxA.js','text/javascript')
+		                       ->appendFile('//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js','text/javascript')
+		                       ->appendFile('//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js','text/javascript')
+		                       ->appendFile('//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js','text/javascript')
+		                       ->appendFile('//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js','text/javascript');
+		?>
     </head>
     <body>
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="<?php echo $this->url('home') ?>"><img src="<?php echo $this->basePath('img/zf2-logo.png') ?>" alt="Zend Framework 2"/>&nbsp;<?php echo $this->translate('Skeleton Application') ?></a>
-                </div>
-                <div class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="<?php echo $this->url('home') ?>"><?php echo $this->translate('Home') ?></a></li>
-                    </ul>
-                </div><!--/.nav-collapse -->
-            </div>
-        </nav>
+		<nav role="navigation" class="navbar navbar-inverse">
+			<?= $this->navigation('navigation')->menu()->setPartial('partials/menu')->render(); ?>	
+		</nav>
         <div class="container">
             <?php echo $this->content; ?>
             <hr>

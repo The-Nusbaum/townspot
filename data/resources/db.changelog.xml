@@ -4,7 +4,7 @@
         xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd
     	http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-	<changeSet author="MikeH" id="08212014-01">
+	<changeSet author="MikeH" id="09052014-01">
         <createTable tableName="sessions">
             <column name="id" type="VARCHAR(32)">
                 <constraints nullable="false" primaryKey="true"/>
@@ -15,7 +15,7 @@
 			<column name="data" type="BLOB" />
         </createTable>
     </changeSet>
-    <changeSet author="MikeH" id="08062014-02">
+    <changeSet author="MikeH" id="09052014-02">
         <createTable tableName="category_type">
             <column name="id" type="INT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
@@ -45,13 +45,16 @@
 			<column name="name" value="vendor" />
 		</insert>
     </changeSet>
-    <changeSet author="MikeH" id="08062014-02">
+    <changeSet author="MikeH" id="09052014-03">
         <createTable tableName="category">
             <column name="id" type="INT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
 			<column defaultValue="0" name="parent_id" type="INT(11)"/>
 			<column name="name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+			<column name="category_type_id" type="INT">
                 <constraints nullable="false"/>
             </column>
             <column defaultValueBoolean="false" name="allow_freeform" type="TINYINT(1)"/>
@@ -61,7 +64,7 @@
 			<column name="updated" type="TIMESTAMP"/>
         </createTable>
     </changeSet>
-	<changeSet author="MikeH" id="08062014-01">
+	<changeSet author="MikeH" id="09052014-04">
         <createTable tableName="user">
             <column name="user_id" type="INT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
@@ -94,7 +97,7 @@
             <column defaultValueBoolean="false" name="terms_agreement" type="TINYINT(1)"/>
             <column defaultValueBoolean="false" name="email_notifications" type="TINYINT(1)"/>
 			<column name="status" type="varchar(1)"/>
-			<column name="artistname" type="VARCHAR(255)"/>
+			<column name="artist_name" type="VARCHAR(255)"/>
 			<column name="state" type="INT"/>
             <column name="latitude" type="FLOAT(9,6)"/>
             <column name="longitude" type="FLOAT(9,6)"/>
@@ -105,16 +108,17 @@
 			<column name="security_key_expires" type="TIMESTAMP"/>
         </createTable>
     </changeSet>
-    <changeSet author="MikeH" id="08062014-02">
+    <changeSet author="MikeH" id="09052014-05">
         <createTable tableName="user_role">
             <column name="role_id" type="VARCHAR(255)">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
             <column defaultValueBoolean="false" name="is_default" type="TINYINT(1)"/>
+			<column name="description" type="VARCHAR(4000)"/>
 			<column defaultValue="NULL" name="parent" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="MikeH" id="08062014-03">
+    <changeSet author="MikeH" id="09052014-06">
         <createTable tableName="user_role_linker">
 			<column name="user_id" type="INT">
                 <constraints nullable="false"/>
@@ -125,27 +129,32 @@
         </createTable>
 		<addPrimaryKey columnNames="user_id, role_id" tableName="user_role_linker"/>
 		<insert tableName="user_role">
-			<column name="role_id" value="guest" />
+			<column name="role_id" value="Guest" />
 			<column name="is_default" value="1" />
 			<column name="parent" value="" />
 		</insert>
 		<insert tableName="user_role">
-			<column name="role_id" value="user" />
+			<column name="role_id" value="Unconfirmed" />
 			<column name="is_default" value="0" />
-			<column name="parent" value="guest" />
+			<column name="parent" value="Guest" />
 		</insert>
 		<insert tableName="user_role">
-			<column name="role_id" value="artist" />
+			<column name="role_id" value="User" />
 			<column name="is_default" value="0" />
-			<column name="parent" value="user" />
+			<column name="parent" value="Unconfirmed" />
 		</insert>
 		<insert tableName="user_role">
-			<column name="role_id" value="admin" />
+			<column name="role_id" value="Artist" />
 			<column name="is_default" value="0" />
-			<column name="parent" value="user" />
+			<column name="parent" value="User" />
+		</insert>
+		<insert tableName="user_role">
+			<column name="role_id" value="Administrator" />
+			<column name="is_default" value="0" />
+			<column name="parent" value="User" />
 		</insert>
     </changeSet>
-    <changeSet author="MikeH" id="08062014-02">
+    <changeSet author="MikeH" id="09052014-07">
         <createTable tableName="user_social_media">
             <column name="id" type="INT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
@@ -154,7 +163,7 @@
 			<column defaultValue="NULL" name="external_id" type="VARCHAR(255)"/>
         </createTable>
     </changeSet>
-    <changeSet author="MikeH" id="08062014-02">
+    <changeSet author="MikeH" id="09052014-08">
         <createTable tableName="user_follows">
 			<column name="user_id" type="INT">
                 <constraints nullable="false"/>
@@ -166,7 +175,7 @@
         </createTable>
 		<addPrimaryKey columnNames="user_id, target_id" tableName="user_follows"/>
     </changeSet>
-    <changeSet author="MikeH" id="08062014-02">
+    <changeSet author="MikeH" id="09052014-09">
         <createTable tableName="user_event">
             <column name="id" type="INT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
@@ -187,7 +196,7 @@
 			<column name="start" type="TIMESTAMP"/>
         </createTable>
     </changeSet>
-	<changeSet author="MikeH" id="08062014-01">
+	<changeSet author="MikeH" id="09052014-10">
         <createTable tableName="media">
             <column name="id" type="INT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
@@ -196,11 +205,12 @@
                 <constraints nullable="false"/>
             </column>
             <column defaultValueBoolean="video" name="media_type" type="VARCHAR(50)">
+            <column defaultValueBoolean="video" name="source" type="VARCHAR(50)">
 			<column name="logline" type="VARCHAR(50)"/>
 			<column name="description" type="VARCHAR(4000)"/>
 			<column name="why_we_choose" type="VARCHAR(4000)"/>
-			<column name="video_url" type="VARCHAR(255)"/>
-			<column name="video_image" type="VARCHAR(255)"/>
+			<column name="url" type="VARCHAR(255)"/>
+			<column name="preview_image" type="VARCHAR(255)"/>
             <column defaultValueBoolean="false" name="allow_contact" type="TINYINT(1)"/>
             <column defaultValueBoolean="false" name="authorised" type="TINYINT(1)"/>
             <column defaultValueBoolean="false" name="request_debut_time" type="TINYINT(1)"/>
@@ -227,7 +237,7 @@
 			<column name="debut_time" type="TIMESTAMP"/>
         </createTable>
     </changeSet>
-	<changeSet author="MikeH" id="08062014-01">
+	<changeSet author="MikeH" id="09052014-11">
         <createTable tableName="encoding">
 			<column name="media_id" type="INT">
                 <constraints nullable="false"/>
@@ -239,7 +249,7 @@
         </createTable>
 		<addPrimaryKey columnNames="media_id, encoding_id" tableName="encodings"/>
     </changeSet>
-	<changeSet author="MikeH" id="08062014-01">
+	<changeSet author="MikeH" id="09052014-12">
         <createTable tableName="rating">
 			<column name="media_id" type="INT">
                 <constraints nullable="false"/>
@@ -251,7 +261,7 @@
         </createTable>
 		<addPrimaryKey columnNames="media_id, user_id" tableName="rating"/>
     </changeSet>
-    <changeSet author="MikeH" id="08062014-03">
+    <changeSet author="MikeH" id="09052014-13">
         <createTable tableName="media_category_linker">
 			<column name="media_id" type="INT">
                 <constraints nullable="false"/>
@@ -262,7 +272,7 @@
         </createTable>
 		<addPrimaryKey columnNames="media_id, category_id" tableName="media_category_linker"/>
     </changeSet>
-    <changeSet author="MikeH" id="08062014-03">
+    <changeSet author="MikeH" id="09052014-14">
         <createTable tableName="media_tags">
 			<column name="media_id" type="INT">
                 <constraints nullable="false"/>
@@ -273,7 +283,7 @@
         </createTable>
 		<addPrimaryKey columnNames="media_id, tag" tableName="media_tags"/>
     </changeSet>
-    <changeSet author="MikeH" id="08062014-02">
+    <changeSet author="MikeH" id="09052014-15">
         <createTable tableName="user_activity">
             <column name="id" type="INT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
@@ -293,7 +303,7 @@
 			<column name="updated" type="TIMESTAMP"/>
         </createTable>
     </changeSet>
-    <changeSet author="MikeH" id="08062014-02">
+    <changeSet author="MikeH" id="09052014-16">
         <createTable tableName="user_activity">
             <column name="id" type="INT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
@@ -313,7 +323,7 @@
 			<column name="updated" type="TIMESTAMP"/>
         </createTable>
     </changeSet>
-    <changeSet author="MikeH" id="08062014-02">
+    <changeSet author="MikeH" id="09052014-17">
         <createTable tableName="users_favorite">
 			<column name="user_id" type="INT">
                 <constraints nullable="false"/>
@@ -324,7 +334,7 @@
         </createTable>
 		<addPrimaryKey columnNames="user_id, media_id" tableName="users_favorite"/>
     </changeSet>
-    <changeSet author="MikeH" id="08062014-02">
+    <changeSet author="MikeH" id="09052014-18">
         <createTable tableName="series">
             <column name="id" type="INT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
@@ -336,11 +346,8 @@
 			<column name="description" type="VARCHAR(4000)"/>
         </createTable>
     </changeSet>
-    <changeSet author="MikeH" id="08062014-02">
+    <changeSet author="MikeH" id="09052014-19">
         <createTable tableName="series_season">
-            <column name="id" type="INT" autoIncrement="true">
-                <constraints nullable="false" primaryKey="true"/>
-            </column>
 			<column name="series_id" type="INT">
                 <constraints nullable="false"/>
             </column>
@@ -350,12 +357,10 @@
 			<column name="name" type="VARCHAR(255)"/>
 			<column name="value" type="VARCHAR(4000)"/>
         </createTable>
+		<addPrimaryKey columnNames="series_id, season_number" tableName="series_season"/>
     </changeSet>
-    <changeSet author="MikeH" id="08062014-02">
+    <changeSet author="MikeH" id="09052014-20">
         <createTable tableName="series_episodes">
-            <column name="id" type="INT" autoIncrement="true">
-                <constraints nullable="false" primaryKey="true"/>
-            </column>
 			<column name="series_season_id" type="INT">
                 <constraints nullable="false"/>
             </column>
@@ -366,8 +371,9 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+		<addPrimaryKey columnNames="series_season_id, media_id, episode_number" tableName="series_episodes"/>
     </changeSet>
-    <changeSet author="MikeH" id="08062014-02">
+    <changeSet author="MikeH" id="09052014-21">
         <createTable tableName="artist_comment">
             <column name="id" type="INT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
@@ -385,7 +391,7 @@
 			<column name="updated" type="TIMESTAMP"/>
         </createTable>
     </changeSet>
-    <changeSet author="MikeH" id="08062014-02">
+    <changeSet author="MikeH" id="09052014-22">
         <createTable tableName="media_comment">
             <column name="id" type="INT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
@@ -403,7 +409,7 @@
 			<column name="updated" type="TIMESTAMP"/>
         </createTable>
     </changeSet>
-    <changeSet author="MikeH" id="08062014-02">
+    <changeSet author="MikeH" id="09052014-23">
         <createTable tableName="media_schedule">
             <column name="id" type="INT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
@@ -418,7 +424,7 @@
 			<column name="debut_time" type="TIMESTAMP"/>
         </createTable>
     </changeSet>
-    <changeSet author="MikeH" id="08062014-02">
+    <changeSet author="MikeH" id="09052014-24">
         <createTable tableName="section_blocks">
             <column name="id" type="INT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
@@ -431,19 +437,25 @@
             </column>
 			<column name="updated" type="TIMESTAMP"/>
         </createTable>
+		<insert tableName="section_blocks">
+			<column name="id" value="1" />
+			<column name="block_name" value="On Screen" />
+		</insert>
+		<insert tableName="section_blocks">
+			<column name="id" value="2" />
+			<column name="block_name" value="Daily Highlights" />
+		</insert>
+		<insert tableName="section_blocks">
+			<column name="id" value="2" />
+			<column name="block_name" value="Staff Favorites" />
+		</insert>
     </changeSet>
-    <changeSet author="MikeH" id="08062014-02">
+    <changeSet author="MikeH" id="09052014-25">
         <createTable tableName="section_media">
-            <column name="id" type="INT" autoIncrement="true">
-                <constraints nullable="false" primaryKey="true"/>
-            </column>
 			<column name="block_id" type="INT(11)">
                 <constraints nullable="false"/>
             </column>
 			<column name="media_id" type="INT(11)">
-                <constraints nullable="false"/>
-            </column>
-			<column name="user_id" type="INT(11)">
                 <constraints nullable="false"/>
             </column>
 			<column name="priority" type="INT(11)" />
@@ -452,5 +464,6 @@
             </column>
 			<column name="updated" type="TIMESTAMP"/>
         </createTable>
+		<addPrimaryKey columnNames="block_id, media_id" tableName="section_media"/>
     </changeSet>
 </databaseChangeLog>

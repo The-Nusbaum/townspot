@@ -1,0 +1,75 @@
+<div class="container-fluid">
+	<div class="navbar-header">
+		<button data-target="#townspot-nav" data-toggle="collapse" class="navbar-toggle" type="button">
+			<i class="fa fa-bars" style="color: #ffffff;"></i>
+		</button>
+		<a href="/" class="navbar-brand visible-xs">Town<span class="highlight">Spot</span>.tv</a>
+	</div>
+    <div class="collapse navbar-collapse" id="townspot-nav">
+		<ul class="nav navbar-nav navbar-left">
+<?php if($this->zfcUserIdentity()) : ?>
+			<li class="visible-xs navbar-text"><?= $this->zfcUserIdentity()->getDisplayName(); ?></li>
+<?php endif; ?>
+<?php
+foreach ($this->container as $page) {
+	$class = ($page->getClass()) ?: null;
+	$href = ($page instanceof Zend\Navigation\Page\Mvc) ? $page->getHref() : $page->getUri();
+	$href .= ($page->getFragment()) ? '#' . $page->getFragment() : '';
+	$id = ($page->getId()) ?: null;
+	$title = ($page->getTitle()) ?: null;
+	$target = ($page->getTarget()) ?: null;
+	printf('<li class="%s"><a id="%s" title="%s" target="%s" href="%s">%s</a></li>',
+		$class,
+		$id,
+		$title,
+		$target,
+		$href,
+		$page->getLabel());
+}
+?>
+		</ul>
+		<ul class="nav navbar-nav navbar-right">
+			<li>
+				<form class="navbar-form" role="search" method="get" action="/videos/search">
+					<input class="form-control search" name="search" type="text" autocomplete="off" spellcheck="false" tabindex="-1" placeholder="looking for something?" />
+					<button type="submit" class="btn btn-default search-button"><i class="fa fa-search"></i></button>
+				</form>
+			</li>
+<?php if(!$this->zfcUserIdentity()) : ?>
+			<li class="login"><a href="/login">Login</a></li>
+<?php else : ?>			
+			<li class="navbar-text hidden-xs">
+				<span data-toggle="dropdown" class="btn dropdown-toggle user-dropdown" type="button">
+<?= (strlen($this->zfcUserIdentity()->getDisplayName()) < 8
+		? $this->zfcUserIdentity()->getDisplayName() 
+		: substr($this->zfcUserIdentity()->getDisplayName(),0,8) . '<i class="fa fa-ellipsis-h"></i>');
+?>
+					<span class="caret"></span>
+				</span>
+				<ul role="menu" class="dropdown-menu">
+<?php
+	foreach ($this->container as $page) {
+		if ($page->getClass() == 'visible-xs') {
+			$href = ($page instanceof Zend\Navigation\Page\Mvc) ? $page->getHref() : $page->getUri();
+			$href .= ($page->getFragment()) ? '#' . $page->getFragment() : '';
+			$id = ($page->getId()) ?: null;
+			$title = ($page->getTitle()) ?: null;
+			$target = ($page->getTarget()) ?: null;
+			printf('<li><a id="%s" title="%s" target="%s" href="%s">%s</a></li>',
+				$class,
+				$id,
+				$title,
+				$target,
+				$href,
+				$page->getLabel());
+		}
+	}
+?>	
+					<li><a href="/logout">Log Out</a></li>
+				</ul>
+			</li>
+<?php endif; ?> 
+		</ul>
+    </div>
+</nav>
+		

@@ -14,8 +14,17 @@ use Zend\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController
 {
+	public function __construct() 
+	{
+
+	}
+	
     public function indexAction()
     {
+		$this->getServiceLocator()
+			 ->get('ViewHelperManager')
+			 ->get('HeadTitle')
+			 ->set('TownSpot &bull; Your Town. Your Talent. Spotlighted');
         return new ViewModel();
     }
 }

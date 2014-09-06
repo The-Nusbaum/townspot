@@ -53,14 +53,8 @@ return array(
         ),
     ),
 	'google_analytics' => array(
-		//'id' => 'UA-12345-1',
-		//'script' => 'google-analytics-ga',
-		// 'enable' => false,
-		// 'anonymize_ip' => false,
-		// 'domain_name'  => '',
-		// 'allow_linker' => false,
-		// 'enable_display_advertising' => false,
-		//'container_name' => 'InlineScript',
+		'id' => 'UA-33048703-1',
+		'domain_name'  => 'townspot.tv',
 	),
 	'zfcuser' => $zfcuser_settings,
     'service_manager' => array(
