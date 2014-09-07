@@ -6,7 +6,6 @@
  * @copyright Copyright (c) 2005-2014 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
-
 namespace Admin;
 
 use Zend\Mvc\ModuleRouteListener;
@@ -47,6 +46,5 @@ class Module
 			$viewModel = $e->getViewModel();
 			$viewModel->setTemplate('admin/layout');
 		}
-	} 	
-	
+	}
 }

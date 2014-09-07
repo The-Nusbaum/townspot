@@ -32,16 +32,8 @@
 			<column name="id" value="1" />
 			<column name="name" value="video" />
 		</insert>
-		<insert tableName="category_type">
-			<column name="id" value="2" />
-			<column name="name" value="series" />
-		</insert>
-		<insert tableName="category_type">
-			<column name="id" value="3" />
-			<column name="name" value="advertiser" />
-		</insert>
  		<insert tableName="category_type">
-			<column name="id" value="4" />
+			<column name="id" value="2" />
 			<column name="name" value="vendor" />
 		</insert>
     </changeSet>
@@ -63,7 +55,3584 @@
             </column>
 			<column name="updated" type="TIMESTAMP"/>
         </createTable>
-    </changeSet>
+         <insert tableName="category">
+            <column name="id" value="43" />
+            <column name="name" value="Music" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="45" />
+            <column name="parent_id" value="43" />
+            <column name="name" value="Pop" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="48" />
+            <column name="parent_id" value="43" />
+            <column name="name" value="Classical" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="49" />
+            <column name="parent_id" value="43" />
+            <column name="name" value="Dance/Electronica" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="50" />
+            <column name="parent_id" value="43" />
+            <column name="name" value="R&amp;B" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="51" />
+            <column name="parent_id" value="43" />
+            <column name="name" value="Hip-Hop" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="52" />
+            <column name="parent_id" value="43" />
+            <column name="name" value="Rock" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="53" />
+            <column name="parent_id" value="43" />
+            <column name="name" value="Country" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="54" />
+            <column name="parent_id" value="43" />
+            <column name="name" value="Jazz" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="55" />
+            <column name="parent_id" value="43" />
+            <column name="name" value="Folk" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="56" />
+            <column name="parent_id" value="43" />
+            <column name="name" value="Religious" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="57" />
+            <column name="parent_id" value="43" />
+            <column name="name" value="Soundtrack" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="58" />
+            <column name="parent_id" value="43" />
+            <column name="name" value="Instrumental" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="59" />
+            <column name="parent_id" value="43" />
+            <column name="name" value="New Age/Celtic" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="60" />
+            <column name="parent_id" value="45" />
+            <column name="name" value="Electro-Pop" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="61" />
+            <column name="parent_id" value="45" />
+            <column name="name" value="Pop-Rock" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="62" />
+            <column name="parent_id" value="48" />
+            <column name="name" value="Ballroom" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="63" />
+            <column name="parent_id" value="48" />
+            <column name="name" value="Chamber" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="64" />
+            <column name="parent_id" value="48" />
+            <column name="name" value="Opera" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="65" />
+            <column name="parent_id" value="48" />
+            <column name="name" value="Symphony" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="66" />
+            <column name="parent_id" value="49" />
+            <column name="name" value="Disco" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="67" />
+            <column name="parent_id" value="49" />
+            <column name="name" value="Drum and Bass" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="68" />
+            <column name="parent_id" value="49" />
+            <column name="name" value="Electro" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="69" />
+            <column name="parent_id" value="49" />
+            <column name="name" value="EuroDance" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="70" />
+            <column name="parent_id" value="49" />
+            <column name="name" value="House" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="71" />
+            <column name="parent_id" value="49" />
+            <column name="name" value="Progressive" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="72" />
+            <column name="parent_id" value="49" />
+            <column name="name" value="Techno" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="73" />
+            <column name="parent_id" value="49" />
+            <column name="name" value="Trance" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="74" />
+            <column name="parent_id" value="50" />
+            <column name="name" value="Adult Contemporary" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="75" />
+            <column name="parent_id" value="51" />
+            <column name="name" value="Crunk" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="76" />
+            <column name="parent_id" value="51" />
+            <column name="name" value="East Coast" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="77" />
+            <column name="parent_id" value="51" />
+            <column name="name" value="Gangsta" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="78" />
+            <column name="parent_id" value="51" />
+            <column name="name" value="Hyphy" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="79" />
+            <column name="parent_id" value="51" />
+            <column name="name" value="Old School" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="80" />
+            <column name="parent_id" value="51" />
+            <column name="name" value="Rap " />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="81" />
+            <column name="parent_id" value="51" />
+            <column name="name" value="Reggaeton" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="82" />
+            <column name="parent_id" value="51" />
+            <column name="name" value="West Coast" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="83" />
+            <column name="parent_id" value="52" />
+            <column name="name" value="Alternative" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="84" />
+            <column name="parent_id" value="52" />
+            <column name="name" value="Indie" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="85" />
+            <column name="parent_id" value="52" />
+            <column name="name" value="Metal" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="86" />
+            <column name="parent_id" value="52" />
+            <column name="name" value="Punk-Rock" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="88" />
+            <column name="parent_id" value="53" />
+            <column name="name" value="American Country" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="89" />
+            <column name="parent_id" value="53" />
+            <column name="name" value="Bluegrass" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="90" />
+            <column name="parent_id" value="53" />
+            <column name="name" value="Honky Tonk" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="91" />
+            <column name="parent_id" value="54" />
+            <column name="name" value="Bebop" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="92" />
+            <column name="parent_id" value="54" />
+            <column name="name" value="Ska" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="93" />
+            <column name="parent_id" value="54" />
+            <column name="name" value="Smooth" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="94" />
+            <column name="parent_id" value="54" />
+            <column name="name" value="Vocal" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="95" />
+            <column name="parent_id" value="56" />
+            <column name="name" value="Gospel" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="96" />
+            <column name="parent_id" value="56" />
+            <column name="name" value="Chant" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="97" />
+            <column name="parent_id" value="56" />
+            <column name="name" value="Hymn/Spiritual" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="98" />
+            <column name="parent_id" value="57" />
+            <column name="name" value="Film Score" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="99" />
+            <column name="parent_id" value="57" />
+            <column name="name" value="Show Tunes" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="100" />
+            <column name="parent_id" value="57" />
+            <column name="name" value="Trailer Music" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="101" />
+            <column name="parent_id" value="57" />
+            <column name="name" value="Video Game Music" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="107" />
+            <column name="name" value="Film" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="108" />
+            <column name="parent_id" value="107" />
+            <column name="name" value="Short Film" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="109" />
+            <column name="parent_id" value="107" />
+            <column name="name" value="Documentary" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="110" />
+            <column name="parent_id" value="107" />
+            <column name="name" value="Web Series " />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="111" />
+            <column name="parent_id" value="107" />
+            <column name="name" value="TV Show" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="112" />
+            <column name="parent_id" value="43" />
+            <column name="name" value="Acapella" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="113" />
+            <column name="parent_id" value="107" />
+            <column name="name" value="Animation" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="114" />
+            <column name="parent_id" value="107" />
+            <column name="name" value="Feature" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="115" />
+            <column name="parent_id" value="107" />
+            <column name="name" value="Trailer" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="116" />
+            <column name="parent_id" value="107" />
+            <column name="name" value="Reality" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="117" />
+            <column name="parent_id" value="107" />
+            <column name="name" value="Theatre" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="119" />
+            <column name="parent_id" value="118" />
+            <column name="name" value="Instructional" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="120" />
+            <column name="parent_id" value="118" />
+            <column name="name" value="Do It Yourself (DIY)" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="121" />
+            <column name="parent_id" value="118" />
+            <column name="name" value="Not for Profit " />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="122" />
+            <column name="parent_id" value="118" />
+            <column name="name" value="Classroom" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="123" />
+            <column name="name" value="Dance" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="124" />
+            <column name="parent_id" value="123" />
+            <column name="name" value="Aerial/Acrobatic" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="125" />
+            <column name="parent_id" value="123" />
+            <column name="name" value="Ballet" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="126" />
+            <column name="parent_id" value="123" />
+            <column name="name" value="Battle/Improvisation" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="127" />
+            <column name="parent_id" value="123" />
+            <column name="name" value="Ballroom" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="128" />
+            <column name="parent_id" value="123" />
+            <column name="name" value="Break Dance" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="129" />
+            <column name="parent_id" value="123" />
+            <column name="name" value="Burlesque" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="130" />
+            <column name="parent_id" value="123" />
+            <column name="name" value="Dubstep" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="131" />
+            <column name="parent_id" value="123" />
+            <column name="name" value="Ethnic" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="132" />
+            <column name="parent_id" value="123" />
+            <column name="name" value="Hip Hop" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="133" />
+            <column name="parent_id" value="123" />
+            <column name="name" value="Interpretive Dance" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="134" />
+            <column name="parent_id" value="123" />
+            <column name="name" value="Jazz" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="135" />
+            <column name="parent_id" value="123" />
+            <column name="name" value="Modern" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="136" />
+            <column name="parent_id" value="123" />
+            <column name="name" value="Salsa " />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="137" />
+            <column name="parent_id" value="123" />
+            <column name="name" value="Street Performance" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="138" />
+            <column name="parent_id" value="123" />
+            <column name="name" value="Tango" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="139" />
+            <column name="parent_id" value="123" />
+            <column name="name" value="Waltz" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="140" />
+            <column name="name" value="Other" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="152" />
+            <column name="name" value="Humor &amp; Comedy" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="154" />
+            <column name="parent_id" value="152" />
+            <column name="name" value="Stand Up" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="155" />
+            <column name="parent_id" value="152" />
+            <column name="name" value="Improvisation " />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="161" />
+            <column name="name" value="Food " />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="163" />
+            <column name="name" value="Fashion &amp; Modeling" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="168" />
+            <column name="name" value="Hometown &amp; Tourism" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="173" />
+            <column name="parent_id" value="161" />
+            <column name="name" value="Food Show" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="174" />
+            <column name="parent_id" value="161" />
+            <column name="name" value="How To" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="175" />
+            <column name="parent_id" value="161" />
+            <column name="name" value="Beverage " />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="176" />
+            <column name="parent_id" value="162" />
+            <column name="name" value="Art Show" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="177" />
+            <column name="parent_id" value="162" />
+            <column name="name" value="Art Festival" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="178" />
+            <column name="parent_id" value="162" />
+            <column name="name" value="How To " />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="179" />
+            <column name="parent_id" value="162" />
+            <column name="name" value="Live Art" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="180" />
+            <column name="parent_id" value="162" />
+            <column name="name" value="Street Art" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="184" />
+            <column name="parent_id" value="163" />
+            <column name="name" value="Fitness" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="186" />
+            <column name="parent_id" value="163" />
+            <column name="name" value="Runway " />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="194" />
+            <column name="parent_id" value="168" />
+            <column name="name" value="Demonstrations " />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="195" />
+            <column name="parent_id" value="168" />
+            <column name="name" value="History " />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="196" />
+            <column name="parent_id" value="168" />
+            <column name="name" value="Landmarks" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="199" />
+            <column name="parent_id" value="170" />
+            <column name="name" value="How To " />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="205" />
+            <column name="parent_id" value="49" />
+            <column name="name" value="Dubstep" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="207" />
+            <column name="parent_id" value="58" />
+            <column name="name" value="Composer" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="208" />
+            <column name="parent_id" value="43" />
+            <column name="name" value="Parody" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="209" />
+            <column name="parent_id" value="43" />
+            <column name="name" value="Holiday" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="210" />
+            <column name="parent_id" value="107" />
+            <column name="name" value="Behind the Scenes" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="211" />
+            <column name="parent_id" value="107" />
+            <column name="name" value="Reel" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="212" />
+            <column name="parent_id" value="211" />
+            <column name="name" value="Composer" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="213" />
+            <column name="parent_id" value="211" />
+            <column name="name" value="Cinematographer " />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="214" />
+            <column name="parent_id" value="211" />
+            <column name="name" value="Actor" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="215" />
+            <column name="parent_id" value="211" />
+            <column name="name" value="Director " />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="216" />
+            <column name="parent_id" value="211" />
+            <column name="name" value="Costume Designer" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="217" />
+            <column name="parent_id" value="211" />
+            <column name="name" value="Editor" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="218" />
+            <column name="parent_id" value="211" />
+            <column name="name" value="Producer" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="220" />
+            <column name="parent_id" value="152" />
+            <column name="name" value="Prank" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="221" />
+            <column name="parent_id" value="162" />
+            <column name="name" value="Digital" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="222" />
+            <column name="parent_id" value="163" />
+            <column name="name" value="Makeup" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="223" />
+            <column name="parent_id" value="170" />
+            <column name="name" value="Auto Shows" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="224" />
+            <column name="parent_id" value="170" />
+            <column name="name" value="Wrecks" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="225" />
+            <column name="parent_id" value="170" />
+            <column name="name" value="Track Driving" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="226" />
+            <column name="parent_id" value="108" />
+            <column name="name" value="Action" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="227" />
+            <column name="parent_id" value="108" />
+            <column name="name" value="Adventure" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="228" />
+            <column name="parent_id" value="108" />
+            <column name="name" value="Animation" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="229" />
+            <column name="parent_id" value="108" />
+            <column name="name" value="Biography" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="230" />
+            <column name="parent_id" value="108" />
+            <column name="name" value="Comedy" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="231" />
+            <column name="parent_id" value="108" />
+            <column name="name" value="Crime" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="233" />
+            <column name="parent_id" value="108" />
+            <column name="name" value="Drama" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="234" />
+            <column name="parent_id" value="108" />
+            <column name="name" value="Family" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="235" />
+            <column name="parent_id" value="108" />
+            <column name="name" value="Fantasy" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="236" />
+            <column name="parent_id" value="108" />
+            <column name="name" value="History" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="237" />
+            <column name="parent_id" value="108" />
+            <column name="name" value="Holiday" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="238" />
+            <column name="parent_id" value="108" />
+            <column name="name" value="Horror" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="239" />
+            <column name="parent_id" value="108" />
+            <column name="name" value="Musical/Dance" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="240" />
+            <column name="parent_id" value="108" />
+            <column name="name" value="Mystery" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="241" />
+            <column name="parent_id" value="108" />
+            <column name="name" value="Reality" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="242" />
+            <column name="parent_id" value="108" />
+            <column name="name" value="Romance" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="243" />
+            <column name="parent_id" value="108" />
+            <column name="name" value="Sci-Fi" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="244" />
+            <column name="parent_id" value="108" />
+            <column name="name" value="Sport" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="246" />
+            <column name="parent_id" value="108" />
+            <column name="name" value="Thriller" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="247" />
+            <column name="parent_id" value="108" />
+            <column name="name" value="War" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="248" />
+            <column name="parent_id" value="108" />
+            <column name="name" value="Western" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="251" />
+            <column name="parent_id" value="109" />
+            <column name="name" value="Action" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="252" />
+            <column name="parent_id" value="109" />
+            <column name="name" value="Adventure" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="253" />
+            <column name="parent_id" value="109" />
+            <column name="name" value="Animation" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="254" />
+            <column name="parent_id" value="109" />
+            <column name="name" value="Biography" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="255" />
+            <column name="parent_id" value="109" />
+            <column name="name" value="Comedy" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="256" />
+            <column name="parent_id" value="109" />
+            <column name="name" value="Crime" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="257" />
+            <column name="parent_id" value="109" />
+            <column name="name" value="Documentary" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="258" />
+            <column name="parent_id" value="109" />
+            <column name="name" value="Drama" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="259" />
+            <column name="parent_id" value="109" />
+            <column name="name" value="Family" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="260" />
+            <column name="parent_id" value="109" />
+            <column name="name" value="Fantasy" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="261" />
+            <column name="parent_id" value="109" />
+            <column name="name" value="History" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="262" />
+            <column name="parent_id" value="109" />
+            <column name="name" value="Holiday" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="263" />
+            <column name="parent_id" value="109" />
+            <column name="name" value="Horror" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="264" />
+            <column name="parent_id" value="109" />
+            <column name="name" value="Musical/Dance" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="265" />
+            <column name="parent_id" value="109" />
+            <column name="name" value="Mystery" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="266" />
+            <column name="parent_id" value="109" />
+            <column name="name" value="Reality" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="267" />
+            <column name="parent_id" value="109" />
+            <column name="name" value="Romance" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="268" />
+            <column name="parent_id" value="109" />
+            <column name="name" value="Sci-Fi" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="269" />
+            <column name="parent_id" value="109" />
+            <column name="name" value="Sport" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="270" />
+            <column name="parent_id" value="109" />
+            <column name="name" value="Thriller" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="271" />
+            <column name="parent_id" value="109" />
+            <column name="name" value="War" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="272" />
+            <column name="parent_id" value="109" />
+            <column name="name" value="Western" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="281" />
+            <column name="parent_id" value="110" />
+            <column name="name" value="Action" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="282" />
+            <column name="parent_id" value="110" />
+            <column name="name" value="Adventure" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="283" />
+            <column name="parent_id" value="110" />
+            <column name="name" value="Animation" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="284" />
+            <column name="parent_id" value="110" />
+            <column name="name" value="Biography" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="285" />
+            <column name="parent_id" value="110" />
+            <column name="name" value="Comedy" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="286" />
+            <column name="parent_id" value="110" />
+            <column name="name" value="Crime" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="287" />
+            <column name="parent_id" value="110" />
+            <column name="name" value="Drama" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="288" />
+            <column name="parent_id" value="110" />
+            <column name="name" value="Family" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="289" />
+            <column name="parent_id" value="110" />
+            <column name="name" value="Fantasy" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="290" />
+            <column name="parent_id" value="110" />
+            <column name="name" value="History" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="291" />
+            <column name="parent_id" value="110" />
+            <column name="name" value="Holiday" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="292" />
+            <column name="parent_id" value="110" />
+            <column name="name" value="Horror" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="293" />
+            <column name="parent_id" value="110" />
+            <column name="name" value="Interview" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="294" />
+            <column name="parent_id" value="110" />
+            <column name="name" value="Mystery" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="295" />
+            <column name="parent_id" value="110" />
+            <column name="name" value="Reality" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="296" />
+            <column name="parent_id" value="110" />
+            <column name="name" value="Romance" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="297" />
+            <column name="parent_id" value="110" />
+            <column name="name" value="Sci-Fi" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="298" />
+            <column name="parent_id" value="110" />
+            <column name="name" value="Sport" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="299" />
+            <column name="parent_id" value="110" />
+            <column name="name" value="Thriller" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="300" />
+            <column name="parent_id" value="110" />
+            <column name="name" value="War" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="301" />
+            <column name="parent_id" value="110" />
+            <column name="name" value="Western" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="302" />
+            <column name="parent_id" value="111" />
+            <column name="name" value="Action" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="303" />
+            <column name="parent_id" value="111" />
+            <column name="name" value="Adventure" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="304" />
+            <column name="parent_id" value="111" />
+            <column name="name" value="Animation" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="305" />
+            <column name="parent_id" value="111" />
+            <column name="name" value="Biography" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="306" />
+            <column name="parent_id" value="111" />
+            <column name="name" value="Comedy" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="307" />
+            <column name="parent_id" value="111" />
+            <column name="name" value="Crime" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="308" />
+            <column name="parent_id" value="111" />
+            <column name="name" value="Drama" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="309" />
+            <column name="parent_id" value="111" />
+            <column name="name" value="Family" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="310" />
+            <column name="parent_id" value="111" />
+            <column name="name" value="Fantasy" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="311" />
+            <column name="parent_id" value="111" />
+            <column name="name" value="History" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="312" />
+            <column name="parent_id" value="111" />
+            <column name="name" value="Holiday" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="313" />
+            <column name="parent_id" value="111" />
+            <column name="name" value="Horror" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="314" />
+            <column name="parent_id" value="111" />
+            <column name="name" value="Musical/Dance" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="315" />
+            <column name="parent_id" value="111" />
+            <column name="name" value="Mystery" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="316" />
+            <column name="parent_id" value="111" />
+            <column name="name" value="Reality" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="317" />
+            <column name="parent_id" value="111" />
+            <column name="name" value="Romance" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="318" />
+            <column name="parent_id" value="111" />
+            <column name="name" value="Sci-Fi" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="319" />
+            <column name="parent_id" value="111" />
+            <column name="name" value="Sport" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="320" />
+            <column name="parent_id" value="111" />
+            <column name="name" value="Thriller" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="321" />
+            <column name="parent_id" value="111" />
+            <column name="name" value="War" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="322" />
+            <column name="parent_id" value="111" />
+            <column name="name" value="Western" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="323" />
+            <column name="parent_id" value="113" />
+            <column name="name" value="Action" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="324" />
+            <column name="parent_id" value="113" />
+            <column name="name" value="Adventure" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="326" />
+            <column name="parent_id" value="113" />
+            <column name="name" value="Biography" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="327" />
+            <column name="parent_id" value="113" />
+            <column name="name" value="Comedy" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="328" />
+            <column name="parent_id" value="113" />
+            <column name="name" value="Crime" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="329" />
+            <column name="parent_id" value="113" />
+            <column name="name" value="Drama" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="330" />
+            <column name="parent_id" value="113" />
+            <column name="name" value="Family" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="331" />
+            <column name="parent_id" value="113" />
+            <column name="name" value="Fantasy" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="332" />
+            <column name="parent_id" value="113" />
+            <column name="name" value="History" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="333" />
+            <column name="parent_id" value="113" />
+            <column name="name" value="Holiday" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="334" />
+            <column name="parent_id" value="113" />
+            <column name="name" value="Horror" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="335" />
+            <column name="parent_id" value="113" />
+            <column name="name" value="Musical/Dance" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="336" />
+            <column name="parent_id" value="113" />
+            <column name="name" value="Mystery" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="337" />
+            <column name="parent_id" value="113" />
+            <column name="name" value="Reality" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="338" />
+            <column name="parent_id" value="113" />
+            <column name="name" value="Romance" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="339" />
+            <column name="parent_id" value="113" />
+            <column name="name" value="Sci-Fi" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="340" />
+            <column name="parent_id" value="113" />
+            <column name="name" value="Sport" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="341" />
+            <column name="parent_id" value="113" />
+            <column name="name" value="Thriller" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="342" />
+            <column name="parent_id" value="113" />
+            <column name="name" value="War" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="343" />
+            <column name="parent_id" value="113" />
+            <column name="name" value="Western" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="344" />
+            <column name="parent_id" value="114" />
+            <column name="name" value="Action" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="345" />
+            <column name="parent_id" value="114" />
+            <column name="name" value="Adventure" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="346" />
+            <column name="parent_id" value="114" />
+            <column name="name" value="Animation" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="347" />
+            <column name="parent_id" value="114" />
+            <column name="name" value="Biography" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="348" />
+            <column name="parent_id" value="114" />
+            <column name="name" value="Comedy" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="349" />
+            <column name="parent_id" value="114" />
+            <column name="name" value="Crime" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="350" />
+            <column name="parent_id" value="114" />
+            <column name="name" value="Drama" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="351" />
+            <column name="parent_id" value="114" />
+            <column name="name" value="Family" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="352" />
+            <column name="parent_id" value="114" />
+            <column name="name" value="Fantasy" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="353" />
+            <column name="parent_id" value="114" />
+            <column name="name" value="History" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="354" />
+            <column name="parent_id" value="114" />
+            <column name="name" value="Holiday" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="355" />
+            <column name="parent_id" value="114" />
+            <column name="name" value="Horror" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="356" />
+            <column name="parent_id" value="114" />
+            <column name="name" value="Musical/Dance" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="357" />
+            <column name="parent_id" value="114" />
+            <column name="name" value="Mystery" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="358" />
+            <column name="parent_id" value="114" />
+            <column name="name" value="Reality" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="359" />
+            <column name="parent_id" value="114" />
+            <column name="name" value="Romance" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="360" />
+            <column name="parent_id" value="114" />
+            <column name="name" value="Sci-Fi" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="361" />
+            <column name="parent_id" value="114" />
+            <column name="name" value="Sport" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="362" />
+            <column name="parent_id" value="114" />
+            <column name="name" value="Thriller" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="363" />
+            <column name="parent_id" value="114" />
+            <column name="name" value="War" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="364" />
+            <column name="parent_id" value="114" />
+            <column name="name" value="Western" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="365" />
+            <column name="parent_id" value="115" />
+            <column name="name" value="Action" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="366" />
+            <column name="parent_id" value="115" />
+            <column name="name" value="Adventure" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="367" />
+            <column name="parent_id" value="115" />
+            <column name="name" value="Animation" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="368" />
+            <column name="parent_id" value="115" />
+            <column name="name" value="Biography" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="369" />
+            <column name="parent_id" value="115" />
+            <column name="name" value="Comedy" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="370" />
+            <column name="parent_id" value="115" />
+            <column name="name" value="Crime" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="371" />
+            <column name="parent_id" value="115" />
+            <column name="name" value="Drama" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="372" />
+            <column name="parent_id" value="115" />
+            <column name="name" value="Family" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="373" />
+            <column name="parent_id" value="115" />
+            <column name="name" value="Fantasy" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="374" />
+            <column name="parent_id" value="115" />
+            <column name="name" value="History" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="375" />
+            <column name="parent_id" value="115" />
+            <column name="name" value="Holiday" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="376" />
+            <column name="parent_id" value="115" />
+            <column name="name" value="Horror" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="377" />
+            <column name="parent_id" value="115" />
+            <column name="name" value="Musical/Dance" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="378" />
+            <column name="parent_id" value="115" />
+            <column name="name" value="Mystery" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="379" />
+            <column name="parent_id" value="115" />
+            <column name="name" value="Reality" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="380" />
+            <column name="parent_id" value="115" />
+            <column name="name" value="Romance" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="381" />
+            <column name="parent_id" value="115" />
+            <column name="name" value="Sci-Fi" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="382" />
+            <column name="parent_id" value="115" />
+            <column name="name" value="Sport" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="383" />
+            <column name="parent_id" value="115" />
+            <column name="name" value="Thriller" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="384" />
+            <column name="parent_id" value="115" />
+            <column name="name" value="War" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="385" />
+            <column name="parent_id" value="115" />
+            <column name="name" value="Western" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="386" />
+            <column name="parent_id" value="116" />
+            <column name="name" value="Action" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="387" />
+            <column name="parent_id" value="116" />
+            <column name="name" value="Adventure" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="388" />
+            <column name="parent_id" value="116" />
+            <column name="name" value="Animation" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="389" />
+            <column name="parent_id" value="116" />
+            <column name="name" value="Biography" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="390" />
+            <column name="parent_id" value="116" />
+            <column name="name" value="Comedy" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="391" />
+            <column name="parent_id" value="116" />
+            <column name="name" value="Crime" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="392" />
+            <column name="parent_id" value="116" />
+            <column name="name" value="Drama" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="393" />
+            <column name="parent_id" value="116" />
+            <column name="name" value="Family" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="394" />
+            <column name="parent_id" value="116" />
+            <column name="name" value="Fantasy" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="395" />
+            <column name="parent_id" value="116" />
+            <column name="name" value="History" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="396" />
+            <column name="parent_id" value="116" />
+            <column name="name" value="Holiday" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="397" />
+            <column name="parent_id" value="116" />
+            <column name="name" value="Horror" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="398" />
+            <column name="parent_id" value="116" />
+            <column name="name" value="Musical/Dance" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="399" />
+            <column name="parent_id" value="116" />
+            <column name="name" value="Mystery" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="400" />
+            <column name="parent_id" value="116" />
+            <column name="name" value="Reality" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="401" />
+            <column name="parent_id" value="116" />
+            <column name="name" value="Romance" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="402" />
+            <column name="parent_id" value="116" />
+            <column name="name" value="Sci-Fi" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="403" />
+            <column name="parent_id" value="116" />
+            <column name="name" value="Sport" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="404" />
+            <column name="parent_id" value="116" />
+            <column name="name" value="Thriller" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="405" />
+            <column name="parent_id" value="116" />
+            <column name="name" value="War" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="406" />
+            <column name="parent_id" value="116" />
+            <column name="name" value="Western" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="407" />
+            <column name="parent_id" value="117" />
+            <column name="name" value="Action" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="408" />
+            <column name="parent_id" value="117" />
+            <column name="name" value="Adventure" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="409" />
+            <column name="parent_id" value="117" />
+            <column name="name" value="Animation" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="410" />
+            <column name="parent_id" value="117" />
+            <column name="name" value="Biography" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="411" />
+            <column name="parent_id" value="117" />
+            <column name="name" value="Comedy" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="412" />
+            <column name="parent_id" value="117" />
+            <column name="name" value="Crime" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="413" />
+            <column name="parent_id" value="117" />
+            <column name="name" value="Drama" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="414" />
+            <column name="parent_id" value="117" />
+            <column name="name" value="Family" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="415" />
+            <column name="parent_id" value="117" />
+            <column name="name" value="Fantasy" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="416" />
+            <column name="parent_id" value="117" />
+            <column name="name" value="History" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="417" />
+            <column name="parent_id" value="117" />
+            <column name="name" value="Holiday" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="418" />
+            <column name="parent_id" value="117" />
+            <column name="name" value="Horror" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="419" />
+            <column name="parent_id" value="117" />
+            <column name="name" value="Musical/Dance" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="420" />
+            <column name="parent_id" value="117" />
+            <column name="name" value="Mystery" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="421" />
+            <column name="parent_id" value="117" />
+            <column name="name" value="Reality" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="422" />
+            <column name="parent_id" value="117" />
+            <column name="name" value="Romance" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="423" />
+            <column name="parent_id" value="117" />
+            <column name="name" value="Sci-Fi" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="424" />
+            <column name="parent_id" value="117" />
+            <column name="name" value="Sport" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="425" />
+            <column name="parent_id" value="117" />
+            <column name="name" value="Thriller" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="426" />
+            <column name="parent_id" value="117" />
+            <column name="name" value="War" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="427" />
+            <column name="parent_id" value="117" />
+            <column name="name" value="Western" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="431" />
+            <column name="parent_id" value="210" />
+            <column name="name" value="Animation" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="432" />
+            <column name="parent_id" value="210" />
+            <column name="name" value="Bloopers" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="439" />
+            <column name="parent_id" value="210" />
+            <column name="name" value="History" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="470" />
+            <column name="name" value="Sports" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="471" />
+            <column name="parent_id" value="470" />
+            <column name="name" value="Bloopers" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="472" />
+            <column name="parent_id" value="471" />
+            <column name="name" value="Baseball" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="473" />
+            <column name="parent_id" value="471" />
+            <column name="name" value="Basketball" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="474" />
+            <column name="parent_id" value="471" />
+            <column name="name" value="Bowling" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="475" />
+            <column name="parent_id" value="471" />
+            <column name="name" value="Boxing" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="476" />
+            <column name="parent_id" value="471" />
+            <column name="name" value="Cricket" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="477" />
+            <column name="parent_id" value="471" />
+            <column name="name" value="Curling" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="478" />
+            <column name="parent_id" value="471" />
+            <column name="name" value="Dance" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="479" />
+            <column name="parent_id" value="471" />
+            <column name="name" value="Dodgeball" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="480" />
+            <column name="parent_id" value="471" />
+            <column name="name" value="Equestrian Competition" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="481" />
+            <column name="parent_id" value="471" />
+            <column name="name" value="Fencing" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="482" />
+            <column name="parent_id" value="471" />
+            <column name="name" value="Figure Skating" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="483" />
+            <column name="parent_id" value="471" />
+            <column name="name" value="Football" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="484" />
+            <column name="parent_id" value="471" />
+            <column name="name" value="Golf" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="485" />
+            <column name="parent_id" value="471" />
+            <column name="name" value="Ice Hockey" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="486" />
+            <column name="parent_id" value="471" />
+            <column name="name" value="Kickball" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="487" />
+            <column name="parent_id" value="471" />
+            <column name="name" value="Lacrosse" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="488" />
+            <column name="parent_id" value="471" />
+            <column name="name" value="Mixed Martial Arts" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="489" />
+            <column name="parent_id" value="471" />
+            <column name="name" value="Motor Sports" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="490" />
+            <column name="parent_id" value="471" />
+            <column name="name" value="Mountain Biking" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="491" />
+            <column name="parent_id" value="471" />
+            <column name="name" value="Rugby" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="492" />
+            <column name="parent_id" value="471" />
+            <column name="name" value="Skateboarding" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="493" />
+            <column name="parent_id" value="471" />
+            <column name="name" value="Soccer" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="494" />
+            <column name="parent_id" value="471" />
+            <column name="name" value="Surfing" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="495" />
+            <column name="parent_id" value="471" />
+            <column name="name" value="Swimming" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="496" />
+            <column name="parent_id" value="471" />
+            <column name="name" value="Tennis" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="497" />
+            <column name="parent_id" value="471" />
+            <column name="name" value="Track &amp; Field" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="498" />
+            <column name="parent_id" value="471" />
+            <column name="name" value="Ultimate Frisbee" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="499" />
+            <column name="parent_id" value="471" />
+            <column name="name" value="Volleyball" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="500" />
+            <column name="parent_id" value="471" />
+            <column name="name" value="Water Polo" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="501" />
+            <column name="parent_id" value="471" />
+            <column name="name" value="Wrestling" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="502" />
+            <column name="parent_id" value="471" />
+            <column name="name" value="X-Games" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="503" />
+            <column name="parent_id" value="470" />
+            <column name="name" value="Sports Show" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="507" />
+            <column name="parent_id" value="470" />
+            <column name="name" value="Unusual" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="509" />
+            <column name="parent_id" value="470" />
+            <column name="name" value="Extreme" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="510" />
+            <column name="parent_id" value="470" />
+            <column name="name" value="Specialty" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="513" />
+            <column name="parent_id" value="503" />
+            <column name="name" value="Baseball" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="514" />
+            <column name="parent_id" value="503" />
+            <column name="name" value="Basketball" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="515" />
+            <column name="parent_id" value="503" />
+            <column name="name" value="Bowling" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="516" />
+            <column name="parent_id" value="503" />
+            <column name="name" value="Boxing" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="517" />
+            <column name="parent_id" value="503" />
+            <column name="name" value="Cricket" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="518" />
+            <column name="parent_id" value="503" />
+            <column name="name" value="Curling" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="519" />
+            <column name="parent_id" value="503" />
+            <column name="name" value="Dance" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="520" />
+            <column name="parent_id" value="503" />
+            <column name="name" value="Dodgeball" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="521" />
+            <column name="parent_id" value="503" />
+            <column name="name" value="Equestrian Competition" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="522" />
+            <column name="parent_id" value="503" />
+            <column name="name" value="Fencing" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="523" />
+            <column name="parent_id" value="503" />
+            <column name="name" value="Figure Skating" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="524" />
+            <column name="parent_id" value="503" />
+            <column name="name" value="Football" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="525" />
+            <column name="parent_id" value="503" />
+            <column name="name" value="Golf" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="526" />
+            <column name="parent_id" value="503" />
+            <column name="name" value="Ice Hockey" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="527" />
+            <column name="parent_id" value="503" />
+            <column name="name" value="Kickball" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="528" />
+            <column name="parent_id" value="503" />
+            <column name="name" value="Lacrosse" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="529" />
+            <column name="parent_id" value="503" />
+            <column name="name" value="Mixed Martial Arts" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="530" />
+            <column name="parent_id" value="503" />
+            <column name="name" value="Motor Sports" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="531" />
+            <column name="parent_id" value="503" />
+            <column name="name" value="Mountain Biking" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="532" />
+            <column name="parent_id" value="503" />
+            <column name="name" value="Rugby" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="533" />
+            <column name="parent_id" value="503" />
+            <column name="name" value="Skateboarding" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="534" />
+            <column name="parent_id" value="503" />
+            <column name="name" value="Soccer" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="535" />
+            <column name="parent_id" value="503" />
+            <column name="name" value="Surfing" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="536" />
+            <column name="parent_id" value="503" />
+            <column name="name" value="Swimming" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="537" />
+            <column name="parent_id" value="503" />
+            <column name="name" value="Tennis" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="538" />
+            <column name="parent_id" value="503" />
+            <column name="name" value="Track &amp; Field" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="539" />
+            <column name="parent_id" value="503" />
+            <column name="name" value="Ultimate Frisbee" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="540" />
+            <column name="parent_id" value="503" />
+            <column name="name" value="Volleyball" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="541" />
+            <column name="parent_id" value="503" />
+            <column name="name" value="Water Polo" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="542" />
+            <column name="parent_id" value="503" />
+            <column name="name" value="Wrestling" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="543" />
+            <column name="parent_id" value="503" />
+            <column name="name" value="X-Games" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="544" />
+            <column name="parent_id" value="505" />
+            <column name="name" value="Baseball" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="546" />
+            <column name="parent_id" value="505" />
+            <column name="name" value="Bowling" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="547" />
+            <column name="parent_id" value="505" />
+            <column name="name" value="Boxing" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="548" />
+            <column name="parent_id" value="505" />
+            <column name="name" value="Cricket" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="549" />
+            <column name="parent_id" value="505" />
+            <column name="name" value="Curling" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="550" />
+            <column name="parent_id" value="505" />
+            <column name="name" value="Dance" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="551" />
+            <column name="parent_id" value="505" />
+            <column name="name" value="Dodgeball" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="552" />
+            <column name="parent_id" value="505" />
+            <column name="name" value="Equestrian Competition" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="553" />
+            <column name="parent_id" value="505" />
+            <column name="name" value="Fencing" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="554" />
+            <column name="parent_id" value="505" />
+            <column name="name" value="Figure Skating" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="555" />
+            <column name="parent_id" value="505" />
+            <column name="name" value="Football" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="556" />
+            <column name="parent_id" value="505" />
+            <column name="name" value="Golf" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="557" />
+            <column name="parent_id" value="505" />
+            <column name="name" value="Ice Hockey" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="558" />
+            <column name="parent_id" value="505" />
+            <column name="name" value="Kickball" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="559" />
+            <column name="parent_id" value="505" />
+            <column name="name" value="Lacrosse" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="560" />
+            <column name="parent_id" value="505" />
+            <column name="name" value="Mixed Martial Arts" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="561" />
+            <column name="parent_id" value="505" />
+            <column name="name" value="Motor Sports" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="562" />
+            <column name="parent_id" value="505" />
+            <column name="name" value="Mountain Biking" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="563" />
+            <column name="parent_id" value="505" />
+            <column name="name" value="Rugby" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="564" />
+            <column name="parent_id" value="505" />
+            <column name="name" value="Skateboarding" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="565" />
+            <column name="parent_id" value="505" />
+            <column name="name" value="Soccer" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="566" />
+            <column name="parent_id" value="505" />
+            <column name="name" value="Surfing" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="567" />
+            <column name="parent_id" value="505" />
+            <column name="name" value="Swimming" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="568" />
+            <column name="parent_id" value="505" />
+            <column name="name" value="Tennis" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="569" />
+            <column name="parent_id" value="505" />
+            <column name="name" value="Track &amp; Field" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="570" />
+            <column name="parent_id" value="505" />
+            <column name="name" value="Ultimate Frisbee" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="571" />
+            <column name="parent_id" value="505" />
+            <column name="name" value="Volleyball" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="572" />
+            <column name="parent_id" value="505" />
+            <column name="name" value="Water Polo" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="573" />
+            <column name="parent_id" value="505" />
+            <column name="name" value="Wrestling" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="574" />
+            <column name="parent_id" value="505" />
+            <column name="name" value="X-Games" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="575" />
+            <column name="parent_id" value="507" />
+            <column name="name" value="Baseball" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="576" />
+            <column name="parent_id" value="507" />
+            <column name="name" value="Basketball" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="577" />
+            <column name="parent_id" value="507" />
+            <column name="name" value="Bowling" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="578" />
+            <column name="parent_id" value="507" />
+            <column name="name" value="Boxing" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="579" />
+            <column name="parent_id" value="507" />
+            <column name="name" value="Cricket" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="580" />
+            <column name="parent_id" value="507" />
+            <column name="name" value="Curling" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="581" />
+            <column name="parent_id" value="507" />
+            <column name="name" value="Dance" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="582" />
+            <column name="parent_id" value="507" />
+            <column name="name" value="Dodgeball" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="583" />
+            <column name="parent_id" value="507" />
+            <column name="name" value="Equestrian Competition" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="584" />
+            <column name="parent_id" value="507" />
+            <column name="name" value="Fencing" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="585" />
+            <column name="parent_id" value="507" />
+            <column name="name" value="Figure Skating" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="586" />
+            <column name="parent_id" value="507" />
+            <column name="name" value="Football" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="587" />
+            <column name="parent_id" value="507" />
+            <column name="name" value="Golf" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="588" />
+            <column name="parent_id" value="507" />
+            <column name="name" value="Ice Hockey" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="589" />
+            <column name="parent_id" value="507" />
+            <column name="name" value="Kickball" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="590" />
+            <column name="parent_id" value="507" />
+            <column name="name" value="Lacrosse" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="591" />
+            <column name="parent_id" value="507" />
+            <column name="name" value="Mixed Martial Arts" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="592" />
+            <column name="parent_id" value="507" />
+            <column name="name" value="Motor Sports" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="593" />
+            <column name="parent_id" value="507" />
+            <column name="name" value="Mountain Biking" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="594" />
+            <column name="parent_id" value="507" />
+            <column name="name" value="Rugby" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="595" />
+            <column name="parent_id" value="507" />
+            <column name="name" value="Skateboarding" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="596" />
+            <column name="parent_id" value="507" />
+            <column name="name" value="Soccer" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="597" />
+            <column name="parent_id" value="507" />
+            <column name="name" value="Surfing" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="598" />
+            <column name="parent_id" value="507" />
+            <column name="name" value="Swimming" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="599" />
+            <column name="parent_id" value="507" />
+            <column name="name" value="Tennis" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="600" />
+            <column name="parent_id" value="507" />
+            <column name="name" value="Track &amp; Field" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="601" />
+            <column name="parent_id" value="507" />
+            <column name="name" value="Ultimate Frisbee" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="602" />
+            <column name="parent_id" value="507" />
+            <column name="name" value="Volleyball" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="603" />
+            <column name="parent_id" value="507" />
+            <column name="name" value="Water Polo" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="604" />
+            <column name="parent_id" value="507" />
+            <column name="name" value="Wrestling" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="605" />
+            <column name="parent_id" value="507" />
+            <column name="name" value="X-Games" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="606" />
+            <column name="parent_id" value="509" />
+            <column name="name" value="Baseball" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="607" />
+            <column name="parent_id" value="509" />
+            <column name="name" value="Basketball" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="608" />
+            <column name="parent_id" value="509" />
+            <column name="name" value="Bowling" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="609" />
+            <column name="parent_id" value="509" />
+            <column name="name" value="Boxing" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="610" />
+            <column name="parent_id" value="509" />
+            <column name="name" value="Cricket" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="611" />
+            <column name="parent_id" value="509" />
+            <column name="name" value="Curling" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="612" />
+            <column name="parent_id" value="509" />
+            <column name="name" value="Dance" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="613" />
+            <column name="parent_id" value="509" />
+            <column name="name" value="Dodgeball" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="614" />
+            <column name="parent_id" value="509" />
+            <column name="name" value="Equestrian Competition" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="615" />
+            <column name="parent_id" value="509" />
+            <column name="name" value="Fencing" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="616" />
+            <column name="parent_id" value="509" />
+            <column name="name" value="Figure Skating" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="617" />
+            <column name="parent_id" value="509" />
+            <column name="name" value="Football" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="618" />
+            <column name="parent_id" value="509" />
+            <column name="name" value="Golf" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="619" />
+            <column name="parent_id" value="509" />
+            <column name="name" value="Ice Hockey" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="620" />
+            <column name="parent_id" value="509" />
+            <column name="name" value="Kickball" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="621" />
+            <column name="parent_id" value="509" />
+            <column name="name" value="Lacrosse" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="622" />
+            <column name="parent_id" value="509" />
+            <column name="name" value="Mixed Martial Arts" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="623" />
+            <column name="parent_id" value="509" />
+            <column name="name" value="Motor Sports" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="624" />
+            <column name="parent_id" value="509" />
+            <column name="name" value="Mountain Biking" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="625" />
+            <column name="parent_id" value="509" />
+            <column name="name" value="Rugby" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="626" />
+            <column name="parent_id" value="509" />
+            <column name="name" value="Skateboarding" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="627" />
+            <column name="parent_id" value="509" />
+            <column name="name" value="Soccer" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="628" />
+            <column name="parent_id" value="509" />
+            <column name="name" value="Surfing" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="629" />
+            <column name="parent_id" value="509" />
+            <column name="name" value="Swimming" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="630" />
+            <column name="parent_id" value="509" />
+            <column name="name" value="Tennis" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="631" />
+            <column name="parent_id" value="509" />
+            <column name="name" value="Track &amp; Field" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="632" />
+            <column name="parent_id" value="509" />
+            <column name="name" value="Ultimate Frisbee" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="633" />
+            <column name="parent_id" value="509" />
+            <column name="name" value="Volleyball" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="634" />
+            <column name="parent_id" value="509" />
+            <column name="name" value="Water Polo" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="635" />
+            <column name="parent_id" value="509" />
+            <column name="name" value="Wrestling" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="636" />
+            <column name="parent_id" value="509" />
+            <column name="name" value="X-Games" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="637" />
+            <column name="parent_id" value="510" />
+            <column name="name" value="Baseball" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="638" />
+            <column name="parent_id" value="510" />
+            <column name="name" value="Basketball" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="639" />
+            <column name="parent_id" value="510" />
+            <column name="name" value="Bowling" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="640" />
+            <column name="parent_id" value="510" />
+            <column name="name" value="Boxing" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="641" />
+            <column name="parent_id" value="510" />
+            <column name="name" value="Cricket" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="642" />
+            <column name="parent_id" value="510" />
+            <column name="name" value="Curling" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="643" />
+            <column name="parent_id" value="510" />
+            <column name="name" value="Dance" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="644" />
+            <column name="parent_id" value="510" />
+            <column name="name" value="Dodgeball" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="645" />
+            <column name="parent_id" value="510" />
+            <column name="name" value="Equestrian Competition" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="646" />
+            <column name="parent_id" value="510" />
+            <column name="name" value="Fencing" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="647" />
+            <column name="parent_id" value="510" />
+            <column name="name" value="Figure Skating" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="648" />
+            <column name="parent_id" value="510" />
+            <column name="name" value="Football" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="649" />
+            <column name="parent_id" value="510" />
+            <column name="name" value="Golf" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="650" />
+            <column name="parent_id" value="510" />
+            <column name="name" value="Ice Hockey" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="651" />
+            <column name="parent_id" value="510" />
+            <column name="name" value="Kickball" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="652" />
+            <column name="parent_id" value="510" />
+            <column name="name" value="Lacrosse" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="653" />
+            <column name="parent_id" value="510" />
+            <column name="name" value="Mixed Martial Arts" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="654" />
+            <column name="parent_id" value="510" />
+            <column name="name" value="Motor Sports" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="655" />
+            <column name="parent_id" value="510" />
+            <column name="name" value="Mountain Biking" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="656" />
+            <column name="parent_id" value="510" />
+            <column name="name" value="Rugby" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="657" />
+            <column name="parent_id" value="510" />
+            <column name="name" value="Skateboarding" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="658" />
+            <column name="parent_id" value="510" />
+            <column name="name" value="Soccer" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="659" />
+            <column name="parent_id" value="510" />
+            <column name="name" value="Surfing" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="660" />
+            <column name="parent_id" value="510" />
+            <column name="name" value="Swimming" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="661" />
+            <column name="parent_id" value="510" />
+            <column name="name" value="Tennis" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="662" />
+            <column name="parent_id" value="510" />
+            <column name="name" value="Track &amp; Field" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="663" />
+            <column name="parent_id" value="510" />
+            <column name="name" value="Ultimate Frisbee" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="664" />
+            <column name="parent_id" value="510" />
+            <column name="name" value="Volleyball" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="665" />
+            <column name="parent_id" value="510" />
+            <column name="name" value="Water Polo" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="666" />
+            <column name="parent_id" value="510" />
+            <column name="name" value="Wrestling" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="667" />
+            <column name="parent_id" value="510" />
+            <column name="name" value="X-Games" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="668" />
+            <column name="parent_id" value="176" />
+            <column name="name" value="3D/Graphics" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="669" />
+            <column name="parent_id" value="176" />
+            <column name="name" value="Architecture" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="670" />
+            <column name="parent_id" value="176" />
+            <column name="name" value="Collage" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="671" />
+            <column name="parent_id" value="176" />
+            <column name="name" value="Drawing" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="672" />
+            <column name="parent_id" value="176" />
+            <column name="name" value="Painting" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="673" />
+            <column name="parent_id" value="176" />
+            <column name="name" value="Photography" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="674" />
+            <column name="parent_id" value="176" />
+            <column name="name" value="Sculpture" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="680" />
+            <column name="parent_id" value="177" />
+            <column name="name" value="3D/Graphics" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="681" />
+            <column name="parent_id" value="177" />
+            <column name="name" value="Architecture" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="682" />
+            <column name="parent_id" value="177" />
+            <column name="name" value="Collage" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="683" />
+            <column name="parent_id" value="177" />
+            <column name="name" value="Drawing" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="684" />
+            <column name="parent_id" value="177" />
+            <column name="name" value="Painting" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="685" />
+            <column name="parent_id" value="177" />
+            <column name="name" value="Photography" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="686" />
+            <column name="parent_id" value="177" />
+            <column name="name" value="Sculpture" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="687" />
+            <column name="parent_id" value="178" />
+            <column name="name" value="3D/Graphics" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="688" />
+            <column name="parent_id" value="178" />
+            <column name="name" value="Architecture" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="689" />
+            <column name="parent_id" value="178" />
+            <column name="name" value="Collage" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="690" />
+            <column name="parent_id" value="178" />
+            <column name="name" value="Drawing" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="691" />
+            <column name="parent_id" value="178" />
+            <column name="name" value="Painting" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="692" />
+            <column name="parent_id" value="178" />
+            <column name="name" value="Photography" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="693" />
+            <column name="parent_id" value="178" />
+            <column name="name" value="Sculpture" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="694" />
+            <column name="parent_id" value="179" />
+            <column name="name" value="3D/Graphics" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="695" />
+            <column name="parent_id" value="179" />
+            <column name="name" value="Architecture" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="696" />
+            <column name="parent_id" value="179" />
+            <column name="name" value="Collage" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="697" />
+            <column name="parent_id" value="179" />
+            <column name="name" value="Drawing" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="698" />
+            <column name="parent_id" value="179" />
+            <column name="name" value="Painting" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="699" />
+            <column name="parent_id" value="179" />
+            <column name="name" value="Photography" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="700" />
+            <column name="parent_id" value="179" />
+            <column name="name" value="Sculpture" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="701" />
+            <column name="parent_id" value="180" />
+            <column name="name" value="3D/Graphics" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="702" />
+            <column name="parent_id" value="180" />
+            <column name="name" value="Architecture" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="703" />
+            <column name="parent_id" value="180" />
+            <column name="name" value="Collage" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="704" />
+            <column name="parent_id" value="180" />
+            <column name="name" value="Drawing" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="705" />
+            <column name="parent_id" value="180" />
+            <column name="name" value="Painting" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="706" />
+            <column name="parent_id" value="180" />
+            <column name="name" value="Photography" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="707" />
+            <column name="parent_id" value="180" />
+            <column name="name" value="Sculpture" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="708" />
+            <column name="parent_id" value="221" />
+            <column name="name" value="3D/Graphics" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="709" />
+            <column name="parent_id" value="221" />
+            <column name="name" value="Architecture" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="710" />
+            <column name="parent_id" value="221" />
+            <column name="name" value="Collage" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="711" />
+            <column name="parent_id" value="221" />
+            <column name="name" value="Drawing" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="712" />
+            <column name="parent_id" value="221" />
+            <column name="name" value="Painting" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="713" />
+            <column name="parent_id" value="221" />
+            <column name="name" value="Photography" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="714" />
+            <column name="parent_id" value="221" />
+            <column name="name" value="Sculpture" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="715" />
+            <column name="parent_id" value="168" />
+            <column name="name" value="Interior Design" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="716" />
+            <column name="parent_id" value="168" />
+            <column name="name" value="Home Improvement" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="717" />
+            <column name="name" value="Educational" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="718" />
+            <column name="parent_id" value="717" />
+            <column name="name" value="Instructional" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="719" />
+            <column name="parent_id" value="717" />
+            <column name="name" value="Do It Yourself (DIY)" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="720" />
+            <column name="parent_id" value="717" />
+            <column name="name" value="Not for Profit" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="721" />
+            <column name="parent_id" value="717" />
+            <column name="name" value="Classroom" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="722" />
+            <column name="parent_id" value="471" />
+            <column name="name" value="Gaming" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="723" />
+            <column name="parent_id" value="503" />
+            <column name="name" value="Gaming" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="724" />
+            <column name="parent_id" value="152" />
+            <column name="name" value="Animals" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="725" />
+            <column name="name" value="Art" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="726" />
+            <column name="parent_id" value="725" />
+            <column name="name" value="3/D Graphics" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="727" />
+            <column name="parent_id" value="725" />
+            <column name="name" value="Architecture" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="728" />
+            <column name="parent_id" value="725" />
+            <column name="name" value="Collage" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="729" />
+            <column name="parent_id" value="725" />
+            <column name="name" value="Drawing" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="730" />
+            <column name="parent_id" value="725" />
+            <column name="name" value="Painting" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="731" />
+            <column name="parent_id" value="725" />
+            <column name="name" value="Photography" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="732" />
+            <column name="parent_id" value="725" />
+            <column name="name" value="Sculpture" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="733" />
+            <column name="parent_id" value="725" />
+            <column name="name" value="Live Art" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="734" />
+            <column name="parent_id" value="725" />
+            <column name="name" value="Street Art" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="735" />
+            <column name="parent_id" value="725" />
+            <column name="name" value="Digital Art" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="736" />
+            <column name="parent_id" value="725" />
+            <column name="name" value="Poetry" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="737" />
+            <column name="parent_id" value="107" />
+            <column name="name" value="News" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="738" />
+            <column name="parent_id" value="152" />
+            <column name="name" value="Sketch" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="740" />
+            <column name="parent_id" value="161" />
+            <column name="name" value="Food Trucks" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="741" />
+            <column name="parent_id" value="163" />
+            <column name="name" value="Designers" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="742" />
+            <column name="parent_id" value="107" />
+            <column name="name" value="Religion" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="744" />
+            <column name="parent_id" value="107" />
+            <column name="name" value="Spiritual" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="745" />
+            <column name="parent_id" value="113" />
+            <column name="name" value="Storyboard" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="746" />
+            <column name="parent_id" value="43" />
+            <column name="name" value="Behind the Scenes" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="748" />
+            <column name="parent_id" value="43" />
+            <column name="name" value="Live" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="749" />
+            <column name="parent_id" value="107" />
+            <column name="name" value="LGBT" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="750" />
+            <column name="parent_id" value="113" />
+            <column name="name" value="Stop Animation" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="752" />
+            <column name="parent_id" value="108" />
+            <column name="name" value="Foreign" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="753" />
+            <column name="parent_id" value="107" />
+            <column name="name" value="Foreign" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="754" />
+            <column name="parent_id" value="107" />
+            <column name="name" value="Review" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="756" />
+            <column name="parent_id" value="110" />
+            <column name="name" value="Review" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="757" />
+            <column name="parent_id" value="111" />
+            <column name="name" value="Review" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="758" />
+            <column name="parent_id" value="43" />
+            <column name="name" value="Review" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="761" />
+            <column name="parent_id" value="470" />
+            <column name="name" value="Review" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="762" />
+            <column name="parent_id" value="161" />
+            <column name="name" value="Review" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="763" />
+            <column name="parent_id" value="725" />
+            <column name="name" value="Review" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="764" />
+            <column name="parent_id" value="470" />
+            <column name="name" value="Automotive" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="765" />
+            <column name="parent_id" value="152" />
+            <column name="name" value="Music" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="766" />
+            <column name="parent_id" value="108" />
+            <column name="name" value="Experimental" />
+            <column name="category_type_id" value="1" />
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="767" />
+            <column name="parent_id" value="113" />
+            <column name="name" value="Experimental" />
+            <column name="category_type_id" value="1" />
+        </insert>
+	</changeSet>
 	<changeSet author="MikeH" id="09052014-04">
         <createTable tableName="user">
             <column name="user_id" type="INT" autoIncrement="true">
@@ -117,17 +3686,6 @@
 			<column name="description" type="VARCHAR(4000)"/>
 			<column defaultValue="NULL" name="parent" type="VARCHAR(255)"/>
         </createTable>
-    </changeSet>
-    <changeSet author="MikeH" id="09052014-06">
-        <createTable tableName="user_role_linker">
-			<column name="user_id" type="INT">
-                <constraints nullable="false"/>
-            </column>
-			<column name="role_id" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-		<addPrimaryKey columnNames="user_id, role_id" tableName="user_role_linker"/>
 		<insert tableName="user_role">
 			<column name="role_id" value="Guest" />
 			<column name="is_default" value="1" />
@@ -151,8 +3709,19 @@
 		<insert tableName="user_role">
 			<column name="role_id" value="Administrator" />
 			<column name="is_default" value="0" />
-			<column name="parent" value="User" />
+			<column name="parent" value="Artist" />
 		</insert>
+    </changeSet>
+    <changeSet author="MikeH" id="09052014-06">
+        <createTable tableName="user_role_linker">
+			<column name="user_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+			<column name="role_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+		<addPrimaryKey columnNames="user_id, role_id" tableName="user_role_linker"/>
     </changeSet>
     <changeSet author="MikeH" id="09052014-07">
         <createTable tableName="user_social_media">
@@ -204,8 +3773,8 @@
 			<column name="title" type="VARCHAR(185)">
                 <constraints nullable="false"/>
             </column>
-            <column defaultValueBoolean="video" name="media_type" type="VARCHAR(50)">
-            <column defaultValueBoolean="video" name="source" type="VARCHAR(50)">
+            <column defaultValue="video" name="media_type" type="VARCHAR(50)" />
+            <column defaultValue="video" name="source" type="VARCHAR(50)" />
 			<column name="logline" type="VARCHAR(50)"/>
 			<column name="description" type="VARCHAR(4000)"/>
 			<column name="why_we_choose" type="VARCHAR(4000)"/>
@@ -247,7 +3816,7 @@
             </column>
 			<column name="status" type="VARCHAR(45)" />
         </createTable>
-		<addPrimaryKey columnNames="media_id, encoding_id" tableName="encodings"/>
+		<addPrimaryKey columnNames="media_id, encoding_id" tableName="encoding"/>
     </changeSet>
 	<changeSet author="MikeH" id="09052014-12">
         <createTable tableName="rating">
@@ -304,26 +3873,6 @@
         </createTable>
     </changeSet>
     <changeSet author="MikeH" id="09052014-16">
-        <createTable tableName="user_activity">
-            <column name="id" type="INT" autoIncrement="true">
-                <constraints nullable="false" primaryKey="true"/>
-            </column>
-			<column name="user_id" type="INT">
-                <constraints nullable="false"/>
-            </column>
-			<column name="artist_id" type="INT" />
-			<column name="media_id" type="INT" />
-			<column name="action" type="VARCHAR(45)">
-                <constraints nullable="true"/>
-            </column>
-			<column name="value" type="VARCHAR(4000)"/>
-            <column defaultValueComputed="CURRENT_TIMESTAMP" name="created" type="TIMESTAMP">
-                <constraints nullable="false"/>
-            </column>
-			<column name="updated" type="TIMESTAMP"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="MikeH" id="09052014-17">
         <createTable tableName="users_favorite">
 			<column name="user_id" type="INT">
                 <constraints nullable="false"/>
@@ -334,7 +3883,7 @@
         </createTable>
 		<addPrimaryKey columnNames="user_id, media_id" tableName="users_favorite"/>
     </changeSet>
-    <changeSet author="MikeH" id="09052014-18">
+    <changeSet author="MikeH" id="09052014-17">
         <createTable tableName="series">
             <column name="id" type="INT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
@@ -344,9 +3893,14 @@
             </column>
 			<column name="name" type="VARCHAR(255)"/>
 			<column name="description" type="VARCHAR(4000)"/>
+            <column defaultValue="video" name="media_type" type="VARCHAR(50)" />
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="created" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+			<column name="updated" type="TIMESTAMP"/>
         </createTable>
     </changeSet>
-    <changeSet author="MikeH" id="09052014-19">
+    <changeSet author="MikeH" id="09052014-18">
         <createTable tableName="series_season">
 			<column name="series_id" type="INT">
                 <constraints nullable="false"/>
@@ -355,11 +3909,15 @@
                 <constraints nullable="false"/>
             </column>
 			<column name="name" type="VARCHAR(255)"/>
-			<column name="value" type="VARCHAR(4000)"/>
+			<column name="description" type="VARCHAR(4000)"/>
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="created" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+			<column name="updated" type="TIMESTAMP"/>
         </createTable>
 		<addPrimaryKey columnNames="series_id, season_number" tableName="series_season"/>
     </changeSet>
-    <changeSet author="MikeH" id="09052014-20">
+    <changeSet author="MikeH" id="09052014-19">
         <createTable tableName="series_episodes">
 			<column name="series_season_id" type="INT">
                 <constraints nullable="false"/>
@@ -373,7 +3931,7 @@
         </createTable>
 		<addPrimaryKey columnNames="series_season_id, media_id, episode_number" tableName="series_episodes"/>
     </changeSet>
-    <changeSet author="MikeH" id="09052014-21">
+    <changeSet author="MikeH" id="09052014-20">
         <createTable tableName="artist_comment">
             <column name="id" type="INT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
@@ -391,7 +3949,7 @@
 			<column name="updated" type="TIMESTAMP"/>
         </createTable>
     </changeSet>
-    <changeSet author="MikeH" id="09052014-22">
+    <changeSet author="MikeH" id="09052014-21">
         <createTable tableName="media_comment">
             <column name="id" type="INT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
@@ -409,7 +3967,7 @@
 			<column name="updated" type="TIMESTAMP"/>
         </createTable>
     </changeSet>
-    <changeSet author="MikeH" id="09052014-23">
+    <changeSet author="MikeH" id="09052014-22">
         <createTable tableName="media_schedule">
             <column name="id" type="INT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
@@ -424,8 +3982,8 @@
 			<column name="debut_time" type="TIMESTAMP"/>
         </createTable>
     </changeSet>
-    <changeSet author="MikeH" id="09052014-24">
-        <createTable tableName="section_blocks">
+    <changeSet author="MikeH" id="09052014-23">
+        <createTable tableName="section_block">
             <column name="id" type="INT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
@@ -437,22 +3995,22 @@
             </column>
 			<column name="updated" type="TIMESTAMP"/>
         </createTable>
-		<insert tableName="section_blocks">
+		<insert tableName="section_block">
 			<column name="id" value="1" />
 			<column name="block_name" value="On Screen" />
 		</insert>
-		<insert tableName="section_blocks">
+		<insert tableName="section_block">
 			<column name="id" value="2" />
 			<column name="block_name" value="Daily Highlights" />
 		</insert>
-		<insert tableName="section_blocks">
-			<column name="id" value="2" />
+		<insert tableName="section_block">
+			<column name="id" value="3" />
 			<column name="block_name" value="Staff Favorites" />
 		</insert>
     </changeSet>
-    <changeSet author="MikeH" id="09052014-25">
+    <changeSet author="MikeH" id="09052014-24">
         <createTable tableName="section_media">
-			<column name="block_id" type="INT(11)">
+			<column name="section_block_id" type="INT(11)">
                 <constraints nullable="false"/>
             </column>
 			<column name="media_id" type="INT(11)">
@@ -464,6 +4022,98 @@
             </column>
 			<column name="updated" type="TIMESTAMP"/>
         </createTable>
-		<addPrimaryKey columnNames="block_id, media_id" tableName="section_media"/>
+		<addPrimaryKey columnNames="section_block_id, media_id" tableName="section_media"/>
     </changeSet>
+    <changeSet author="MikeH" id="09062014-01">
+        <createTable tableName="country">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+			<column name="name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+			<column name="code2" type="VARCHAR(2)" />
+			<column name="code3" type="VARCHAR(3)" />
+			<column name="postal_code_format" type="VARCHAR(32)" />
+			<column name="coords" type="VARCHAR(4000)" />
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="created" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+			<column name="updated" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="MikeH" id="09062014-02">
+        <createTable tableName="country_region">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+			<column name="name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+			<column name="coords" type="VARCHAR(4000)" />
+			<column name="country_id" type="INT(11)" /> 
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="created" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+			<column name="updated" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="MikeH" id="09062014-03">
+        <createTable tableName="province">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column defaultValueBoolean="false" name="us_territory" type="TINYINT(1)"/>
+			<column name="name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+			<column name="abbrev" type="VARCHAR(100)" />
+			<column name="latitude" type="FLOAT(9,6)" />
+			<column name="longitude" type="FLOAT(9,6)" />
+			<column name="coords" type="VARCHAR(4000)" />
+			<column name="country_id" type="INT(11)" /> 
+			<column name="country_region_id" type="INT(11)" /> 
+            <column defaultValueComputed="CURRENT_TIMESTAMP" name="created" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+			<column name="updated" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="MikeH" id="09062014-04">
+        <createTable tableName="city">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+			<column name="name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+			<column name="timezone" type="VARCHAR(100)" />
+			<column name="latitude" type="FLOAT(9,6)" />
+			<column name="longitude" type="FLOAT(9,6)" />
+			<column name="coords" type="VARCHAR(4000)" />
+			<column name="country_id" type="INT(11)" /> 
+			<column name="province_id" type="INT(11)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="MikeH" id="09062014-06">
+        <createTable tableName="neighborhood">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+			<column name="name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+			<column name="latitude" type="FLOAT(9,6)" />
+			<column name="longitude" type="FLOAT(9,6)" />
+			<column name="coords" type="VARCHAR(4000)" />
+			<column name="city_id" type="INT(11)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+	<changeSet author="MikeH" id="09062014-07">
+		<sqlFile path="db.seed.locations.sql" />
+	</changeSet>
 </databaseChangeLog>
