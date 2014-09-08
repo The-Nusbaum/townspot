@@ -62,6 +62,7 @@
 		"bjyoungblood/bjy-profiler": "dev-master",
 		"ocramius/ocra-service-manager": "2.2.*@dev",
 		"ocramius/generated-hydrator": "1.0.*@dev",
+		"nitecon/zf2-db-session": "dev-master",
 		"townspot/townspotbase": "0.0.1"
     },
     "autoload": {

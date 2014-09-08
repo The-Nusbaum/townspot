@@ -14,6 +14,7 @@
 	        <column name="lifetime" type="INT(11)" />
 			<column name="data" type="BLOB" />
         </createTable>
+		<sql>ALTER TABLE sessions CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;</sql>		
     </changeSet>
     <changeSet author="MikeH" id="09052014-02">
         <createTable tableName="category_type">
@@ -28,6 +29,7 @@
             </column>
 			<column name="updated" type="TIMESTAMP"/>
         </createTable>
+		<sql>ALTER TABLE category_type CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;</sql>		
 		<insert tableName="category_type">
 			<column name="id" value="1" />
 			<column name="name" value="video" />
@@ -55,7 +57,8 @@
             </column>
 			<column name="updated" type="TIMESTAMP"/>
         </createTable>
-         <insert tableName="category">
+		<sql>ALTER TABLE category CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;</sql>		
+        <insert tableName="category">
             <column name="id" value="43" />
             <column name="name" value="Music" />
             <column name="category_type_id" value="1" />
@@ -3665,7 +3668,6 @@
             <column defaultValueBoolean="false" name="allow_contact" type="TINYINT(1)"/>
             <column defaultValueBoolean="false" name="terms_agreement" type="TINYINT(1)"/>
             <column defaultValueBoolean="false" name="email_notifications" type="TINYINT(1)"/>
-			<column name="status" type="varchar(1)"/>
 			<column name="artist_name" type="VARCHAR(255)"/>
 			<column name="state" type="INT"/>
             <column name="latitude" type="FLOAT(9,6)"/>
@@ -3676,6 +3678,7 @@
 			<column name="updated" type="TIMESTAMP"/>
 			<column name="security_key_expires" type="TIMESTAMP"/>
         </createTable>
+		<sql>ALTER TABLE user CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;</sql>		
     </changeSet>
     <changeSet author="MikeH" id="09052014-05">
         <createTable tableName="user_role">
@@ -3686,6 +3689,7 @@
 			<column name="description" type="VARCHAR(4000)"/>
 			<column defaultValue="NULL" name="parent" type="VARCHAR(255)"/>
         </createTable>
+		<sql>ALTER TABLE user_role CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;</sql>		
 		<insert tableName="user_role">
 			<column name="role_id" value="Guest" />
 			<column name="is_default" value="1" />
@@ -3722,18 +3726,36 @@
             </column>
         </createTable>
 		<addPrimaryKey columnNames="user_id, role_id" tableName="user_role_linker"/>
+		<sql>ALTER TABLE user_role_linker CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;</sql>		
     </changeSet>
     <changeSet author="MikeH" id="09052014-07">
-        <createTable tableName="user_social_media">
+        <createTable tableName="user_oauth">
             <column name="id" type="INT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
+            </column>
+			<column name="user_id" type="INT">
+                <constraints nullable="false"/>
             </column>
 			<column defaultValue="NULL" name="source" type="VARCHAR(255)"/>
 			<column defaultValue="NULL" name="external_id" type="VARCHAR(255)"/>
         </createTable>
+		<sql>ALTER TABLE user_oauth CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;</sql>		
     </changeSet>
     <changeSet author="MikeH" id="09052014-08">
-        <createTable tableName="user_follows">
+        <createTable tableName="user_social_media">
+            <column name="id" type="INT" autoIncrement="true">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+			<column name="user_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+			<column defaultValue="NULL" name="source" type="VARCHAR(255)"/>
+			<column defaultValue="NULL" name="link" type="VARCHAR(1000)"/>
+        </createTable>
+		<sql>ALTER TABLE user_social_media CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;</sql>		
+    </changeSet>
+    <changeSet author="MikeH" id="09052014-09">
+        <createTable tableName="user_follow">
 			<column name="user_id" type="INT">
                 <constraints nullable="false"/>
             </column>
@@ -3742,9 +3764,10 @@
             </column>
             <column defaultValueBoolean="false" name="share_email" type="TINYINT(1)"/>
         </createTable>
-		<addPrimaryKey columnNames="user_id, target_id" tableName="user_follows"/>
+		<addPrimaryKey columnNames="user_id, target_id" tableName="user_follow"/>
+		<sql>ALTER TABLE user_follow CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;</sql>		
     </changeSet>
-    <changeSet author="MikeH" id="09052014-09">
+    <changeSet author="MikeH" id="09052014-10">
         <createTable tableName="user_event">
             <column name="id" type="INT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
@@ -3764,8 +3787,9 @@
 			<column name="updated" type="TIMESTAMP"/>
 			<column name="start" type="TIMESTAMP"/>
         </createTable>
+		<sql>ALTER TABLE user_event CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;</sql>		
     </changeSet>
-	<changeSet author="MikeH" id="09052014-10">
+	<changeSet author="MikeH" id="09052014-11">
         <createTable tableName="media">
             <column name="id" type="INT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
@@ -3805,8 +3829,9 @@
 			<column name="updated" type="TIMESTAMP"/>
 			<column name="debut_time" type="TIMESTAMP"/>
         </createTable>
+		<sql>ALTER TABLE media CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;</sql>		
     </changeSet>
-	<changeSet author="MikeH" id="09052014-11">
+	<changeSet author="MikeH" id="09052014-12">
         <createTable tableName="encoding">
 			<column name="media_id" type="INT">
                 <constraints nullable="false"/>
@@ -3817,8 +3842,9 @@
 			<column name="status" type="VARCHAR(45)" />
         </createTable>
 		<addPrimaryKey columnNames="media_id, encoding_id" tableName="encoding"/>
+		<sql>ALTER TABLE encoding CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;</sql>		
     </changeSet>
-	<changeSet author="MikeH" id="09052014-12">
+	<changeSet author="MikeH" id="09052014-13">
         <createTable tableName="rating">
 			<column name="media_id" type="INT">
                 <constraints nullable="false"/>
@@ -3829,8 +3855,9 @@
 			<column name="rating" type="INT(1)" />
         </createTable>
 		<addPrimaryKey columnNames="media_id, user_id" tableName="rating"/>
+		<sql>ALTER TABLE rating CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;</sql>		
     </changeSet>
-    <changeSet author="MikeH" id="09052014-13">
+    <changeSet author="MikeH" id="09052014-14">
         <createTable tableName="media_category_linker">
 			<column name="media_id" type="INT">
                 <constraints nullable="false"/>
@@ -3840,9 +3867,10 @@
             </column>
         </createTable>
 		<addPrimaryKey columnNames="media_id, category_id" tableName="media_category_linker"/>
+		<sql>ALTER TABLE media_category_linker CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;</sql>		
     </changeSet>
-    <changeSet author="MikeH" id="09052014-14">
-        <createTable tableName="media_tags">
+    <changeSet author="MikeH" id="09052014-15">
+        <createTable tableName="media_tag">
 			<column name="media_id" type="INT">
                 <constraints nullable="false"/>
             </column>
@@ -3850,9 +3878,10 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-		<addPrimaryKey columnNames="media_id, tag" tableName="media_tags"/>
-    </changeSet>
-    <changeSet author="MikeH" id="09052014-15">
+		<addPrimaryKey columnNames="media_id, tag" tableName="media_tag"/>
+   		<sql>ALTER TABLE media_tag CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;</sql>		
+	</changeSet>
+    <changeSet author="MikeH" id="09052014-16">
         <createTable tableName="user_activity">
             <column name="id" type="INT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
@@ -3871,9 +3900,10 @@
             </column>
 			<column name="updated" type="TIMESTAMP"/>
         </createTable>
+		<sql>ALTER TABLE user_activity CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;</sql>		
     </changeSet>
-    <changeSet author="MikeH" id="09052014-16">
-        <createTable tableName="users_favorite">
+    <changeSet author="MikeH" id="09052014-17">
+        <createTable tableName="user_favorite">
 			<column name="user_id" type="INT">
                 <constraints nullable="false"/>
             </column>
@@ -3881,9 +3911,10 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-		<addPrimaryKey columnNames="user_id, media_id" tableName="users_favorite"/>
+		<addPrimaryKey columnNames="user_id, media_id" tableName="user_favorite"/>
+		<sql>ALTER TABLE user_favorite CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;</sql>		
     </changeSet>
-    <changeSet author="MikeH" id="09052014-17">
+    <changeSet author="MikeH" id="09052014-18">
         <createTable tableName="series">
             <column name="id" type="INT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
@@ -3899,8 +3930,9 @@
             </column>
 			<column name="updated" type="TIMESTAMP"/>
         </createTable>
+		<sql>ALTER TABLE series CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;</sql>		
     </changeSet>
-    <changeSet author="MikeH" id="09052014-18">
+    <changeSet author="MikeH" id="09052014-19">
         <createTable tableName="series_season">
 			<column name="series_id" type="INT">
                 <constraints nullable="false"/>
@@ -3916,10 +3948,26 @@
 			<column name="updated" type="TIMESTAMP"/>
         </createTable>
 		<addPrimaryKey columnNames="series_id, season_number" tableName="series_season"/>
+		<sql>ALTER TABLE series_season CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;</sql>		
     </changeSet>
-    <changeSet author="MikeH" id="09052014-19">
+    <changeSet author="MikeH" id="09052014-20">
+        <createTable tableName="series_category_linker">
+			<column name="series_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+			<column name="category_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+		<addPrimaryKey columnNames="series_id, category_id" tableName="series_category_linker"/>
+		<sql>ALTER TABLE series_category_linker CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;</sql>		
+    </changeSet>
+    <changeSet author="MikeH" id="09052014-21">
         <createTable tableName="series_episodes">
-			<column name="series_season_id" type="INT">
+			<column name="series_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+			<column name="season_number" type="INT">
                 <constraints nullable="false"/>
             </column>
 			<column name="media_id" type="INT">
@@ -3929,9 +3977,10 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-		<addPrimaryKey columnNames="series_season_id, media_id, episode_number" tableName="series_episodes"/>
+		<addPrimaryKey columnNames="series_id, season_number, media_id, episode_number" tableName="series_episodes"/>
+		<sql>ALTER TABLE series_episodes CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;</sql>		
     </changeSet>
-    <changeSet author="MikeH" id="09052014-20">
+    <changeSet author="MikeH" id="09052014-22">
         <createTable tableName="artist_comment">
             <column name="id" type="INT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
@@ -3948,8 +3997,9 @@
             </column>
 			<column name="updated" type="TIMESTAMP"/>
         </createTable>
+		<sql>ALTER TABLE artist_comment CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;</sql>		
     </changeSet>
-    <changeSet author="MikeH" id="09052014-21">
+    <changeSet author="MikeH" id="09052014-23">
         <createTable tableName="media_comment">
             <column name="id" type="INT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
@@ -3966,8 +4016,9 @@
             </column>
 			<column name="updated" type="TIMESTAMP"/>
         </createTable>
+		<sql>ALTER TABLE media_comment CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;</sql>		
     </changeSet>
-    <changeSet author="MikeH" id="09052014-22">
+    <changeSet author="MikeH" id="09052014-24">
         <createTable tableName="media_schedule">
             <column name="id" type="INT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
@@ -3981,8 +4032,9 @@
 			<column name="updated" type="TIMESTAMP"/>
 			<column name="debut_time" type="TIMESTAMP"/>
         </createTable>
+		<sql>ALTER TABLE media_schedule CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;</sql>		
     </changeSet>
-    <changeSet author="MikeH" id="09052014-23">
+    <changeSet author="MikeH" id="09052014-25">
         <createTable tableName="section_block">
             <column name="id" type="INT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
@@ -3995,6 +4047,7 @@
             </column>
 			<column name="updated" type="TIMESTAMP"/>
         </createTable>
+		<sql>ALTER TABLE section_block CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;</sql>		
 		<insert tableName="section_block">
 			<column name="id" value="1" />
 			<column name="block_name" value="On Screen" />
@@ -4008,7 +4061,7 @@
 			<column name="block_name" value="Staff Favorites" />
 		</insert>
     </changeSet>
-    <changeSet author="MikeH" id="09052014-24">
+    <changeSet author="MikeH" id="09052014-26">
         <createTable tableName="section_media">
 			<column name="section_block_id" type="INT(11)">
                 <constraints nullable="false"/>
@@ -4023,6 +4076,7 @@
 			<column name="updated" type="TIMESTAMP"/>
         </createTable>
 		<addPrimaryKey columnNames="section_block_id, media_id" tableName="section_media"/>
+		<sql>ALTER TABLE section_media CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;</sql>		
     </changeSet>
     <changeSet author="MikeH" id="09062014-01">
         <createTable tableName="country">
@@ -4041,6 +4095,7 @@
             </column>
 			<column name="updated" type="TIMESTAMP"/>
         </createTable>
+		<sql>ALTER TABLE country CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;</sql>		
     </changeSet>
     <changeSet author="MikeH" id="09062014-02">
         <createTable tableName="country_region">
@@ -4057,6 +4112,7 @@
             </column>
 			<column name="updated" type="TIMESTAMP"/>
         </createTable>
+		<sql>ALTER TABLE country_region CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;</sql>		
     </changeSet>
     <changeSet author="MikeH" id="09062014-03">
         <createTable tableName="province">
@@ -4078,6 +4134,7 @@
             </column>
 			<column name="updated" type="TIMESTAMP"/>
         </createTable>
+		<sql>ALTER TABLE province CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;</sql>		
     </changeSet>
     <changeSet author="MikeH" id="09062014-04">
         <createTable tableName="city">
@@ -4096,6 +4153,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+		<sql>ALTER TABLE city CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;</sql>		
     </changeSet>
     <changeSet author="MikeH" id="09062014-06">
         <createTable tableName="neighborhood">
@@ -4112,6 +4170,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
+		<sql>ALTER TABLE neighborhood CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;</sql>		
     </changeSet>
 	<changeSet author="MikeH" id="09062014-07">
 		<sqlFile path="db.seed.locations.sql" />

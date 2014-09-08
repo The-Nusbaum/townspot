@@ -12,7 +12,8 @@ return array(
 		'ZfcUser',		
 		'BjyAuthorize',		
 		'CdnLight',
-		'SlmGoogleAnalytics',		
+		'SlmGoogleAnalytics',	
+		'DBSessionStorage',
     ),
     'module_listener_options' => array(
         'module_paths' => array(
