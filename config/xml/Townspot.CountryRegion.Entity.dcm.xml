@@ -1,0 +1,16 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
+	<entity name="Townspot\CountryRegion\Entity" table="country_region">
+		<id name="_id" column="id" type="bigint">
+			<generator strategy="AUTO" />
+		</id>
+		<field name="_name" column="name" nullable="true" type="string"/>
+		<field name="_coords" column="coords" nullable="true" type="text"/>
+		<field name="_created" column="created" nullable="false" type="datetime"/>
+		<field name="_updated" column="updated" nullable="true" type="datetime"/>
+		<one-to-many field="_provinces" target-entity="Townspot\Province\Entity" mapped-by="_country_region" />		
+		<one-to-many field="_cities" target-entity="Townspot\City\Entity" mapped-by="_country_region" />		
+        <many-to-one field="_country" target-entity="Townspot\Country\Entity" inversed-by="_country_regions">
+            <join-column name="country_id" referenced-column-name="id" />
+        </many-to-one>
+	</entity>
+</doctrine-mapping>

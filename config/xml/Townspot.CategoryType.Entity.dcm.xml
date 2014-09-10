@@ -1,0 +1,11 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
+	<entity name="Townspot\CategoryType\Entity" table="category_type">
+		<id name="_id" column="id" type="bigint">
+			<generator strategy="AUTO" />
+		</id>
+		<field name="_name" column="name" nullable="false" type="text"/>
+		<field name="_created" column="created" nullable="false" type="datetime"/>
+		<field name="_updated" column="updated" nullable="true" type="datetime"/>
+		<one-to-many field="_categories" target-entity="Townspot\Category\Entity" mapped-by="_category_type" />		
+	</entity>
+</doctrine-mapping>
