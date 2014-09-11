@@ -1,0 +1,50 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
+	<entity name="Townspot\User\Entity" table="user">
+		<id name="_id" column="user_id" type="bigint">
+			<generator strategy="AUTO" />
+		</id>
+		<field name="_username" column="username" nullable="false" type="string"/>
+		<field name="_password" column="password" nullable="false" type="string"/>
+		<field name="_email" column="email" nullable="false" type="string"/>
+		<field name="_first_name" column="first_name" type="string"/>
+		<field name="_last_name" column="last_name" type="string"/>
+		<field name="_display_name" column="display_name" type="string"/>
+		<field name="_activation_string" column="activation_string" type="string"/>
+		<field name="_security_key" column="security_key" type="string"/>
+		<field name="_neighborhood" column="neighborhood" type="string"/>
+		<field name="_about_me" column="about_me" type="string"/>
+		<field name="_interests" column="interests" type="string"/>
+		<field name="_description" column="description" type="string"/>
+		<field name="_website" column="website" type="string"/>
+		<field name="_image_url" column="image_url" type="string"/>
+		<field name="_upload_url" column="upload_url" type="string"/>
+		<field name="_artist_name" column="artist_name" type="string"/>
+		<field name="_state" column="state" type="integer"/>
+		<field name="_latitude" column="latitude" type="float"/>
+		<field name="_longitude" column="longitude" type="float"/>
+		<field name="_allow_contact" column="allow_contact" type="boolean"/>
+		<field name="_terms_agreement" column="terms_agreement" type="boolean"/>
+		<field name="_email_notifications" column="email_notifications" type="boolean"/>
+		<field name="_created" column="created" nullable="false" type="datetime"/>
+		<field name="_updated" column="updated" nullable="true" type="datetime"/>
+        <many-to-one field="_country" target-entity="Townspot\Country\Entity" inversed-by="_users">
+            <join-column name="country_id" referenced-column-name="id" />
+        </many-to-one>
+        <many-to-one field="_province" target-entity="Townspot\Province\Entity" inversed-by="_users">
+            <join-column name="province_id" referenced-column-name="id" />
+        </many-to-one>
+        <many-to-one field="_city" target-entity="Townspot\City\Entity" inversed-by="_users">
+            <join-column name="city_id" referenced-column-name="id" />
+        </many-to-one>
+        <many-to-many field="_roles" target-entity="Townspot\UserRole\Entity">
+            <join-table name="user_role_linker">
+                <join-columns>
+                    <join-column name="user_id" referenced-column-name="user_id" />
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="role_id" referenced-column-name="role_id" />
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>		
+	</entity>
+</doctrine-mapping>

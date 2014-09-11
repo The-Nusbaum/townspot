@@ -52,13 +52,13 @@ class Entity
 		return $this;
 	}
 	
-	public function setLatitude(float $value)
+	public function setLatitude($value)
 	{
 		$this->_latitude = $value;
 		return $this;
 	}
 
-	public function setLongitude(float $value)
+	public function setLongitude($value)
 	{
 		$this->_longitude = $value;
 		return $this;
