@@ -24,6 +24,8 @@ class Entity
 	protected $_cities;
 
 	protected $_country_regions;
+	
+	protected $_users;
 
 	public function __construct()
 	{
@@ -32,6 +34,7 @@ class Entity
 		$this->_provinces = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->_cities = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->_country_regions = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->_users = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	public function setName($value)
@@ -112,6 +115,18 @@ class Entity
 		return $this;
 	}
 
+	public function addUser(\Townspot\User\Entity $value)
+	{
+		$this->_users->add($value);
+		return $this;
+	}
+	
+	public function removeUser($key)
+	{
+		$this->_users->remove($key);
+		return $this;
+	}
+	
 	public function getId()
 	{
 		return $this->_id;
@@ -165,5 +180,10 @@ class Entity
 	public function getCountryRegions()
 	{
 		return $this->_country_regions;
+	}
+
+	public function getUsers()
+	{
+		return $this->_users;
 	}
 }

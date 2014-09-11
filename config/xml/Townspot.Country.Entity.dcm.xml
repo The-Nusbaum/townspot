@@ -13,5 +13,6 @@
 		<one-to-many field="_provinces" target-entity="Townspot\Province\Entity" mapped-by="_country" />		
 		<one-to-many field="_cities" target-entity="Townspot\City\Entity" mapped-by="_country" />		
 		<one-to-many field="_country_regions" target-entity="Townspot\CountryRegion\Entity" mapped-by="_country" />		
+		<one-to-many field="_users" target-entity="Townspot\User\Entity" mapped-by="_country" />		
 	</entity>
 </doctrine-mapping>

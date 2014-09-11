@@ -12,6 +12,7 @@
 		<field name="_created" column="created" nullable="false" type="datetime"/>
 		<field name="_updated" column="updated" nullable="true" type="datetime"/>
 		<one-to-many field="_cities" target-entity="Townspot\City\Entity" mapped-by="_province" />		
+		<one-to-many field="_users" target-entity="Townspot\User\Entity" mapped-by="_province" />		
         <many-to-one field="_country" target-entity="Townspot\Country\Entity" inversed-by="_provinces">
             <join-column name="country_id" referenced-column-name="id" />
         </many-to-one>
