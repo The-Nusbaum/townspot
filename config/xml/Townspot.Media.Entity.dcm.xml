@@ -1,0 +1,61 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
+	<entity name="Townspot\Media\Entity" table="media">
+		<id name="_id" column="id" type="bigint">
+			<generator strategy="AUTO" />
+		</id>
+		<field name="_title" column="title" nullable="false" type="string"/>
+		<field name="_media_type" column="media_type" type="string"/>
+		<field name="_source" column="source" type="string"/>
+		<field name="_logline" column="logline" type="string"/>
+		<field name="_description" column="description" type="string"/>
+		<field name="_why_we_chose" column="why_we_chose" type="string"/>
+		<field name="_url" column="url" type="string"/>
+		<field name="_preview_image" column="preview_image" type="string"/>
+		<field name="_views" column="views" type="integer"/>
+		<field name="_duration" column="duration" type="integer"/>
+		<field name="_allow_contact" column="allow_contact" type="boolean"/>
+		<field name="_authorised" column="authorised" type="boolean"/>
+		<field name="_request_debut_time" column="request_debut_time" type="boolean"/>
+		<field name="_approved" column="approved" type="boolean"/>
+		<field name="_on_media_server" column="on_media_server" type="boolean"/>
+		<field name="_neighborhood" column="neighborhood" type="string"/>
+		<field name="_latitude" column="latitude" type="float"/>
+		<field name="_longitude" column="longitude" type="float"/>
+		<one-to-many field="_encodings" target-entity="Townspot\Encoding\Entity" mapped-by="_media" />		
+		<one-to-many field="_ratings" target-entity="Townspot\Rating\Entity" mapped-by="_media" />		
+		<one-to-many field="_tags" target-entity="Townspot\MediaTag\Entity" mapped-by="_media" />
+		<one-to-many field="_activity" target-entity="Townspot\UserActivity\Entity" mapped-by="_media" />
+		<one-to-many field="_comments_about" target-entity="Townspot\MediaComment\Entity" mapped-by="_target" />
+		<one-to-many field="_schedule" target-entity="Townspot\MediaSchedule\Entity" mapped-by="_media" />		
+		<one-to-many field="_section_media" target-entity="Townspot\SectionMedia\Entity" mapped-by="_media" />		
+        <many-to-one field="_user" target-entity="Townspot\User\Entity" inversed-by="_media">
+            <join-column name="user_id" referenced-column-name="user_id" />
+        </many-to-one>
+        <many-to-one field="_admin" target-entity="Townspot\User\Entity" inversed-by="_approved">
+            <join-column name="admin_id" referenced-column-name="id" />
+        </many-to-one>
+        <many-to-one field="_country" target-entity="Townspot\Country\Entity" inversed-by="_media">
+            <join-column name="country_id" referenced-column-name="id" />
+        </many-to-one>
+        <many-to-one field="_province" target-entity="Townspot\Province\Entity" inversed-by="_media">
+            <join-column name="province_id" referenced-column-name="id" />
+        </many-to-one>
+        <many-to-one field="_city" target-entity="Townspot\City\Entity" inversed-by="_media">
+            <join-column name="city_id" referenced-column-name="id" />
+        </many-to-one>
+        <many-to-many field="_categories" target-entity="Townspot\Category\Entity">
+            <join-table name="media_category_linker">
+                <join-columns>
+                    <join-column name="media_id" referenced-column-name="id" />
+                </join-columns>
+                <inverse-join-columns>
+                    <join-column name="category_id" referenced-column-name="id" />
+                </inverse-join-columns>
+            </join-table>
+        </many-to-many>		
+        <many-to-many field="_fans" target-entity="Townspot\User\Entity" inversed-by="_favorites"/>
+		<field name="_created" column="created" nullable="false" type="datetime"/>
+		<field name="_updated" column="updated" nullable="true" type="datetime"/>
+		<field name="_debut_time" column="debut_time" nullable="true" type="datetime"/>
+	</entity>
+</doctrine-mapping>

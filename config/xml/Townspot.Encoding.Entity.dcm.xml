@@ -1,0 +1,12 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
+	<entity name="Townspot\Encoding\Entity" table="media">
+		<id name="_id" column="id" type="bigint">
+			<generator strategy="AUTO" />
+		</id>
+		<field name="_encoding_id" column="encoding_id" type="string"/>
+		<field name="_status" column="status" type="string"/>
+        <many-to-one field="_media" target-entity="Townspot\Media\Entity" inversed-by="_encodings">
+            <join-column name="media_id" referenced-column-name="id" />
+        </many-to-one>
+	</entity>
+</doctrine-mapping>

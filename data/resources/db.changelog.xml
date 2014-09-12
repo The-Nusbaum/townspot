@@ -3804,7 +3804,7 @@
             <column defaultValue="internal" name="source" type="VARCHAR(50)" />
 			<column name="logline" type="VARCHAR(50)"/>
 			<column name="description" type="VARCHAR(4000)"/>
-			<column name="why_we_choose" type="VARCHAR(4000)"/>
+			<column name="why_we_chose" type="VARCHAR(4000)"/>
 			<column name="url" type="VARCHAR(255)"/>
 			<column name="preview_image" type="VARCHAR(255)"/>
             <column defaultValueBoolean="false" name="allow_contact" type="TINYINT(1)"/>
@@ -3982,10 +3982,7 @@
             <column name="id" type="INT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-			<column name="series_id" type="INT">
-                <constraints nullable="false"/>
-            </column>
-			<column name="season_number" type="INT">
+			<column name="season_id" type="INT">
                 <constraints nullable="false"/>
             </column>
 			<column name="media_id" type="INT">

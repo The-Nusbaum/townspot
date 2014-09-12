@@ -1,0 +1,12 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
+	<entity name="Townspot\UserOauth\Entity" table="user_oauth">
+		<id name="_id" column="user_id" type="bigint">
+			<generator strategy="AUTO" />
+		</id>
+		<field name="_source" column="source" nullable="false" type="string"/>
+		<field name="_external_id" column="external_id" nullable="false" type="string"/>
+        <many-to-one field="_user" target-entity="Townspot\User\Entity" inversed-by="_user_oauth">
+            <join-column name="user_id" referenced-column-name="user_id" />
+        </many-to-one>
+	</entity>
+</doctrine-mapping>

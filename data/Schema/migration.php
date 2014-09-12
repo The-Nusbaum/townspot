@@ -165,7 +165,7 @@ if ($result = $mysql_1->query($sql)) {
 							'source'				=> $source,
 							'logline'				=> mysql_real_escape_string($row['logline']),
 							'description'			=> mysql_real_escape_string($row['description']),
-							'why_we_choose'			=> mysql_real_escape_string($row['why_we_choose']),
+							'why_we_chose'			=> mysql_real_escape_string($row['why_we_choose']),
 							'url'					=> mysql_real_escape_string($row['video_url']),
 							'preview_image'			=> mysql_real_escape_string($row['preview_url']),
 							'allow_contact'			=> $row['allow_contact'],
@@ -253,8 +253,10 @@ if ($result = $mysql_1->query($sql)) {
 	}
 }
 //Migrate series
+$series_seasons = array();
 $sql = "SELECT * FROM townspot_dev.video_series";
 if ($result = $mysql_1->query($sql)) {
+	$season_id = 1;
 	while ($row = $result->fetch_assoc()) {
 		$mysql_2->query(sprintf("INSERT INTO tsz.series (`id`,`user_id`,`name`,`description`,`media_type`,`created`) VALUES (%d,%d,'%s','%s','video',NOW());\n",
 			$row['id'],
@@ -262,12 +264,15 @@ if ($result = $mysql_1->query($sql)) {
 			$row['name'],
 			$row['description']
 		));
-		$mysql_2->query(sprintf("INSERT INTO tsz.series_season (`series_id`,`season_number`,`name`,`description`,`created`) VALUES (%d,%d,'%s','%s',NOW());\n",
+		$mysql_2->query(sprintf("INSERT INTO tsz.series_season (`id`,`series_id`,`season_number`,`name`,`description`,`created`) VALUES (%d,%d,%d,'%s','%s',NOW());\n",
+			$season_id,
 			$row['id'],
 			1,
 			$row['name'],
 			$row['description']
 		));
+		$series_seasons[$row['id']] = $season_id;
+		$season_id++;
 	}
 }
 
@@ -286,9 +291,8 @@ if ($result = $mysql_1->query($sql)) {
 $sql = "SELECT * FROM townspot_dev.video_episodes";
 if ($result = $mysql_1->query($sql)) {
 	while ($row = $result->fetch_assoc()) {
-		$mysql_2->query(sprintf("INSERT INTO tsz.series_episodes (`series_id`,`season_number`,`media_id`,`episode_number`) VALUES (%d,%d,%d,%d);\n",
-			$row['series_id'],
-			1,
+		$mysql_2->query(sprintf("INSERT INTO tsz.series_episodes (`season_id`,`media_id`,`episode_number`) VALUES (%d,%d,%d);\n",
+			$series_seasons[$row['series_id']],
 			$row['video_id'],
 			$row['episodeNumber']
 		));

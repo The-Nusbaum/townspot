@@ -61,11 +61,52 @@ class Entity
 
 	protected $_roles;
 
+	protected $_user_oauth;
+
+	protected $_user_social;
+
+	protected $_following;
+
+	protected $_followed_by;
+
+	protected $_user_events;
+
+	protected $_media;
+	
+	protected $_series;
+	
+	protected $_approved;
+	
+	protected $_favorites;
+
+	protected $_ratings;
+
+	protected $_activity;
+	
+	protected $_activities_against;
+	
+	protected $_comments;
+
+	protected $_comments_about;
+	
+	protected $_media_comments;
+	
 	public function __construct()
 	{
 		$this->_created = new \DateTime();
 		$this->_updated = new \DateTime();
 		$this->_roles = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->_user_oauth = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->_user_social = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->_following = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->_followed_by = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->_user_events = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->_ratings = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->_activity = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->_activities_against = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->_comments = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->_comments_about = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->_media_comments = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	public function setUsername($value)
@@ -261,6 +302,174 @@ class Entity
 		return $this;
 	}
 	
+	public function addOauth(\Townspot\UserOauth\Entity $value)
+	{
+		$this->_user_oauth->add($value);
+		return $this;
+	}
+	
+	public function removeOauth($key)
+	{
+		$this->_user_oauth->remove($key);
+		return $this;
+	}
+
+	public function addSocialMedia(\Townspot\UserSocialMedia\Entity $value)
+	{
+		$this->_user_social->add($value);
+		return $this;
+	}
+	
+	public function removeSocialMedia($key)
+	{
+		$this->_user_social->remove($key);
+		return $this;
+	}
+
+	public function addFollowing(\Townspot\User\Entity $value)
+	{
+		$this->_following->add($value);
+		return $this;
+	}
+	
+	public function removeFollowing($key)
+	{
+		$this->_following->remove($key);
+		return $this;
+	}
+
+	public function addFollower(\Townspot\User\Entity $value)
+	{
+		$this->_followed_by->add($value);
+		return $this;
+	}
+	
+	public function removeFollower($key)
+	{
+		$this->_followed_by->remove($key);
+		return $this;
+	}
+
+	public function addEvent(\Townspot\UserEvent\Entity $value)
+	{
+		$this->_user_events->add($value);
+		return $this;
+	}
+	
+	public function removeEvent($key)
+	{
+		$this->_user_events->remove($key);
+		return $this;
+	}
+
+	public function addMedia(\Townspot\Media\Entity $value)
+	{
+		$this->_media->add($value);
+		return $this;
+	}
+	
+	public function removeMedia($key)
+	{
+		$this->_media->remove($key);
+		return $this;
+	}
+
+	public function addSeries(\Townspot\Series\Entity $value)
+	{
+		$this->_series->add($value);
+		return $this;
+	}
+	
+	public function removeSeries($key)
+	{
+		$this->_series->remove($key);
+		return $this;
+	}
+
+	public function addApproval(\Townspot\Media\Entity $value)
+	{
+		$this->_approved->add($value);
+		return $this;
+	}
+	
+	public function removeApproval($key)
+	{
+		$this->_approved->remove($key);
+		return $this;
+	}
+	
+	public function addFavorite(\Townspot\Media\Entity $value)
+	{
+		$this->_favorites->add($value);
+		return $this;
+	}
+	
+	public function removeFavorite($key)
+	{
+		$this->_favorites->remove($key);
+		return $this;
+	}
+	
+	public function addRating(\Townspot\Rating\Entity $value)
+	{
+		$this->_ratings->add($value);
+		return $this;
+	}
+	
+	public function removeRating($key)
+	{
+		$this->_ratings->remove($key);
+		return $this;
+	}
+
+	public function addActivity(\Townspot\UserActivity\Entity $value)
+	{
+		$this->_activity->add($value);
+		return $this;
+	}
+	
+	public function removeActivity($key)
+	{
+		$this->_activity->remove($key);
+		return $this;
+	}
+
+	public function addActivityAgainst(\Townspot\UserActivity\Entity $value)
+	{
+		$this->_activities_against->add($value);
+		return $this;
+	}
+	
+	public function removeActivityAgainst($key)
+	{
+		$this->_activities_against->remove($key);
+		return $this;
+	}
+
+	public function addComment(\Townspot\ArtistComment\Entity $value)
+	{
+		$this->_comments->add($value);
+		return $this;
+	}
+	
+	public function removeComment($key)
+	{
+		$this->_comments->remove($key);
+		return $this;
+	}
+
+	public function addMediaComment(\Townspot\MediaComment\Entity $value)
+	{
+		$this->_media_comments->add($value);
+		return $this;
+	}
+	
+	public function removeMediaComment($key)
+	{
+		$this->_media_comments->remove($key);
+		return $this;
+	}
+
 	public function getId()
 	{
 		return $this->_id;
@@ -404,5 +613,65 @@ class Entity
 	public function getRoles()
 	{
 		return $this->_roles;
+	}
+	
+	public function getUserOauth()
+	{
+		return $this->_user_oauth;
+	}
+	
+	public function getUserSocial()
+	{
+		return $this->_user_social;
+	}
+
+	public function getFollowing()
+	{
+		return $this->_following;
+	}
+
+	public function getFollowedBy()
+	{
+		return $this->_followed_by;
+	}
+
+	public function getUserEvents()
+	{
+		return $this->_user_events;
+	}
+
+	public function getMedia()
+	{
+		return $this->_media;
+	}
+	
+	public function getApproved()
+	{
+		return $this->_approved;
+	}
+	
+	public function getFavorites()
+	{
+		return $this->_favorites;
+	}
+	
+	public function getRatings()
+	{
+		return $this->_ratings;
+	}
+	
+	public function getComments()
+	{
+		return $this->_comments;
+	}
+
+	public function getMediaComments()
+	{
+		return $this->_media_comments;
+	}
+
+	public function getCommentsAbout()
+	{
+		return $this->_comments_about;
 	}
 }

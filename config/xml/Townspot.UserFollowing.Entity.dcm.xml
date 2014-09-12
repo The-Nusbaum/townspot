@@ -1,0 +1,14 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
+	<entity name="Townspot\UserFollowing\Entity" table="user_follow">
+		<id name="_id" column="id" type="bigint">
+			<generator strategy="AUTO" />
+		</id>
+		<field name="_share_email" column="share_email" type="boolean"/>
+        <many-to-one field="_user" target-entity="Townspot\User\Entity" inversed-by="_following">
+            <join-column name="user_id" referenced-column-name="user_id" />
+        </many-to-one>
+        <many-to-one field="_follower" target-entity="Townspot\User\Entity" inversed-by="_followed_by">
+            <join-column name="target_id" referenced-column-name="user_id" />
+        </many-to-one>
+	</entity>
+</doctrine-mapping>

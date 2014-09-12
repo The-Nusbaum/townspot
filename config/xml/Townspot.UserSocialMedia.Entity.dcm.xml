@@ -1,0 +1,12 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
+	<entity name="Townspot\UserSocialMedia\Entity" table="user_social_media">
+		<id name="_id" column="id" type="bigint">
+			<generator strategy="AUTO" />
+		</id>
+		<field name="_source" column="source" nullable="false" type="string"/>
+		<field name="_link" column="link" nullable="false" type="string"/>
+        <many-to-one field="_user" target-entity="Townspot\User\Entity" inversed-by="_user_social">
+            <join-column name="user_id" referenced-column-name="user_id" />
+        </many-to-one>
+	</entity>
+</doctrine-mapping>
