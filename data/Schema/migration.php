@@ -291,11 +291,13 @@ if ($result = $mysql_1->query($sql)) {
 $sql = "SELECT * FROM townspot_dev.video_episodes";
 if ($result = $mysql_1->query($sql)) {
 	while ($row = $result->fetch_assoc()) {
-		$mysql_2->query(sprintf("INSERT INTO tsz.series_episodes (`season_id`,`media_id`,`episode_number`) VALUES (%d,%d,%d);\n",
-			$series_seasons[$row['series_id']],
-			$row['video_id'],
-			$row['episodeNumber']
-		));
+		if (isset($series_seasons[$row['series_id']])) {
+			$mysql_2->query(sprintf("INSERT INTO tsz.series_episodes (`season_id`,`media_id`,`episode_number`) VALUES (%d,%d,%d);\n",
+				$series_seasons[$row['series_id']],
+				$row['video_id'],
+				$row['episodeNumber']
+			));
+		}
 	}
 }
 

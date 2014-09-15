@@ -3992,7 +3992,7 @@
                 <constraints nullable="false"/>
             </column>
         </createTable>
-		<addUniqueConstraint columnNames="series_id, season_number, media_id, episode_number" tableName="series_episodes"/>
+		<addUniqueConstraint columnNames="season_id, media_id, episode_number" tableName="series_episodes"/>
 		<sql>ALTER TABLE series_episodes CONVERT TO CHARACTER SET utf8 COLLATE utf8_unicode_ci;</sql>		
     </changeSet>
     <changeSet author="MikeH" id="09052014-22">
