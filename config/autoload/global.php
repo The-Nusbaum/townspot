@@ -46,6 +46,9 @@ return array(
         ),
         'resource_providers' => array(
             'BjyAuthorize\Provider\Resource\Config' => array(
+                'guest'                 => array(),
+                'unconfirmed'           => array(),
+                'user'                  => array(),
                 'artist'                => array(),
                 'admin'                 => array(),
             ),
@@ -53,6 +56,9 @@ return array(
         'rule_providers' => array(
             'BjyAuthorize\Provider\Rule\Config' => array(
                 'allow' => array(
+                    array(array('Guest'), 'guest'),
+                    array(array('Unconfirmed'), 'unconfirmed'),
+                    array(array('User'), 'user'),
                     array(array('Artist'), 'artist'),
                     array(array('Administrator'), 'admin'),
                 ),

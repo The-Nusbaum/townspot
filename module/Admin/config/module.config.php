@@ -11,41 +11,6 @@ return array(
             'headScript' => 'headScriptCdn',
         ),
     ),
-	'asset_manager' => array(
-        'resolver_configs' => array(
-            'paths' => array(
-                APPLICATION_PATH . '/public/css',
-                APPLICATION_PATH . '/data/assets',
-				VENDOR_PATH,
-				APPLICATION_PATH . '/components',
-            ),
-        ),
-		'caching' => array(
-            'default' => array(
-                'cache'     => 'AssetManager\\Cache\\FilePathCache',
-                'options' => array(
-					'dir' => APPLICATION_PATH . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'static',
-                ),
-            ),
-        ),		
-		'filters' => array(
-			'less' => array(
-				array(
-					'filter' => 'LessphpFilter',
-				),
-			),
-			'css' => array(
-				array(
-					'filter' => 'CssMinFilter',
-				),
-			),
-//            'js' => array(
-//                array(
-//                    'filter' => 'JSMin',
-//                ),
-//            ),
-		),
-    ),
     'router' => array(
         'routes' => array(
             'admin_home' => array(

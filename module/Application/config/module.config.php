@@ -15,11 +15,19 @@ return array(
         'resolver_configs' => array(
             'paths' => array(
                 APPLICATION_PATH . '/public/css',
+                APPLICATION_PATH . '/public/less',
                 APPLICATION_PATH . '/data/assets',
 				VENDOR_PATH,
 				APPLICATION_PATH . '/components',
             ),
+            'collections' => array(
+                'css/townspot.css' => array(
+                    'style.less',
+                    'socialmedia.css',
+                ),
+            ),			
         ),
+/*
 		'caching' => array(
             'default' => array(
                 'cache'     => 'AssetManager\\Cache\\FilePathCache',
@@ -28,22 +36,19 @@ return array(
                 ),
             ),
         ),		
+*/
 		'filters' => array(
-			'less' => array(
-				array(
-					'filter' => 'LessphpFilter',
-				),
-			),
 			'css' => array(
 				array(
 					'filter' => 'CssMinFilter',
+					'filter' => 'LessphpFilter',
 				),
 			),
-//            'js' => array(
-//                array(
-//                    'filter' => 'JSMin',
-//                ),
-//            ),
+            'js' => array(
+                array(
+                    'filter' => 'JSMin',
+                ),
+            ),
 		),
     ),
     'router' => array(
@@ -533,8 +538,8 @@ return array(
             'translator' => 'MvcTranslator',
         ),
         'factories' => array(
-            'cdnLinkBuilderContainer' => 'CdnLight\Generator\Service\LinkBuilderContainerFactory',
-			'navigation' => 'Zend\Navigation\Service\DefaultNavigationFactory',
+            'cdnLinkBuilderContainer' 	=> 'CdnLight\Generator\Service\LinkBuilderContainerFactory',
+			'navigation' 			    => 'Zend\Navigation\Service\DefaultNavigationFactory',
         )
     ),
     'translator' => array(
@@ -573,7 +578,7 @@ return array(
 			array(
 				'label' 		=> '<img src="/img/pin_logo.png"> Town<span class="highlight">Spot</span>.tv',
                 'route' 		=> 'home',
-				'class'			=> 'nav-logo hidden-xs'
+				'class'			=> 'nav-logo hidden-xs',
             ),
 			array(
 				'label' 		=> 'Discover',
@@ -597,15 +602,13 @@ return array(
 				'label' 		=> 'View Profile',
                 'route' 		=> 'dashboard',
 				'class'			=> 'visible-xs',
-				'resource'		=> 'user-dashboard',
-				'priviledge'	=> 'user',
+				'resource'		=> 'unconfirmed',
             ),
 			array(
 				'label' 		=> '<i class="fa fa-cogs"></i> Admin',
                 'route' 		=> 'admin',
 				'class'			=> 'visible-xs',
 				'resource'		=> 'admin',
-				'priviledge'	=> 'admin',
             ),
         )
     ),
