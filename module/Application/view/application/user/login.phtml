@@ -1,0 +1,53 @@
+<div class="container login">
+    <div class="row">
+        <h1 class="col-sm-12">Login <?= $this->Session->flash('loginmessage'); ?></h1>
+    </div>
+    <div class="row">
+        <hr class="col-sm-12"/>
+    </div>
+    <div class="row">
+        <div class="col-sm-5 col-sm-offset-1 users form" id="login-form">
+            <?= $this->Form->create('User'); ?>
+            <input name="redirect" type="hidden" value="<?= (isset($this->request->query['redirect'])) ? $this->request->query['redirect'] : ''; ?>" />
+            <?= $this->Session->flash('auth'); ?>
+            <?= $this->Session->flash(); ?>
+            <fieldset>
+                <div class="flashText"></div>
+                <?= $this->Form->input('username',array(
+                    'label' => false,
+                    'placeholder' => 'Username or Email',
+                    'class' => 'form-control',
+                    'div'   => array(
+                        'class' => 'form-group'
+                    )
+                )); ?>
+                <?= $this->Form->input('password',array(
+                    'label' => false,
+                    'placeholder' => 'Password',
+                    'class' => 'form-control',
+                    'div'   => array(
+                        'class' => 'form-group'
+                    )
+                )); ?>
+            </fieldset>
+            <?= $this->Form->end(array(
+                'class' => 'btn btn-primary col-sm-12',
+                'label' => 'Login',
+                'name' => 'Login'
+            )); ?>
+            <div class="messages">
+                <p>Forgot your password? <a href="/forgot_password">Retrieve it</a></p>
+                <p>Need an account? <a href="/signup">Sign Up</a></p>
+            </div>
+        </div>
+        <div class="col-sm-5 oauth">
+            <div class="row">
+                <a href='#' class="login-with-facebook btn btn-facebook btn-primary col-sm-12"><i class='fa fa-facebook'></i> Login with Facebook</a>
+            </div>
+            <div class="row">
+                <a href="/auth/twitter" class="btn btn-twitter btn-primary link col-sm-12"><i class='fa fa-twitter'></i> Login With Twitter</a>
+            </div>
+        </div>
+    </div>
+</div>
+
