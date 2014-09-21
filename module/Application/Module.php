@@ -16,10 +16,17 @@ class Module
 {
     public function onBootstrap(MvcEvent $e)
     {
-        $eventManager        = $e->getApplication()->getEventManager();
-        $moduleRouteListener = new ModuleRouteListener();
+        $eventManager       	= $e->getApplication()->getEventManager();
+		$serviceManager 		= $e->getApplication()->getServiceManager();
+		$moduleRouteListener 	= new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
 		$app = $e->getParam('application'); 
+        // Add ACL information to the Navigation view helper
+        $authorize 				= $serviceManager->get('/BjyAuthorize/Service/Authorize');
+        $acl 					= $authorize->getAcl();
+        $role 					= $authorize->getIdentity();
+        \Zend\View\Helper\Navigation::setDefaultAcl($acl);
+        \Zend\View\Helper\Navigation::setDefaultRole($role);		
 		$app->getEventManager()->attach('dispatch', array($this, 'setLayout')); // 
     }
 

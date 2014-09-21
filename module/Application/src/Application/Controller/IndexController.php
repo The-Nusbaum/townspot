@@ -16,7 +16,6 @@ class IndexController extends AbstractActionController
 {
 	public function __construct() 
 	{
-
 	}
 	
     public function indexAction()
