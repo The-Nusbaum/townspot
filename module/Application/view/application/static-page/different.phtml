@@ -57,49 +57,15 @@
 	<div class="row-fluid">
 		<div class="col-xs-12" align="center">
 			<div class="media">
-				<div id='townspot-video-2'></div>
-				<script type='text/javascript'>
-					jwplayer('townspot-video-2').setup({
-						width: "90%",
-						aspectratio: "16:10",
-						stretching: 'uniform',
-						playlist: [{
-							image: "<?= Router::url('/img/what-is-townspot/townspot_is.png',true); ?>",
-							sources: [
-								{	file: "http://videos.townspot.tv/1952_high.mp4",
-									label: "HD"
-								},
-								{	file: "http://videos.townspot.tv/1952_standard.mp4",
-									label: "SD"
-							}]
-						}],
-						sharing: {
-							code: encodeURI("<iframe src='<?= Router::url('/videos/embed/1952/townspot+is',true); ?>' /></iframe>"),
-						}  
-					});
-					jwplayer('townspot-video-2').onSetupError(function(fallback,message) 
-					{
-						var hasFlash = false;
-						try {
-							var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');
-							if (fo) {
-								hasFlash = true;
-							}
-						} catch (e) {
-							if (navigator.mimeTypes
-								&& navigator.mimeTypes['application/x-shockwave-flash'] != undefined
-								&& navigator.mimeTypes['application/x-shockwave-flash'].enabledPlugin) {
-									hasFlash = true;
-							}
-						}						
-						if (hasFlash == false) {
-							message = "Your browser currently does not have the Flash media plug-in needed to view the video. <br/>";
-							message = message + "Please download the plugin from <a href='http://get.adobe.com/flashplayer/' target='_blank'>Adobe - Install Adobe Flash Player</a>";
-						}
-						$('#SetupErrorMessage').html(message);
-						$('#SetupError').modal('show') 						
-					});
-				</script>				
+				<?= $this->VideoPlayer(
+					1952,
+					array(
+						'width' => '90%',
+						'preview_width' => 800,
+						'preview_height' => 450,
+						'include_sharing' => true
+					)
+				); ?>
 			</div>
 		</div>
 	</div>
