@@ -6,6 +6,6 @@
         <many-to-one field="_media" target-entity="Townspot\Media\Entity" inversed-by="_tags">
             <join-column name="media_id" referenced-column-name="id" />
         </many-to-one>
-		<field name="tag" column="_tag" type="string"/>
+		<field name="_tag" column="tag" type="string"/>
 	</entity>
 </doctrine-mapping>

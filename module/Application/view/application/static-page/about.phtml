@@ -1,0 +1,57 @@
+<div class="container what-is-townspot">
+	<div class="row-fluid">
+		<div class="col-xs-12">
+			<h2>What Is Town<span class="highlight">Spot</span>?</h2>
+			<p>Town<span class="highlight">Spot</span>.tv is the Local Video Network&trade; that specializes in spotlighting local talent across the country through our curated video directory. What do all online videos have in common? They all want to be seen by you. But right now there are so many videos on the Internet that talent gets lost in a sea of content, some of less than desirable quality. As a viewer, you only want to watch the best and most importantly, you need to be able to discover the best. Enter Town<span class="highlight">Spot</span>.</p>
+        </div>
+	</div>
+	<div class="row-fluid">
+		<div class="col-xs-12">
+			<p>Town<span class="highlight">Spot</span> is the go-to source for viewers seeking to discover quality videos that are entertaining, pre-screened for quality, and showcase true talent.</p>
+        </div>
+	</div>
+	<div class="row-fluid">
+		<div class="col-xs-12" align="center">
+			<div class="media">
+				<?= $this->VideoPlayer(
+					1952,
+					array(
+						'width' => '90%',
+						'preview_width' => 800,
+						'preview_height' => 450,
+						'include_sharing' => true
+					)
+				); ?>
+			</div>
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="col-xs-12">
+			<p>From the underground rock band down the street to the up-and-coming artist fifty miles from the nearest airport, talent thrives in all communities and is ready to be discovered. Townspot does the hard work of finding the talent so that you can decide what you want to watch.</p>
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="col-xs-12">
+			Town<span class="highlight">Spot</span>. Your Town. Your Talent. Spotlighted.
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="col-xs-12">
+			<p>To read more, click <a href="/what-makes-townspot-different">here</a>.	
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="SetupError" tabindex="-1" role="dialog" aria-labelledby="SetupLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+				<h4 class="modal-title" id="SetUpLabel">An Error has occurred</h4>
+			</div>
+			<div class="modal-body" id="SetupErrorMessage">
+				Your browser currently does not have the Flash media plug-in needed to view the video. <br/>
+				Please download the plugin from <a href="http://get.adobe.com/flashplayer/" target="_blank">Adobe - Install Adobe Flash Player</a>
+			</div>
+		</div>
+	</div>
+</div>

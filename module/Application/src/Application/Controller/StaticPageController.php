@@ -12,7 +12,7 @@ namespace Application\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class IndexController extends AbstractActionController
+class StaticPageController extends AbstractActionController
 {
 	public function __construct() 
 	{
@@ -26,22 +26,43 @@ class IndexController extends AbstractActionController
 			 ->set('TownSpot &bull; Your Town. Your Talent. Spotlighted');
 	}
 
-    public function indexAction()
+    public function privacyAction()
     {
 		$this->init();
-		$SectionMapper = new \Townspot\SectionBlock\Mapper($this->getServiceLocator());
-		$onScreen = $SectionMapper->findOneByBlockName('On Screen');
-		$dailyHighlights = $SectionMapper->findOneByBlockName('Daily Highlights');
-		$staffFavorites = $SectionMapper->findOneByBlockName('Staff Favorites');
-		
-        return new ViewModel(
-			array(
-				'onScreen' 			=> $onScreen->getSectionMedia(),
-				'dailyHighlights' 	=> $dailyHighlights->getSectionMedia(),
-				'staffFavorites' 	=> $staffFavorites->getSectionMedia(),
-			)
-		);
-		
-        return new ViewModel();
+    }
+
+	public function aboutAction()
+    {
+		$this->init();
+    }
+
+    public function differentAction()
+    {
+		$this->init();
+    }
+
+    public function termsAction()
+    {
+		$this->init();
+    }
+
+    public function agreementAction()
+    {
+		$this->init();
+    }
+
+    public function standardsAction()
+    {
+		$this->init();
+    }
+
+    public function policyAction()
+    {
+		$this->init();
+    }
+
+    public function tipsAction()
+    {
+		$this->init();
     }
 }

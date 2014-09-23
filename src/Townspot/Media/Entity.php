@@ -348,9 +348,13 @@ class Entity
 		return $this->_id;
 	}
 
-	public function getTitle()
+	public function getTitle($formatted = false)
 	{
-		return $this->_title;
+		if (!$formatted) {
+			return $this->_title;
+		}
+		$title = preg_replace('/[^A-Za-z0-9- ]/', '', $this->_title);
+		return strtolower(str_replace(' ','_',$title));
 	}
 
 	public function getMediaType()
@@ -516,5 +520,45 @@ class Entity
 	public function getSectionMedia()
 	{
 		return $this->_section_media;
+	}
+	
+	public function getMediaUrl($resolution = 'HD')
+	{
+		switch ($resolution) {
+			case 'HD':
+				return 'http://videos.townspot.tv/' . $this->getId() . '_high.mp4';
+				break;
+			case 'Mobile':
+				return 'http://videos.townspot.tv/' . $this->getId() . '_mobile.mp4';
+				break;
+			default:
+				return 'http://videos.townspot.tv/' . $this->getId() . '_standard.mp4';
+				break;
+		}
+	}
+	
+	public function getMediaLink()
+	{
+		return sprintf('/videos/%d/%s',
+			$this->getId(),
+			$this->getTitle(true)
+		);
+	}
+	
+	public function getEmbedLink()
+	{
+		return sprintf('/embed/%d/%s',
+			$this->getId(),
+			$this->getTitle(true)
+		);
+	}
+	
+	public function getResizerLink($width,$height)
+	{
+		return sprintf('%s/resizer.php?id=%d&w=%d&h=%d',
+			'http://images.townspot.tv',
+			$this->getId(),
+			$width,
+			$height);
 	}
 }

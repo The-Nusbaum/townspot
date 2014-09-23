@@ -32,7 +32,7 @@
             <join-column name="user_id" referenced-column-name="user_id" />
         </many-to-one>
         <many-to-one field="_admin" target-entity="Townspot\User\Entity" inversed-by="_approved">
-            <join-column name="admin_id" referenced-column-name="id" />
+            <join-column name="admin_id" referenced-column-name="user_id" />
         </many-to-one>
         <many-to-one field="_country" target-entity="Townspot\Country\Entity" inversed-by="_media">
             <join-column name="country_id" referenced-column-name="id" />

@@ -15,7 +15,7 @@ class Entity
 
 	protected $_episodes;
 
-	protected $_user
+	protected $_user;
 
 	protected $_categories;
 	
