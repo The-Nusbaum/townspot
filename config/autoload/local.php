@@ -20,7 +20,7 @@ return array(
         'servers' => array(
             'static_1' => array(
                 'scheme' => 'http',
-                'host' => 'dev.tsz.com',
+                'host' => 'images.townspot.tv',
                 'port' => 80
             ),
         ),

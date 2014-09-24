@@ -13,14 +13,10 @@ class VideoPlayer extends AbstractHelper implements ServiceLocatorAwareInterface
 
     public function __invoke($mediaId,$params=array())
     {
-		$helperPluginManager = $this->getServiceLocator();  
+		$helperPluginManager = $this->getServiceLocator();
 		$serviceManager = $helperPluginManager->getServiceLocator();  	
-
 		$mediaMapper = new \Townspot\Media\Mapper($serviceManager);
-
-		if ($params) {
-			$this->params = $params;
-		}
+		$this->params = $params;
 		if ($media = $mediaMapper->find($mediaId)) {
 			$this->media = $media;
 			$function = $media->getSource();
@@ -31,87 +27,62 @@ class VideoPlayer extends AbstractHelper implements ServiceLocatorAwareInterface
 	
     public function internal()
     {
-		$id 			= (@$this->params['id']) 				?: 'media-player';
-		$width 			= (@$this->params['width']) 			?: '100%';
-		$aspectratio 	= (@$this->params['aspectratio']) 		?: '16:10';
-		$stretching 	= (@$this->params['stretching']) 		?: 'uniform';
-		$previewWidth 	= (@$this->params['preview_width']) 	?: '640';
-		$previewHeight	= (@$this->params['preview_height'])	?: '480';
-		$includeRelated	= (@$this->params['include_related'])	?: false;
-		$includeSharing	= (@$this->params['include_sharing'])	?: false;
-		$resizerLink	= $this->media->getResizerLink($previewWidth,$previewHeight);
-		$relatedLink	= ($includeRelated) ? '/videos/rss/relatedVideos?id=' . $this->media->getId() : null;
-		$sharingLink	= ($includeSharing) ? $this->media->getEmbedLink() : null;
-		$playlist = array(
-			array(	'label'	=> 'HD',
-					'url' 	=>  $this->media->getMediaUrl('HD')),
-			array(	'label'	=> 'SD',
-					'url' 	=>  $this->media->getMediaUrl('SD')),
-			array(	'label'	=> 'Mobile',
-					'url' 	=>  $this->media->getMediaUrl('Mobile')),
-		);
-		$html  = sprintf("<div id='%s'></div>\n",$id);
+		$html  = sprintf("<div id='%s'></div>\n",$this->_getId());
 		$html .= "<script type=\"text/javascript\">\n";
-		$html .= $this->_jwplayerSetup($id,$width,$aspectratio,$stretching,$resizerLink,$playlist,$relatedLink,$sharingLink);
-		$html .= $this->_jwplayerError($id);
+		$html .= $this->_jwplayerSetup();
+		$html .= $this->_jwplayerError();
 		$html .= "</script>\n";
 		return $html;
 	}
 
     public function youtube()
     {
-		$id 			= (@$this->params['id']) 				?: 'media-player';
-		$width 			= (@$this->params['width']) 			?: '100%';
-		$aspectratio 	= (@$this->params['aspectratio']) 		?: '16:10';
-		$stretching 	= (@$this->params['stretching']) 		?: 'uniform';
-		$previewWidth 	= (@$this->params['preview_width']) 	?: '640';
-		$previewHeight	= (@$this->params['preview_height'])	?: '480';
-		$MediaLink		= $this->media->getUrl();
-		//@TODO: Is Image local
-		$ResizerLink	= $this->media->getResizerLink($previewWidth,$previewHeight);
-		$relatedLink	= '/videos/rss/relatedVideos?id=' . $this->media->getId();
-		$sharingLink	= $this->media->getEmbedLink();
+		$html  = sprintf("<div id='%s'></div>\n",$this->_getId());
+		$html .= "<script type=\"text/javascript\">\n";
+		$html .= $this->_jwplayerSetup();
+		$html .= $this->_jwplayerError();
+		$html .= "</script>\n";
+		return $html;
 	}
 
     public function vimeo()
     {
-		$id 			= (@$this->params['id']) 				?: 'media-player';
-		$width 			= (@$this->params['width']) 			?: '100';
-		$aspectratio 	= (@$this->params['aspectratio']) 		?: '16:10';
-		list($_width,$_height) = explode(':',$aspectratio);
-		$ratio = $_height/$_width;
-		$width 			= $width * $ratio;
 	}
 	
-    protected function _jwplayerSetup($id,$width,$aspectratio,$stretching,$image,$playlist,$relatedLink=null,$sharingLink=null)
+    protected function _jwplayerSetup()
     {
-		$_playlist = array();
 		$sections = array();
-		foreach ($playlist as $media) {
-			$_media = "    {\n";
-			$_media .= sprintf("    file: \"%s\",\n",$media['url']);
-			$_media .= sprintf("    label: \"%s\"\n",$media['label']);
-			$_media .= "    }";
-			$_playlist[] = $_media;
+		$html  = sprintf("jwplayer('%s').setup({\n",$this->_getId());
+		$html .= sprintf("width: \"%s\",\n",$this->_getWidth());
+		$html .= sprintf("aspectratio: \"%s\",\n",$this->_getAspectRatio());
+		$html .= sprintf("stretching: \"%s\",\n",$this->_getStretching());
+		$media = $this->_getMedia();
+		if (is_array($media)) {
+			$_playlist = array();
+			foreach ($media as $m) {
+				$_media = "    {\n";
+				$_media .= sprintf("    file: \"%s\",\n",$m['url']);
+				$_media .= sprintf("    label: \"%s\"\n",$m['label']);
+				$_media .= "    }";
+				$_playlist[] = $_media;
+			}
+			$section  = "playlist: [{\n";
+			$section .= sprintf("    image: \"%s\",\n",$this->_getPreviewImage());
+			$section .= "sources: [\n" . implode(",\n",$_playlist) . ']' . "\n";
+			$section .= '		}]' . "\n";
+			$sections[] = $section;
+		} else {
+			$html .= sprintf("image: \"%s\",\n",$this->_getPreviewImage());
+			$html .= sprintf("file: \"%s\",\n",$media);
 		}
-
-		$html  = sprintf("jwplayer('%s').setup({\n",$id);
-		$html .= sprintf("width: \"%s\",\n",$width);
-		$html .= sprintf("aspectratio: \"%s\",\n",$aspectratio);
-		$html .= sprintf("stretching: \"%s\",\n",$stretching);
-		$section  = "playlist: [{\n";
-		$section .= sprintf("    image: \"%s\",\n",$image);
-		$section .= "sources: [\n" . implode(",\n",$_playlist) . ']' . "\n";
-		$section .= '		}]' . "\n";
-		$sections[] = $section;
-		if ($relatedLink) {
+		if ($relatedLink = $this->_getRelatedLink()) {
 			$section = "related: {\n";
 			$section .= sprintf("    file: \"%s\",\n",$relatedLink);
 			$section .= "    dimensions: '200x150'\n";
 			$section .= "}\n";
 			$sections[] = $section;
 		}
-		if ($sharingLink) {
+		if ($sharingLink = $this->_getSharingLink()) {
 			$section = "sharing: {\n";
 			$section .= sprintf("    code: encodeURI('<iframe src=\"%s\" width=\"640\" height=\"426\" frameborder=\"0\" allowfullscreen></iframe>'),\n",
 				$sharingLink);
@@ -123,10 +94,9 @@ class VideoPlayer extends AbstractHelper implements ServiceLocatorAwareInterface
 		return $html;
 	}
 	
-    protected function _jwplayerError($id)
+    protected function _jwplayerError()
     {
-	return null;
-		$html  = sprintf("jwplayer('%s').onSetupError(function(fallback,message) {\n",$id);
+		$html  = sprintf("jwplayer('%s').onSetupError(function(fallback,message) {\n",$this->_getId());
 		$html .= "    var hasFlash = false;\n";
 		$html .= "    try {\n";
 		$html .= "        var fo = new ActiveXObject('ShockwaveFlash.ShockwaveFlash');\n";
@@ -150,6 +120,76 @@ class VideoPlayer extends AbstractHelper implements ServiceLocatorAwareInterface
 		return $html;
 	}
 
+    protected function _getId()
+	{
+		return (@$this->params['id']) ?: 'media-player';
+	}
+	
+    protected function _getWidth()
+	{
+		return (@$this->params['width']) ?: '100%';
+	}
+	
+    protected function _getAspectRatio()
+	{
+		return (@$this->params['aspectratio']) ?: '16:10';
+	}
+
+    protected function _getStretching()
+	{
+		return (@$this->params['stretching']) ?: 'uniform';
+	}
+
+    protected function _getPreviewWidth()
+	{
+		return (@$this->params['preview_width']) ?: '640';
+	}
+
+    protected function _getPreviewHeight()
+	{
+		return (@$this->params['preview_height']) ?: '480';
+	}
+	
+    protected function _getRelatedLink()
+	{
+		if (@$this->params['include_related']) {
+			return '/videos/rss/relatedVideos?id=' . $this->media->getId();
+		}
+		return null;
+	}
+
+    protected function _getSharingLink()
+	{
+		if (@$this->params['include_sharing']) {
+			return $this->media->getEmbedLink();
+		}
+		return null;
+	}
+
+    protected function _getPreviewImage()
+	{
+		$resizerLink	= $this->media->getResizerLink($this->_getPreviewWidth(),$this->_getPreviewHeight());
+		if (!preg_match('/^http/',$resizerLink)) {
+			$resizerLink = $this->getView()->linkCdn($resizerLink);
+		}
+		return $resizerLink;
+	}
+
+    protected function _getMedia()
+	{
+		if ($this->media->getSource() == 'internal') {
+			return array(
+				array(	'label'	=> 'HD',
+						'url' 	=>  $this->media->getMediaUrl('HD')),
+				array(	'label'	=> 'SD',
+						'url' 	=>  $this->media->getMediaUrl('SD')),
+				array(	'label'	=> 'Mobile',
+						'url' 	=>  $this->media->getMediaUrl('Mobile')),
+			);
+		}
+		return $this->media->getUrl();
+	}
+	
     /** 
      * Set the service locator. 
      * 

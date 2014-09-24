@@ -555,10 +555,12 @@ class Entity
 	
 	public function getResizerLink($width,$height)
 	{
-		return sprintf('%s/resizer.php?id=%d&w=%d&h=%d',
-			'http://images.townspot.tv',
-			$this->getId(),
-			$width,
-			$height);
+		if (!(preg_match('/ytimg/',$this->getPreviewImage()))) {
+			return sprintf('/resizer.php?id=%d&w=%d&h=%d',
+				$this->getId(),
+				$width,
+				$height);
+		}
+		return $this->getPreviewImage();
 	}
 }
