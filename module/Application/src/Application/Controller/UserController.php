@@ -11,11 +11,14 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Zend\Form\Factory;
+use Zend\Config;
 
-class IndexController extends AbstractActionController
+class UserController extends AbstractActionController
 {
     public function __construct()
     {
+        $this->_view = new ViewModel();
 
     }
 
@@ -28,7 +31,77 @@ class IndexController extends AbstractActionController
         return new ViewModel();
     }
 
-    public function login() {
+    public function loginAction() {
+        $factory = new Factory();
+        $formElements = $this->serviceLocator->get('FormElementManager');
+        $factory->setFormElementManager($formElements);
+        $inputFilters = $this->serviceLocator->get('InputFilterManager');
+        $factory->getInputFilterFactory()->setInputFilterManager($inputFilters);
 
+        $formConfig = [
+            'elements' => [
+                [
+                    'spec' => [
+                        'name' => 'name',
+                        'options' => [
+                            'label' => 'Your name',
+                        ],
+                        'attributes' => [
+                            'type' => 'text',
+                            'class' => 'form-control',
+                            'required' => 'required',
+                        ],
+                    ],
+                ],
+                [
+                    'spec' => [
+                        'name' => 'email',
+                        'options' => [
+                            'label' => 'Your email address',
+                        ],
+                        'attributes' => [
+                            'type' => 'text',
+                            'class' => 'form-control',
+                            'required' => 'required',
+                        ],
+                    ],
+                ],
+            ],
+            'input_filter' => [
+                'name' => [
+                    'name'       => 'name',
+                    'required'   => true,
+                    'validators' => [
+                        [
+                            'name' => 'not_empty',
+                        ],
+                        [
+                            'name' => 'string_length',
+                            'options' => [
+                                'max' => 30,
+                            ],
+                        ],
+                    ],
+                ],
+                'email' => [
+                    'name'       => 'email',
+                    'required'   => true,
+                    'validators' => [
+                        [
+                            'name' => 'not_empty',
+                        ],
+                        [
+                            'name' => 'email_address',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $form = $factory->createForm($formConfig);
+
+        $this->_view->setVariable('loginForm',$form);
+
+        return $this->_view;
     }
 }

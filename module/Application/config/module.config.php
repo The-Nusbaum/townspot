@@ -370,7 +370,17 @@ return array(
 						'action'     => 'verify',
 					),
 				),
-			),	
+			),
+			'login' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+				'options' => array(
+					'route'    => '/login',
+					'defaults' => array(
+						'controller' => 'Application\Controller\User',
+						'action'     => 'login',
+					),
+				),
+			),
 			'series_player' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(
@@ -414,7 +424,10 @@ return array(
 			'what_makes_townspot_different' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
 				'options' => array(
-					'route'    => '/what-makes-townspot-different',
+					'route'    => '/what-makes-townspot-different','invokables' => array(
+                        'Application\Controller\Index' => 'Application\Controller\IndexController',
+                        'Application\Controller\User' => 'Application\Controller\UserController',
+                    ),
 					'defaults' => array(
 						'controller' => 'Application\Controller\StaticPage',
 						'action'     => 'different',
@@ -527,16 +540,6 @@ return array(
                     ),
                 ),
             ),
-            'login'  => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route' => '/login',
-                    'defaults' => array(
-                        'controller' => 'Application\Controller\User',
-                        'action' => 'login'
-                    )
-                ),
-            )
         ),
     ),
     'service_manager' => array(
@@ -564,7 +567,8 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Application\Controller\Index' => 'Application\Controller\IndexController'
+            'Application\Controller\Index' => 'Application\Controller\IndexController',
+            'Application\Controller\User' => 'Application\Controller\UserController',
         ),
     ),
     'view_manager' => array(
