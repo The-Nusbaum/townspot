@@ -57,10 +57,16 @@ class Entity
 
 	public function getSectionMedia()
 	{
-		return $this->_section_media;
+		$_media = array();
+		$sectionMedia = $this->_section_media;
+		foreach ($sectionMedia as $media) {
+			$_media[$media->getPriority()] = $media;
+		}
+		ksort($_media);
+		return $_media;
 	}
 
-	public function setBlockName()
+	public function getBlockName()
 	{
 		return $this->_block_name;
 	}

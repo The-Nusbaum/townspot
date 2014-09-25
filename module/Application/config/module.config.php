@@ -10,6 +10,9 @@ return array(
             'headLink' => 'headLinkCdn',
             'headScript' => 'headScriptCdn',
         ),
+        'invokables' => array(  
+            'VideoPlayer' => 'Townspot\View\Helper\VideoPlayer',
+        ),
     ),
 	'asset_manager' => array(
         'resolver_configs' => array(
@@ -569,6 +572,7 @@ return array(
         'invokables' => array(
             'Application\Controller\Index' => 'Application\Controller\IndexController',
             'Application\Controller\User' => 'Application\Controller\UserController',
+            'Application\Controller\StaticPage' => 'Application\Controller\StaticPageController',
         ),
     ),
     'view_manager' => array(
