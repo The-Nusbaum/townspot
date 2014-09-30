@@ -674,4 +674,10 @@ class Entity
 	{
 		return $this->_comments_about;
 	}
+	
+	public function getProfileLink()
+	{
+		return "/profile/" . $this->getUsername();
+	}
+	
 }

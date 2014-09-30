@@ -11,12 +11,15 @@ return array(
             'headScript' => 'headScriptCdn',
         ),
         'invokables' => array(  
-            'VideoPlayer' => 'Townspot\View\Helper\VideoPlayer',
+            'VideoPlayer' 	=> 'Townspot\View\Helper\VideoPlayer',
+            'VideoCarousel' => 'Townspot\View\Helper\VideoCarousel',
+            'VideoBlock' 	=> 'Townspot\View\Helper\VideoBlock',
         ),
     ),
 	'asset_manager' => array(
         'resolver_configs' => array(
             'paths' => array(
+                APPLICATION_PATH . '/public/js',
                 APPLICATION_PATH . '/public/css',
                 APPLICATION_PATH . '/public/less',
                 APPLICATION_PATH . '/data/assets',
@@ -25,8 +28,13 @@ return array(
             ),
             'collections' => array(
                 'css/townspot.css' => array(
-                    'style.less',
+                    'xxs.less',
                     'socialmedia.css',
+                    'style.less',
+                ),
+                'js/townspot.js' => array(
+					'carousel.js',
+					'infobutton.js',
                 ),
             ),			
         ),

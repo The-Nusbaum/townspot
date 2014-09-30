@@ -58,11 +58,15 @@ class Entity
 	public function getSectionMedia()
 	{
 		$_media = array();
+		$_sortedMedia = array();
 		$sectionMedia = $this->_section_media;
 		foreach ($sectionMedia as $media) {
-			$_media[$media->getPriority()] = $media;
+			$_sortedMedia[$media->getPriority()][] = $media;
 		}
-		ksort($_media);
+		ksort($_sortedMedia);
+		foreach ($_sortedMedia as $media) {
+			$_media = array_merge($_media,$media);
+		}
 		return $_media;
 	}
 

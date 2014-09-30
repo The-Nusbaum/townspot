@@ -39,28 +39,29 @@
 		</nav>
         <div class="container">
             <?php echo $this->content; ?>
-			<nav id="footer" role="navigation" class="navbar navbar-footer">
-				<div class="container hidden-xs">
-					<ul class="nav navbar-nav navbar-left">
-						<li><a href="/">&copy; 2013 TownSpot, Inc.</a></li>
-						<li><a href="/privacy">Privacy</a></li>
-						<li><a href="/terms-conditions">Terms</a></li>
-						<li><a href="/contact-us">Contact</a></li>
-						<li><a target='_blank' href="http://backstage.townspot.tv/advertise-2/"><strong>Advertise with Us</strong></a></li>
-						<li><a href="/what-is-townspot">What is TownSpot?</a></li>
+        </div> 
+		<nav id="footer" role="navigation" class="navbar navbar-footer">
+			<div class="container hidden-xs">
+				<ul class="nav navbar-nav navbar-left">
+					<li><a href="/">&copy; 2013 TownSpot, Inc.</a></li>
+					<li><a href="/privacy">Privacy</a></li>
+					<li><a href="/terms-conditions">Terms</a></li>
+					<li><a href="/contact-us">Contact</a></li>
+					<li><a target='_blank' href="http://backstage.townspot.tv/advertise-2/"><strong>Advertise with Us</strong></a></li>
+					<li><a href="/what-is-townspot">What is TownSpot?</a></li>
+				</ul>
+				<div class="nav navbar-nav navbar-right social-media">
+					<ul>
+						<li><a target="_blank" title="Follow on facebook" href="http://www.facebook.com/townspot" class="socialmedia-facebook-medium"></a></li>
+						<li><a target="_blank" title="Follow on twitter" href="http://www.twitter.com/townspottv" class="socialmedia-twitter-medium"></a></li>
+						<li><a target="_blank" title="Follow on linkedin" href="http://www.linkedin.com/company/townspot-inc" class="socialmedia-linkedin-medium"></a></li>
+						<li><a target="_blank" title="Follow on pinterest" href="http://www.pinterest.com/townspot" class="socialmedia-pinterest-medium"></a></li>
 					</ul>
-					<div class="nav navbar-nav navbar-right social-media">
-						<ul>
-							<li><a target="_blank" title="Follow on facebook" href="http://www.facebook.com/townspot" class="socialmedia-facebook-medium"></a></li>
-							<li><a target="_blank" title="Follow on twitter" href="http://www.twitter.com/townspottv" class="socialmedia-twitter-medium"></a></li>
-							<li><a target="_blank" title="Follow on linkedin" href="http://www.linkedin.com/company/townspot-inc" class="socialmedia-linkedin-medium"></a></li>
-							<li><a target="_blank" title="Follow on pinterest" href="http://www.pinterest.com/townspot" class="socialmedia-pinterest-medium"></a></li>
-						</ul>
-					</div>
 				</div>
-				<div class="container visible-xs">
-					<div class="pull-left footer-contact">&copy; 2013 <a href="/contact-us">TownSpot, Inc.</a></div>
-					<div class="pull-right social-media">
+			</div>
+			<div class="container visible-xs">
+				<div class="pull-left footer-contact">&copy; 2013 <a href="/contact-us">TownSpot, Inc.</a></div>
+				<div class="pull-right social-media">
 					<ul>
 						<li><a target="_blank" title="Follow on facebook" href="http://www.facebook.com/townspot" class="socialmedia-facebook-medium"></a></li>
 						<li><a target="_blank" title="Follow on twitter" href="http://www.twitter.com/townspottv" class="socialmedia-twitter-medium"></a></li>
@@ -68,7 +69,6 @@
 				</div>
 			</div>
 		</nav>
-        </div> 
-        <?php echo $this->inlineScript() ?>
+		<?php echo $this->inlineScript()->appendFile($this->basePath() . '/js/townspot.js'); ?>
     </body>
 </html>

@@ -33,7 +33,6 @@ class IndexController extends AbstractActionController
 		$onScreen = $SectionMapper->findOneByBlockName('On Screen');
 		$dailyHighlights = $SectionMapper->findOneByBlockName('Daily Highlights');
 		$staffFavorites = $SectionMapper->findOneByBlockName('Staff Favorites');
-		
         return new ViewModel(
 			array(
 				'onScreen' 			=> $onScreen->getSectionMedia(),
