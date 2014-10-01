@@ -12,6 +12,7 @@ return array(
         ),
         'invokables' => array(  
             'VideoPlayer' => 'Townspot\View\Helper\VideoPlayer',
+            'img' => 'Townspot\View\Helper\Image',
         ),
     ),
 	'asset_manager' => array(
@@ -56,6 +57,16 @@ return array(
     ),
     'router' => array(
         'routes' => array(
+            'oauth' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/oauth',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\User',
+                        'action'     => 'oauth',
+                    ),
+                ),
+            ),
             'home' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -384,6 +395,16 @@ return array(
 					),
 				),
 			),
+            'logout' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/logout',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\User',
+                        'action'     => 'logout',
+                    ),
+                ),
+            ),
 			'series_player' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(
@@ -583,6 +604,7 @@ return array(
         'exception_template'       => 'error/index',
         'template_map' => array(
             'application/layout'      => APPLICATION_PATH . '/module/Application/view/layout/layout.phtml',
+            'layout/layout'      => APPLICATION_PATH . '/module/Application/view/layout/layout.phtml',
             'application/index/index' => APPLICATION_PATH . '/module/Application/view/application/index/index.phtml',
             'error/404'               => APPLICATION_PATH . '/module/Application/view/error/404.phtml',
             'error/index'             => APPLICATION_PATH . '/module/Application/view/error/index.phtml',
@@ -590,6 +612,9 @@ return array(
         'template_path_stack' => array(
             APPLICATION_PATH . '/module/Application/view',
         ),
+    ),
+    'module_layouts' => array(
+        'ZfcUser' => 'application/layout',
     ),
 	'navigation' => array(
 		'default' => array(

@@ -13,13 +13,18 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Form\Factory;
 use Zend\Config;
+use Zend\Http\Request;
+use DoctrineModule\Authentication\Adapter\ObjectRepository as ObjectRepositoryAdapter;
+use ZendService\Twitter\Twitter;
+use ZendOAuth;
 
 class UserController extends AbstractActionController
 {
     public function __construct()
     {
         $this->_view = new ViewModel();
-
+        $this->auth = new \Zend\Authentication\AuthenticationService();
+        $this->_view->setVariable('authdUser',$this->auth->getIdentity());
     }
 
     public function indexAction()
@@ -28,80 +33,30 @@ class UserController extends AbstractActionController
             ->get('ViewHelperManager')
             ->get('HeadTitle')
             ->set('TownSpot &bull; Your Town. Your Talent. Spotlighted');
-        return new ViewModel();
+
+        $this->getServiceLocator()
+            ->get('viewhelpermanager')
+            ->get('HeadScript')->appendFile('/js/userProfile.js');
+        $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+        $user = $userMapper->findOneById($this->auth->getIdentity());
+        $this->_view->setVariable('user',$user);
+        $this->_view->setVariable('canEdit',true);
+        $this->_view->setVariable('TZoffset',0);
+        $this->_view->setVariable('',true);
+        return $this->_view;
     }
 
     public function loginAction() {
-        $factory = new Factory();
-        $formElements = $this->serviceLocator->get('FormElementManager');
-        $factory->setFormElementManager($formElements);
-        $inputFilters = $this->serviceLocator->get('InputFilterManager');
-        $factory->getInputFilterFactory()->setInputFilterManager($inputFilters);
 
-        $formConfig = [
-            'elements' => [
-                [
-                    'spec' => [
-                        'name' => 'name',
-                        'options' => [
-                            'label' => 'Your name',
-                        ],
-                        'attributes' => [
-                            'type' => 'text',
-                            'class' => 'form-control',
-                            'required' => 'required',
-                        ],
-                    ],
-                ],
-                [
-                    'spec' => [
-                        'name' => 'email',
-                        'options' => [
-                            'label' => 'Your email address',
-                        ],
-                        'attributes' => [
-                            'type' => 'text',
-                            'class' => 'form-control',
-                            'required' => 'required',
-                        ],
-                    ],
-                ],
-            ],
-            'input_filter' => [
-                'name' => [
-                    'name'       => 'name',
-                    'required'   => true,
-                    'validators' => [
-                        [
-                            'name' => 'not_empty',
-                        ],
-                        [
-                            'name' => 'string_length',
-                            'options' => [
-                                'max' => 30,
-                            ],
-                        ],
-                    ],
-                ],
-                'email' => [
-                    'name'       => 'email',
-                    'required'   => true,
-                    'validators' => [
-                        [
-                            'name' => 'not_empty',
-                        ],
-                        [
-                            'name' => 'email_address',
-                        ],
-                    ],
-                ],
-            ],
-        ];
+    }
 
-        $form = $factory->createForm($formConfig);
+    public function logoutAction() {
+        $this->auth->clearIdentity();
+        $this->flashMessenger()->addMessage('You have been logged out');
+        $this->redirect()->toRoute('login');
+    }
 
-        $this->_view->setVariable('loginForm',$form);
+    public function editAction() {
 
-        return $this->_view;
     }
 }
