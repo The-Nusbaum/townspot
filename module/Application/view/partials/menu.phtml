@@ -3,12 +3,12 @@
 		<button data-target="#townspot-nav" data-toggle="collapse" class="navbar-toggle" type="button">
 			<i class="fa fa-bars" style="color: #ffffff;"></i>
 		</button>
-		<a href="/" class="navbar-brand visible-xs">Town<span class="highlight">Spot</span>.tv</a>
+		<a href="/" class="navbar-brand hidden-sm hidden-md hidden-lg">Town<span class="highlight">Spot</span>.tv</a>
 	</div>
     <div class="collapse navbar-collapse" id="townspot-nav">
 		<ul class="nav navbar-nav navbar-left">
 <?php if($this->zfcUserIdentity()) : ?>
-			<li class="visible-xs navbar-text"><?= $this->zfcUserIdentity()->getDisplayName(); ?></li>
+			<li class="navbar-text hidden-sm hidden-md hidden-lg"><?= $this->zfcUserIdentity()->getDisplayName(); ?></li>
 <?php endif; ?>
 <?php foreach ($this->container as $page) {
 		$hasAccess = true;
@@ -72,7 +72,7 @@
 				$title = ($page->getTitle()) ?: null;
 				$target = ($page->getTarget()) ?: null;
 				printf('<li><a id="%s" title="%s" target="%s" href="%s">%s</a></li>',
-					$class,
+					($class == 'visible-xs') ? 'hidden-sm hidden-md hidden-lg' : $class,
 					$id,
 					$title,
 					$target,

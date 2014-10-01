@@ -11,13 +11,16 @@ return array(
             'headScript' => 'headScriptCdn',
         ),
         'invokables' => array(  
-            'VideoPlayer' => 'Townspot\View\Helper\VideoPlayer',
+            'VideoPlayer' 	=> 'Townspot\View\Helper\VideoPlayer',
+            'VideoCarousel' => 'Townspot\View\Helper\VideoCarousel',
+            'VideoBlock' 	=> 'Townspot\View\Helper\VideoBlock',
             'img' => 'Townspot\View\Helper\Image',
         ),
     ),
 	'asset_manager' => array(
         'resolver_configs' => array(
             'paths' => array(
+                APPLICATION_PATH . '/public/js',
                 APPLICATION_PATH . '/public/css',
                 APPLICATION_PATH . '/public/less',
                 APPLICATION_PATH . '/data/assets',
@@ -26,8 +29,13 @@ return array(
             ),
             'collections' => array(
                 'css/townspot.css' => array(
-                    'style.less',
+                    'xxs.less',
                     'socialmedia.css',
+                    'style.less',
+                ),
+                'js/townspot.js' => array(
+					'carousel.js',
+					'infobutton.js',
                 ),
             ),			
         ),
@@ -57,16 +65,6 @@ return array(
     ),
     'router' => array(
         'routes' => array(
-            'oauth' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route'    => '/oauth',
-                    'defaults' => array(
-                        'controller' => 'Application\Controller\User',
-                        'action'     => 'oauth',
-                    ),
-                ),
-            ),
             'home' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -448,10 +446,7 @@ return array(
 			'what_makes_townspot_different' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
 				'options' => array(
-					'route'    => '/what-makes-townspot-different','invokables' => array(
-                        'Application\Controller\Index' => 'Application\Controller\IndexController',
-                        'Application\Controller\User' => 'Application\Controller\UserController',
-                    ),
+					'route'    => '/what-makes-townspot-different',
 					'defaults' => array(
 						'controller' => 'Application\Controller\StaticPage',
 						'action'     => 'different',
@@ -604,7 +599,6 @@ return array(
         'exception_template'       => 'error/index',
         'template_map' => array(
             'application/layout'      => APPLICATION_PATH . '/module/Application/view/layout/layout.phtml',
-            'layout/layout'      => APPLICATION_PATH . '/module/Application/view/layout/layout.phtml',
             'application/index/index' => APPLICATION_PATH . '/module/Application/view/application/index/index.phtml',
             'error/404'               => APPLICATION_PATH . '/module/Application/view/error/404.phtml',
             'error/index'             => APPLICATION_PATH . '/module/Application/view/error/index.phtml',

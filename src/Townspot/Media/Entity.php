@@ -497,9 +497,18 @@ class Entity
 		return $this->_encodings;
 	}
 
-	public function getRatings()
+	public function getRatings($rate = null)
 	{
-		return $this->_ratings;
+		if ($rate === null) {
+			return $this->_ratings;
+		}
+		$ratings = array();
+		foreach ($this->_ratings as $rating) {
+			if ($rating->getRating() === $rate) {
+				$ratings[] = $rating;
+			}
+		}
+		return $ratings;
 	}
 
 	public function getTags()
@@ -562,5 +571,18 @@ class Entity
 				$height);
 		}
 		return $this->getPreviewImage();
+	}
+	
+	public function getLocation($includeNeighborhood = false)
+	{
+		$location = sprintf("%s, %s",
+			$this->getCity()->getName(),
+			$this->getProvince()->getAbbrev());
+		if ($includeNeighborhood) {
+			if ($neighborhood = $this->getNeighborhood()) {
+				$location .= sprintf(" (%s)",$neighborhood);
+			}
+		}
+		return $location;
 	}
 }

@@ -32,7 +32,7 @@ class Entity
 		if ($rating === true) {
 			$this->_rating = 1;
 		} elseif ($rating === false) {
-			$this->_rating = 1;
+			$this->_rating = -1;
 		}
 		return $this;
 	}
@@ -54,6 +54,11 @@ class Entity
 
 	public function getRating()
 	{
-		return $this->_rating;
+		if ($this->_rating === 1 ) {
+			return true;
+		} elseif ($this->_rating === -1) {
+			return false;
+		}
+		return null;
 	}
 }
