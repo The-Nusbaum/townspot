@@ -4,6 +4,70 @@
 	</div>
 </div>
 <div class="row">
+	<div data-ride="carousel" class="col-sm-12 carousel slide" id="on-stage-carousel">
+		<div id="on-stage-carousel-inner" class="carousel-inner">
+<?php foreach ($this->onScreen as $index => $media) { 
+		$media = $media->getMedia();
+		$resizerLink	= $media->getResizerLink(640,480);
+		if (!preg_match('/^http/',$resizerLink)) {
+			$resizerLink = $this->linkCdn($resizerLink);
+		}
+?>
+			<div class="item<?= ($index == 0) ? " active" : ""; ?>">
+				<div class="row">
+					<div class="col-sm-6">
+						<div class="video-preview">
+							<a href="<?= $media->getMediaLink(); ?>">
+								<img class="img-responsive preview-img" alt="<?= htmlentities($media->getTitle()); ?>" src="<?= $resizerLink; ?>">
+							</a>
+							<div class="carousel-caption">
+								<a href="<?= $media->getMediaLink(); ?>">
+									<div class="video-title">
+										<h3 title="<?= htmlentities($media->getLocation()); ?>" class="dot-text" id="0"><?= $media->getLocation(); ?></h3>
+									</div>
+								</a>
+								<div class="info-button last"
+									title="" 
+									data-original-title="<a href='<?= $media->getMediaLink(); ?>'><?= htmlentities($media->getTitle()); ?></a>
+									by <a href='<?= $media->getUser()->getProfileLink(); ?>'><?= $media->getUser()->getUsername(); ?></a>"
+									data-content="<?= htmlentities($media->getLocation()); ?><br/>
+									<?= htmlentities($media->getLogline()); ?><footer>
+									<span class='video-duration'><i class='fa fa-clock-o'></i> <?= $media->getDuration(true); ?></span> 
+									<span class='video-plays'><i class='fa fa-play'></i> <?= $media->getViews(); ?></span> 
+									<span class='video-thumbs-up'><i class='fa fa-thumbs-up'></i> <?= count($media->getRatings(true)); ?></span> 
+									<span class='video-thumbs-down'><i class='fa fa-thumbs-down'></i> <?= count($media->getRatings(false)); ?></span>
+									<span class='video-comments'><i class='fa fa-comments'></i> <?= count($media->getCommentsAbout()); ?></span></footer>"
+									data-toggle="popover">
+									<i class="fa fa-info-circle"></i>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6 video-info">
+						<div class="internal-wrapper">
+							<h2><a href="<?= $media->getMediaLink(); ?>"><?= htmlentities($media->getTitle()); ?> by <?= $media->getUser()->getUsername(); ?></a></h2>
+							<div class="active-logline"><?= $media->getLogline(); ?></div>
+							<div class="active-info"><p><?= $media->getDescription(); ?></p></div>
+						</div>
+					</div>
+				</div>
+			</div>
+<?php } ?>
+		</div>
+		<a class="left carousel-control on-stage-carousel-control" href="#on-stage-carousel" data-slide="prev">
+			<img src="/img/slide-left.gif">
+		</a>
+		<a class="right carousel-control on-stage-carousel-control" href="#on-stage-carousel" data-slide="next">
+			<img src="/img/slide-right.gif">
+		</a>		
+		<ol class="carousel-indicators">
+<?php foreach ($this->onScreen as $index => $media) { ?>
+			<li class="<?= ($index == 0) ? "active" : ""; ?>" data-slide-to="<?= $index; ?>" data-target="#on-stage-carousel"></li>
+<?php } ?>
+		</ol>
+	</div>
+</div>
+<div class="row">
 	<div class="col-sm-12">
 		<h1>Daily Highlights</h1>	
 	</div>
@@ -18,12 +82,12 @@
 		<?= $this->VideoCarousel($dailyHighlights,array(
 			'id' => 'highlights-sm',
 			'per_panel' => 2,
-			'class' => 'visible-xs'
+			'class' => 'hidden-lg hidden-md hidden-xxs'
 			)); ?>
 		<?= $this->VideoCarousel($dailyHighlights,array(
 			'id' => 'highlights-xs',
 			'per_panel' => 1,
-			'class' => 'visible-xxs'
+			'class' => 'hidden-lg hidden-md hidden-sm hidden-xs'
 			)); ?>
 	</div>
 </div>
@@ -51,6 +115,4 @@
 			)); ?>
 	</div>
 </div>
-<br/>
-<br/>
-<br/>
+<br/><br/><br/>

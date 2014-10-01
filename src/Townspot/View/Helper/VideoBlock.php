@@ -20,10 +20,6 @@ class VideoBlock extends AbstractHelper implements ServiceLocatorAwareInterface
 			if (!preg_match('/^http/',$resizerLink)) {
 				$resizerLink = $this->getView()->linkCdn($resizerLink);
 			}
-			$d1 = new \DateTime(); 	$d2 = new \DateTime();
-			$d2->add(new \DateInterval('PT'.intval($media->getDuration()).'S'));
-			$interval = $d2->diff($d1);
-			$duration = $interval->format("%H:%I:%S");
 $media_block = <<<EOT
 <div class="video-preview{position}">
 	<a href="{media_link}">
@@ -81,7 +77,7 @@ EOT;
 						$media->getTitle(),
 						$media->getUser()->getProfileLink(),
 						$media->getUser()->getUsername(),
-						$duration,
+						$media->getDuration(true),
 						count($media->getCommentsAbout()),
 						$media->getViews(),
 						htmlentities($media->getLogline()),

@@ -397,8 +397,15 @@ class Entity
 		return $this->_views;
 	}
 
-	public function getDuration()
+	public function getDuration($formatted = false)
 	{
+		if ($formatted) {
+			$d1 = new \DateTime(); 	
+			$d2 = new \DateTime();
+			$d2->add(new \DateInterval('PT'.intval($this->_duration).'S'));
+			$interval = $d2->diff($d1);
+			return $interval->format("%H:%I:%S");
+		}
 		return $this->_duration;
 	}
 
