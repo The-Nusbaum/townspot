@@ -10,46 +10,35 @@ namespace Api\Controller;
 
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
+use Zend\EventManager\EventManagerInterface;
+use Zend\Filter\Inflector;
 
-class MediaController extends AbstractRestfulController
+class ModelController extends \Townspot\Controller\BaseRestfulController
 {
+    public function setEventManager(EventManagerInterface $eventManager)
+    {
+        parent::setEventManager($eventManager);
 
-    public function getList()
-    {   // Action used for GET requests without resource Id
-        $mapper = new \Townspot\Media\Mapper($this->getServiceLocator());
-        $media = $mapper->findAll();
-        $data = array();
-        foreach($media as $m) {
-            $data[] = $m->toArray();
-        }
-        return new JsonModel(
-            array('data' =>
-                $data
-            )
-        );
-    }
+        $controller = $this;
 
-    public function get($id)
-    {   // Action used for GET requests with resource Id
-        $mapper = new \Townspot\Media\Mapper($this->getServiceLocator());
-        return new JsonModel(
-            array("data" => array(
-                $mapper->findOneById($id)->toArray()
-            )));
-    }
+        $eventManager->attach('dispatch', function ($e) use ($controller) {
 
-    public function create($data)
-    {   // Action used for POST requests
-        return new JsonModel(array('data' => array('id'=> 3, 'name' => 'New Album', 'band' => 'New Band')));
-    }
 
-    public function update($id, $data)
-    {   // Action used for PUT requests
-        return new JsonModel(array('data' => array('id'=> 3, 'name' => 'Updated Album', 'band' => 'Updated Band')));
-    }
+            $model = ucFirst($controller->params()->fromRoute('model'));
+            $this->setModel($model);
+            $mapperClass = "\\Townspot\\".$model."\\Mapper";
+            $controllerClass = "\\Api\\Controller\\{$this->getModel()}Controller";
 
-    public function delete($id)
-    {   // Action used for DELETE requests
-        return new JsonModel(array('data' => 'album id 3 deleted'));
+            if(class_exists($controllerClass)) {
+                header('Content-type: application/json');
+                die(json_encode($this->forward()->dispatch($controllerClass)->getVariables()));
+            }
+
+            $this->setMapper(new $mapperClass($this->getServiceLocator()));
+            $entityClass = "\\Townspot\\".$model."\\Entity";
+            $this->setEntity(new $entityClass);
+            $this->setResponse(new \Townspot\Rest\Response());
+        }, 100);
+
     }
 } 

@@ -1,7 +1,7 @@
 <?php
 namespace Townspot\Media;
 
-class Entity
+class Entity extends \Townspot\Entity
 {
 	protected $_id;
 

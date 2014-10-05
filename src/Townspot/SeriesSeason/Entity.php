@@ -1,7 +1,7 @@
 <?php
 namespace Townspot\SeriesSeason;
 
-class Entity
+class Entity extends \Townspot\Entity
 {
 	protected $_id;
 

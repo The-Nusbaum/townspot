@@ -10,36 +10,23 @@ namespace Api\Controller;
 
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
+use Zend\EventManager\EventManagerInterface;
+use Zend\Filter\Inflector;
 
-class MediaController extends AbstractRestfulController
+class MediaController extends \Townspot\Controller\BaseRestfulController
 {
-    public function getList()
-    {   // Action used for GET requests without resource Id
-        $VideoMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
-        return new JsonModel(
-            array('data' =>
-                $MediaMapper->find()
-            )
-        );
-    }
+    public function setEventManager(EventManagerInterface $eventManager)
+    {
+        parent::setEventManager($eventManager);
 
-    public function get($id)
-    {   // Action used for GET requests with resource Id
-        return new JsonModel(array("data" => array('id'=> 2, 'name' => 'Coda', 'band' => 'Led Zeppelin')));
-    }
+        $controller = $this;
 
-    public function create($data)
-    {   // Action used for POST requests
-        return new JsonModel(array('data' => array('id'=> 3, 'name' => 'New Album', 'band' => 'New Band')));
-    }
+        $eventManager->attach('dispatch', function ($e) use ($controller) {
+            $this->setModel('Media');
+            $this->setMapper(new \Townspot\Media\Mapper($this->getServiceLocator()));
+            $this->setEntity(new \Townspot\Media\Entity());
+            $this->setResponse(new \Townspot\Rest\Response());
+        }, 100);
 
-    public function update($id, $data)
-    {   // Action used for PUT requests
-        return new JsonModel(array('data' => array('id'=> 3, 'name' => 'Updated Album', 'band' => 'Updated Band')));
-    }
-
-    public function delete($id)
-    {   // Action used for DELETE requests
-        return new JsonModel(array('data' => 'album id 3 deleted'));
     }
 } 

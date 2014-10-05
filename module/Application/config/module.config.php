@@ -321,6 +321,16 @@ return array(
                     ),
                 ),
 			),
+            'userEdit' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/user/edit',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\User',
+                        'action'     => 'edit',
+                    ),
+                ),
+            ),
 			'profile_short' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(
@@ -533,7 +543,7 @@ return array(
 					),
 				),
 			),	
-            'application' => array(
+            /*'application' => array(
                 'type'    => 'Literal',
                 'options' => array(
                     'route'    => '/application',
@@ -558,7 +568,7 @@ return array(
                         ),
                     ),
                 ),
-            ),
+            ),*/
         ),
     ),
     'service_manager' => array(

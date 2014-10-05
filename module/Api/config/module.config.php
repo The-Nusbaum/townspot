@@ -2,12 +2,24 @@
 return array(
     'controllers' => array(
         'invokables' => array(
-            'Api\Controller\Index' => 'Api\Controller\IndexController',
+//          'Api\Controller\Index' => 'Api\Controller\IndexController',
+            'Api\Controller\MediaController' => 'Api\Controller\MediaController',
+            'model' => 'Api\Controller\ModelController',
         ),
     ),
     // The following section is new and should be added to your file
     'router' => array(
         'routes' => array(
+            'Api' => array(
+                'type'    => 'Segment',
+                'options' => array(
+                    'route'    => '/api/[:model][/:id]',
+                    'defaults' => array(
+                        'controller' => 'model'
+                    ),
+                ),
+            ),
+/*
             'Api' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -33,20 +45,12 @@ return array(
                     ),
                 ),
             ),
+*/
         ),
     ),
     'view_manager' => array(
-        'display_not_found_reason' => true,
-        'display_exceptions'       => true,
-        'doctype'                  => 'HTML5',
-        'not_found_template'       => 'error/404',
-        'exception_template'       => 'error/index',
-        'template_map' => array(
-            'api/layout'           => APPLICATION_PATH . '/module/Api/view/layout/layout.phtml',
-            'api/index/index' 	   => APPLICATION_PATH . '/module/Api/view/api/index/index.phtml',
-        ),
-        'template_path_stack' => array(
-            'api' => APPLICATION_PATH . '/module/Api/view',
-        ),
+        'strategies'               => array(
+            'ViewJsonStrategy'
+        )
     ),
 );

@@ -9,6 +9,8 @@
 
 namespace Application\Controller;
 
+use Album\Form\EditForm;
+use Symfony\Component\Console\Application;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Form\Factory;
@@ -57,6 +59,9 @@ class UserController extends AbstractActionController
     }
 
     public function editAction() {
-
+        $form = new \Application\Forms\User\Edit();
+        $this->_view->setVariable('form',$form);
+        $this->_view->setVariable('foo','bar');
+        return $this->_view;
     }
 }
