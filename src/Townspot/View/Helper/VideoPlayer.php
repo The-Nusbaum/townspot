@@ -133,11 +133,9 @@ class VideoPlayer extends AbstractHelper implements ServiceLocatorAwareInterface
 			$html .= "                <div id='video-title'>\n";
 			$html .= "                    <table>\n";
 			$html .= "                        <tr>\n";
-			if ($this->_getVideoButtons()) {
-				$html .= "                            <td rowspan='2'>\n";
-				$html .= "                                <h1><i class='fa fa-star-o' id='favorite-link'></i></h1>\n";
-				$html .= "                            </td>\n";
-			}
+			$html .= "                            <td rowspan='2'>\n";
+			$html .= "                                <h1><i class='fa fa-star-o fa-toggle-o' id='favorite-link'></i></h1>\n";
+			$html .= "                            </td>\n";
 			$html .= "                            <td>\n";
 			$html .= "                                <h1>%s</h1>\n";
 			$html .= "                            </td>\n";
@@ -151,10 +149,10 @@ class VideoPlayer extends AbstractHelper implements ServiceLocatorAwareInterface
 			$html .= "                </div>\n";
 			$html .= "            </div>\n";
 			$html .= "            <div class='col-xs-4 col-sm-1 video-ratings pull-right'>\n";
-			$html .= "                <table>\n";
+			$html .= "                <table class='pull-right'>\n";
 			$html .= "                    <tr>\n";
-			$html .= "                        <th><i class='fa fa-thumbs-o-up' id='rate-up'></i></th>\n";
-			$html .= "                        <th><i class='fa fa-thumbs-o-down' id='rate-down'></i></th>\n";
+			$html .= "                        <th><i class='fa fa-thumbs-o-up fa-toggle-o' id='rate-up'></i></th>\n";
+			$html .= "                        <th><i class='fa fa-thumbs-o-down fa-toggle-o' id='rate-down'></i></th>\n";
 			$html .= "                    </tr>\n";
 			$html .= "                    <tr>\n";
 			$html .= "                        <td><div id='up-ratings'>%d</div></td>\n";
@@ -165,11 +163,9 @@ class VideoPlayer extends AbstractHelper implements ServiceLocatorAwareInterface
 			$html .= "        </div>\n";
 			$html .= "        <div class='row'>\n";
 			$html .= "            <div class='col-xs-6 interaction-buttons'>\n";
-			if ($this->_getVideoButtons()) {
-				$html .= "                <button class='btn interaction-button' id='contact-interaction'>Contact</button>\n";
-				$html .= "                <button class='btn interaction-button' id='follow-interaction'>Become a Fan</button>\n";
-				$html .= "                " . $this->_getYtSubscribe();
-			}
+			$html .= "                <button class='btn interaction-button' id='contact-interaction'>Contact</button>\n";
+			$html .= "                <button class='btn interaction-button' id='follow-interaction'>Become a Fan</button>\n";
+			$html .= "                " . $this->_getYtSubscribe();
 			$html .= "            </div>\n";
 			$html .= "            <div class='col-xs-6 video-views'>\n";
 			$html .= "                <div class='pull-right'>\n";

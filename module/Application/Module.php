@@ -28,6 +28,16 @@ class Module
         \Zend\View\Helper\Navigation::setDefaultAcl($acl);
         \Zend\View\Helper\Navigation::setDefaultRole($role);		
 		$app->getEventManager()->attach('dispatch', array($this, 'setLayout')); // 
+		$serviceManager->get('viewhelpermanager')->setFactory('controllerName', function($sm) use ($e) {
+			$viewHelper = new \Townspot\View\Helper\ControllerName($e->getRouteMatch());
+			return $viewHelper;
+		});
+		$serviceManager->get('viewhelpermanager')->setFactory('actionName', function($sm) use ($e) {
+			$viewHelper = new \Townspot\View\Helper\ActionName($e->getRouteMatch());
+			return $viewHelper;
+		});
+		$moduleRouteListener = new ModuleRouteListener();
+		$moduleRouteListener->attach($eventManager);
     }
 
     public function getConfig()

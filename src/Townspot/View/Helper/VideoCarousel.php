@@ -74,7 +74,7 @@ class VideoCarousel extends AbstractHelper implements ServiceLocatorAwareInterfa
 			if (!isset($this->media[$mediaIndex])) {
 				$mediaIndex = rand (0, (count($this->media) - 1));
 			}
-			$html .= $this->getView()->VideoBlock($this->media[$mediaIndex]->getMedia()->getId(),true, $position);
+			$html .= $this->getView()->VideoBlock($this->media[$mediaIndex],true, $position);
 			$html .= "</div>";
 		}
 		$html .= "</div>";
