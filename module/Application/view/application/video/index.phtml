@@ -5,7 +5,7 @@
 				<?= $this->VideoPlayer(
 					$this->media_id,
 					array(
-						'width' => '90%',
+						'width' => '100%',
 						'preview_width' => 800,
 						'preview_height' => 450,
 						'include_sharing' => true,
@@ -23,41 +23,41 @@
 				<div class="col-xs-12">
 					<h3>Description</h3>
 					<div class="expandable">
-						<div class="summary">	
-							<?= $this->media->getDescription(); ?>
-						</div>
+						<?= $this->media->getDescription(); ?>
 					</div>
-					<div class="row">
-						<div class="col-xxs-5 col-xs-4 col-sm-3">
-							<h3>Location:</h3>
-						</div>
-						<div class="col-xxs-7 col-xs-8 col-sm-9">
-							<ul class="boxed-list">
-								<li><a href="<?= $this->media->getCity()->getDiscoverLink(); ?>"><?= $this->media->getCity()->getName(); ?></a></li>
-								<li><a href="<?= $this->media->getProvince()->getDiscoverLink(); ?>"><?= $this->media->getProvince()->getName(); ?></a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-xxs-5 col-xs-4 col-sm-3">
-							<h3>Genres:</h3>
-						</div>
-						<div class="col-xxs-7 col-xs-8 col-sm-9">
-							<ul class="boxed-list genres">
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xxs-5 col-xs-4 col-sm-3">
+					<h3>Location:</h3>
+				</div>
+				<div class="col-xxs-7 col-xs-8 col-sm-9">
+					<ul class="boxed-list">
+						<li><a href="<?= $this->media->getCity()->getDiscoverLink(); ?>"><?= $this->media->getCity()->getName(); ?></a></li>
+						<li><a href="<?= $this->media->getProvince()->getDiscoverLink(); ?>"><?= $this->media->getProvince()->getName(); ?></a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xxs-5 col-xs-4 col-sm-3">
+					<h3>Genres:</h3>
+				</div>
+				<div class="col-xxs-7 col-xs-8 col-sm-9">
+					<ul class="boxed-list genres">
 <?php foreach ($this->media->getCategories() as $category) { ?>
-								<li><a href="<?= $category->getDiscoverLink(); ?>"><?= $category->getName(); ?></a></li>
+						<li><a href="<?= $category->getDiscoverLink(); ?>"><?= $category->getName(); ?></a></li>
 <?php } ?>							
-							</ul>
-					</div>
+					</ul>
 				</div>
-				<div class="row">
-					<div class="col-xs-12 social-media_wrapper">
+			</div>
+			<div class="row">
+				<div class="col-xs-12 social-media_wrapper">
 <?= $this->AddThisLinks($this->serverUrl(true));  ?>				
-					</div>
 				</div>
-				
-				<div class="row">
-					<div class="col-xs-12 comments">
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="col-xxs-5 col-xs-4 col-sm-3">
 						<h3>Comments:</h3>
 					</div>
 				</div>
@@ -85,151 +85,30 @@
 				</div>
 				<div class="row">
 					<div class="col-sm-12">
-						<ul id="video-comment-list"><li data-id="12958" class="comment" id="comment-12958"><img class="img-responsive" src="http://images.townspot.tv/resizer.php?id=2&amp;type=profile&amp;w=100&amp;h=100"><p class="comment-comment">The message of this video is very powerful and resonates today! </p><a href="/profile/josh">Josh</a> - 5 months ago</li><li data-id="12687" class="comment" id="comment-12687"><img class="img-responsive" src="http://images.townspot.tv/resizer.php?id=22&amp;type=profile&amp;w=100&amp;h=100"><p class="comment-comment">This is so... I just don't have words.</p><a href="/profile/steven">Steven</a> - 9 months ago</li><li data-id="10866" class="comment" id="comment-10866"><img class="img-responsive" src="http://images.townspot.tv/resizer.php?id=1&amp;type=profile&amp;w=100&amp;h=100"><p class="comment-comment">This has a powerful meaning on a day like today!</p><a href="/profile/courtney">courtney</a> - 2 years ago</li><li data-id="10857" class="comment" id="comment-10857"><img class="img-responsive" src="http://images.townspot.tv/resizer.php?id=210&amp;type=profile&amp;w=100&amp;h=100"><p class="comment-comment">Very well done</p><a href="/profile/spud">spud</a> - 2 years ago</li><li data-id="10759" class="comment" id="comment-10759"><img class="img-responsive" src="http://images.townspot.tv/resizer.php?id=37&amp;type=profile&amp;w=100&amp;h=100"><p class="comment-comment">The aliens were great!</p><a href="/profile/ryan">Ryan</a> - 2 years ago</li></ul>
+						<ul id="comment-list">
+						
+						</ul>
 					</div>
 				</div>
 				<div class="row">
 					<div class="col-sm-12">
-						<div id="comment-navigation-down" style="display: block;"><button class="btn btn-default next col-xs-12"><i class="fa fa-chevron-down"></i></button></div>
+						<div id="comment-navigation-down" style="display: none;"><button class="btn btn-default next col-xs-12"><i class="fa fa-chevron-down"></i></button></div>
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-4 similar-videos">
-				<h3>Similar Videos</h3>
-				<ul class="matching-videos hidden-xs">
-						<li>
-						<div class="item">
-							<div class="video-preview">
-								<a href="/videos/3013/death+of+a+speaker+pt+11">
-									<img class="img-responsive preview-img" alt="Death of A Speaker pt 11" src="http://images.townspot.tv/resizer.php?id=3013&amp;w=640&amp;h=480&amp;w=640&amp;h=480">
-								</a>
-								<div class="caption">
-									<div class="video-title">
-										<h3 title="Death of A Speaker pt 11">
-											<a href="/videos/3013/death+of+a+speaker+pt+11">
-												<div class="dot-text">Death of A Speaker pt 11</div>
-											</a>
-											<a href="/profile/ShotgunMythos">
-												</a><div class="dot-text"><a href="/profile/ShotgunMythos"> by ShotgunMythos											</a>
-										</div></h3>
-										<h3 title="Washington, DC" class="dot-text">Washington, DC</h3>
-									</div>
-									<div class="info-button matching-videos-btn">
-										<div data-title="&lt;a href='/videos/3013/death+of+a+speaker+pt+11'&gt;Death of A Speaker pt 11&lt;/a&gt; by ShotgunMythos" href="#" class="more-info popover-btn" data-toggle="popover" data-content="Washington, DC&lt;br/&gt;Lir reports to Ma Hyter.&lt;div class='popover-footer'&gt;&lt;span class='video-duration'&gt;&lt;i class='fa fa-clock-o'&gt;&lt;/i&gt; 145&lt;/span&gt; &lt;span class='video-plays'&gt;&lt;i class='fa fa-play'&gt;&lt;/i&gt; 152&lt;/span&gt; &lt;span class='video-thumbs-up'&gt;&lt;i class='fa fa-thumbs-up'&gt;&lt;/i&gt; 0&lt;/span&gt; &lt;span class='video-thumbs-down'&gt;&lt;i class='fa fa-thumbs-down'&gt;&lt;/i&gt; 0&lt;/span&gt; &lt;span class='video-comments'&gt;&lt;i class='fa fa-comments'&gt;&lt;/i&gt; 0&lt;/span&gt;&lt;/div&gt;" role="button" data-original-title="" title=""><i class="fa fa-info-circle"></i></div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</li>
-						<li>
-						<div class="item">
-							<div class="video-preview">
-								<a href="/videos/1619/my+roommate+the+desperado">
-									<img class="img-responsive preview-img" alt="my roommate the Desperado" src="http://images.townspot.tv/resizer.php?id=1619&amp;w=640&amp;h=480&amp;w=640&amp;h=480">
-								</a>
-								<div class="caption">
-									<div class="video-title">
-										<h3 title="my roommate the Desperado">
-											<a href="/videos/1619/my+roommate+the+desperado">
-												<div class="dot-text">my roommate the Desperado</div>
-											</a>
-											<a href="/profile/myroommatethe">
-												</a><div class="dot-text"><a href="/profile/myroommatethe"> by myroommatethe											</a>
-										</div></h3>
-										<h3 title="Los Angeles, CA" class="dot-text">Los Angeles, CA</h3>
-									</div>
-									<div class="info-button matching-videos-btn">
-										<div data-title="&lt;a href='/videos/1619/my+roommate+the+desperado'&gt;my roommate the Desperado&lt;/a&gt; by myroommatethe" href="#" class="more-info popover-btn" data-toggle="popover" data-content="Los Angeles, CA&lt;br/&gt;'Bailamos'&lt;div class='popover-footer'&gt;&lt;span class='video-duration'&gt;&lt;i class='fa fa-clock-o'&gt;&lt;/i&gt; 258&lt;/span&gt; &lt;span class='video-plays'&gt;&lt;i class='fa fa-play'&gt;&lt;/i&gt; 213&lt;/span&gt; &lt;span class='video-thumbs-up'&gt;&lt;i class='fa fa-thumbs-up'&gt;&lt;/i&gt; 0&lt;/span&gt; &lt;span class='video-thumbs-down'&gt;&lt;i class='fa fa-thumbs-down'&gt;&lt;/i&gt; 0&lt;/span&gt; &lt;span class='video-comments'&gt;&lt;i class='fa fa-comments'&gt;&lt;/i&gt; 0&lt;/span&gt;&lt;/div&gt;" role="button" data-original-title="" title=""><i class="fa fa-info-circle"></i></div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</li>
-						<li>
-						<div class="item">
-							<div class="video-preview">
-								<a href="/videos/1529/us%3a+start+to+finish">
-									<img class="img-responsive preview-img" alt="Us: Start to Finish" src="http://images.townspot.tv/resizer.php?id=1529&amp;w=640&amp;h=480&amp;w=640&amp;h=480">
-								</a>
-								<div class="caption">
-									<div class="video-title">
-										<h3 title="Us: Start to Finish">
-											<a href="/videos/1529/us%3a+start+to+finish">
-												<div class="dot-text">Us: Start to Finish</div>
-											</a>
-											<a href="/profile/ChillyWilson">
-												</a><div class="dot-text"><a href="/profile/ChillyWilson"> by ChillyWilson											</a>
-										</div></h3>
-										<h3 title="Madison, WI" class="dot-text">Madison, WI</h3>
-									</div>
-									<div class="info-button matching-videos-btn">
-										<div data-title="&lt;a href='/videos/1529/us%3a+start+to+finish'&gt;Us: Start to Finish&lt;/a&gt; by ChillyWilson" href="#" class="more-info popover-btn" data-toggle="popover" data-content="Madison, WI&lt;br/&gt;A 16mm short I made at UW-Milwaukee.&lt;div class='popover-footer'&gt;&lt;span class='video-duration'&gt;&lt;i class='fa fa-clock-o'&gt;&lt;/i&gt; 302&lt;/span&gt; &lt;span class='video-plays'&gt;&lt;i class='fa fa-play'&gt;&lt;/i&gt; 212&lt;/span&gt; &lt;span class='video-thumbs-up'&gt;&lt;i class='fa fa-thumbs-up'&gt;&lt;/i&gt; 1&lt;/span&gt; &lt;span class='video-thumbs-down'&gt;&lt;i class='fa fa-thumbs-down'&gt;&lt;/i&gt; 0&lt;/span&gt; &lt;span class='video-comments'&gt;&lt;i class='fa fa-comments'&gt;&lt;/i&gt; 0&lt;/span&gt;&lt;/div&gt;" role="button" data-original-title="" title=""><i class="fa fa-info-circle"></i></div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</li>
-					</ul>
-				<div class="row visible-xs">
-						<div class="col-xs-4 matching-videos-row">
-						<div class="video-preview">
-							<a href="/videos/3013/death+of+a+speaker+pt+11">
-								<img class="img-responsive preview-img" alt="Death of A Speaker pt 11" src="http://images.townspot.tv/resizer.php?id=3013&amp;w=640&amp;h=480&amp;w=860&amp;h=556">
-								</a><div class="caption"><a href="/videos/3013/death+of+a+speaker+pt+11">
-									</a><div class="video-title"><a href="/videos/3013/death+of+a+speaker+pt+11">
-										</a><h3 title="Death of A Speaker pt 11"><a href="/videos/3013/death+of+a+speaker+pt+11">
-											</a><a href="/videos/3013/death+of+a+speaker+pt+11">
-												<div class="dot-text">Death of A Speaker pt 11</div>
-											</a>
-											<a href="/profile/ShotgunMythos">
-												</a><div class="dot-text"><a href="/profile/ShotgunMythos"> by ShotgunMythos											</a>
-										</div></h3>
-										<h3 title="Washington, DC" class="dot-text">Washington, DC</h3>
-									</div>
-								</div>
-							
-						</div>
-					</div>
-						<div class="col-xs-4 matching-videos-row">
-						<div class="video-preview">
-							<a href="/videos/1619/my+roommate+the+desperado">
-								<img class="img-responsive preview-img" alt="my roommate the Desperado" src="http://images.townspot.tv/resizer.php?id=1619&amp;w=640&amp;h=480&amp;w=860&amp;h=556">
-								</a><div class="caption"><a href="/videos/1619/my+roommate+the+desperado">
-									</a><div class="video-title"><a href="/videos/1619/my+roommate+the+desperado">
-										</a><h3 title="my roommate the Desperado"><a href="/videos/1619/my+roommate+the+desperado">
-											</a><a href="/videos/1619/my+roommate+the+desperado">
-												<div class="dot-text">my roommate the Desperado</div>
-											</a>
-											<a href="/profile/myroommatethe">
-												</a><div class="dot-text"><a href="/profile/myroommatethe"> by myroommatethe											</a>
-										</div></h3>
-										<h3 title="Los Angeles, CA" class="dot-text">Los Angeles, CA</h3>
-									</div>
-								</div>
-							
-						</div>
-					</div>
-						<div class="col-xs-4 matching-videos-row">
-						<div class="video-preview">
-							<a href="/videos/1529/us%3a+start+to+finish">
-								<img class="img-responsive preview-img" alt="Us: Start to Finish" src="http://images.townspot.tv/resizer.php?id=1529&amp;w=640&amp;h=480&amp;w=860&amp;h=556">
-								</a><div class="caption"><a href="/videos/1529/us%3a+start+to+finish">
-									</a><div class="video-title"><a href="/videos/1529/us%3a+start+to+finish">
-										</a><h3 title="Us: Start to Finish"><a href="/videos/1529/us%3a+start+to+finish">
-											</a><a href="/videos/1529/us%3a+start+to+finish">
-												<div class="dot-text">Us: Start to Finish</div>
-											</a>
-											<a href="/profile/ChillyWilson">
-												</a><div class="dot-text"><a href="/profile/ChillyWilson"> by ChillyWilson											</a>
-										</div></h3>
-										<h3 title="Madison, WI" class="dot-text">Madison, WI</h3>
-									</div>
-								</div>
-							
-						</div>
-					</div>
-					</div>
-			</div>
 		</div>
-	</div>	
+		<div class="col-sm-4">
+			<h3>Similar Videos</h3>
+			<ul class="matching-videos hidden-xs">
+<?php foreach ($this->related as $related_video) { ?>
+				<li><?= $this->VideoBlock($related_video,false,null); ?></li>
+<?php } ?>			
+			</ul>
+		<?= $this->VideoCarousel($this->related,array(
+			'id' => 'matching-videos-xs',
+			'per_panel' => 3,
+			'class' => 'visible-xs'
+			)); ?>
+		</div>
+	</div>
 </div>

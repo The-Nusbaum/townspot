@@ -38,7 +38,7 @@
 		<nav role="navigation" class="navbar navbar-inverse">
 			<?= $this->navigation('navigation')->menu()->setPartial('partials/menu')->render(); ?>	
 		</nav>
-        <div class="container">
+        <div class="container" id="<?= $this->controllerName(); ?>-<?= $this->controllerName(); ?>">
             <?php echo $this->content; ?>
         </div> 
 		<nav id="footer" role="navigation" class="navbar navbar-footer">
