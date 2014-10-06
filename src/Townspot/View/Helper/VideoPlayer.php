@@ -28,6 +28,7 @@ class VideoPlayer extends AbstractHelper implements ServiceLocatorAwareInterface
     public function internal()
     {
 		$html  = sprintf("<div id='%s'></div>\n",$this->_getId());
+		$html .= $this->_playerInfo();
 		$html .= "<script type=\"text/javascript\">\n";
 		$html .= $this->_jwplayerSetup();
 		$html .= $this->_jwplayerError();
@@ -38,6 +39,7 @@ class VideoPlayer extends AbstractHelper implements ServiceLocatorAwareInterface
     public function youtube()
     {
 		$html  = sprintf("<div id='%s'></div>\n",$this->_getId());
+		$html .= $this->_playerInfo();
 		$html .= "<script type=\"text/javascript\">\n";
 		$html .= $this->_jwplayerSetup();
 		$html .= $this->_jwplayerError();
@@ -120,6 +122,75 @@ class VideoPlayer extends AbstractHelper implements ServiceLocatorAwareInterface
 		return $html;
 	}
 
+    protected function _playerInfo()
+    {
+		$html = null;
+		if ($this->_getVideoInfo()) {
+			$html  = "<div id='video-info' class='row'>\n";
+			$html .= "    <div class='container'>\n";
+			$html .= "        <div class='row'>\n";
+			$html .= "            <div class='col-xs-8 col-sm-11 nopadding-left'>\n";
+			$html .= "                <div id='video-title'>\n";
+			$html .= "                    <table>\n";
+			$html .= "                        <tr>\n";
+			if ($this->_getVideoButtons()) {
+				$html .= "                            <td rowspan='2'>\n";
+				$html .= "                                <h1><i class='fa fa-star-o' id='favorite-link'></i></h1>\n";
+				$html .= "                            </td>\n";
+			}
+			$html .= "                            <td>\n";
+			$html .= "                                <h1>%s</h1>\n";
+			$html .= "                            </td>\n";
+			$html .= "                        </tr>\n";
+			$html .= "                        <tr>\n";
+			$html .= "                            <td id='video-author'>\n";
+			$html .= "                                <h2><a href='%s'>%s</a></h2>\n";
+			$html .= "                            </td>\n";
+			$html .= "                        </tr>\n";
+			$html .= "                    </table>\n";
+			$html .= "                </div>\n";
+			$html .= "            </div>\n";
+			$html .= "            <div class='col-xs-4 col-sm-1 video-ratings pull-right'>\n";
+			$html .= "                <table>\n";
+			$html .= "                    <tr>\n";
+			$html .= "                        <th><i class='fa fa-thumbs-o-up' id='rate-up'></i></th>\n";
+			$html .= "                        <th><i class='fa fa-thumbs-o-down' id='rate-down'></i></th>\n";
+			$html .= "                    </tr>\n";
+			$html .= "                    <tr>\n";
+			$html .= "                        <td><div id='up-ratings'>%d</div></td>\n";
+			$html .= "                        <td><div id='down-ratings'>%d</div></td>\n";
+			$html .= "                    </tr>\n";
+			$html .= "                </table>\n";
+			$html .= "            </div>\n";
+			$html .= "        </div>\n";
+			$html .= "        <div class='row'>\n";
+			$html .= "            <div class='col-xs-6 interaction-buttons'>\n";
+			if ($this->_getVideoButtons()) {
+				$html .= "                <button class='btn interaction-button' id='contact-interaction'>Contact</button>\n";
+				$html .= "                <button class='btn interaction-button' id='follow-interaction'>Become a Fan</button>\n";
+				$html .= "                " . $this->_getYtSubscribe();
+			}
+			$html .= "            </div>\n";
+			$html .= "            <div class='col-xs-6 video-views'>\n";
+			$html .= "                <div class='pull-right'>\n";
+			$html .= "                    View Count: %d\n";							
+			$html .= "                </div>\n";
+			$html .= "            </div>\n";
+			$html .= "        </div>\n";
+			$html .= "    </div>\n";
+			$html .= "</div>\n";
+			$html = sprintf($html,
+				$this->media->getTitle(),
+				$this->media->getUser()->getProfileLink(),
+				$this->media->getUser()->getUsername(),
+				count($this->media->getRatings(true)),
+				count($this->media->getRatings(false)),
+				$this->media->getViews()
+			);
+		}
+		return $html;
+	}
+			
     protected function _getId()
 	{
 		return (@$this->params['id']) ?: 'media-player';
@@ -166,6 +237,16 @@ class VideoPlayer extends AbstractHelper implements ServiceLocatorAwareInterface
 		return null;
 	}
 
+    protected function _getVideoInfo()
+	{
+		return (@$this->params['include_info']) ?: false;
+	}
+
+    protected function _getVideoButtons()
+	{
+		return (@$this->params['include_buttons']) ?: false;
+	}
+
     protected function _getPreviewImage()
 	{
 		$resizerLink	= $this->media->getResizerLink($this->_getPreviewWidth(),$this->_getPreviewHeight());
@@ -189,7 +270,16 @@ class VideoPlayer extends AbstractHelper implements ServiceLocatorAwareInterface
 		}
 		return $this->media->getUrl();
 	}
-	
+
+
+    protected function _getYtSubscribe()
+	{
+		if ($channelId = $this->media->getYtSubscriberChannelId()) {
+			return '<div class="g-ytsubscribe" data-channel="' . trim($channelId) . '" data-layout="default" data-count="default"></div>';
+		} 
+		return null;
+	}
+
     /** 
      * Set the service locator. 
      * 

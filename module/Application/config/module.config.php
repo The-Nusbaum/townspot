@@ -14,6 +14,7 @@ return array(
             'VideoPlayer' 	=> 'Townspot\View\Helper\VideoPlayer',
             'VideoCarousel' => 'Townspot\View\Helper\VideoCarousel',
             'VideoBlock' 	=> 'Townspot\View\Helper\VideoBlock',
+            'AddThisLinks' 	=> 'Townspot\View\Helper\AddThisLinks',
         ),
     ),
 	'asset_manager' => array(
@@ -566,6 +567,7 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'Application\Controller\Index' => 'Application\Controller\IndexController',
+            'Application\Controller\Video' => 'Application\Controller\VideoController',
             'Application\Controller\StaticPage' => 'Application\Controller\StaticPageController',
         ),
     ),
