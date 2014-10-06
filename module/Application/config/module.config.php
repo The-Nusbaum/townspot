@@ -36,6 +36,9 @@ return array(
                 'js/townspot.js' => array(
 					'carousel.js',
 					'infobutton.js',
+					'togglebuttons.js',
+					'geolocation.js',
+					'expander.js',
                 ),
             ),			
         ),
