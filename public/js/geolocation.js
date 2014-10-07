@@ -1,11 +1,16 @@
-if(navigator.geolocation) {
-	navigator.geolocation.getCurrentPosition(function(position) {
-		getExplore(position.coords.latitude + ',' + position.coords.longitude);
-	}, function() {
-		getExplore('');
-	});
+if (typeof($.cookie('geo')) != "undefined") {
+	getExplore($.cookie('geo'));
 } else {
-	getExplore('');
+	if(navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(function(position) {
+			$.cookie('geo', position.coords.latitude + ',' + position.coords.longitude, { expires: 30, path: '/' });
+			getExplore(position.coords.latitude + ',' + position.coords.longitude);
+		}, function() {
+			getExplore('');
+		});
+	} else {
+		getExplore('');
+	}
 }
 function getExplore(coords) {
 //	$.ajax({
@@ -22,3 +27,4 @@ function getExplore(coords) {
 //		}
 //	});
 }
+

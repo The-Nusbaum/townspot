@@ -7,9 +7,117 @@
 			"type": "package",	
 			"package": {
 				"name": "townspot/townspotbase",
-				"version": "0.0.1",
+				"version": "0.0.2",
 				"source": {
                     "url": "https://bitbucket.org/mike-hughes/townspotbase",
+					"type": "git",
+					"reference": "master"
+				}
+			}
+		},
+		{
+			"type": "package",	
+			"package": {
+				"name": "tonytomov/jqGrid",
+				"version": "3.6.0",
+				"source": {
+                    "url": "https://github.com/tonytomov/jqGrid.git",
+					"type": "git",
+					"reference": "master"
+				}
+			}
+		},
+		{
+			"type": "package",	
+			"package": {
+				"name": "fredwu/endless-scroll",
+				"version": "1.8.0",
+				"source": {
+                    "url": "https://github.com/fredwu/jquery-endless-scroll.git",
+					"type": "git",
+					"reference": "1.8.0"
+				}
+			}
+		},
+		{
+			"type": "package",	
+			"package": {
+				"name": "jqTree/jqtree/js",
+				"version": "1.8.0",
+				"dist": {
+                    "url": "http://mbraak.github.io/jqTree/tree.jquery.js",
+					"type": "file",
+					"reference": "1.8.0"
+				}
+			}
+		},
+		{
+			"type": "package",	
+			"package": {
+				"name": "jqTree/jqtree/css",
+				"version": "1.8.0",
+				"dist": {
+                    "url": "http://mbraak.github.io/jqTree/jqtree.css",
+					"type": "file",
+					"reference": "1.8.0"
+				}
+			}
+		},
+		{
+			"type": "package",	
+			"package": {
+				"name": "Sjeiti/tinysort",
+				"version": "1.5.6",
+				"source": {
+                    "url": "https://github.com/Sjeiti/TinySort.git",
+					"type": "git",
+					"reference": "master"
+				}
+			}
+		},
+		{
+			"type": "package",	
+			"package": {
+				"name": "minddust/bootstrap-progressbar",
+				"version": "0.6.0",
+				"source": {
+                    "url": "https://github.com/minddust/bootstrap-progressbar.git",
+					"type": "git",
+					"reference": "master"
+				}
+			}
+		},
+		{
+			"type": "package",	
+			"package": {
+				"name": "silviomoreto/bootstrap-select",
+				"version": "1.2.0",
+				"source": {
+                    "url": "https://github.com/silviomoreto/bootstrap-select.git",
+					"type": "git",
+					"reference": "1.2.0"
+				}
+			}
+		},
+        {
+            "type": "package",
+            "package": {
+                "name": "jquery.form",
+                "version": "1",
+                "dist": {
+                    "url": "http://malsup.github.com/jquery.form.js",
+                    "type": "file",
+                    "reference": "1"
+                }
+            }
+        },
+		{
+			"type": "package",	
+			"package": {
+				"name": "francois2metz/html5-formdata",
+                "version": "1.0.0",
+				"source": {
+                    "url": "https://github.com/francois2metz/html5-formdata.git",
 					"type": "git",
 					"reference": "master"
 				}
@@ -63,7 +171,27 @@
 		"ocramius/ocra-service-manager": "2.2.*@dev",
 		"ocramius/generated-hydrator": "1.0.*@dev",
 		"nitecon/zf2-db-session": "dev-master",
-		"townspot/townspotbase": "0.0.1"
+		"townspot/townspotbase": "0.0.2",
+		"kalenjordan/jquery-cookie": "dev-master",
+		"bootstrap-select/bootstrap-select": "dev-master",
+		"datatables/datatables": "dev-master",
+		"twitter/typeahead.js": "dev-master",
+		"tinymce/tinymce": "dev-master",
+		"trentrichardson/jquery-timepicker-addon": "dev-master",
+		"newerton/fullcalendar": "dev-master",
+		"moxiecode/plupload": "dev-master",
+		"jqgeeks/jquery-timeago": "dev-master",
+		"videlalvaro/php-amqplib": "2.4.*@dev",
+		"snapshotpl/zf-snap-geoip": "dev-master",
+		"tonytomov/jqGrid": "*",
+		"fredwu/endless-scroll": "1.8.0",
+		"jqTree/jqtree/js": "1.8.0",
+		"jqTree/jqtree/css": "1.8.0",
+		"Sjeiti/tinysort": "*",
+		"minddust/bootstrap-progressbar": "0.6.0",
+		"silviomoreto/bootstrap-select": "1.2.0",
+		"jquery.form": "*",
+		"francois2metz/html5-formdata": "1.0.0"
     },
     "autoload": {
         "classmap": [

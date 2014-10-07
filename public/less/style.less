@@ -224,8 +224,8 @@ li {
 .carousel-caption, .video-caption {
 	background: none repeat scroll 0 0 rgba(18, 73, 122, 0.75);
 	color: #ffffff;
-	bottom: 2px;
-	left: 2px;
+	bottom: 0px;
+	left: 0px;
 	right: 2px;
 	height: 60px;
 	padding: 0px;
@@ -977,6 +977,11 @@ div {
 	}
 	a {
 		color: #ffffff;
+	}
+	&:hover {
+		.carousel-caption, .video-caption {
+			background: none repeat scroll 0 0 rgba(18, 73, 122, 1.00);
+		}
 	}
 }
 
