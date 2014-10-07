@@ -23,14 +23,16 @@
 			  ->appendStylesheet('//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css','screen')
 			  ->appendStylesheet($this->basePath() . '/css/townspot.css');
 		?>
-		<?= $this->headScript()->appendFile('//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js','text/javascript')
-		                       ->appendFile('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js','text/javascript');
+		<?= $this->headScript()->prependFile('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js','text/javascript')
+                               ->prependFile('//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js','text/javascript');
+
 		?>
 		<?= $this->headScript()->appendFile('//jwpsrv.com/library/y3klzqiFEeKGEyIACpYGxA.js','text/javascript')
 		                       ->appendFile('//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js','text/javascript')
 		                       ->appendFile('//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js','text/javascript')
 		                       ->appendFile('//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js','text/javascript')
-		                       ->appendFile('//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js','text/javascript');
+		                       ->appendFile('//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js','text/javascript')
+		                       ->appendFile('//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.3.0/bootbox.min.js','text/javascript');
 		?>
 		<script src="https://apis.google.com/js/platform.js" async defer></script>
     </head>
@@ -38,6 +40,8 @@
 		<nav role="navigation" class="navbar navbar-inverse">
 			<?= $this->navigation('navigation')->menu()->setPartial('partials/menu')->render(); ?>	
 		</nav>
+        <div class="container">
+            <div id="fb-root"></div>
         <div class="container" id="<?= $this->controllerName(); ?>-<?= $this->controllerName(); ?>">
             <?php echo $this->content; ?>
         </div> 

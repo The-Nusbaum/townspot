@@ -11,6 +11,7 @@ namespace Application;
 
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+use ZendGData\App\Exception;
 
 class Module
 {
@@ -38,6 +39,111 @@ class Module
 		});
 		$moduleRouteListener = new ModuleRouteListener();
 		$moduleRouteListener->attach($eventManager);
+		$app->getEventManager()->attach('dispatch', array($this, 'setLayout')); //
+
+        $events = $eventManager->getSharedManager();
+        $events->attach('ZfcUser\Form\Login','init', function($e) {
+            $form = $e->getTarget();
+            $elements = $form->getElements();
+            foreach ($elements as $element => $e) {
+                switch($element) {
+                    case 'identity':
+                        $label = 'Username or Email';
+                        break;
+                    case 'credential':
+                        $label = 'Password';
+                        break;
+                    default:
+                        $label = '';
+                }
+                $e->setAttributes(array(
+                    'placeholder'   => $label,
+                    'class'         => "form-control",
+                    'maxlength'     => 50,
+                ));
+
+            }
+        });
+
+        $events->attach('LfjOpauth\Service\OpauthService', \LfjOpauth\LfjOpauthEvent::EVENT_LOGIN_CALLBACK, function($e) {
+            /** @var \Zend\Authentication\Result $result */
+            $authenticationResult = $e->getParam('authenticationResult');
+
+            /** @var \Zend\Authentication\AuthenticationService $authenticationService */
+            $authenticationService = $e->getParam('authenticationService');
+
+            /** @var \LfjOpauth\Service\OpauthService $target */
+            $target = $e->getTarget();
+
+            $provider = $e->getParam('provider');
+/*
+            echo '<pre>';
+            var_dump(get_class($e->getTarget()));
+            var_dump($e->getParam('provider'));
+            var_dump('$authenticationResult->isValid()', $authenticationResult->isValid());
+            var_dump('$authenticationService->hasIdentity()', $authenticationService->hasIdentity());
+            var_dump('$authenticationService->getIdentity()', $authenticationService->getIdentity());
+            var_dump('$authenticationResult->getCode()', $authenticationResult->getCode());
+            var_dump('$authenticationResult->getIdentity()', $authenticationResult->getIdentity());
+            var_dump('$authenticationResult->getMessages()', $authenticationResult->getMessages());
+*/
+
+            if($authenticationResult->isValid() && $authenticationService->hasIdentity()) {
+                $userOauthMapper = new \Townspot\UserOauth\Mapper($e->getTarget()->getServiceLocator());
+                try {
+
+                    $external_id = $authenticationResult->getIdentity()['lfjopauth']['opauth'][$provider]["auth"]["uid"];
+                    $userOauth = $userOauthMapper->findOneByExternalId($external_id);
+
+                    if (empty($userOauth)) {
+                        throw new Exception('No Linked Account Found');
+                    }
+                    $user = $userOauth->getUser();
+                    $loginResult = $authenticationService->authenticate(new \Townspot\Authentication\Adapter\ForceLogin($user));
+                } catch (Exception $ex) {
+                    $flashMessenger = new \Zend\Mvc\Controller\Plugin\FlashMessenger();
+                    $flashMessenger->addMessage('No Linked Account Found...');
+                    $authenticationService->clearIdentity();
+                    $url = $e->getTarget()->getRouter()->assemble(array(), array('name' => 'login'));
+                    $response=$e->getTarget()->getServiceLocator()->get('Application')->getResponse();
+                    $response->getHeaders()->addHeaderLine('Location', $url);
+                    $response->setStatusCode(302);
+                    $response->sendHeaders();
+                    // When an MvcEvent Listener returns a Response object,
+                    // It automatically short-circuit the Application running
+                    // -> true only for Route Event propagation see Zend\Mvc\Application::run
+
+                    // To avoid additional processing
+                    // we can attach a listener for Event Route with a high priority
+                    $stopCallBack = function($event) use ($response){
+                        $event->stopPropagation();
+                        return $response;
+                    };
+                    //Attach the "break" as a listener with a high priority
+                    $e->getTarget()->getServiceLocator()->get('Application')->getEventManager()->attach(MvcEvent::EVENT_ROUTE, $stopCallBack,-10000);
+                    return $response;
+                }
+                $url = $e->getTarget()->getRouter()->assemble(array(), array('name' => 'dashboard'));
+                $response=$e->getTarget()->getServiceLocator()->get('Application')->getResponse();
+                $response->getHeaders()->addHeaderLine('Location', $url);
+                $response->setStatusCode(302);
+                $response->sendHeaders();
+                // When an MvcEvent Listener returns a Response object,
+                // It automatically short-circuit the Application running
+                // -> true only for Route Event propagation see Zend\Mvc\Application::run
+
+                // To avoid additional processing
+                // we can attach a listener for Event Route with a high priority
+                $stopCallBack = function($event) use ($response){
+                    $event->stopPropagation();
+                    return $response;
+                };
+                //Attach the "break" as a listener with a high priority
+                $e->getTarget()->getServiceLocator()->get('Application')->getEventManager()->attach(MvcEvent::EVENT_ROUTE, $stopCallBack,-10000);
+                return $response;
+            }
+
+        });
     }
 
     public function getConfig()
@@ -64,6 +170,17 @@ class Module
 			$viewModel = $e->getViewModel();
 			$viewModel->setTemplate('application/layout');
 		}
-	} 	
-	
+	}
+
+    public function getServiceConfig()
+    {
+        return array(
+            'factories' => array(
+                'Zend\Authentication\AuthenticationService' => function($serviceManager) {
+                        // If you are using DoctrineORMModule:
+                        return $serviceManager->get('doctrine.authenticationservice.orm_default');
+                    }
+            )
+        );
+    }
 }

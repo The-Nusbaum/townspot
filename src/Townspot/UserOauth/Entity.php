@@ -1,7 +1,7 @@
 <?php
 namespace Townspot\UserOauth;
 
-class Entity
+class Entity extends \Townspot\Entity
 {
 	protected $_id;
 

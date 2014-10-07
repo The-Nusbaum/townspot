@@ -14,6 +14,7 @@ return array(
             'VideoPlayer' 	=> 'Townspot\View\Helper\VideoPlayer',
             'VideoCarousel' => 'Townspot\View\Helper\VideoCarousel',
             'VideoBlock' 	=> 'Townspot\View\Helper\VideoBlock',
+            'img' => 'Townspot\View\Helper\Image',
             'AddThisLinks' 	=> 'Townspot\View\Helper\AddThisLinks',
         ),
     ),
@@ -324,6 +325,16 @@ return array(
                     ),
                 ),
 			),
+            'userEdit' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/user/edit',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\User',
+                        'action'     => 'edit',
+                    ),
+                ),
+            ),
 			'profile_short' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(
@@ -385,7 +396,27 @@ return array(
 						'action'     => 'verify',
 					),
 				),
-			),	
+			),
+			'login' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+				'options' => array(
+					'route'    => '/login',
+					'defaults' => array(
+						'controller' => 'Application\Controller\User',
+						'action'     => 'login',
+					),
+				),
+			),
+            'logout' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/logout',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\User',
+                        'action'     => 'logout',
+                    ),
+                ),
+            ),
 			'series_player' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(
@@ -571,6 +602,7 @@ return array(
         'invokables' => array(
             'Application\Controller\Index' => 'Application\Controller\IndexController',
             'Application\Controller\Video' => 'Application\Controller\VideoController',
+            'Application\Controller\User' => 'Application\Controller\UserController',
             'Application\Controller\StaticPage' => 'Application\Controller\StaticPageController',
         ),
     ),
@@ -589,6 +621,9 @@ return array(
         'template_path_stack' => array(
             APPLICATION_PATH . '/module/Application/view',
         ),
+    ),
+    'module_layouts' => array(
+        'ZfcUser' => 'application/layout',
     ),
 	'navigation' => array(
 		'default' => array(

@@ -1,7 +1,7 @@
 <?php
 namespace Townspot\CategoryType;
 
-class Entity
+class Entity extends \Townspot\Entity
 {
 	protected $_id;
 

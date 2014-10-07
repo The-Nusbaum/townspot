@@ -10,6 +10,7 @@ namespace Api;
 
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
+use Zend\Stdlib\InitializableInterface;
 
 class Module
 {
@@ -19,7 +20,17 @@ class Module
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
 		$app = $e->getParam('application'); 
-		$app->getEventManager()->attach('dispatch', array($this, 'setLayout')); // 
+		$app->getEventManager()->attach('dispatch', array($this, 'setLayout')); //
+
+        $sm = $e->getApplication()->getServiceManager();
+
+        $controllers = $sm->get('ControllerLoader');
+
+        $controllers->addInitializer(function($controller, $cl) {
+            if ($controller instanceof InitializableInterface) {
+                $controller->init();
+            }
+        }); // false tells the loader to run this initializer after all others
     }
 
     public function getConfig()

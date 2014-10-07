@@ -1,7 +1,7 @@
 <?php
 //Data migration
-$mysql_1 = new mysqli('localhost', 'root', '', 'townspot_dev');
-$mysql_2 = new mysqli('localhost', 'root', '', 'tsz');
+$mysql_1 = new mysqli('localhost', 'root', 'root', 'townspot_dev');
+$mysql_2 = new mysqli('localhost', 'root', 'root', 'tsz');
 //Migrate User
 $sql = "SELECT * FROM townspot_dev.users order by id";
 if ($result = $mysql_1->query($sql)) {
@@ -16,28 +16,28 @@ if ($result = $mysql_1->query($sql)) {
 			}
 		}
 		$record = array(	'user_id'				=> $row['id'],
-							'username'				=> mysql_real_escape_string($row['username']),
-							'password'				=> mysql_real_escape_string($row['password']),
-							'email'					=> mysql_real_escape_string($row['email']),
-							'first_name'			=> mysql_real_escape_string($row['first_name']),
-							'last_name'				=> mysql_real_escape_string($row['last_name']),
-							'display_name'			=> mysql_real_escape_string($row['username']),
-							'activation_string'		=> mysql_real_escape_string($row['activation_string']),
-							'security_key'			=> mysql_real_escape_string($row['security_key']),
+							'username'				=> mysqli_real_escape_string($mysql_1,$row['username']),
+							'password'				=> mysqli_real_escape_string($mysql_1,$row['password']),
+							'email'					=> mysqli_real_escape_string($mysql_1,$row['email']),
+							'first_name'			=> mysqli_real_escape_string($mysql_1,$row['first_name']),
+							'last_name'				=> mysqli_real_escape_string($mysql_1,$row['last_name']),
+							'display_name'			=> mysqli_real_escape_string($mysql_1,$row['username']),
+							'activation_string'		=> mysqli_real_escape_string($mysql_1,$row['activation_string']),
+							'security_key'			=> mysqli_real_escape_string($mysql_1,$row['security_key']),
 							'country_id'			=> 99,
 							'province_id'			=> $row['state_id'],
 							'city_id'				=> $row['city_id'],
-							'neighborhood'			=> mysql_real_escape_string($row['neighborhood']),
-							'about_me'				=> mysql_real_escape_string($row['about_me']),
-							'interests'				=> mysql_real_escape_string($row['interests']),
-							'description'			=> mysql_real_escape_string($row['description']),
-							'website'				=> mysql_real_escape_string($row['website']),
-							'image_url'				=> mysql_real_escape_string($row['image_url']),
-							'upload_url'			=> mysql_real_escape_string($row['upload_url']),
+							'neighborhood'			=> mysqli_real_escape_string($mysql_1,$row['neighborhood']),
+							'about_me'				=> mysqli_real_escape_string($mysql_1,$row['about_me']),
+							'interests'				=> mysqli_real_escape_string($mysql_1,$row['interests']),
+							'description'			=> mysqli_real_escape_string($mysql_1,$row['description']),
+							'website'				=> mysqli_real_escape_string($mysql_1,$row['website']),
+							'image_url'				=> mysqli_real_escape_string($mysql_1,$row['image_url']),
+							'upload_url'			=> mysqli_real_escape_string($mysql_1,$row['upload_url']),
 							'allow_contact'			=> $row['allow_contact'],
 							'terms_agreement'		=> $row['terms_agreement'],
 							'email_notifications'	=> $row['email_notifications'],
-							'artist_name'			=> mysql_real_escape_string($row['artistname']),
+							'artist_name'			=> mysqli_real_escape_string($mysql_1,$row['artistname']),
 							'latitude'				=> $row['latitude'],
 							'longitude'				=> $row['longitude'],
 							'created'				=> $row['created'],
@@ -120,7 +120,7 @@ if ($result = $mysql_1->query($sql)) {
 			$row['id'],
 			$row['commenter_id'],
 			$row['user_id'],
-			mysql_real_escape_string($row['comment']),
+			mysqli_real_escape_string($mysql_1,$row['comment']),
 			$row['created']
 		));
 	}
@@ -134,8 +134,8 @@ if ($result = $mysql_1->query($sql)) {
 			$row['user_id'],
 			$row['artist_id'],
 			$row['video_id'],
-			mysql_real_escape_string($row['action']),
-			mysql_real_escape_string($row['value']),
+			mysqli_real_escape_string($mysql_1,$row['action']),
+			mysqli_real_escape_string($mysql_1,$row['value']),
 			$row['created']
 		));
 	}
@@ -160,14 +160,14 @@ if ($result = $mysql_1->query($sql)) {
 			$source = 'youtube';
 		}
 		$record = array(	'id'					=> $row['id'],
-							'title'					=> mysql_real_escape_string($row['title']),
+							'title'					=> mysqli_real_escape_string($mysql_1,$row['title']),
 							'media_type'			=> 'video',
 							'source'				=> $source,
-							'logline'				=> mysql_real_escape_string($row['logline']),
-							'description'			=> mysql_real_escape_string($row['description']),
-							'why_we_chose'			=> mysql_real_escape_string($row['why_we_choose']),
-							'url'					=> mysql_real_escape_string($row['video_url']),
-							'preview_image'			=> mysql_real_escape_string($row['preview_url']),
+							'logline'				=> mysqli_real_escape_string($mysql_1,$row['logline']),
+							'description'			=> mysqli_real_escape_string($mysql_1,$row['description']),
+							'why_we_chose'			=> mysqli_real_escape_string($mysql_1,$row['why_we_choose']),
+							'url'					=> mysqli_real_escape_string($mysql_1,$row['video_url']),
+							'preview_image'			=> mysqli_real_escape_string($mysql_1,$row['preview_url']),
 							'allow_contact'			=> $row['allow_contact'],
 							'authorised'			=> $row['authorised'],
 							'request_debut_time'	=> $row['request_debut_time'],
@@ -180,7 +180,7 @@ if ($result = $mysql_1->query($sql)) {
 							'country_id'			=> 99,
 							'province_id'			=> $row['state_id'],
 							'city_id'				=> $row['city_id'],
-							'neighborhood'			=> mysql_real_escape_string($row['neighborhood']),
+							'neighborhood'			=> mysqli_real_escape_string($mysql_1,$row['neighborhood']),
 							'latitude'				=> $row['latitude'],
 							'longitude'				=> $row['longitude'],
 							'created'				=> $row['created'],
@@ -215,7 +215,7 @@ if ($result = $mysql_1->query($sql)) {
 			$row['id'],
 			$row['video_id'],
 			$row['user_id'],
-			mysql_real_escape_string($row['comment']),
+			mysqli_real_escape_string($mysql_1,$row['comment']),
 			$row['created']
 		));
 	}
@@ -227,7 +227,7 @@ if ($result = $mysql_1->query($sql)) {
 		$mysql_2->query(sprintf("INSERT INTO tsz.encoding (`media_id`,`encoding_id`,`status`) VALUES (%d,%d,'%s');\n",
 			$row['video_id'],
 			$row['media_id'],
-			mysql_real_escape_string($row['jobStatus'])
+			mysqli_real_escape_string($mysql_1,$row['jobStatus'])
 		));
 	}
 }
@@ -238,7 +238,7 @@ if ($result = $mysql_1->query($sql)) {
 		$mysql_2->query(sprintf("INSERT INTO tsz.rating (`media_id`,`user_id`,`rating`) VALUES (%d,%d,'%s');\n",
 			$row['video_id'],
 			$row['user_id'],
-			mysql_real_escape_string($row['rating'])
+			mysqli_real_escape_string($mysql_1,$row['rating'])
 		));
 	}
 }
