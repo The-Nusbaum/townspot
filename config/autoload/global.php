@@ -18,6 +18,13 @@ return array(
         'link_cdn' => true, 
         'global' => array(
         ),
+        'servers' => array(
+            'static_1' => array(
+                'scheme' => 'http',
+                'host' => 'images.townspot.tv',
+                'port' => 80
+            ),
+        ),
     ),
 	'google_analytics' => array(
 		'id' => 'UA-33048703-1',

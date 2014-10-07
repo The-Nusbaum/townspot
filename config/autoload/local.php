@@ -1,5 +1,11 @@
 <?php
-$db = include('local.dist.php');
+$db = array(
+		'host'     => 'localhost',
+		'port'     => '3306',
+		'user'     => 'root',
+		'password' => '',
+		'dbname'   => 'tsz',
+);
 
 return array(
     'db' => array_merge(array( 'driver'    => 'PdoMysql'),$db),
@@ -10,13 +16,4 @@ return array(
 			),
 		),
 	),
-    'cdn_light' => array(
-        'servers' => array(
-            'static_1' => array(
-                'scheme' => 'http',
-                'host' => 'images.townspot.tv',
-                'port' => 80
-            ),
-        ),
-    ),
 );
