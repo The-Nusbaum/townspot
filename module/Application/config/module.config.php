@@ -15,6 +15,7 @@ return array(
             'VideoCarousel' => 'Townspot\View\Helper\VideoCarousel',
             'VideoBlock' 	=> 'Townspot\View\Helper\VideoBlock',
             'img' => 'Townspot\View\Helper\Image',
+            'AddThisLinks' 	=> 'Townspot\View\Helper\AddThisLinks',
         ),
     ),
 	'asset_manager' => array(
@@ -36,6 +37,9 @@ return array(
                 'js/townspot.js' => array(
 					'carousel.js',
 					'infobutton.js',
+					'togglebuttons.js',
+					'geolocation.js',
+					'expander.js',
                 ),
             ),			
         ),
@@ -543,7 +547,7 @@ return array(
 					),
 				),
 			),	
-            /*'application' => array(
+            'application' => array(
                 'type'    => 'Literal',
                 'options' => array(
                     'route'    => '/application',
@@ -568,7 +572,7 @@ return array(
                         ),
                     ),
                 ),
-            ),*/
+            ),
         ),
     ),
     'service_manager' => array(
@@ -597,6 +601,7 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'Application\Controller\Index' => 'Application\Controller\IndexController',
+            'Application\Controller\Video' => 'Application\Controller\VideoController',
             'Application\Controller\User' => 'Application\Controller\UserController',
             'Application\Controller\StaticPage' => 'Application\Controller\StaticPageController',
         ),

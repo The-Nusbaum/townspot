@@ -30,17 +30,20 @@ class IndexController extends AbstractActionController
     {
 		$this->init();
 		$SectionMapper = new \Townspot\SectionBlock\Mapper($this->getServiceLocator());
-		$onScreen = $SectionMapper->findOneByBlockName('On Screen');
-		$dailyHighlights = $SectionMapper->findOneByBlockName('Daily Highlights');
-		$staffFavorites = $SectionMapper->findOneByBlockName('Staff Favorites');
+		$_onScreen = $SectionMapper->findOneByBlockName('On Screen');
+		$_dailyHighlights = $SectionMapper->findOneByBlockName('Daily Highlights');
+		$_staffFavorites = $SectionMapper->findOneByBlockName('Staff Favorites');
+		$dailyHighlights = array();
+		$staffFavorites = array();
+		foreach ($_dailyHighlights->getSectionMedia() as $media) { $dailyHighlights[] = $media->getMedia()->getId(); }
+		foreach ($_staffFavorites->getSectionMedia() as $media) { $staffFavorites[] = $media->getMedia()->getId(); }
+		
         return new ViewModel(
 			array(
-				'onScreen' 			=> $onScreen->getSectionMedia(),
-				'dailyHighlights' 	=> $dailyHighlights->getSectionMedia(),
-				'staffFavorites' 	=> $staffFavorites->getSectionMedia(),
+				'onScreen' 			=> $_onScreen->getSectionMedia(),
+				'dailyHighlights' 	=> $dailyHighlights,
+				'staffFavorites' 	=> $staffFavorites,
 			)
 		);
-		
-        return new ViewModel();
     }
 }

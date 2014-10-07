@@ -84,7 +84,7 @@ EOT;
 						htmlentities($media->getLocation()),
 						count($media->getRatings(true)),
 						count($media->getRatings(false)),
-						($position) ? ' ' . $position : 'in-row'
+						($position) ? ' ' . $position : ' in-row'
 				),
 				$media_block);
 		}

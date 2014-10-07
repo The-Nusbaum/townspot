@@ -354,7 +354,7 @@ class Entity extends \Townspot\Entity
 			return $this->_title;
 		}
 		$title = preg_replace('/[^A-Za-z0-9- ]/', '', $this->_title);
-		return strtolower(str_replace(' ','_',$title));
+		return str_replace(' ','_',$title);
 	}
 
 	public function getMediaType()
@@ -394,19 +394,33 @@ class Entity extends \Townspot\Entity
 
 	public function getViews()
 	{
-		return $this->_views;
+		switch ($this->getSource()) {
+			case 'youtube':
+				$ytId = $this->getYtVideoId();
+				$videoEntry = $this->_getYtVideo($ytId);
+				return $videoEntry->getStatistics()->getViewCount();
+			default:
+				return $this->_views;
+		}
+		return 0;
 	}
 
 	public function getDuration($formatted = false)
 	{
+		$duration = $this->_duration;
+		if ($this->getSource() == 'youtube') {
+			$ytId = $this->getYtVideoId();
+			$videoEntry = $this->_getYtVideo($ytId);
+			$duration = $videoEntry->getMediaGroup()->getDuration()->getSeconds();
+		}
 		if ($formatted) {
 			$d1 = new \DateTime(); 	
 			$d2 = new \DateTime();
-			$d2->add(new \DateInterval('PT'.intval($this->_duration).'S'));
+			$d2->add(new \DateInterval('PT'.intval($duration).'S'));
 			$interval = $d2->diff($d1);
 			return $interval->format("%H:%I:%S");
 		}
-		return $this->_duration;
+		return $duration;
 	}
 
 	public function getAllowContact()
@@ -540,15 +554,32 @@ class Entity extends \Townspot\Entity
 	
 	public function getMediaUrl($resolution = 'HD')
 	{
-		switch ($resolution) {
-			case 'HD':
-				return 'http://videos.townspot.tv/' . $this->getId() . '_high.mp4';
+		switch ($this->getSource()) {
+			case 'internal':
+				switch ($resolution) {
+					case 'HD':
+						return 'http://videos.townspot.tv/' . $this->getId() . '_high.mp4';
+						break;
+					case 'Mobile':
+						return 'http://videos.townspot.tv/' . $this->getId() . '_mobile.mp4';
+						break;
+					default:
+						return 'http://videos.townspot.tv/' . $this->getId() . '_standard.mp4';
+						break;
+				}
 				break;
-			case 'Mobile':
-				return 'http://videos.townspot.tv/' . $this->getId() . '_mobile.mp4';
-				break;
-			default:
-				return 'http://videos.townspot.tv/' . $this->getId() . '_standard.mp4';
+			case 'youtube':
+				switch ($resolution) {
+					case 'HD':
+						return $this->getUrl();
+						break;
+					case 'Mobile':
+						return $this->getUrl();
+						break;
+					default:
+						return $this->getUrl();
+						break;
+				}
 				break;
 		}
 	}
@@ -592,4 +623,53 @@ class Entity extends \Townspot\Entity
 		}
 		return $location;
 	}
+	
+	public function getYtVideoId()
+	{
+		$url = $this->getUrl();
+		parse_str($url,$results);
+		foreach ($results as $key => $value) {
+			if (preg_match('/youtube/',$key)) {
+				return $value;
+			} elseif (preg_match('/youtu/',$key)) {
+				$parts = explode('/',$key);
+				$id = array_pop($parts);
+				return $id;
+			}
+		}
+	}
+	
+	public function getYtSubscriberChannelId()
+	{
+		if ($this->getSource() == 'youtube') {
+			$ytId = $this->getYtVideoId();
+			$videoEntry = $this->_getYtVideo($ytId);
+			$authors = $videoEntry->getAuthor();
+			$author = array_shift($authors);
+			$uri = $author->getUri()->getText();
+			$parts = explode('/',$uri);
+			$user = array_pop($parts);
+			$links = $this->_getYtApi()->getUserProfile($user)->getLink();
+			foreach ($links as $link) {
+				if (preg_match('/\/channel\//',$link->getHref())) {
+					$parts = explode('/',$link->getHref());
+					return array_pop($parts);
+				}
+			}
+		}
+		return null;
+	}
+
+	protected function _getYtApi()
+	{
+		$yt = new \ZendGData\YouTube();			
+		$yt->getHttpClient()->setOptions(array('sslverifypeer' => false));
+		return $yt;
+	}
+	
+	protected function _getYtVideo($id)
+	{
+		return $this->_getYtApi()->getVideoEntry($id);
+	}
+	
 }
