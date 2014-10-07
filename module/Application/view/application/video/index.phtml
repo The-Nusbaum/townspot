@@ -99,7 +99,7 @@
 		</div>
 		<div class="col-sm-4">
 			<h3>Similar Videos</h3>
-			<ul class="matching-videos hidden-xs">
+			<ul id="matching-videos" class="matching-videos">
 <?php foreach ($this->related as $related_video) { ?>
 				<li><?= $this->VideoBlock($related_video,false,null); ?></li>
 <?php } ?>			
@@ -107,7 +107,6 @@
 		<?= $this->VideoCarousel($this->related,array(
 			'id' => 'matching-videos-xs',
 			'per_panel' => 3,
-			'class' => 'visible-xs'
 			)); ?>
 		</div>
 	</div>

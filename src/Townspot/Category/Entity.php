@@ -126,7 +126,7 @@ class Entity extends \Townspot\Entity
 		if ($parent = $this->getParent()){
 			$link .= $parent->getDiscoverLevels();
 		}
-		$link .= '/' . htmlentities($this->getName());
+		$link .= '/' . htmlentities(trim($this->getName()));
 		return $link;
 	}
 	
