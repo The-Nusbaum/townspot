@@ -35,6 +35,7 @@ return array(
                     'style.less',
                 ),
                 'js/townspot.js' => array(
+					'kalenjordan/jquery-cookie/jquery.cookie.js',
 					'carousel.js',
 					'infobutton.js',
 					'togglebuttons.js',
@@ -92,7 +93,7 @@ return array(
 			'video_player' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(
-					'route'    => '/[videos[/]]:id[/:title]',
+					'route'    => '/videos/:id[/:title]',
 					'constraints' => array(
 						'id' => '\d+',
 						'title' => '[a-zA-Z0-9_-]+',
@@ -106,7 +107,7 @@ return array(
 			'video_embed' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(
-					'route'    => '/[videos[/]]embed/:id[/:title]',
+					'route'    => '/[videos/]embed/:id[/:title]',
 					'constraints' => array(
 						'id' => '\d+',
 						'title' => '[a-zA-Z0-9_-]+',
@@ -136,16 +137,6 @@ return array(
                         'action'     => 'upload',
                     ),
                 ),
-			),
-			'video' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-				'options' => array(
-					'route' => '/videos',
-					'defaults' => array(
-						'controller' => 'Application\Controller\Video',
-						'action' => 'index'
-					)
-				),
 			),
 			'video_edit' => array(
 				'type' => 'Zend\Mvc\Router\Http\Segment',
@@ -225,7 +216,7 @@ return array(
 			'video_flag' => array(
 				'type' => 'Zend\Mvc\Router\Http\Literal',
 				'options' => array(
-					'route' => '/videosflag',
+					'route' => '/videos/flag',
 					'defaults' => array(
 						'controller' => 'Application\Controller\Video',
 						'action' => 'flag'
@@ -235,7 +226,7 @@ return array(
 			'videos_add_rating' => array(
 				'type' => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(
-					'route' => '/videos/ratings/add',
+					'route' => '/videos/ratings/add/:id',
 					'constraints' => array(
 						'id' => '\d+',
 					),
@@ -248,7 +239,7 @@ return array(
 			'video_add_comment' => array(
 				'type' => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(
-					'route' => '/videos/comments/add',
+					'route' => '/videos/comments/add/:id',
 					'constraints' => array(
 						'id' => '\d+',
 					),
@@ -261,7 +252,7 @@ return array(
 			'video_remove_comment' => array(
 				'type' => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(
-					'route' => '/videos/comments/remove',
+					'route' => '/videos/comments/remove/:id',
 					'constraints' => array(
 						'id' => '\d+',
 					),
@@ -271,10 +262,10 @@ return array(
 					)
 				),			
 			),			
-			'video_explore' => array(
+			'discover' => array(
 				'type' => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(
-					'route' => '/videos/:param1[/:param2][/:param3][/:param4][/:param5][/:param6][/:param7][/:param8][/:param9][/:param10]',
+					'route' => '/discover[/:param1][/:param2][/:param3][/:param4][/:param5][/:param6][/:param7][/:param8][/:param9][/:param10]',
 					'constraints' => array(
 						'param1' => '[a-zA-Z0-9_-]+',
 						'param2' => '[a-zA-Z0-9_-]+',
@@ -537,6 +528,16 @@ return array(
 					),
 				),
 			),	
+			'explore_link' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+				'options' => array(
+					'route'    => '/getexplorelink',
+					'defaults' => array(
+						'controller' => 'Application\Controller\Ajax',
+						'action'     => 'explorelink',
+					),
+				),
+			),	
 			'admin' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
 				'options' => array(
@@ -600,10 +601,12 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'Application\Controller\Index' => 'Application\Controller\IndexController',
-            'Application\Controller\Video' => 'Application\Controller\VideoController',
-            'Application\Controller\User' => 'Application\Controller\UserController',
+            'Application\Controller\Index' 		=> 'Application\Controller\IndexController',
+            'Application\Controller\Video' 		=> 'Application\Controller\VideoController',
+            'Application\Controller\Search' 	=> 'Application\Controller\SearchController',
+            'Application\Controller\User' 		=> 'Application\Controller\UserController',
             'Application\Controller\StaticPage' => 'Application\Controller\StaticPageController',
+            'Application\Controller\Ajax' 		=> 'Application\Controller\AjaxController',
         ),
     ),
     'view_manager' => array(
@@ -634,7 +637,7 @@ return array(
             ),
 			array(
 				'label' 		=> 'Discover',
-                'route' 		=> 'video',
+                'route' 		=> 'discover',
             ),
 			array(
 				'label' 		=> 'Upload',

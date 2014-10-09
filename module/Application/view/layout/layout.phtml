@@ -40,6 +40,16 @@
 		<nav role="navigation" class="navbar navbar-inverse">
 			<?= $this->navigation('navigation')->menu()->setPartial('partials/menu')->render(); ?>	
 		</nav>
+		<div class="container explore-btn-wrapper"">
+			<a href="#" id="explore-btn-link">
+				<button class="explore-btn">
+					<span id="explore-btn-location"></span>
+					<span class="fa-stack fa-sm">
+						<i class="fa fa-chevron-right fa-stack-1x"></i>
+					</span>
+				</button>
+			</a>
+		</div>		
         <div class="container">
             <div id="fb-root"></div>
         <div class="container" id="<?= $this->controllerName(); ?>-<?= $this->controllerName(); ?>">

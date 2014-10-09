@@ -186,6 +186,18 @@ class Entity extends \Townspot\Entity
 		return $this->_users;
 	}
 	
+	public function getFullName()
+	{
+		$abbrev = null;
+		if ($province = $this->getProvince()) {
+			$abbrev = $province->getAbbrev();
+		}
+		if ($abbrev) {
+			return $this->getName() . ', ' . $abbrev;
+		}
+		return $this->getName();
+	}
+
 	public function getDiscoverLink()
 	{
 		return sprintf('/videos/%s/%s',

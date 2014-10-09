@@ -46,4 +46,10 @@ class IndexController extends AbstractActionController
 			)
 		);
     }
+	
+    public function stageAction()
+    {
+		print "Stage";
+		die;
+	}
 }

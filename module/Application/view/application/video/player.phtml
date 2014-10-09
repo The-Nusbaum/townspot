@@ -1,0 +1,113 @@
+<div class="container video-player">
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="media">
+				<?= $this->VideoPlayer(
+					$this->media_id,
+					array(
+						'width' => '100%',
+						'preview_width' => 800,
+						'preview_height' => 450,
+						'include_sharing' => true,
+						'include_related' => true,
+						'include_info' => true,
+						'include_buttons' => true,
+					)
+				); ?>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-8">
+			<div class="row">
+				<div class="col-xs-12">
+					<h3>Description</h3>
+					<div class="expandable">
+						<?= $this->media->getDescription(); ?>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xxs-5 col-xs-4 col-sm-3">
+					<h3>Location:</h3>
+				</div>
+				<div class="col-xxs-7 col-xs-8 col-sm-9">
+					<ul class="boxed-list">
+						<li><a href="<?= $this->media->getCity()->getDiscoverLink(); ?>"><?= $this->media->getCity()->getName(); ?></a></li>
+						<li><a href="<?= $this->media->getProvince()->getDiscoverLink(); ?>"><?= $this->media->getProvince()->getName(); ?></a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xxs-5 col-xs-4 col-sm-3">
+					<h3>Genres:</h3>
+				</div>
+				<div class="col-xxs-7 col-xs-8 col-sm-9">
+					<ul class="boxed-list genres">
+<?php foreach ($this->media->getCategories() as $category) { ?>
+						<li><a href="<?= $category->getDiscoverLink(); ?>"><?= $category->getName(); ?></a></li>
+<?php } ?>							
+					</ul>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12 social-media_wrapper">
+<?= $this->AddThisLinks($this->serverUrl(true));  ?>				
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-12">
+					<div class="col-xxs-5 col-xs-4 col-sm-3">
+						<h3>Comments:</h3>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-xs-9 nopadding-right full-320">
+						<input type="text" class="col-sm-8 form-control" placeholder="Leave a Comment" id="comment-field">
+					</div>
+					<div class="col-xs-3 nopadding-left full-320">
+						<button class="form-control btn interaction-button" id="comment-submit">Comment</button>
+					</div>
+				</div>	
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="alert alert-block alert-error" id="comment-error">
+							<button type="button" class="close" data-dismiss="alert">X</button>
+							<h4 class="alert-heading"></h4>
+							<p class="alert-body"></p>
+						</div>	
+					</div>	
+				</div>	
+				<div class="row">
+					<div class="col-sm-12">
+						<div id="comment-navigation-up" style="display: none;"><button class="btn btn-default prev col-xs-12"><i class="fa fa-chevron-up"></i></button></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<ul id="comment-list">
+						
+						</ul>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<div id="comment-navigation-down" style="display: none;"><button class="btn btn-default next col-xs-12"><i class="fa fa-chevron-down"></i></button></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<h3>Similar Videos</h3>
+			<ul id="matching-videos" class="matching-videos">
+<?php foreach ($this->related as $related_video) { ?>
+				<li><?= $this->VideoBlock($related_video,false,null); ?></li>
+<?php } ?>			
+			</ul>
+		<?= $this->VideoCarousel($this->related,array(
+			'id' => 'matching-videos-xs',
+			'per_panel' => 3,
+			)); ?>
+		</div>
+	</div>
+</div>
