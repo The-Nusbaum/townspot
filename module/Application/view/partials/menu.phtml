@@ -71,13 +71,13 @@
 				$id = ($page->getId()) ?: null;
 				$title = ($page->getTitle()) ?: null;
 				$target = ($page->getTarget()) ?: null;
+				$label = ($page->getLabel()) ?: null;
 				printf('<li><a id="%s" title="%s" target="%s" href="%s">%s</a></li>',
-					($class == 'visible-xs') ? 'hidden-sm hidden-md hidden-lg' : $class,
 					$id,
-					$title,
+				    $title,
 					$target,
 					$href,
-					$page->getLabel());
+					$label);
 			}
 		}
 	}

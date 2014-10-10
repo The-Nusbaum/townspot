@@ -60,7 +60,7 @@ class Db extends \ZfcUser\Authentication\Adapter\Db
             $this->setSatisfied(false);
             return false;
         }
-		
+
         // regen the id
         SessionContainer::getDefaultManager()->regenerateId();
 

@@ -41,8 +41,8 @@ return array(
 		),
 		'enable_display_name' => true,
 		'auth_identity_fields' => array( 'email','username' ),
-        'login_redirect_route' => 'dashboard'
-		//'user_login_widget_view_template' => 'zfc-user/user/login.phtml',
+        'login_redirect_route' => 'dashboard',
+		//'user_login_widget_view_template' => '/login.phtml',
 		//'allowed_login_states' => array( null, 1 ),
 	),
     'bjyauthorize' => array(
