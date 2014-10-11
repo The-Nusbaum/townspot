@@ -371,6 +371,7 @@ $targetDb->query("update users set province_id=null where province_id=0");
 $targetDb->query("update media set admin_id=null where admin_id=0");
 $targetDb->query("update media set city_id=null where city_id=0");
 $targetDb->query("update media set province_id=null where province_id=0");
+$targetDb->query("update category set parent_id=null where parent_id=0");
 
 function getCity($dbconnection,$cityId) 
 {
