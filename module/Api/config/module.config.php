@@ -4,6 +4,7 @@ return array(
         'invokables' => array(
 //          'Api\Controller\Index' => 'Api\Controller\IndexController',
             'Api\Controller\MediaController' => 'Api\Controller\MediaController',
+            'Api\Controller\SeriesController' => 'Api\Controller\SeriesController',
             'model' => 'Api\Controller\ModelController',
         ),
     ),
@@ -14,6 +15,15 @@ return array(
                 'type'    => 'Segment',
                 'options' => array(
                     'route'    => '/api/[:model][/:id]',
+                    'defaults' => array(
+                        'controller' => 'model'
+                    ),
+                ),
+            ),
+            'custom_methods' => array(
+                'type'    => 'Segment',
+                'options' => array(
+                    'route'    => '/api/[:model][/:method][/:id]',
                     'defaults' => array(
                         'controller' => 'model'
                     ),

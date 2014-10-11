@@ -28,7 +28,11 @@ class BaseRestfulController extends AbstractRestfulController
             ->setMessage('shit be broke')
             ->setCode(501);
         return new JsonModel($this->getResponse()->build());
-        $entities = $this->getMapper()->findAll();
+        $criteria = array();
+        $query = $this->getRequest()->getQuery()['query'];
+        $query = explode(',',$query);
+
+        $entities = $this->getMapper()->findBy(array('user_id'=>242));
         $data = array();
         foreach($entities as $e) {
             try {
@@ -37,6 +41,7 @@ class BaseRestfulController extends AbstractRestfulController
                 //do nothing
             }
         }
+        var_dump($data);
         return new JsonModel($this->getResponse()->build());
     }
 
@@ -79,7 +84,6 @@ class BaseRestfulController extends AbstractRestfulController
                 $this->getEntity()->{$method}($value);
             }
         }
-        //var_dump('<pre>',$this->getEntity());die;
         $this->getMapper()->save();
         $this->getResponse()
             ->setCount(1)
@@ -90,7 +94,6 @@ class BaseRestfulController extends AbstractRestfulController
 
     public function update($id, $data)
     {   // Action used for PUT requests
-        $data = $this->parse_raw_http_request($data);
         $this->setEntity($this->getMapper()->findOneById($id));
 
         if($this->getEntity()) {

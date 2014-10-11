@@ -161,6 +161,7 @@ class Response {
     public function setMessage($message)
     {
         $this->_message = $message;
+        return $this;
     }
 
     /**

@@ -5,7 +5,7 @@ namespace Api\Controller;
 use Zend\EventManager\EventManagerInterface;
 use Zend\View\Model\JsonModel;
 
-class MediaController extends \Townspot\Controller\BaseRestfulController
+class SeriesController extends \Townspot\Controller\BaseRestfulController
 {
     public function setEventManager(EventManagerInterface $eventManager)
     {
@@ -14,19 +14,19 @@ class MediaController extends \Townspot\Controller\BaseRestfulController
         $controller = $this;
 
         $eventManager->attach('dispatch', function ($e) use ($controller) {
-            $this->setModel('Media');
-            $this->setMapper(new \Townspot\Media\Mapper($this->getServiceLocator()));
-            $this->setEntity(new \Townspot\Media\Entity());
+            $this->setModel('Series');
+            $this->setMapper(new \Townspot\Series\Mapper($this->getServiceLocator()));
+            $this->setEntity(new \Townspot\Series\Entity());
             $this->setResponse(new \Townspot\Rest\Response());
         }, 100);
 
     }
 
-    public function getAvailableSeriesMediaAction() {
+    public function getUserSeriesAction() {
         $id = $this->params()->fromRoute('id');
         $page = $this->params()->fromQuery('page');
         if(!$page) $page = 1;
-        $limit = 2;
+        $limit = 5;
         $offset = ($page - 1) * $limit;
         if (empty($id)) {
             $this->getResponse()->setCode(404)
@@ -37,35 +37,20 @@ class MediaController extends \Townspot\Controller\BaseRestfulController
             $user = $userMapper->find($id);
 
             $seriesMapper = new \Townspot\Series\Mapper($this->getServiceLocator());
-            $series = $seriesMapper->findByUserId($user->getId());
-
-            $seriesMediaMapper = new \Townspot\SectionMedia\Mapper($this->getServiceLocator());
-
-            $inSeriesList = array();
-            foreach($series as $s) {
-                $seriesMedia = $seriesMediaMapper->findBySeriesId($s->getId());
-                foreach($seriesMedia as $sm){
-                    $inSeriesList[] = $sm->getMediaId();
-                }
-
-            }
-
-            $media = $this->getMapper()
-                ->findByUser($user);
+            $series = $seriesMapper->findByUser($user);
 
             $data = array(
-                'totalCount' => count($media),
-                'pages' => ceil(count($media)/$limit),
+                'totalCount' => count($series),
+                'pages' => ceil(count($series)/$limit),
                 'media' => array()
             );
 
             $total = 0;
-            foreach($media as $i => $m) {
+            foreach($series as $i => $s) {
                 if($total == $limit) break;
                 if($i < $offset) continue;
-                if($m->getOnMediaServer() && $m->getApproved()) {
-                    $data['media'][] = $m->toArray();
-                }
+                $data['series'][] = $s->toArray();
+
                 $total++;
             }
 
@@ -73,7 +58,7 @@ class MediaController extends \Townspot\Controller\BaseRestfulController
                 ->setCode(200)
                 ->setSuccess(true)
                 ->setData($data)
-                ->setCount(count($data['media']));
+                ->setCount(count($data['series']));
         }
         return new JsonModel($this->getResponse()->build());
     }

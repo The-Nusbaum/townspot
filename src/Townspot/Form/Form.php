@@ -11,7 +11,10 @@ namespace Townspot\Form;
 class Form extends \Zend\Form\Form {
     public function __toString() {
         $html = '';
-        $html .= "<form role='form' action='{$this->getAttribute('action')}' method='{$this->getAttribute('method')}'>";
+        $html .= "<form role='form' action='{$this->getAttribute('action')}' method='{$this->getAttribute('method')}'";
+        $id = $this->getAttribute('id');
+        if($id) $html .= " id='$id'";
+        $html .= ">";
         $columns = $this->getAttribute('columns');
         if(!$columns) $columns = 1;
 
@@ -59,20 +62,24 @@ class Form extends \Zend\Form\Form {
         $length = $e->getAttribute('maxlength');
         $type = $e->getAttribute('type');
         $value = $e->getValue();
-        $id = $e->getAttribute('id') || $name;
+        $id = $e->getAttribute('id');
+        if(!$id) $id = $name;
         $placeholder = $e->getAttribute('placeholder');
         if(!$placeholder) $placeholder = $label;
 
-        if($width) {
-            $html .= "<div class='col-md-$width'>";
-        } else {
-            $html .= "<div class='col-md-12'>";
+        if($type != 'hidden') {
+            if ($width) {
+                $html .= "<div class='col-md-$width'>";
+            } else {
+                $html .= "<div class='col-md-12'>";
+            }
+            $html .= "<div class='form-group'>";
+            $html .= "<div class='input $type'>";
         }
-        $html .= "<div class='form-group'>";
-        $html .= "<div class='input $type'>";
 
 
         switch($type) {
+            case 'hidden':
             case 'text':
             case 'password':
             case 'email':
@@ -114,7 +121,7 @@ class Form extends \Zend\Form\Form {
                 break;
             case 'textarea':
                 if($label) $html .= "<label for='$name'>$label</label>";
-                $html .= "<textarea name='$name' class='form-control $class'></textarea>";
+                $html .= "<textarea name='$name' class='form-control $class'>$value</textarea>";
                 break;
             case 'plupload-image':
                 $html .= "<div class='profilePic'>";
@@ -128,9 +135,10 @@ class Form extends \Zend\Form\Form {
             case 'button':
                 $btn_class =$e->getAttribute('button-class');
                 if(!$btn_class) $btn_class = 'primary';
-
                 $html .= "<button class='btn btn-$btn_class form-control $class''";
                 if($id) $html .= " id='$id'";
+                $btn_type = $e->getAttribute('btn-type');
+                if($btn_type) $html .= " type='$btn_type'";
                 $html .= ">";
                 if($label) $html .= $label;
                 else $html .= "submit";
@@ -138,9 +146,11 @@ class Form extends \Zend\Form\Form {
                 break;
         }
 
-        $html .= "</div>";
-        $html .= "</div>";
-        $html .= "</div>";
+        if($type != 'hidden') {
+            $html .= "</div>";
+            $html .= "</div>";
+            $html .= "</div>";
+        }
 
         return $html;
     }

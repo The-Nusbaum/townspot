@@ -34,13 +34,38 @@ return array(
                     'socialmedia.css',
                     'style.less',
                 ),
+                'css/tinymce/skin.min.css' => array(
+                    'tinymce/tinymce/skins/lightgray/skin.min.css'
+                ),
+                'css/tinymce/content.min.css' => array(
+                    'tinymce/tinymce/skins/lightgray/content.min.css'
+                ),
+                'css/tinymce/fonts/tinymce.woff' => array(
+                    'tinymce/tinymce/skins/lightgray/fonts/tinymce.woff'
+                ),
+                'css/tinymce/fonts/tinymce.ttf' => array(
+                    'tinymce/tinymce/skins/lightgray/fonts/tinymce.ttf'
+                ),
+                'css/tinymce/fonts/tinymce.svg' => array(
+                    'tinymce/tinymce/skins/lightgray/fonts/tinymce.svg'
+                ),
                 'js/townspot.js' => array(
+                    'kalenjordan/jquery-cookie/jquery.cookie.js',
 					'carousel.js',
 					'infobutton.js',
 					'togglebuttons.js',
 					'geolocation.js',
 					'expander.js',
+                    //'moxiecode/plupload/js/plupload.min.js',
+                    'tinymce/tinymce/tinymce.js',
+
                 ),
+                'js/tinymceTheme.js' => array(
+                    'tinymce/tinymce/themes/modern/theme.min.js'
+                ),
+                'js/userEdit.js' => array(
+                    'userEdit.js'
+                )
             ),			
         ),
 /*
@@ -335,6 +360,16 @@ return array(
                     ),
                 ),
             ),
+            'userEdit' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/user/manageseries',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\User',
+                        'action'     => 'manageseries',
+                    ),
+                ),
+            ),
 			'profile_short' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(
@@ -620,6 +655,7 @@ return array(
         ),
         'template_path_stack' => array(
             APPLICATION_PATH . '/module/Application/view',
+            'zfcuser' => APPLICATION_PATH . '/module/Application/view',
         ),
     ),
     'module_layouts' => array(

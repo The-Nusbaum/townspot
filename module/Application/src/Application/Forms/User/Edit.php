@@ -5,10 +5,29 @@ use Townspot\Form\Form;
 
 class Edit extends Form
 {
-    public function __construct($name = null)
+    protected $_countries;
+    protected $_provinces;
+    protected $_cities;
+
+    public function __construct($name = null,$colCountries = null, $colProvinces = null, $colCities = null)
     {
         // we want to ignore the name passed
         parent::__construct('user');
+
+        $this->setAttribute('id','userEdit');
+
+        foreach($colCountries as $c) {
+            $countries[$c->getId()] = $c->getName();
+        }
+
+        foreach($colProvinces as $p) {
+            $provinces[$p->getId()] = $p->getName();
+        }
+
+        foreach($colCities as $c) {
+            $cities[$c->getId()] = $c->getName();
+        }
+
         $this->setAttribute('method', 'post');
         $this->setAttribute('columns',2);
         $this->add(array(
@@ -26,7 +45,7 @@ class Edit extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'artist_name',
+            'name' => 'artistName',
             'attributes' => array(
                 'type'  => 'text',
                 'label' => 'Artist Name',
@@ -42,7 +61,7 @@ class Edit extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'first_name',
+            'name' => 'firstName',
             'attributes' => array(
                 'type'  => 'text',
                 'label' => 'First Name',
@@ -51,7 +70,7 @@ class Edit extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'last_name',
+            'name' => 'lastName',
             'attributes' => array(
                 'type'  => 'text',
                 'label' => 'Last Name',
@@ -78,7 +97,7 @@ class Edit extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'display_name',
+            'name' => 'displayName',
             'attributes' => array(
                 'type'  => 'text',
                 'label' => 'Display Name',
@@ -91,9 +110,13 @@ class Edit extends Form
             'attributes' => array(
                 'type'  => 'select',
                 'label' => 'Country',
-                'placeholder' => 'Please select a Country'
+                'placeholder' => 'Please select a Country',
+            ),
+            'options' => array(
+                'value_options' => $countries
             ),
         ));
+
         $this->add(array(
             'type' => 'Zend\Form\Element\Select',
             'name' => 'province_id',
@@ -102,6 +125,9 @@ class Edit extends Form
                 'label' => 'State',
                 'placeholder' => 'Please select a State',
                 'width' => 6,
+            ),
+            'options' => array(
+                'value_options' => $provinces
             ),
         ));
         $this->add(array(
@@ -113,6 +139,9 @@ class Edit extends Form
                 'placeholder' => 'Please select a City',
                 'width' => 6,
             ),
+            'options' => array(
+                'value_options' => $cities
+            ),
         ));
         $this->add(array(
             'name' => 'neighborhood',
@@ -122,7 +151,7 @@ class Edit extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'about_me',
+            'name' => 'aboutMe',
             'attributes' => array(
                 'type'  => 'textarea',
                 'label' => 'About Me',
@@ -209,6 +238,16 @@ class Edit extends Form
                 'label' => 'Receive Email Notifications',
                 'column' => 'span',
                 'width' => 4,
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'submit',
+            'attributes' => array(
+                'type'  => 'button',
+                'btn-type' => 'submit',
+                'label' => 'Save Changes',
+                'column' => 'span',
             ),
         ));
 

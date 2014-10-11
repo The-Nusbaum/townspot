@@ -6,7 +6,7 @@
     <div class="col-sm-8">
         <ul class="nav nav-pills pull-right">
             <?php if ($canEdit): ?>
-                <li><a href="/users/manageseries">Manage My Series</a></li>
+                <li><a href="/user/manageseries">Manage My Series</a></li>
             <?php endif; ?>
             <li class="active"><a href="#profile" data-toggle="tab">Profile</a></li>
             <!-- <li><a href="#events" data-toggle="tab">Events</a></li> -->
@@ -290,7 +290,7 @@
 </div>
 <div class="tab-pane" id="videos">
     <div class="row">
-        <h3 class="col-sm-12"><?= ($canEdit)?'Your':$user->getUsername()."'s" ?> Videos (<?= count($user->getMedia())?>):</h3>
+        <h3 class="col-sm-12"><?= ($canEdit)?'Your':$user->getUsername()."'s" ?> Videos (<span class='videoCount'><?= count($user->getMedia())?></span>):</h3>
     </div>
     <div class="row">&nbsp;</div>
     <div class="list row">
@@ -363,7 +363,7 @@
                         <dd><?=$downs?></dd>
                     </dl>
                     <h4>Video Actions</h4>
-                    <ul class="list-unstyled">
+                    <ul class="list-unstyled" data-id="<?=$v->getId()?>">
                         <li class="delete"><i class="fa fa-times"></i> Delete</li>
                         <li class="edit"><i class="fa fa-pencil"></i> Edit</li>
                     </ul>

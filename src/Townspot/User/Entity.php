@@ -679,5 +679,13 @@ class Entity extends \Townspot\Entity
 	{
 		return "/profile/" . $this->getUsername();
 	}
-	
+
+    public function getSeries() {
+        return $this->_series;
+    }
+
+    public function setSeries($value) {
+        $this->_series = $value;
+        return $this;
+    }
 }

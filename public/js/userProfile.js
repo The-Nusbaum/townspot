@@ -50,12 +50,22 @@
                 $('.unfav').click(function(e){
                     methods.unfav(e);
                 });
-                $('.stats .delete').click(function(){
+                $('.stats .delete').click(function(e){
+                    var $target = $(e.target);
+                    var id = $target.parents('ul').attr('data-id');
                     bootbox.confirm("Are you sure?", function(result) {
                         if(result){
-                            $.get(
-                                '/'
-                            );
+                            $.ajax({
+                                    type: 'DELETE',
+                                    url: '/api/media/'+id
+                                }
+
+                            ).done(function(data){
+                                    if(data.success) {
+                                        $target.parents('.list').remove();
+                                        $('.videoCount').text($('#videos .video').length);
+                                    }
+                                });
                         }
                     });
                 });

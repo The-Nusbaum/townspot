@@ -4,20 +4,38 @@ $form->prepare();
 $form->setAttribute('action', $this->url('zfcuser/login'));
 $form->setAttribute('method', 'post');
 ?>
+<div class="container login">
+    <div class="row">
+        <h1 class="col-sm-12">Login</h1>
+    </div>
+    <div class="row">
+        <?= $this->flashMessenger()->render('default', array('alert', 'alert-warning', 'show', 'list-unstyled'));?>
+    </div>
+    <div class="row">
+        <hr class="col-sm-12"/>
+    </div>
+    <div class="row">
+        <div class="col-sm-5 col-sm-offset-1 users form" id="login-form">
+            <?php echo $this->form()->openTag($form) ?>
+            <?php echo $this->formElementErrors($form->get('identity')) ?>
+            <div class="form-group"><?php echo $this->formInput($form->get('identity')) ?></div>
+            <div class="form-group"><?php echo $this->formInput($form->get('credential')) ?></div>
 
-<?php echo $this->form()->openTag($form) ?>
-<?php echo $this->formElementErrors($form->get('identity')) ?>
-<div class="form-group"><?php echo $this->formInput($form->get('identity')) ?></div>
-<div class="form-group"><?php echo $this->formInput($form->get('credential')) ?></div>
+            <?php if ($this->redirect): ?>
+                <input type="hidden" name="redirect" value="<?php echo $this->escapeHtml($this->redirect) ?>" />
+            <?php endif ?>
 
-<?php if ($this->redirect): ?>
-    <input type="hidden" name="redirect" value="<?php echo $this->escapeHtml($this->redirect) ?>" />
-<?php endif ?>
+            <?php echo $this->formButton($form->get('submit')) ?>
 
-<?php echo $this->formButton($form->get('submit')) ?>
-
-<?php echo $this->form()->closeTag() ?>
-<div class="messages">
-    <p>Forgot your password? <a href="/forgot_password">Retrieve it</a></p>
-    <p>Need an account? <a href="/signup">Sign Up</a></p>
+            <?php echo $this->form()->closeTag() ?>
+        </div>
+        <div class="col-sm-5 oauth">
+            <div class="row">
+                <a href='/user/opauth/login/facebook' class="login-with-facebook btn btn-facebook btn-primary col-sm-12"><i class='fa fa-facebook'></i> Login with Facebook</a>
+            </div>
+            <div class="row">
+                <a href="/user/opauth/login/twitter" class="btn btn-twitter btn-primary link col-sm-12"><i class='fa fa-twitter'></i> Login With Twitter</a>
+            </div>
+        </div>
+    </div>
 </div>
