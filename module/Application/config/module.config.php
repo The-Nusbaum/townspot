@@ -14,8 +14,9 @@ return array(
             'VideoPlayer' 	=> 'Townspot\View\Helper\VideoPlayer',
             'VideoCarousel' => 'Townspot\View\Helper\VideoCarousel',
             'VideoBlock' 	=> 'Townspot\View\Helper\VideoBlock',
-            'img' => 'Townspot\View\Helper\Image',
+            'img' 			=> 'Townspot\View\Helper\Image',
             'AddThisLinks' 	=> 'Townspot\View\Helper\AddThisLinks',
+            'Comments' 		=> 'Townspot\View\Helper\Comments',
         ),
     ),
 	'asset_manager' => array(
@@ -36,6 +37,7 @@ return array(
                 ),
                 'js/townspot.js' => array(
 					'kalenjordan/jquery-cookie/jquery.cookie.js',
+					'jqgeeks/jquery-timeago/jquery.timeago.js',
 					'carousel.js',
 					'infobutton.js',
 					'togglebuttons.js',
@@ -203,6 +205,32 @@ return array(
 					)
 				),			
 			),			
+			'videos_follow' => array(
+				'type' => 'Zend\Mvc\Router\Http\Segment',
+				'options' => array(
+					'route' => '/videos/followartist/:id',
+					'constraints' => array(
+						'id' => '\d+',
+					),
+					'defaults' => array(
+						'controller' => 'Application\Controller\Video',
+						'action' => 'followartist'
+					)
+				),			
+			),
+			'artist_contact' => array(
+				'type' => 'Zend\Mvc\Router\Http\Segment',
+				'options' => array(
+					'route' => '/videos/contactartist/:id',
+					'constraints' => array(
+						'id' => '\d+',
+					),
+					'defaults' => array(
+						'controller' => 'Application\Controller\Video',
+						'action' => 'contactartist'
+					)
+				),			
+			),
 			'video_success' => array(
 				'type' => 'Zend\Mvc\Router\Http\Literal',
 				'options' => array(
@@ -223,16 +251,16 @@ return array(
 					)
 				),			
 			),
-			'videos_add_rating' => array(
+			'videos_add_favorite' => array(
 				'type' => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(
-					'route' => '/videos/ratings/add/:id',
+					'route' => '/videos/favorite/:id',
 					'constraints' => array(
 						'id' => '\d+',
 					),
 					'defaults' => array(
 						'controller' => 'Application\Controller\Video',
-						'action' => 'addrating'
+						'action' => 'favorite'
 					)
 				),			
 			),
@@ -617,6 +645,7 @@ return array(
         'exception_template'       => 'error/index',
         'template_map' => array(
             'application/layout'      => APPLICATION_PATH . '/module/Application/view/layout/layout.phtml',
+            'application/embed'    	  => APPLICATION_PATH . '/module/Application/view/layout/embed.phtml',
             'application/index/index' => APPLICATION_PATH . '/module/Application/view/application/index/index.phtml',
             'error/404'               => APPLICATION_PATH . '/module/Application/view/error/404.phtml',
             'error/index'             => APPLICATION_PATH . '/module/Application/view/error/index.phtml',
@@ -624,6 +653,9 @@ return array(
         'template_path_stack' => array(
             APPLICATION_PATH . '/module/Application/view',
         ),
+		'strategies' => array(
+           'ViewJsonStrategy',
+        ),		
     ),
     'module_layouts' => array(
         'ZfcUser' => 'application/layout',

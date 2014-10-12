@@ -28,7 +28,6 @@ class IndexController extends AbstractActionController
 
     public function indexAction()
     {
-		$this->init();
 		$SectionMapper = new \Townspot\SectionBlock\Mapper($this->getServiceLocator());
 		$_onScreen = $SectionMapper->findOneByBlockName('On Screen');
 		$_dailyHighlights = $SectionMapper->findOneByBlockName('Daily Highlights');

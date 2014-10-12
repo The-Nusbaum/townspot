@@ -3982,9 +3982,10 @@
             <column name="id" type="INT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-			<column name="season_id" type="INT">
+			<column name="series_id" type="INT">
                 <constraints nullable="false"/>
             </column>
+			<column name="season_id" type="INT" />
 			<column name="media_id" type="INT">
                 <constraints nullable="false"/>
             </column>

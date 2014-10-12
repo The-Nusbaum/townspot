@@ -1,0 +1,32 @@
+<?php echo $this->doctype(); ?>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <?= $this->headTitle('townspot.tv')->setSeparator(' - ')->setAutoEscape(false) ?>
+        <?= $this->headMeta()
+				 ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+				 ->appendName('robots','NOODP')
+				 ->appendName('MSSmartTagsPreventParsing','true')
+				 ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+				 ->appendHttpEquiv('Pragma','no-cache')
+				 ->appendHttpEquiv('cache-control','no-cache')
+				 ->appendHttpEquiv('expires',date('r'))
+				 ->appendName('description',
+							  "TownSpot.tv is the Local Video Network spotlighting local talent across the country through a curated video directory.");
+		?>
+        <?= $this->headLink(array(	'rel' => 'shortcut icon', 
+									'type' => 'image/vnd.microsoft.icon', 
+									'href' => $this->basePath() . '/img/favicon.ico'
+			));
+		?>
+		<?= $this->headScript()->prependFile('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js','text/javascript')
+                               ->prependFile('//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js','text/javascript');
+
+		?>
+		<?= $this->headScript()->appendFile('//jwpsrv.com/library/y3klzqiFEeKGEyIACpYGxA.js','text/javascript'); ?>
+		<script src="https://apis.google.com/js/platform.js" async defer></script>
+    </head>
+	<body style="background-color: #000000;">
+        <?php echo $this->content; ?>
+    </body>
+</html>

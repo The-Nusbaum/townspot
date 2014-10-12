@@ -314,7 +314,8 @@ if ($result = $sourceDb->query($sql)) {
 	while ($row = $result->fetch_assoc()) {
 		if (isset($series_seasons[$row['series_id']])) {
 			if ($row['video_id']) {
-				$targetDb->query(sprintf("INSERT INTO tsz.series_episodes (`season_id`,`media_id`,`episode_number`) VALUES (%d,%d,%d);\n",
+				$targetDb->query(sprintf("INSERT INTO tsz.series_episodes (`series_id`,`season_id`,`media_id`,`episode_number`) VALUES (%d,%d,%d);\n",
+					$row['series_id'],
 					$series_seasons[$row['series_id']],
 					$row['video_id'],
 					$row['episodeNumber']

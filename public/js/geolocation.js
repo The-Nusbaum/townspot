@@ -18,10 +18,9 @@ function getExplore(coords) {
 		type: "POST",
 		data: { "coords": coords }
 	}).done(function ( data ) {
-		obj = JSON.parse(data);
-		if ((obj.FullName != '')&&(obj.Link != '')) {
-			$('#explore-btn-link').prop('href',"/videos/" + obj.Link);
-			$('#explore-btn-location').html('Explore ' + obj.FullName);
+		if ((data.FullName != '')&&(data.Link != '')) {
+			$('#explore-btn-link').prop('href',"/videos/" + data.Link);
+			$('#explore-btn-location').html('Explore ' + data.FullName);
 			$('.explore-btn-wrapper').css('display','block');
 		}
 	});

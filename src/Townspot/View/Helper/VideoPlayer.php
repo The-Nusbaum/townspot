@@ -220,7 +220,7 @@ class VideoPlayer extends AbstractHelper implements ServiceLocatorAwareInterface
     protected function _getRelatedLink()
 	{
 		if (@$this->params['include_related']) {
-			return '/videos/rss/relatedVideos?id=' . $this->media->getId();
+			return '/videos/related/' . $this->media->getId();
 		}
 		return null;
 	}

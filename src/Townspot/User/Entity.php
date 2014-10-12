@@ -680,4 +680,11 @@ class Entity extends \Townspot\Entity
 		return "/profile/" . $this->getUsername();
 	}
 	
+	public function getProfileImage($width=100,$height=100)
+	{
+		return sprintf('/resizer.php?id=%d&type=profile&w=%d&h=%d',
+			$this->getId(),
+			$width,
+			$height);
+	}
 }

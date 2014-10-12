@@ -11,6 +11,7 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Zend\View\Model\JsonModel;
 use \Townspot\Lucene\VideoIndex;
 
 class AjaxController extends AbstractActionController
@@ -48,6 +49,7 @@ class AjaxController extends AbstractActionController
 				);
 			}
 		}
-		die(json_encode($response));
+		$json = new JsonModel($response);
+        return $json;
     }
 }

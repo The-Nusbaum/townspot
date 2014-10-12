@@ -537,8 +537,11 @@ class Entity extends \Townspot\Entity
 		return $this->_tags;
 	}
 
-	public function getCommentsAbout()
+	public function getCommentsAbout($order = 'ASC')
 	{
+		if ($order == 'ASC') {
+			return array_reverse($this->_comments_about->toArray());
+		} 
 		return $this->_comments_about;
 	}
 	

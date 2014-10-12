@@ -9,7 +9,7 @@ class Entity extends \Townspot\Entity
 
 	protected $_description;
 	
-	protected $_media_type;
+	protected $_media_type = 'video';
 
 	protected $_seasons;
 
@@ -28,6 +28,7 @@ class Entity extends \Townspot\Entity
 		$this->_created = new \DateTime();
 		$this->_updated = new \DateTime();
 		$this->_seasons = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->_episodes = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->_categories = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
@@ -61,6 +62,18 @@ class Entity extends \Townspot\Entity
 		return $this;
 	}
 
+	public function addEpisode(\Townspot\SeriesEpisode\Entity $value)
+	{
+		$this->_episodes->add($value);
+		return $this;
+	}
+	
+	public function removeEpisode($key)
+	{
+		$this->_episodes->remove($key);
+		return $this;
+	}
+	
 	public function setUser(\Townspot\User\Entity $value)
 	{
 		$this->_user = $value;
@@ -116,6 +129,11 @@ class Entity extends \Townspot\Entity
 		return $this->_seasons;
 	}
 	
+	public function getEpisodes()
+	{
+		return $this->_episodes;
+	}
+
 	public function getUser()
 	{
 		return $this->_user;
