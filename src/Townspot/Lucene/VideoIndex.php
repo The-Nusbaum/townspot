@@ -11,26 +11,41 @@ class VideoIndex extends SearchIndex
 
 	public function build() 
 	{
+		$errors = array();
 		$this->clear(true);
 		$index = $this->getIndex();
 		$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
 		$media = $mediaMapper->findAll();
 		foreach ($media as $obj) {
-			$doc = new Document();	
-			$doc->addField(Field::Text('mediaid', $obj->getId()));		
-			$doc->addField(Field::unStored('title', htmlentities($obj->getTitle())));		
-			$doc->addField(Field::unStored('user', htmlentities($obj->getUser()->getUsername())));		
-			$doc->addField(Field::unStored('duration', htmlentities($obj->getDuration())));		
-			$doc->addField(Field::unStored('city', htmlentities(strtolower($obj->getCity()->getName()))));		
-			$doc->addField(Field::unStored('province', htmlentities(strtolower($obj->getProvince()->getName()))));		
-			$doc->addField(Field::unStored('description', htmlentities(strtolower(strip_tags($obj->getDescription())))));		
-			$categories = array();
-			foreach ($obj->getCategories() as $category) {
-				$categories[] = htmlentities($category->getName());
+			try {
+				$doc = new Document();	
+				$doc->addField(Field::Text('mediaid', $obj->getId()));		
+				$doc->addField(Field::unStored('title', htmlentities($obj->getTitle())));		
+				$doc->addField(Field::unStored('user', htmlentities($obj->getUser()->getUsername())));		
+//				$doc->addField(Field::unStored('duration', htmlentities($obj->getDuration())));		
+				$doc->addField(Field::unStored('city', htmlentities(strtolower($obj->getCity()->getName()))));		
+				$doc->addField(Field::unStored('province', htmlentities(strtolower($obj->getProvince()->getName()))));		
+				$doc->addField(Field::unStored('description', htmlentities(strtolower(strip_tags($obj->getDescription())))));		
+				$categories = array();
+				foreach ($obj->getCategories() as $category) {
+					$categories[] = htmlentities($category->getName());
+				}
+				$doc->addField(Field::unStored('categories', implode('::',$categories)));		
+			} catch (\Doctrine\ORM\EntityNotFoundException $e) {
+				$doc->addField(Field::unStored('user', ''));
+				$errors[] = $obj->getId();
+			} catch (\ZendGData\App\HttpException $e) {
+				// I don't care about this error
 			}
-			$doc->addField(Field::unStored('categories', implode('::',$categories)));		
 			$index->addDocument($doc);
+				
 		}
+		print "Detected Errors - missing User Id\n";
+		print "=================================\n";
+		foreach ($errors as $error) {
+			print $error . "\n";
+		}
+
 	}
 	
 	public function add($object)

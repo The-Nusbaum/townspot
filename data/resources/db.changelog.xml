@@ -3816,9 +3816,7 @@
 			<column name="user_id" type="INT">
                 <constraints nullable="false"/>
             </column>
-			<column name="admin_id" type="INT">
-                <constraints nullable="false"/>
-            </column>
+			<column name="admin_id" type="INT" />
 			<column defaultValue="NULL" name="duration" type="INT"/>
 			<column defaultValue="NULL" name="country_id" type="INT"/>
 			<column defaultValue="NULL" name="province_id" type="INT"/>

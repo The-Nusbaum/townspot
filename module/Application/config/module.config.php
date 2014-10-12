@@ -636,6 +636,9 @@ return array(
             'Application\Controller\StaticPage' => 'Application\Controller\StaticPageController',
             'Application\Controller\Ajax' 		=> 'Application\Controller\AjaxController',
         ),
+        'factories' => array(
+            'Application\Controller\Console' => 'Application\Controller\ConsoleControllerFactory',
+        ),
     ),
     'view_manager' => array(
         'display_not_found_reason' => true,
@@ -699,10 +702,19 @@ return array(
             ),
         )
     ),
-    'console' => array(
+    'console'         => array(
         'router' => array(
             'routes' => array(
-            ),
-        ),
+                'build-media-index' => array(
+                    'options' => array(
+                        'route'    => 'lucene build media',
+                        'defaults' => array(
+                            'controller' => 'Application\Controller\Console',
+                            'action'     => 'buildmedia',
+                        )
+                    )
+                )
+            )
+        )
     ),
 );
