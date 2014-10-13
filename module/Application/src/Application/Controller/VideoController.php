@@ -94,6 +94,7 @@ class VideoController extends AbstractActionController
 		$_rating = $this->params()->fromPost('rating');
 		$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
 		$ratingMapper = new \Townspot\Rating\Mapper($this->getServiceLocator());
+		$userRating = null;
 		if ($media = $mediaMapper->find($videoId)) {
 			if ($this->zfcUserAuthentication()->hasIdentity()) {
 				$loggedInUser = $this->zfcUserAuthentication()->getIdentity()->getId();
@@ -331,7 +332,7 @@ class VideoController extends AbstractActionController
 		foreach ($_comments as $comment) {
 			$comments[] = array(
 				'id' 			=> $comment->getId(),
-				'candelete'		=> ($comment->getUser()->getId() == $loggedInUser->getId()),
+				'candelete'		=> ($loggedInUser) ? ($comment->getUser()->getId() == $loggedInUser->getId()) : false,
 				'username' 		=> $comment->getUser()->getUsername(),
 				'profileLink'	=> $comment->getUser()->getProfileLink(),
 				'profileImage' 	=> 'http://images.townspot.tv/' . $comment->getUser()->getProfileImage(),
