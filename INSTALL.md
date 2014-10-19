@@ -4,7 +4,7 @@ Liquibase
 ------------------------------------------------
 mvn -Ptsz resources:resources liquibase:update
 
-Build Media Index
+Build Lucene indexes
 ------------------------------------------------
-php public/index.php lucene build media
+php public/index.php lucene build indexes
 

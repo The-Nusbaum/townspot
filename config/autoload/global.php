@@ -21,7 +21,47 @@ return array(
         'servers' => array(
             'static_1' => array(
                 'scheme' => 'http',
-                'host' => 'images.townspot.tv',
+                'host' => 'images1.townspot.tv',
+                'port' => 80
+            ),
+            'static_2' => array(
+                'scheme' => 'http',
+                'host' => 'images2.townspot.tv',
+                'port' => 80
+            ),
+            'static_3' => array(
+                'scheme' => 'http',
+                'host' => 'images3.townspot.tv',
+                'port' => 80
+            ),
+            'static_4' => array(
+                'scheme' => 'http',
+                'host' => 'images4.townspot.tv',
+                'port' => 80
+            ),
+            'static_5' => array(
+                'scheme' => 'http',
+                'host' => 'images5.townspot.tv',
+                'port' => 80
+            ),
+            'static_6' => array(
+                'scheme' => 'http',
+                'host' => 'images6.townspot.tv',
+                'port' => 80
+            ),
+            'static_7' => array(
+                'scheme' => 'http',
+                'host' => 'images7.townspot.tv',
+                'port' => 80
+            ),
+            'static_8' => array(
+                'scheme' => 'http',
+                'host' => 'images8.townspot.tv',
+                'port' => 80
+            ),
+            'static_9' => array(
+                'scheme' => 'http',
+                'host' => 'images9.townspot.tv',
                 'port' => 80
             ),
         ),

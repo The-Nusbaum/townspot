@@ -46,16 +46,6 @@ class Entity extends \Townspot\Entity
 		return $this->_id;
 	}
 
-	public function getName()
-	{
-		return $this->_name;
-	}
-
-	public function getDescription()
-	{
-		return $this->_description;
-	}
-
 	public function getSeason()
 	{
 		return $this->_season;

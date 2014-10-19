@@ -705,12 +705,12 @@ return array(
     'console'         => array(
         'router' => array(
             'routes' => array(
-                'build-media-index' => array(
+                'build-lucene-index' => array(
                     'options' => array(
-                        'route'    => 'lucene build media',
+                        'route'    => 'lucene build indexes',
                         'defaults' => array(
                             'controller' => 'Application\Controller\Console',
-                            'action'     => 'buildmedia',
+                            'action'     => 'buildindexes',
                         )
                     )
                 )

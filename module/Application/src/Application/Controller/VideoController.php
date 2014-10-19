@@ -13,7 +13,6 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
 use Zend\Mail\Message;
-use \Townspot\Lucene\VideoIndex;
 
 class VideoController extends AbstractActionController
 {
@@ -40,19 +39,11 @@ class VideoController extends AbstractActionController
 				 ->get('HeadScript')
 				 ->appendFile('/js/videointeractions.js','text/javascript');
 			$this->init($media->getTitle());
-			$searchIndex = new VideoIndex($this->getServiceLocator());
-			$queries = array();
-			$queries[] = 'user:"' . ($media->getUser()->getUserName()) . '"';
-			foreach ($media->getCategories() as $category) {
-				$queries[] = 'categories:"' . htmlentities($category->getName()) . '"';
-			}
-			$related = $searchIndex->find($queries);
-			$related = array_diff($related,array($videoId));
+			$relatedMedia  = $mediaMapper->getMediaLike($media);
 			return new ViewModel(
 				array(
-					'media_id' => $videoId,
 					'media'    => $media,
-					'related'  => array_slice($related, 0, 3)
+					'related'  => $relatedMedia
 				)
 			);
 		} else {
@@ -264,19 +255,12 @@ class VideoController extends AbstractActionController
 		$videoId = $this->params()->fromRoute('id');
 		$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
 		if ($media = $mediaMapper->find($videoId)) {
-			$searchIndex = new VideoIndex($this->getServiceLocator());
-			$queries = array();
-			$queries[] = 'user:"' . ($media->getUser()->getUserName()) . '"';
-			foreach ($media->getCategories() as $category) {
-				$queries[] = 'categories:"' . htmlentities($category->getName()) . '"';
-			}
-			$related = $searchIndex->find($queries);
-			$related = array_diff($related,array($videoId));
+			$related  = $mediaMapper->getMediaLike($media);
 			header("Content-type: text/xml; charset=utf-8");
 			$output  = "<rss version=\"2.0\" xmlns:media=\"http://search.yahoo.com/mrss/\">\n";
 			$output.= '<channel>';
-			foreach ($related as $id) {
-				if ($relatedMedia = $mediaMapper->find($id)) {
+			foreach ($related as $m) {
+				if ($relatedMedia = $mediaMapper->find($m['id'])) {
 					$output .= '    <item>';
 					$output .= '	    <title>' . htmlspecialchars($relatedMedia->getTitle(false)) . '</title>';
 					$output .= '	    <link>http://' . $this->getRequest()->getServer('HTTP_HOST') . '/' . $relatedMedia->getMediaLink() . '</link>';
@@ -292,6 +276,8 @@ class VideoController extends AbstractActionController
             $output .= '</channel>';
 			$output .= "</rss>";
             print $output;
+		} else {
+			//Error
 		}
 		die;			
 	}

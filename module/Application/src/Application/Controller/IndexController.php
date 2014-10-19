@@ -32,11 +32,16 @@ class IndexController extends AbstractActionController
 		$_onScreen = $SectionMapper->findOneByBlockName('On Screen');
 		$_dailyHighlights = $SectionMapper->findOneByBlockName('Daily Highlights');
 		$_staffFavorites = $SectionMapper->findOneByBlockName('Staff Favorites');
+		
 		$dailyHighlights = array();
 		$staffFavorites = array();
-		foreach ($_dailyHighlights->getSectionMedia() as $media) { $dailyHighlights[] = $media->getMedia()->getId(); }
-		foreach ($_staffFavorites->getSectionMedia() as $media) { $staffFavorites[] = $media->getMedia()->getId(); }
 		
+		foreach ($_dailyHighlights->getSectionMedia() as $media) {
+			$dailyHighlights[] = $media->getMedia();
+		}
+		foreach ($_staffFavorites->getSectionMedia() as $media) {
+			$staffFavorites[] = $media->getMedia();
+		}
         return new ViewModel(
 			array(
 				'onScreen' 			=> $_onScreen->getSectionMedia(),

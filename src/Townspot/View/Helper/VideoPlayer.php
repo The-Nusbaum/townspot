@@ -11,18 +11,18 @@ class VideoPlayer extends AbstractHelper implements ServiceLocatorAwareInterface
 	
     protected $params;
 
-    public function __invoke($mediaId,$params=array())
+    public function __invoke($media,$params=array())
     {
-		$helperPluginManager = $this->getServiceLocator();
-		$serviceManager = $helperPluginManager->getServiceLocator();  	
-		$mediaMapper = new \Townspot\Media\Mapper($serviceManager);
-		$this->params = $params;
-		if ($media = $mediaMapper->find($mediaId)) {
-			$this->media = $media;
-			$function = $media->getSource();
-			return $this->{$function}();
+		$helperPluginManager	= $this->getServiceLocator();
+		$serviceManager 		= $helperPluginManager->getServiceLocator();  	
+		if (is_numeric($media)) {
+			$mediaMapper = new \Townspot\Media\Mapper($serviceManager);
+			$media = $mediaMapper->find($media);
 		}
-		return null;
+		$this->params 			= $params;
+		$this->media = $media;
+		$function = $media->getSource();
+		return $this->{$function}();
     }
 	
     public function internal()

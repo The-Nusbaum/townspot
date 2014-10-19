@@ -1,11 +1,4 @@
 <?php
-
-/**
- * Factory of ConsoleController
- *
- * @author Witold Wasiczko <witold@wasiczko.pl>
- */
-
 namespace Application\Controller;
 
 use Zend\ServiceManager\FactoryInterface;

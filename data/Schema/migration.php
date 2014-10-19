@@ -312,15 +312,13 @@ if ($result = $sourceDb->query($sql)) {
 $sql = "SELECT * FROM townspot_dev.video_episodes";
 if ($result = $sourceDb->query($sql)) {
 	while ($row = $result->fetch_assoc()) {
-		if (isset($series_seasons[$row['series_id']])) {
-			if ($row['video_id']) {
-				$targetDb->query(sprintf("INSERT INTO tsz.series_episodes (`series_id`,`season_id`,`media_id`,`episode_number`) VALUES (%d,%d,%d);\n",
-					$row['series_id'],
-					$series_seasons[$row['series_id']],
-					$row['video_id'],
-					$row['episodeNumber']
-				));
-			}
+		if ($row['video_id']) {
+			$targetDb->query(sprintf("INSERT INTO tsz.series_episodes (`series_id`,`season_id`,`media_id`,`episode_number`) VALUES (%d,%d,%d,%d);\n",
+				$row['series_id'],
+				(@$series_seasons[$row['series_id']]) ?: 0,
+				$row['video_id'],
+				$row['episodeNumber']
+			));
 		}
 	}
 }
@@ -374,6 +372,7 @@ $targetDb->query("update media set city_id=null where city_id=0");
 $targetDb->query("update media set province_id=null where province_id=0");
 $targetDb->query("update media set admin_id=null where admin_id=0");
 $targetDb->query("update category set parent_id=null where parent_id=0");
+$targetDb->query("update series_episodes set season_id=null where season_id=0");
 
 function getCity($dbconnection,$cityId) 
 {

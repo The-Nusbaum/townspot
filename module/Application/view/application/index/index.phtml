@@ -74,17 +74,17 @@
 </div>
 <div class="row">
 	<div class="col-sm-12 wide-carousel">
-		<?= $this->VideoCarousel($dailyHighlights,array(
+		<?= $this->VideoCarousel($this->dailyHighlights,array(
 			'id' => 'highlights-lg',
 			'per_panel' => 3,
 			'class' => 'hidden-xs hidden-xxs'
 			)); ?>
-		<?= $this->VideoCarousel($dailyHighlights,array(
+		<?= $this->VideoCarousel($this->dailyHighlights,array(
 			'id' => 'highlights-sm',
 			'per_panel' => 2,
 			'class' => 'hidden-lg hidden-md hidden-xxs'
 			)); ?>
-		<?= $this->VideoCarousel($dailyHighlights,array(
+		<?= $this->VideoCarousel($this->dailyHighlights,array(
 			'id' => 'highlights-xs',
 			'per_panel' => 1,
 			'class' => 'hidden-lg hidden-md hidden-sm hidden-xs'
@@ -98,17 +98,17 @@
 </div>
 <div class="row">
 	<div class="col-sm-12 wide-carousel">
-		<?= $this->VideoCarousel($staffFavorites,array(
+		<?= $this->VideoCarousel($this->staffFavorites,array(
 			'id' => 'favorites-lg',
 			'per_panel' => 3,
 			'class' => 'hidden-xs hidden-xxs'
 			)); ?>
-		<?= $this->VideoCarousel($staffFavorites,array(
+		<?= $this->VideoCarousel($this->staffFavorites,array(
 			'id' => 'favorites-sm',
 			'per_panel' => 2,
 			'class' => 'visible-xs'
 			)); ?>
-		<?= $this->VideoCarousel($staffFavorites,array(
+		<?= $this->VideoCarousel($this->staffFavorites,array(
 			'id' => 'favorites-xs',
 			'per_panel' => 1,
 			'class' => 'visible-xxs'

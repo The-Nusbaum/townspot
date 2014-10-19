@@ -2,6 +2,8 @@
 namespace Application\Controller;
 
 use \Townspot\Lucene\VideoIndex;
+use \Townspot\Lucene\ArtistIndex;
+use \Townspot\Lucene\SeriesIndex;
 use Zend\Console\Adapter\AdapterInterface as Console;
 use Zend\Console\ColorInterface as Color;
 use Zend\Console\Request as ConsoleRequest;
@@ -48,12 +50,12 @@ class ConsoleController extends AbstractActionController
     }
 
     /**
-     * Download GeoIP data via console
      */
-    public function buildmediaAction()
+    public function buildindexesAction()
     {
-		$searchIndex = new VideoIndex($this->getServiceLocator());
-		$searchIndex->build();
+        $this->writeLine('Building Videos', Color::GREEN);
+		$videoIndex = new VideoIndex($this->getServiceLocator());
+		$videoIndex->build();
         $this->writeLine('Build completed', Color::GREEN);
     }
 
