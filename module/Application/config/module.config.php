@@ -85,7 +85,7 @@ return array(
             'search' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
-                    'route'    => '/search',
+                    'route'    => '/videos/search',
                     'defaults' => array(
                         'controller' => 'Application\Controller\Search',
                         'action'     => 'index',
@@ -307,8 +307,8 @@ return array(
 						'param10' => '[a-zA-Z0-9_-]+',
 					),
 					'defaults' => array(
-						'controller' => 'Application\Controller\Video',
-						'action' => 'index'
+						'controller' => 'Application\Controller\Search',
+						'action' => 'discover'
 					)
 				),			
 			),			
@@ -711,6 +711,15 @@ return array(
                         'defaults' => array(
                             'controller' => 'Application\Controller\Console',
                             'action'     => 'buildindexes',
+                        )
+                    )
+                ),
+                'build-lucene-index-delta' => array(
+                    'options' => array(
+                        'route'    => 'lucene build delta',
+                        'defaults' => array(
+                            'controller' => 'Application\Controller\Console',
+                            'action'     => 'builddelta',
                         )
                     )
                 )

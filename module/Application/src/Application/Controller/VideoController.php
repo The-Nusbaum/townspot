@@ -28,7 +28,7 @@ class VideoController extends AbstractActionController
 			 ->get('HeadTitle')
 			 ->set($title);
 	}
-
+	
     public function playerAction()
     {
 		$videoId = $this->params()->fromRoute('id');

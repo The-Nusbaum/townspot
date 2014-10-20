@@ -392,17 +392,16 @@ class Entity extends \Townspot\Entity
 		return $this->_preview_image;
 	}
 
-	public function getViews()
+	public function getViews($fromSource = true)
 	{
-		switch ($this->getSource()) {
-			case 'youtube':
+		if ($fromSource) {
+			if ($this->getSource() == 'youtube') {
 				$ytId = $this->getYtVideoId();
 				$videoEntry = $this->_getYtVideo($ytId);
 				return $videoEntry->getStatistics()->getViewCount();
-			default:
-				return $this->_views;
+			}
 		}
-		return 0;
+		return $this->_views;
 	}
 
 	public function getDuration($formatted = false)
