@@ -116,7 +116,7 @@ class Entity extends \Townspot\Entity
 	
 	public function getDiscoverLink()
 	{
-		$link = '/videos' . $this->getDiscoverLevels();;
+		$link = '/discover' . $this->getDiscoverLevels();;
 		return $link;
 	}
 
