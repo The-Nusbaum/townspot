@@ -16,4 +16,7 @@ return array(
 			),
 		),
 	),
+    'zf-snap-google-adsense' => array(
+        'renderer' => 'zf-snap-google-adsense-renderer-view-placeholdit',
+    ),
 );

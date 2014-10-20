@@ -70,6 +70,58 @@ return array(
 		'id' => 'UA-33048703-1',
 		'domain_name'  => 'townspot.tv',
 	),
+    'zf-snap-google-adsense' => array(
+		'publisher-id' => 'ca-pub-4550038254482078',
+		'ads' => array(
+			'leaderboard' => array(
+				'id' => 9042539146,
+				'size' => '728x90',
+			),
+			'banner' => array(
+				'id' => 5441220349,
+				'size' => '468x60',
+			),
+			'mobile-leaderboard' => array(
+				'id' => 2766955547,
+				'size' => '320x50',
+			),
+			'half-banner' => array(
+				'id' => 1011020740,
+				'size' => '234x60',
+			),
+			'small-rectangle' => array(
+				'id' => 3824886349,
+				'size' => '180x50',
+			),
+			'small-rectangle' => array(
+				'id' => 3824886349,
+				'size' => '180x50',
+			),
+		),
+        'enable' => true,
+        'renderer' => 'zf-snap-google-adsense-renderer-view-asynchronous',
+        'unit-limit' => array(
+            \ZfSnapGoogleAdSense\Model\AdUnit::TYPE_CONTENT => 3,
+            \ZfSnapGoogleAdSense\Model\AdUnit::TYPE_LINK => 3,
+        ),
+        'renderers' => array(
+            'zf-snap-google-adsense-renderer-view-placeholdit' => array(
+                'params' => array(
+                    'useAdNameToText' => true,
+                    'backgroundColor' => 'ccc',
+                    'textColor' => '969696',
+                    'format' => 'gif',
+                ),
+            ),
+            'zf-snap-google-adsense-renderer-view-html' => array(
+                'params' => array(
+                    'background' => '#ccc',
+                    'color' => '#969696',
+                    'style' => '',
+                ),
+            ),
+        ),
+    ),
 	'zfcuser' => array(
 		'zend_db_adapter' => 'Zend\Db\Adapter\Adapter',
 		//'user_entity_class' => 'ZfcUser\Entity\User',
@@ -133,6 +185,9 @@ return array(
         )
     ),
     'service_manager' => array(
+        'abstract_factories' => array(
+            'ZfSnapGoogleAdSense\View\Helper\Renderer\ViewFactory' => 'ZfSnapGoogleAdSense\View\Helper\Renderer\ViewFactory',
+        ),
         'aliases' => array(
             'zfcuser_zend_db_adapter' => (isset($settings['zend_db_adapter'])) ? $settings['zend_db_adapter']: 'Zend\Db\Adapter\Adapter',
         ),
@@ -143,5 +198,21 @@ return array(
         'invokables' => array(
             'Townspot\Authentication\Adapter\Db' => '\Townspot\Authentication\Adapter\Db',
 		),
+    ),
+    'view_helpers' => array(
+        'aliases' => array(
+            'adsense' => 'googleAdSense',
+        ),
+        'factories' => array(
+            'googleAdSense' => 'ZfSnapGoogleAdSense\View\Helper\GoogleAdSenseFactory',
+        ),
+    ),
+    'view_manager' => array(
+        'template_map' => array(
+            'zf-snap-google-adsense-renderer-view-asynchronous' => __DIR__ . '/../view/zf-snap-google-adsense/renderer/view/asynchronous.phtml',
+            'zf-snap-google-adsense-renderer-view-html'         => __DIR__ . '/../view/zf-snap-google-adsense/renderer/view/html.phtml',
+            'zf-snap-google-adsense-renderer-view-placeholdit'  => __DIR__ . '/../view/zf-snap-google-adsense/renderer/view/placeholdit.phtml',
+            'zf-snap-google-adsense-renderer-view-synchronous'  => __DIR__ . '/../view/zf-snap-google-adsense/renderer/view/synchronous.phtml',
+        ),
     ),
 );
