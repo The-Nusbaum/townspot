@@ -20,10 +20,6 @@ class ArtistIndex extends AbstractIndex
 			foreach ($rows as $row) {
 				print $indexcount . "/" . $totalcount . "\n";
 				$this->add($row);
-				if (($indexcount % 20) == 0) {
-					$this->optimize();
-					print "Optimizing\n";
-				}
 				$indexcount++;
 			}
 			$this->optimize();
@@ -43,10 +39,6 @@ class ArtistIndex extends AbstractIndex
 			foreach ($rows as $row) {
 				print $indexcount . "/" . $totalcount . "\n";
 				$this->update($row);
-				if (($indexcount % 20) == 0) {
-					$this->optimize();
-					print "Optimizing\n";
-				}
 				$indexcount++;
 			}
 			$this->optimize();
@@ -55,18 +47,22 @@ class ArtistIndex extends AbstractIndex
 
 	public function add($row)
 	{
+		if ($row instanceof \Townspot\User\Entity) {
+			$row = $this->_getArrayFromObject($row);
+		}
 		$index = $this->getIndex();
 		\ZendSearch\Lucene\Analysis\Analyzer\Analyzer::setDefault(new \ZendSearch\Lucene\Analysis\Analyzer\Common\TextNum\CaseInsensitive());
 		try {
 			$doc = new Document();	
 			$doc->addField(Field::Text('objectid', $row['user_id']));	
-			$doc->addField(Field::Text('username', htmlentities($row['username'])));	
+			$doc->addField(Field::Text('user_name', htmlentities($row['username'])));	
 			$doc->addField(Field::Text('artist_name', htmlentities($row['artist_name'])));	
 			$doc->addField(Field::Text('email', htmlentities($row['email'])));	
 			$doc->addField(Field::UnStored('city_id', $row['city_id']));	
 			$doc->addField(Field::UnStored('province_id', $row['province_id']));	
 			$index->addDocument($doc);
 		} catch (\Doctrine\ORM\EntityNotFoundException $e) {
+		} catch (\ZendSearch\Lucene\Exception\RuntimeException $e) {
 		} catch (\ZendGData\App\HttpException $e) {
 		}
 	}
@@ -79,6 +75,9 @@ class ArtistIndex extends AbstractIndex
 
 	public function remove($row)
 	{
+		if ($row instanceof \Townspot\User\Entity) {
+			$row = $this->_getArrayFromObject($row);
+		}
 		$index = $this->getIndex();
 		$match = null;
 		$matches = $this->getIndex()->find('objectid:' . $row['user_id']);
@@ -92,10 +91,30 @@ class ArtistIndex extends AbstractIndex
 	{
 		$userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
 		$results = array();
-		$matches = $this->getIndex()->find($query,$sortField,$sortType,$sortOrder);
+		if ($sortField) {
+			$matches = $this->getIndex()->find($query,$sortField);
+		} elseif (($sortField)&&($sortType)) {
+			$matches = $this->getIndex()->find($query,$sortField,$sortType);
+		} elseif (($sortField)&&($sortType)&&($sortOrder)) {
+			$matches = $this->getIndex()->find($query,$sortField,$sortType,$sortOrder);
+		} else {
+			$matches = $this->getIndex()->find($query);
+		}
 		foreach ($matches as $hit) {	
 			$results[] = $userMapper->find($hit->objectid);
 		}
 		return $results;
+	}
+	
+	protected function _getArrayFromObject($obj)
+	{
+		return array(
+			'user_id'			=> $obj->getId(),
+			'user_name'			=> $obj->getUsername(),
+			'artist_name'		=> $obj->getArtistName(),
+			'email'				=> $obj->getEmail(),
+			'city_id'			=> $obj->getCity()->getId(),
+			'province_id'		=> $obj->getProvince()->getId()
+		);
 	}
 }

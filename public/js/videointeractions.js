@@ -136,8 +136,9 @@
 						$('#comment-list').append(_html);
 					});
 					if (data.length == options.pagelimit) {
+						options.page = options.page + 1;
 						$('#comment-navigation-down').css('display','block');
-						$('#comment-navigation-down .next').unbind('click').bind('click', function() { methods._getNextComments() });
+						$('#comment-navigation-down .next').unbind('click').bind('click', function() { methods.comments() });
 					} else {
 						$('#comment-navigation-down').css('display','none');
 					}

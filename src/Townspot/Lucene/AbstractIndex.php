@@ -91,7 +91,10 @@ abstract class AbstractIndex implements ServiceLocatorAwareInterface
 	 */
 	public function optimize() 
 	{
-		$this->getIndex($this->getIndexName())->optimize();
+		try {
+			$this->getIndex($this->getIndexName())->optimize();
+		} catch (\ZendSearch\Lucene\Exception\RuntimeException $e) {
+		}
 	}
 	
 	/**
@@ -165,6 +168,24 @@ abstract class AbstractIndex implements ServiceLocatorAwareInterface
 		return $config['path'] . DIRECTORY_SEPARATOR . $index;
 	}
 	
+	public function findIds($query,$sortField = null,$sortType = null,$sortOrder = null)
+	{
+		$results = array();
+		if ($sortField) {
+			$matches = $this->getIndex()->find($query,$sortField);
+		} elseif (($sortField)&&($sortType)) {
+			$matches = $this->getIndex()->find($query,$sortField,$sortType);
+		} elseif (($sortField)&&($sortType)&&($sortOrder)) {
+			$matches = $this->getIndex()->find($query,$sortField,$sortType,$sortOrder);
+		} else {
+			$matches = $this->getIndex()->find($query);
+		}
+		foreach ($matches as $hit) {	
+			$results[] = $hit->objectid;
+		}
+		return $results;
+	}
+
 	/**
 	 * Build Index
 	 *
@@ -195,4 +216,6 @@ abstract class AbstractIndex implements ServiceLocatorAwareInterface
 	 * @return Object
 	 */
 	abstract public function update($object);
+	
+	abstract public function find($query);
 }

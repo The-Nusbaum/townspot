@@ -71,7 +71,7 @@ return array(
 		'domain_name'  => 'townspot.tv',
 	),
     'zf-snap-google-adsense' => array(
-		'publisher-id' => 'ca-pub-4550038254482078',
+		'publisher-id' => 'pub-4550038254482078',
 		'ads' => array(
 			'leaderboard' => array(
 				'id' => 9042539146,
@@ -101,8 +101,8 @@ return array(
         'enable' => true,
         'renderer' => 'zf-snap-google-adsense-renderer-view-asynchronous',
         'unit-limit' => array(
-            \ZfSnapGoogleAdSense\Model\AdUnit::TYPE_CONTENT => 3,
-            \ZfSnapGoogleAdSense\Model\AdUnit::TYPE_LINK => 3,
+            \ZfSnapGoogleAdSense\Model\AdUnit::TYPE_CONTENT => 99,
+            \ZfSnapGoogleAdSense\Model\AdUnit::TYPE_LINK => 99,
         ),
         'renderers' => array(
             'zf-snap-google-adsense-renderer-view-placeholdit' => array(
@@ -209,10 +209,10 @@ return array(
     ),
     'view_manager' => array(
         'template_map' => array(
-            'zf-snap-google-adsense-renderer-view-asynchronous' => __DIR__ . '/../view/zf-snap-google-adsense/renderer/view/asynchronous.phtml',
-            'zf-snap-google-adsense-renderer-view-html'         => __DIR__ . '/../view/zf-snap-google-adsense/renderer/view/html.phtml',
-            'zf-snap-google-adsense-renderer-view-placeholdit'  => __DIR__ . '/../view/zf-snap-google-adsense/renderer/view/placeholdit.phtml',
-            'zf-snap-google-adsense-renderer-view-synchronous'  => __DIR__ . '/../view/zf-snap-google-adsense/renderer/view/synchronous.phtml',
+            'zf-snap-google-adsense-renderer-view-asynchronous' => APPLICATION_PATH . '/src/Townspot/Adsense/view/asynchronous.phtml',
+            'zf-snap-google-adsense-renderer-view-html'         => APPLICATION_PATH . '/src/Townspot/Adsense/view//html.phtml',
+            'zf-snap-google-adsense-renderer-view-placeholdit'  => APPLICATION_PATH . '/src/Townspot/Adsense/view/placeholdit.phtml',
+            'zf-snap-google-adsense-renderer-view-synchronous'  => APPLICATION_PATH . '/src/Townspot/Adsense/view/synchronous.phtml',
         ),
     ),
 );

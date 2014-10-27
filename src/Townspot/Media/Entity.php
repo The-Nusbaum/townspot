@@ -348,12 +348,16 @@ class Entity extends \Townspot\Entity
 		return $this->_id;
 	}
 
-	public function getTitle($formatted = false)
+	public function getTitle($formatted = false,$escaped = false)
 	{
-		if (!$formatted) {
-			return $this->_title;
+		$title = $this->_title;
+		if ($escaped) {
+			$title = htmlentities($title);
 		}
-		$title = preg_replace('/[^A-Za-z0-9- ]/', '', $this->_title);
+		if (!$formatted) {
+			return $title;
+		}
+		$title = preg_replace('/[^A-Za-z0-9- ]/', '', $title);
 		return str_replace(' ','_',$title);
 	}
 
@@ -367,14 +371,25 @@ class Entity extends \Townspot\Entity
 		return $this->_source;
 	}
 
-	public function getLogline()
+	public function getLogline($escaped = false)
 	{
-		return $this->_logline;
+		$logline = $this->_logline;
+		if ($escaped) {
+			$logline = htmlentities($logline);
+		}
+		return $logline;
 	}
 
-	public function getDescription()
+	public function getDescription($escaped = false)
 	{
-		return $this->_description;
+		$description = $this->_description;
+		if ($escaped) {
+			$description = preg_replace('/<br\s*\/?\s*>/', "\n", $description);
+			$description = strip_tags($description);
+			$description = htmlentities($description);
+			$description = nl2br($description);
+		}
+		return $description;
 	}
 
 	public function getWhyWeChose()
@@ -613,7 +628,7 @@ class Entity extends \Townspot\Entity
 		return $this->getPreviewImage();
 	}
 	
-	public function getLocation($includeNeighborhood = false)
+	public function getLocation($includeNeighborhood = false,$escaped = false)
 	{
 		$location = sprintf("%s, %s",
 			$this->getCity()->getName(),
@@ -622,6 +637,9 @@ class Entity extends \Townspot\Entity
 			if ($neighborhood = $this->getNeighborhood()) {
 				$location .= sprintf(" (%s)",$neighborhood);
 			}
+		}
+		if ($escaped) {
+			$location = htmlentities($location);
 		}
 		return $location;
 	}

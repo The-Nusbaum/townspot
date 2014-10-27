@@ -20,10 +20,6 @@ class LocationIndex extends AbstractIndex
 			foreach ($rows as $row) {
 				print $indexcount . "/" . $totalcount . "\n";
 				$this->add($row);
-				if (($indexcount % 20) == 0) {
-					$this->optimize();
-					print "Optimizing\n";
-				}
 				$indexcount++;
 			}
 			$this->optimize();
@@ -43,10 +39,6 @@ class LocationIndex extends AbstractIndex
 			foreach ($rows as $row) {
 				print $indexcount . "/" . $totalcount . "\n";
 				$this->update($row);
-				if (($indexcount % 20) == 0) {
-					$this->optimize();
-					print "Optimizing\n";
-				}
 				$indexcount++;
 			}
 			$this->optimize();
@@ -55,16 +47,20 @@ class LocationIndex extends AbstractIndex
 
 	public function add($row)
 	{
+//		if ($row instanceof \Townspot\City\Entity) {
+//			$row = $this->_getArrayFromObject($row);
+//		}
 		$index = $this->getIndex();
 		\ZendSearch\Lucene\Analysis\Analyzer\Analyzer::setDefault(new \ZendSearch\Lucene\Analysis\Analyzer\Common\TextNum\CaseInsensitive());
 		try {
 			$doc = new Document();	
 			$doc->addField(Field::Text('objectid', $row['id']));	
-			$doc->addField(Field::Text('name', htmlentities($row['name'])));	
+			$doc->addField(Field::Text('city_name', htmlentities($row['name'])));	
 			$doc->addField(Field::Text('province_name', htmlentities($row['province_name'])));	
 			$doc->addField(Field::Text('province_abbrev', htmlentities($row['province_abbrev'])));	
 			$index->addDocument($doc);
 		} catch (\Doctrine\ORM\EntityNotFoundException $e) {
+		} catch (\ZendSearch\Lucene\Exception\RuntimeException $e) {
 		} catch (\ZendGData\App\HttpException $e) {
 		}
 	}
@@ -77,6 +73,9 @@ class LocationIndex extends AbstractIndex
 
 	public function remove($row)
 	{
+//		if ($row instanceof \Townspot\City\Entity) {
+//			$row = $this->_getArrayFromObject($row);
+//		}
 		$index = $this->getIndex();
 		$match = null;
 		$matches = $this->getIndex()->find('objectid:' . $row['id']);
@@ -90,10 +89,28 @@ class LocationIndex extends AbstractIndex
 	{
 		$cityMapper = new \Townspot\City\Mapper($this->getServiceLocator());
 		$results = array();
-		$matches = $this->getIndex()->find($query,$sortField,$sortType,$sortOrder);
+		if ($sortField) {
+			$matches = $this->getIndex()->find($query,$sortField);
+		} elseif (($sortField)&&($sortType)) {
+			$matches = $this->getIndex()->find($query,$sortField,$sortType);
+		} elseif (($sortField)&&($sortType)&&($sortOrder)) {
+			$matches = $this->getIndex()->find($query,$sortField,$sortType,$sortOrder);
+		} else {
+			$matches = $this->getIndex()->find($query);
+		}
 		foreach ($matches as $hit) {	
 			$results[] = $cityMapper->find($hit->objectid);
 		}
 		return $results;
+	}
+
+	protected function _getArrayFromObject($obj)
+	{
+//		return array(
+//			'id'				=> $obj->getId(),
+//			'name'				=> $obj->getName(),
+//			'province_name'		=> $obj->getProvince()->getName(),
+//			'province_abbrev'	=> $obj->getProvince()->getAbbrev()
+//		);
 	}
 }

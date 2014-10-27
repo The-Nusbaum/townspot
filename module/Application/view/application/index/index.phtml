@@ -23,15 +23,15 @@
 							<div class="carousel-caption">
 								<a href="<?= $media->getMediaLink(); ?>">
 									<div class="video-title">
-										<h3 title="<?= htmlentities($media->getLocation()); ?>" class="dot-text" id="0"><?= $media->getLocation(); ?></h3>
+										<h3 title="<?= $media->getLocation(false,true); ?>" class="dot-text" id="0"><?= $media->getLocation(); ?></h3>
 									</div>
 								</a>
 								<div class="info-button last"
 									title="" 
-									data-original-title="<a href='<?= $media->getMediaLink(); ?>'><?= htmlentities($media->getTitle()); ?></a>
+									data-original-title="<a href='<?= $media->getMediaLink(); ?>'><?= $media->getTitle(false,true); ?></a>
 									by <a href='<?= $media->getUser()->getProfileLink(); ?>'><?= $media->getUser()->getUsername(); ?></a>"
-									data-content="<?= htmlentities($media->getLocation()); ?><br/>
-									<?= htmlentities($media->getLogline()); ?><footer>
+									data-content="<?= $media->getLocation(false,true); ?><br/>
+									<?= $media->getLogline(true); ?><footer>
 									<span class='video-duration'><i class='fa fa-clock-o'></i> <?= $media->getDuration(true); ?></span> 
 									<span class='video-plays'><i class='fa fa-play'></i> <?= $media->getViews(); ?></span> 
 									<span class='video-thumbs-up'><i class='fa fa-thumbs-up'></i> <?= count($media->getRatings(true)); ?></span> 
@@ -47,7 +47,7 @@
 						<div class="internal-wrapper">
 							<h2><a href="<?= $media->getMediaLink(); ?>"><?= htmlentities($media->getTitle()); ?> by <?= $media->getUser()->getUsername(); ?></a></h2>
 							<div class="active-logline"><?= $media->getLogline(); ?></div>
-							<div class="active-info"><p><?= $media->getDescription(); ?></p></div>
+							<div class="active-info"><?= $media->getWhyWeChose(); ?></div>
 						</div>
 					</div>
 				</div>
@@ -115,4 +115,8 @@
 			)); ?>
 	</div>
 </div>
-<br/><br/><br/>
+<div class="row ad-panel">
+	<div class="col-xs-12">
+		<?= $this->adsense('leaderboard'); ?>
+	</div>
+</div>

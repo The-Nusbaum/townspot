@@ -20,10 +20,6 @@ class SeriesIndex extends AbstractIndex
 			foreach ($rows as $row) {
 				print $indexcount . "/" . $totalcount . "\n";
 				$this->add($row);
-				if (($indexcount % 20) == 0) {
-					$this->optimize();
-					print "Optimizing\n";
-				}
 				$indexcount++;
 			}
 			$this->optimize();
@@ -43,10 +39,6 @@ class SeriesIndex extends AbstractIndex
 			foreach ($rows as $row) {
 				print $indexcount . "/" . $totalcount . "\n";
 				$this->update($row);
-				if (($indexcount % 20) == 0) {
-					$this->optimize();
-					print "Optimizing\n";
-				}
 				$indexcount++;
 			}
 			$this->optimize();
@@ -55,15 +47,19 @@ class SeriesIndex extends AbstractIndex
 
 	public function add($row)
 	{
+		if ($row instanceof \Townspot\Series\Entity) {
+			$row = $this->_getArrayFromObject($row);
+		}
 		$index = $this->getIndex();
 		\ZendSearch\Lucene\Analysis\Analyzer\Analyzer::setDefault(new \ZendSearch\Lucene\Analysis\Analyzer\Common\TextNum\CaseInsensitive());
 		try {
 			$doc = new Document();	
 			$doc->addField(Field::Text('objectid', $row['id']));	
-			$doc->addField(Field::Text('name', htmlentities($row['name'])));	
+			$doc->addField(Field::Text('series_name', htmlentities($row['name'])));	
 			$doc->addField(Field::UnStored('description', htmlentities(strip_tags($row['description']))));	
 			$index->addDocument($doc);
 		} catch (\Doctrine\ORM\EntityNotFoundException $e) {
+		} catch (\ZendSearch\Lucene\Exception\RuntimeException $e) {
 		} catch (\ZendGData\App\HttpException $e) {
 		}
 	}
@@ -76,6 +72,9 @@ class SeriesIndex extends AbstractIndex
 
 	public function remove($row)
 	{
+		if ($row instanceof \Townspot\Series\Entity) {
+			$row = $this->_getArrayFromObject($row);
+		}
 		$index = $this->getIndex();
 		$match = null;
 		$matches = $this->getIndex()->find('objectid:' . $row['id']);
@@ -89,10 +88,27 @@ class SeriesIndex extends AbstractIndex
 	{
 		$seriesMapper = new \Townspot\Series\Mapper($this->getServiceLocator());
 		$results = array();
-		$matches = $this->getIndex()->find($query,$sortField,$sortType,$sortOrder);
+		if ($sortField) {
+			$matches = $this->getIndex()->find($query,$sortField);
+		} elseif (($sortField)&&($sortType)) {
+			$matches = $this->getIndex()->find($query,$sortField,$sortType);
+		} elseif (($sortField)&&($sortType)&&($sortOrder)) {
+			$matches = $this->getIndex()->find($query,$sortField,$sortType,$sortOrder);
+		} else {
+			$matches = $this->getIndex()->find($query);
+		}
 		foreach ($matches as $hit) {	
 			$results[] = $seriesMapper->find($hit->objectid);
 		}
 		return $results;
+	}
+
+	protected function _getArrayFromObject($obj)
+	{
+		return array(
+			'id'			=> $obj->getId(),
+			'series_name'	=> $obj->getName(),
+			'description'	=> $obj->getDescription(),
+		);
 	}
 }

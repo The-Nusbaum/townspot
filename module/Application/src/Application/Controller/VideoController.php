@@ -227,12 +227,12 @@ class VideoController extends AbstractActionController
 				$email->setSubject($this->params()->fromPost('subject'));
 				$email->setBody($this->params()->fromPost('message'));
 
-				if (APPLICATION_ENV != 'production') {
+				if (APPLICATION_ENV == 'production') {
+					$transport = new Mail\Transport\Sendmail();
+					$transport->send($email);				
+				} else {
 					print_r($email);
-					die;
 				}
-//				$transport = new Mail\Transport\Sendmail();
-//				$transport->send($email);				
 			}
 		}
 		die;
@@ -326,6 +326,8 @@ class VideoController extends AbstractActionController
 				'created' 		=> $comment->getCreated()->format('c'),
 			);
 		}
+		$startRange = ($page - 1) * $pagelimit;
+		$comments = array_slice($comments,$startRange,$pagelimit);
 		$json = new JsonModel($comments);
         return $json;
 	}

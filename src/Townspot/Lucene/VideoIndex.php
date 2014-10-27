@@ -20,10 +20,6 @@ class VideoIndex extends AbstractIndex
 			foreach ($rows as $row) {
 				print $indexcount . "/" . $totalcount . "\n";
 				$this->add($row);
-				if (($indexcount % 20) == 0) {
-					$this->optimize();
-					print "Optimizing\n";
-				}
 				$indexcount++;
 			}
 			$this->optimize();
@@ -43,10 +39,6 @@ class VideoIndex extends AbstractIndex
 			foreach ($rows as $row) {
 				print $indexcount . "/" . $totalcount . "\n";
 				$this->update($row);
-				if (($indexcount % 20) == 0) {
-					$this->optimize();
-					print "Optimizing\n";
-				}
 				$indexcount++;
 			}
 			$this->optimize();
@@ -55,6 +47,9 @@ class VideoIndex extends AbstractIndex
 
 	public function add($row)
 	{
+		if ($row instanceof \Townspot\Media\Entity) {
+			$row = $this->_getArrayFromObject($row);
+		}
 		$index = $this->getIndex();
 		\ZendSearch\Lucene\Analysis\Analyzer\Analyzer::setDefault(new \ZendSearch\Lucene\Analysis\Analyzer\Common\TextNum\CaseInsensitive());
 		$row['series_id'] = $row['series_id'] ?: 0;
@@ -75,6 +70,7 @@ class VideoIndex extends AbstractIndex
 			$doc->addField(Field::Text('episode_number', $row['episode_number']));	
 			$index->addDocument($doc);
 		} catch (\Doctrine\ORM\EntityNotFoundException $e) {
+		} catch (\ZendSearch\Lucene\Exception\RuntimeException $e) {
 		} catch (\ZendGData\App\HttpException $e) {
 		}
 	}
@@ -87,6 +83,9 @@ class VideoIndex extends AbstractIndex
 
 	public function remove($row)
 	{
+		if ($row instanceof \Townspot\Media\Entity) {
+			$row = $this->_getArrayFromObject($row);
+		}
 		$index = $this->getIndex();
 		$match = null;
 		$matches = $this->getIndex()->find('objectid:' . $row['objectid']);
@@ -100,10 +99,49 @@ class VideoIndex extends AbstractIndex
 	{
 		$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
 		$results = array();
-		$matches = $this->getIndex()->find($query);
+		if ($sortField) {
+			$matches = $this->getIndex()->find($query,$sortField);
+		} elseif (($sortField)&&($sortType)) {
+			$matches = $this->getIndex()->find($query,$sortField,$sortType);
+		} elseif (($sortField)&&($sortType)&&($sortOrder)) {
+			$matches = $this->getIndex()->find($query,$sortField,$sortType,$sortOrder);
+		} else {
+			$matches = $this->getIndex()->find($query);
+		}
 		foreach ($matches as $hit) {	
 			$results[] = $mediaMapper->find($hit->objectid);
 		}
 		return $results;
+	}
+
+	protected function _getArrayFromObject($obj)
+	{
+		$row = array(
+			'objectid'			=> $obj->getId(),
+			'title'				=> $obj->getTitle(),
+			'logline'			=> $obj->getLogline(),
+			'description'		=> $obj->getDescription(),
+			'views'				=> $obj->getViews(false),
+			'created'			=> $obj->getCreated()->format('Y-m-d H:i:s'),
+			'user_id'			=> $obj->getUser()->getId(),
+			'city_id'			=> $obj->getCity()->getId(),
+			'province_id'		=> $obj->getProvince()->getId(),
+			'series_id'			=> 0,
+			'episode_number'	=> 0
+		);
+		$categories = array();
+		foreach ($obj->getCategories() as $category) {
+			$categories[] = $category->getId();
+		}
+		$row['categories'] = implode('::',$categories);
+		$seriesMapper = new \Townspot\SeriesEpisode\Mapper($this->getServiceLocator());
+		$series = $seriesMapper->findByMedia($obj);
+		if ($series) {
+			if (count($series)) {
+				$row['series_id'] = $series->getSeries()->getId();
+				$row['episode_number'] = $series->getEpisodeNumber();
+			}
+		}
+		return $row;
 	}
 }

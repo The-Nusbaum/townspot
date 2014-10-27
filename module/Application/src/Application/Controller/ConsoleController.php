@@ -55,9 +55,9 @@ class ConsoleController extends AbstractActionController
      */
     public function buildindexesAction()
     {
-        $this->writeLine('Building Artists', Color::GREEN);
-		$artistIndex = new ArtistIndex($this->getServiceLocator());
-		$artistIndex->build();
+//        $this->writeLine('Building Artists', Color::GREEN);
+//		$artistIndex = new ArtistIndex($this->getServiceLocator());
+//		$artistIndex->build();
         $this->writeLine('Building Series', Color::GREEN);
 		$seriesIndex = new SeriesIndex($this->getServiceLocator());
 		$seriesIndex->build();

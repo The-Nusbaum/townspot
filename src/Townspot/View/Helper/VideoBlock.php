@@ -19,10 +19,10 @@ class VideoBlock extends AbstractHelper implements ServiceLocatorAwareInterface
 			$resizerLink = $this->getView()->linkCdn($resizerLink);
 		}
 		$carousel_class		= ($carousel) ? 'carousel-caption' : 'video-caption';
-		$escaped_title		= htmlentities($media->getTitle());
+		$escaped_title		= $media->getTitle(false,true);
 		$comment_count		= count($media->getCommentsAbout());
-		$escaped_logline	= htmlentities($media->getLogline());
-		$escaped_location	= htmlentities($media->getLocation());
+		$escaped_logline	= $media->getLogline(true);
+		$escaped_location	= $media->getLocation(false,true);
 		$rate_up			= count($media->getRatings(true));
 		$rate_down			= count($media->getRatings(false));
 		$position_class		= ' ' . $position;

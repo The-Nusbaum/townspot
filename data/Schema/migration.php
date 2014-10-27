@@ -4,6 +4,27 @@ $sourceDb = new mysqli('localhost', 'root', '', 'townspot_dev');
 $targetDb = new mysqli('localhost', 'root', '', 'tsz');
 
 //Migrate User
+//$targetDb->query('truncate tsz.user');
+//$targetDb->query('truncate tsz.user_social_media');
+//$targetDb->query('truncate tsz.user_role_linker');
+//$targetDb->query('truncate tsz.user_oauth');
+//$targetDb->query('truncate tsz.user_follow');
+//$targetDb->query('truncate tsz.user_event');
+//$targetDb->query('truncate tsz.artist_comment');
+//$targetDb->query('truncate tsz.user_activity');
+//$targetDb->query('truncate tsz.media');
+//$targetDb->query('truncate tsz.media_category_linker');
+//$targetDb->query('truncate tsz.media_comment');
+//$targetDb->query('truncate tsz.encoding');
+//$targetDb->query('truncate tsz.rating');
+//$targetDb->query('truncate tsz.user_favorite');
+//$targetDb->query('truncate tsz.series');
+//$targetDb->query('truncate tsz.series_season');
+//$targetDb->query('truncate tsz.series_category_linker');
+//$targetDb->query('truncate tsz.series_episodes');
+//$targetDb->query('truncate tsz.section_media');
+
+//Migrate User
 $sql = "SELECT * FROM townspot_dev.users order by id";
 if ($result = $sourceDb->query($sql)) {
 	while ($row = $result->fetch_assoc()) {
@@ -280,14 +301,14 @@ if ($result = $sourceDb->query($sql)) {
 				$row['id'],
 				$row['user_id'],
 				$row['name'],
-				$row['description']
+				(@$row['description']) ?: ''
 			));
 			$targetDb->query(sprintf("INSERT INTO tsz.series_season (`id`,`series_id`,`season_number`,`name`,`description`,`created`) VALUES (%d,%d,%d,'%s','%s',NOW());\n",
 				$season_id,
 				$row['id'],
 				1,
 				$row['name'],
-				$row['description']
+				(@$row['description']) ?: ''
 			));
 			$series_seasons[$row['id']] = $season_id;
 			$season_id++;
