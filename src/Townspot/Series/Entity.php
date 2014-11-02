@@ -153,4 +153,18 @@ class Entity extends \Townspot\Entity
 	{
 		return $this->_updated;
 	}
+
+	public function getSeriesLink()
+	{
+		return "/series/" . htmlentities(strtolower($this->getName()));
+	}
+	
+	public function getRandomMedia()
+	{
+		$episode = $this->getEpisodes();
+		if (count($episode)) {
+			return $episode[0]->getMedia();
+		}
+	}
+	
 }

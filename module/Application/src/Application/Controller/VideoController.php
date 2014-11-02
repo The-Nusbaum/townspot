@@ -259,19 +259,17 @@ class VideoController extends AbstractActionController
 			header("Content-type: text/xml; charset=utf-8");
 			$output  = "<rss version=\"2.0\" xmlns:media=\"http://search.yahoo.com/mrss/\">\n";
 			$output.= '<channel>';
-			foreach ($related as $m) {
-				if ($relatedMedia = $mediaMapper->find($m['id'])) {
-					$output .= '    <item>';
-					$output .= '	    <title>' . htmlspecialchars($relatedMedia->getTitle(false)) . '</title>';
-					$output .= '	    <link>http://' . $this->getRequest()->getServer('HTTP_HOST') . '/' . $relatedMedia->getMediaLink() . '</link>';
-					if ($relatedMedia->getSource() == 'internal') {
-						$output .= '	    <media:thumbnail  url="http://images.townspot.tv/' . $relatedMedia->getResizerLink(640,480) . '" />';
-					} else {
-						$output .= '	    <media:thumbnail  url="' . $relatedMedia->getResizerLink(640,480) . '" />';
-					}
-					$output .= '	    <media:content url="' . $relatedMedia->getMediaUrl('SD') . '" />';
-					$output .= '    </item>';
+			foreach ($related as $relatedMedia) {
+				$output .= '    <item>';
+				$output .= '	    <title>' . $relatedMedia->getTitle(false) . '</title>';
+				$output .= '	    <link>http://' . $this->getRequest()->getServer('HTTP_HOST') . $relatedMedia->getMediaLink() . '</link>';
+				if ($relatedMedia->getSource() == 'internal') {
+					$output .= '	    <media:thumbnail url="http://images.townspot.tv/resizer.php?id=' . $relatedMedia->getId() . '" />';
+				} else {
+					$output .= '	    <media:thumbnail  url="' . $relatedMedia->getPreviewImage() . '" />';
 				}
+				$output .= '	    <media:content url="' . $relatedMedia->getMediaUrl('SD') . '"  type="video/mp4"/>';
+				$output .= '    </item>';
 			}
             $output .= '</channel>';
 			$output .= "</rss>";

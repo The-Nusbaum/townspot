@@ -55,16 +55,18 @@ class ArtistIndex extends AbstractIndex
 		try {
 			$doc = new Document();	
 			$doc->addField(Field::Text('objectid', $row['user_id']));	
-			$doc->addField(Field::Text('user_name', htmlentities($row['username'])));	
+			$doc->addField(Field::Text('username', htmlentities($row['username'])));	
 			$doc->addField(Field::Text('artist_name', htmlentities($row['artist_name'])));	
 			$doc->addField(Field::Text('email', htmlentities($row['email'])));	
-			$doc->addField(Field::UnStored('city_id', $row['city_id']));	
-			$doc->addField(Field::UnStored('province_id', $row['province_id']));	
+			$doc->addField(Field::Text('created', strtotime($row['created'])));	
+			$doc->addField(Field::Text('province', $row['province']));	
+			$doc->addField(Field::Text('city', $row['city']));	
 			$index->addDocument($doc);
 		} catch (\Doctrine\ORM\EntityNotFoundException $e) {
 		} catch (\ZendSearch\Lucene\Exception\RuntimeException $e) {
 		} catch (\ZendGData\App\HttpException $e) {
 		}
+		sleep(1);
 	}
 	
 	public function update($row)
@@ -87,34 +89,16 @@ class ArtistIndex extends AbstractIndex
 		}
 	}
 	
-	public function find($query,$sortField = null,$sortType = null,$sortOrder = null)
-	{
-		$userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
-		$results = array();
-		if ($sortField) {
-			$matches = $this->getIndex()->find($query,$sortField);
-		} elseif (($sortField)&&($sortType)) {
-			$matches = $this->getIndex()->find($query,$sortField,$sortType);
-		} elseif (($sortField)&&($sortType)&&($sortOrder)) {
-			$matches = $this->getIndex()->find($query,$sortField,$sortType,$sortOrder);
-		} else {
-			$matches = $this->getIndex()->find($query);
-		}
-		foreach ($matches as $hit) {	
-			$results[] = $userMapper->find($hit->objectid);
-		}
-		return $results;
-	}
-	
 	protected function _getArrayFromObject($obj)
 	{
 		return array(
 			'user_id'			=> $obj->getId(),
-			'user_name'			=> $obj->getUsername(),
+			'username'			=> $obj->getUsername(),
 			'artist_name'		=> $obj->getArtistName(),
 			'email'				=> $obj->getEmail(),
-			'city_id'			=> $obj->getCity()->getId(),
-			'province_id'		=> $obj->getProvince()->getId()
+			'city'				=> $obj->getCity()->getName(),
+			'province'			=> $obj->getProvince()->getName(),
+			'created'			=> $obj->getCreated()->format('U')
 		);
 	}
 }

@@ -95,7 +95,7 @@
 			<h3>Similar Videos</h3>
 			<ul id="matching-videos" class="matching-videos">
 <?php foreach ($this->related as $related_video) { ?>
-				<li><?= $this->VideoBlock($related_video,false,null); ?></li>
+				<li><?= $this->VideoBlock($related_video,false); ?></li>
 <?php } ?>			
 			</ul>
 		<?= $this->VideoCarousel($this->related,array(
@@ -222,7 +222,7 @@
 </div>
 <div class="row ad-panel">
 	<div class="col-xs-12">
-		<?= $this->adsense('leaderboard'); ?>
+		<div class="col-xs-12 google-ad" data-position="leaderboard" ></div>
 	</div>
 </div>
 

@@ -188,8 +188,38 @@ class Module
                 'Zend\Authentication\AuthenticationService' => function($serviceManager) {
                         // If you are using DoctrineORMModule:
                         return $serviceManager->get('doctrine.authenticationservice.orm_default');
-                    }
-            )
+                    },
+				'cache-general' => function () {
+					return \Zend\Cache\StorageFactory::factory(array(
+						'adapter' => array(
+							'name' => 'filesystem',
+							'options' => array(
+								'cache_dir' => APPLICATION_PATH . '/data/cache/general',
+								'ttl' => 3600
+							),
+						),
+						'plugins' => array(
+							'exception_handler' => array('throw_exceptions' => false),
+							'serializer'
+						)					
+					));
+				},
+				'cache-page' => function () {
+					return \Zend\Cache\StorageFactory::factory(array(
+						'adapter' => array(
+							'name' => 'filesystem',
+							'options' => array(
+								'cache_dir' => APPLICATION_PATH . '/data/cache/page',
+								'ttl' => 3600
+							),
+						),
+						'plugins' => array(
+							'exception_handler' => array('throw_exceptions' => false),
+							'serializer'
+						)					
+					));
+				},
+            ),
         );
     }
 }

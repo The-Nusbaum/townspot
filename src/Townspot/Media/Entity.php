@@ -392,9 +392,16 @@ class Entity extends \Townspot\Entity
 		return $description;
 	}
 
-	public function getWhyWeChose()
+	public function getWhyWeChose($escaped = false)
 	{
-		return $this->_why_we_chose;
+		$why_we_chose = $this->_why_we_chose;
+		if ($escaped) {
+			$why_we_chose = preg_replace('/<br\s*\/?\s*>/', "\n", $why_we_chose);
+			$why_we_chose = strip_tags($why_we_chose);
+			$why_we_chose = htmlentities($why_we_chose);
+			$why_we_chose = nl2br($why_we_chose);
+		}
+		return $why_we_chose;
 	}
 
 	public function getUrl()
@@ -605,7 +612,7 @@ class Entity extends \Townspot\Entity
 	{
 		return sprintf('/videos/%d/%s',
 			$this->getId(),
-			$this->getTitle(true)
+			strtolower($this->getTitle(true))
 		);
 	}
 	
@@ -617,7 +624,7 @@ class Entity extends \Townspot\Entity
 		);
 	}
 	
-	public function getResizerLink($width,$height)
+	public function getResizerLink($width = 342,$height = 257)
 	{
 		if (!(preg_match('/ytimg/',$this->getPreviewImage()))) {
 			return sprintf('/resizer.php?id=%d&w=%d&h=%d',
@@ -626,6 +633,17 @@ class Entity extends \Townspot\Entity
 				$height);
 		}
 		return $this->getPreviewImage();
+	}
+	
+	public function getResizerCdnLink($width = 342,$height = 257)
+	{
+		$imageServer = "http://images" . rand(0,9) . ".townspot.tv";
+		$link = $this->getResizerLink($width,$height);
+		
+		if (preg_match('/^http/',$link)) {
+			return $link;
+		}
+		return $imageServer . $link;
 	}
 	
 	public function getLocation($includeNeighborhood = false,$escaped = false)

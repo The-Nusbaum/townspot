@@ -55,13 +55,18 @@ class SeriesIndex extends AbstractIndex
 		try {
 			$doc = new Document();	
 			$doc->addField(Field::Text('objectid', $row['id']));	
-			$doc->addField(Field::Text('series_name', htmlentities($row['name'])));	
-			$doc->addField(Field::UnStored('description', htmlentities(strip_tags($row['description']))));	
+			$doc->addField(Field::Text('name', htmlentities($row['name'])));	
+			$doc->addField(Field::Text('description', htmlentities(strip_tags($row['description']))));	
+			$doc->addField(Field::Text('media_descriptions', htmlentities(strip_tags($row['media_descriptions']))));	
+			$doc->addField(Field::Text('media_titles', htmlentities(strip_tags($row['media_titles']))));	
+			$doc->addField(Field::Text('media_loglines', htmlentities(strip_tags($row['media_loglines']))));	
+			$doc->addField(Field::Text('created', strtotime($row['created'])));	
 			$index->addDocument($doc);
 		} catch (\Doctrine\ORM\EntityNotFoundException $e) {
 		} catch (\ZendSearch\Lucene\Exception\RuntimeException $e) {
 		} catch (\ZendGData\App\HttpException $e) {
 		}
+		sleep(1);
 	}
 	
 	public function update($row)
@@ -84,31 +89,13 @@ class SeriesIndex extends AbstractIndex
 		}
 	}
 	
-	public function find($query,$sortField = null,$sortType = null,$sortOrder = null)
-	{
-		$seriesMapper = new \Townspot\Series\Mapper($this->getServiceLocator());
-		$results = array();
-		if ($sortField) {
-			$matches = $this->getIndex()->find($query,$sortField);
-		} elseif (($sortField)&&($sortType)) {
-			$matches = $this->getIndex()->find($query,$sortField,$sortType);
-		} elseif (($sortField)&&($sortType)&&($sortOrder)) {
-			$matches = $this->getIndex()->find($query,$sortField,$sortType,$sortOrder);
-		} else {
-			$matches = $this->getIndex()->find($query);
-		}
-		foreach ($matches as $hit) {	
-			$results[] = $seriesMapper->find($hit->objectid);
-		}
-		return $results;
-	}
-
 	protected function _getArrayFromObject($obj)
 	{
 		return array(
 			'id'			=> $obj->getId(),
-			'series_name'	=> $obj->getName(),
+			'name'			=> $obj->getName(),
 			'description'	=> $obj->getDescription(),
+			'created'			=> $obj->getCreated()->format('U')
 		);
 	}
 }

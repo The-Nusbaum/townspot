@@ -1,0 +1,44 @@
+<script type="text/template" id="carousel-row-template">
+	<div class="col-xs-<%- row %>">
+		<div class="video-preview <%- position %>">
+			<a href="<%- link %>">
+				<img class="img-responsive preview-img" alt="<%- escaped_title %>" src="<%- image %>">
+			</a>
+			<div class="carousel-caption small">
+				<div class="video-title">
+					<h3 title="<%- escaped_title %>" class="dot-text">
+						<a href="<%- link %>">
+							<div class="dot-text"><%= escaped_title %></div>
+						</a>
+					</h3>
+					<h3 class="dot-text">
+						<% if (series_name) { %>
+                        <a href="<%- series_link %>">
+                            <div class="dot-text">Series: <%- series_name %></div>
+                        </a>
+                        <% } else { %>
+                        <a href="<%- user_profile %>">
+							<div class="dot-text">by <%- user %></div>
+						</a>
+                        <% } %>
+					</h3>
+					<h3 title="<%- escaped_location %>" class="dot-text"><%- escaped_location %></h3>
+				</div>
+				<div class="info-button <%- position %>"
+					title="" 
+					data-original-title="<a href='<%- link %>'><%= escaped_title %></a> by <a href='<%- user_profile %>'><%= user %></a>"
+					data-content="<%- escaped_location %><br/><%= escaped_logline %>
+					<footer>
+					<span class='video-duration'><i class='fa fa-clock-o'></i> <%= duration %></span>
+					<span class='video-plays'><i class='fa fa-play'></i> <%= views %></span> 
+					<span class='video-thumbs-up'><i class='fa fa-thumbs-up'></i> <%= rate_up %></span> 
+					<span class='video-thumbs-down'><i class='fa fa-thumbs-down'></i> <%= rate_down %></span>
+					<span class='video-comments'><i class='fa fa-comments'></i> <%= comment_count %></span>
+					</footer>"
+					data-toggle="popover">
+					<i class="fa fa-info-circle"></i>
+				</div>
+			</div>
+		</div>
+	</div>
+</script>

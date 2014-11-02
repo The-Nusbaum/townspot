@@ -475,8 +475,11 @@ class Entity extends \Townspot\Entity
 		return $this->_id;
 	}
 
-	public function getUsername()
+	public function getUsername($escaped = false)
 	{
+		if ($escaped) {
+			return htmlentities($this->_username);
+		}
 		return $this->_username;
 	}
 
@@ -687,4 +690,12 @@ class Entity extends \Townspot\Entity
 			$width,
 			$height);
 	}
+	
+	public function getRandomMedia()
+	{
+		$media = $this->getMedia();
+		$randkey = array_rand($media,count($media));
+		return $media[$randkey];
+	}
+	
 }

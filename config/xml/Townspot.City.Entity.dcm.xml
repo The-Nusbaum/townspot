@@ -12,6 +12,7 @@
 		<field name="_updated" column="updated" nullable="true" type="datetime"/>
 		<one-to-many field="_neighborhoods" target-entity="Townspot\Neighborhood\Entity" mapped-by="_city" />		
 		<one-to-many field="_users" target-entity="Townspot\User\Entity" mapped-by="_city" />		
+		<one-to-many field="_media" target-entity="Townspot\Media\Entity" mapped-by="_city" />		
         <many-to-one field="_country" target-entity="Townspot\Country\Entity" inversed-by="_cities">
             <join-column name="country_id" referenced-column-name="id" />
         </many-to-one>

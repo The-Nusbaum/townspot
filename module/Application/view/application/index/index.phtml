@@ -1,122 +1,140 @@
+<script src="/js/home.js"></script>
 <div class="row hidden-xs">
 	<div class="col-sm-12">
 		<h1>On Screen Today</h1>	
 	</div>
 </div>
-<div class="row">
-	<div data-ride="carousel" class="col-sm-12 carousel slide" id="on-stage-carousel">
-		<div id="on-stage-carousel-inner" class="carousel-inner">
-<?php foreach ($this->onScreen as $index => $media) { 
-		$media = $media->getMedia();
-		$resizerLink	= $media->getResizerLink(640,480);
-		if (!preg_match('/^http/',$resizerLink)) {
-			$resizerLink = $this->linkCdn($resizerLink);
-		}
-?>
-			<div class="item<?= ($index == 0) ? " active" : ""; ?>">
-				<div class="row">
-					<div class="col-sm-6">
-						<div class="video-preview">
-							<a href="<?= $media->getMediaLink(); ?>">
-								<img class="img-responsive preview-img" alt="<?= htmlentities($media->getTitle()); ?>" src="<?= $resizerLink; ?>">
-							</a>
-							<div class="carousel-caption">
-								<a href="<?= $media->getMediaLink(); ?>">
-									<div class="video-title">
-										<h3 title="<?= $media->getLocation(false,true); ?>" class="dot-text" id="0"><?= $media->getLocation(); ?></h3>
-									</div>
-								</a>
-								<div class="info-button last"
-									title="" 
-									data-original-title="<a href='<?= $media->getMediaLink(); ?>'><?= $media->getTitle(false,true); ?></a>
-									by <a href='<?= $media->getUser()->getProfileLink(); ?>'><?= $media->getUser()->getUsername(); ?></a>"
-									data-content="<?= $media->getLocation(false,true); ?><br/>
-									<?= $media->getLogline(true); ?><footer>
-									<span class='video-duration'><i class='fa fa-clock-o'></i> <?= $media->getDuration(true); ?></span> 
-									<span class='video-plays'><i class='fa fa-play'></i> <?= $media->getViews(); ?></span> 
-									<span class='video-thumbs-up'><i class='fa fa-thumbs-up'></i> <?= count($media->getRatings(true)); ?></span> 
-									<span class='video-thumbs-down'><i class='fa fa-thumbs-down'></i> <?= count($media->getRatings(false)); ?></span>
-									<span class='video-comments'><i class='fa fa-comments'></i> <?= count($media->getCommentsAbout()); ?></span></footer>"
-									data-toggle="popover">
-									<i class="fa fa-info-circle"></i>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-6 video-info">
-						<div class="internal-wrapper">
-							<h2><a href="<?= $media->getMediaLink(); ?>"><?= htmlentities($media->getTitle()); ?> by <?= $media->getUser()->getUsername(); ?></a></h2>
-							<div class="active-logline"><?= $media->getLogline(); ?></div>
-							<div class="active-info"><?= $media->getWhyWeChose(); ?></div>
-						</div>
-					</div>
-				</div>
-			</div>
+<div class="row wide-carousel">
+	<div class="col-sm-12">
+		<div data-ride="carousel" class="col-sm-12 carousel slide" id="on-stage-carousel">
+			<div id="on-stage-carousel-inner" class="carousel-inner"></div>
+			<a class="left carousel-control on-stage-carousel-control" href="#on-stage-carousel" data-slide="prev">
+				<img src="/img/slide-left.gif">
+			</a>
+			<a class="right carousel-control on-stage-carousel-control" href="#on-stage-carousel" data-slide="next">
+				<img src="/img/slide-right.gif">
+			</a>		
+			<ol class="carousel-indicators">
+<?php for ($i=0; $i < $this->onScreenCount; $i++) { ?>
+				<li class="<?= ($i == 0) ? "active" : ""; ?>" data-slide-to="<?= $i; ?>" data-target="#on-stage-carousel"></li>
 <?php } ?>
+			</ol>
 		</div>
-		<a class="left carousel-control on-stage-carousel-control" href="#on-stage-carousel" data-slide="prev">
-			<img src="/img/slide-left.gif">
-		</a>
-		<a class="right carousel-control on-stage-carousel-control" href="#on-stage-carousel" data-slide="next">
-			<img src="/img/slide-right.gif">
-		</a>		
-		<ol class="carousel-indicators">
-<?php foreach ($this->onScreen as $index => $media) { ?>
-			<li class="<?= ($index == 0) ? "active" : ""; ?>" data-slide-to="<?= $index; ?>" data-target="#on-stage-carousel"></li>
-<?php } ?>
-		</ol>
 	</div>
 </div>
-<div class="row">
+<div class="row wide-carousel">
 	<div class="col-sm-12">
 		<h1>Daily Highlights</h1>	
 	</div>
 </div>
 <div class="row">
-	<div class="col-sm-12 wide-carousel">
-		<?= $this->VideoCarousel($this->dailyHighlights,array(
-			'id' => 'highlights-lg',
-			'per_panel' => 3,
-			'class' => 'hidden-xs hidden-xxs'
-			)); ?>
-		<?= $this->VideoCarousel($this->dailyHighlights,array(
-			'id' => 'highlights-sm',
-			'per_panel' => 2,
-			'class' => 'hidden-lg hidden-md hidden-xxs'
-			)); ?>
-		<?= $this->VideoCarousel($this->dailyHighlights,array(
-			'id' => 'highlights-xs',
-			'per_panel' => 1,
-			'class' => 'hidden-lg hidden-md hidden-sm hidden-xs'
-			)); ?>
+	<div class="col-sm-12">
+		<div data-ride="carousel" class="carousel slide" id="daily-hightlights-carousel">
+			<div class="carousel-inner" id="daily-hightlights-carousel-inner"></div>
+			<a data-slide="prev" href="#daily-hightlights-carousel" class="left carousel-control">
+				<i class="fa fa-chevron-left fa-stack-1x"></i>
+			</a>
+			<a data-slide="next" href="#daily-hightlights-carousel" class="right carousel-control">
+				<i class="fa fa-chevron-right fa-stack-1x"></i>
+			</a>
+			<ol class="carousel-indicators" id="daily-hightlights-carousel-indicators"></ol>
+		</div>
 	</div>
-</div>
+</div>	
 <div class="row">
 	<div class="col-sm-12">
 		<h1>Staff Favorites</h1>	
 	</div>
 </div>
 <div class="row">
-	<div class="col-sm-12 wide-carousel">
-		<?= $this->VideoCarousel($this->staffFavorites,array(
-			'id' => 'favorites-lg',
-			'per_panel' => 3,
-			'class' => 'hidden-xs hidden-xxs'
-			)); ?>
-		<?= $this->VideoCarousel($this->staffFavorites,array(
-			'id' => 'favorites-sm',
-			'per_panel' => 2,
-			'class' => 'visible-xs'
-			)); ?>
-		<?= $this->VideoCarousel($this->staffFavorites,array(
-			'id' => 'favorites-xs',
-			'per_panel' => 1,
-			'class' => 'visible-xxs'
-			)); ?>
+	<div class="col-sm-12">
+		<div data-ride="carousel" class="carousel slide" id="staff-favorites-carousel">
+			<div class="carousel-inner" id="staff-favorites-carousel-inner"></div>
+			<a data-slide="prev" href="#staff-favorites-carousel" class="left carousel-control">
+				<i class="fa fa-chevron-left fa-stack-1x"></i>
+			</a>
+			<a data-slide="next" href="#staff-favorites-carousel" class="right carousel-control">
+				<i class="fa fa-chevron-right fa-stack-1x"></i>
+			</a>
+			<ol class="carousel-indicators" id="staff-favorites-carousel-indicators"></ol>
+		</div>
 	</div>
-</div>
+</div>	
 <div class="row ad-panel">
-	<div class="col-xs-12">
-		<?= $this->adsense('leaderboard'); ?>
-	</div>
-</div>
+	<div class="col-xs-12 google-ad" data-position="leaderboard" ></div>
+</div>		
+<?= $this->partial('partials/backbone/video-template.phtml'); ?>
+<?= $this->partial('partials/backbone/carousel-row-template.phtml'); ?>
+<?= $this->partial('partials/backbone/carousel-video.phtml'); ?>
+<?= $this->partial('partials/backbone/carousel-indicator-template.phtml'); ?>
+<script>
+$(function(){
+
+	var onScreen_media 								= <?= $onScreen; ?>;
+    var onScreen_media_collection			 		= new VideoCollection();		
+    $.each(onScreen_media, function() 				{	onScreen_media_collection.add(new Video(this));		});
+    var onScreen_media_view 						= new VideoView({el: 		'#on-stage-carousel-inner'});		
+	onScreen_media_view.setTemplate('#carousel-video');
+    onScreen_media_view.renderCarouselCollection(onScreen_media_collection);
+
+	var dailyHighlights_media 						= <?= $dailyHighlights; ?>;
+    var dailyHighlights_media_collection			= new VideoCollection();		
+    $.each(dailyHighlights_media, function() 		{	dailyHighlights_media_collection.add(new Video(this));		});
+    var dailyHighlights_media_view					= new VideoView({el: 		'#daily-hightlights-carousel-inner'});		
+    var dailyHighlights_media_carousel_view			= new VideoView({el: 		'#daily-hightlights-carousel-indicators'});		
+	dailyHighlights_media_view.setTemplate('#carousel-row-template');
+	dailyHighlights_media_carousel_view.setTemplate('#carousel-indicator-template');
+
+	var staffFavorites_media 						= <?= $staffFavorites; ?>;
+    var staffFavorites_media_collection				= new VideoCollection();		
+    $.each(staffFavorites_media, function() 		{	staffFavorites_media_collection.add(new Video(this));		});
+    var staffFavorites_media_view					= new VideoView({el: 		'#staff-favorites-carousel-inner'});		
+    var staffFavorites_media_carousel_view			= new VideoView({el: 		'#staff-favorites-carousel-indicators'});		
+	staffFavorites_media_view.setTemplate('#carousel-row-template');
+	staffFavorites_media_carousel_view.setTemplate('#carousel-indicator-template');
+
+	if ( $(window).width() > 768) {      
+		dailyHighlights_media_view.renderCarouselRow(dailyHighlights_media_collection,3);
+		dailyHighlights_media_carousel_view.renderCarouselRowIndicators('daily-hightlights-carousel',dailyHighlights_media_collection,3);
+		staffFavorites_media_view.renderCarouselRow(staffFavorites_media_collection,3);
+		staffFavorites_media_carousel_view.renderCarouselRowIndicators('staff-favorites-carousel',staffFavorites_media_collection,3);
+	} else if ( $(window).width() > 600) {      
+		dailyHighlights_media_view.renderCarouselRow(dailyHighlights_media_collection,2);
+		dailyHighlights_media_carousel_view.renderCarouselRowIndicators('daily-hightlights-carousel',dailyHighlights_media_collection,2);
+		staffFavorites_media_view.renderCarouselRow(staffFavorites_media_collection,2);
+		staffFavorites_media_carousel_view.renderCarouselRowIndicators('staff-favorites-carousel',staffFavorites_media_collection,2);
+	} else {
+		dailyHighlights_media_view.renderCarouselRow(dailyHighlights_media_collection,1);
+		dailyHighlights_media_carousel_view.renderCarouselRowIndicators('daily-hightlights-carousel',dailyHighlights_media_collection,1);
+		staffFavorites_media_view.renderCarouselRow(staffFavorites_media_collection,1);
+		staffFavorites_media_carousel_view.renderCarouselRowIndicators('staff-favorites-carousel',staffFavorites_media_collection,1);
+	}
+	
+	setInfoButtons();
+
+	$('#on-stage-carousel').carousel({	interval: 100000	});
+	$('#daily-hightlights-carousel').carousel({	interval: false	});
+	$('#staff-favorites-carousel').carousel({	interval: false	});
+		
+	$(window).bind('resolutionchange', function(){
+		if ( $(window).width() > 768) {      
+			dailyHighlights_media_view.renderCarouselRow(dailyHighlights_media_collection,3);
+			dailyHighlights_media_carousel_view.renderCarouselRowIndicators('daily-hightlights-carousel',dailyHighlights_media_collection,3);
+			staffFavorites_media_view.renderCarouselRow(staffFavorites_media_collection,3);
+			staffFavorites_media_carousel_view.renderCarouselRowIndicators('staff-favorites-carousel',staffFavorites_media_collection,3);
+		} else if ( $(window).width() > 600) {      
+			dailyHighlights_media_view.renderCarouselRow(dailyHighlights_media_collection,2);
+			dailyHighlights_media_carousel_view.renderCarouselRowIndicators('daily-hightlights-carousel',dailyHighlights_media_collection,2);
+			staffFavorites_media_view.renderCarouselRow(staffFavorites_media_collection,2);
+			staffFavorites_media_carousel_view.renderCarouselRowIndicators('staff-favorites-carousel',staffFavorites_media_collection,2);
+		} else {
+			dailyHighlights_media_view.renderCarouselRow(dailyHighlights_media_collection,1);
+			dailyHighlights_media_carousel_view.renderCarouselRowIndicators('daily-hightlights-carousel',dailyHighlights_media_collection,1);
+			staffFavorites_media_view.renderCarouselRow(staffFavorites_media_collection,1);
+			staffFavorites_media_carousel_view.renderCarouselRowIndicators('staff-favorites-carousel',staffFavorites_media_collection,1);
+		}
+		setInfoButtons();
+	});
+});
+
+</script>

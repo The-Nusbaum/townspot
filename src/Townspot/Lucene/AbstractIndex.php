@@ -168,24 +168,22 @@ abstract class AbstractIndex implements ServiceLocatorAwareInterface
 		return $config['path'] . DIRECTORY_SEPARATOR . $index;
 	}
 	
-	public function findIds($query,$sortField = null,$sortType = null,$sortOrder = null)
+	public function find($query,$sortField = null,$sortType = null,$sortOrder = null)
 	{
+		\ZendSearch\Lucene\Analysis\Analyzer\Analyzer::setDefault(new \ZendSearch\Lucene\Analysis\Analyzer\Common\TextNum\CaseInsensitive());
 		$results = array();
-		if ($sortField) {
-			$matches = $this->getIndex()->find($query,$sortField);
+		if (($sortField)&&($sortType)&&($sortOrder)) {
+			$matches = $this->getIndex()->find($query,$sortField,$sortType,$sortOrder);
 		} elseif (($sortField)&&($sortType)) {
 			$matches = $this->getIndex()->find($query,$sortField,$sortType);
-		} elseif (($sortField)&&($sortType)&&($sortOrder)) {
-			$matches = $this->getIndex()->find($query,$sortField,$sortType,$sortOrder);
+		} elseif ($sortField) {
+			$matches = $this->getIndex()->find($query,$sortField);
 		} else {
 			$matches = $this->getIndex()->find($query);
 		}
-		foreach ($matches as $hit) {	
-			$results[] = $hit->objectid;
-		}
-		return $results;
+		return $matches;
 	}
-
+	
 	/**
 	 * Build Index
 	 *
@@ -216,6 +214,4 @@ abstract class AbstractIndex implements ServiceLocatorAwareInterface
 	 * @return Object
 	 */
 	abstract public function update($object);
-	
-	abstract public function find($query);
 }

@@ -38,11 +38,27 @@ return array(
                 'js/townspot.js' => array(
 					'kalenjordan/jquery-cookie/jquery.cookie.js',
 					'jqgeeks/jquery-timeago/jquery.timeago.js',
+					'underscore/underscore-min.js',
+					'backbone/backbone-min.js',
+					'fredwu/endless-scroll/js/jquery.endless-scroll.js',
+					'resolutionChange.js',
+					'googleads.js',
 					'carousel.js',
 					'infobutton.js',
 					'togglebuttons.js',
 					'geolocation.js',
 					'expander.js',
+                ),
+                'js/home.js' => array(
+                    'collection/video.js',
+                    'model/video.js',
+                    'view/video.js',
+                ),
+                'js/searchresults.js' => array(
+                    'collection/searchresult.js',
+                    'model/video.js',
+                    'view/searchresult.js',
+                    'search.js',
                 ),
             ),			
         ),
@@ -63,11 +79,11 @@ return array(
 					'filter' => 'LessphpFilter',
 				),
 			),
-            'js' => array(
-                array(
-                    'filter' => 'JSMin',
-                ),
-            ),
+//            'js' => array(
+//                array(
+//                    'filter' => 'JSMin',
+//                ),
+//            ),
 		),
     ),
     'router' => array(
@@ -89,6 +105,16 @@ return array(
                     'defaults' => array(
                         'controller' => 'Application\Controller\Search',
                         'action'     => 'index',
+                    ),
+                ),
+            ),
+            'search-results' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/videos/searchresults',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Ajax',
+                        'action'     => 'searchresults',
                     ),
                 ),
             ),
@@ -294,18 +320,6 @@ return array(
 				'type' => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(
 					'route' => '/discover[/:param1][/:param2][/:param3][/:param4][/:param5][/:param6][/:param7][/:param8][/:param9][/:param10]',
-					'constraints' => array(
-						'param1' => '[a-zA-Z0-9_-]+',
-						'param2' => '[a-zA-Z0-9_-]+',
-						'param3' => '[a-zA-Z0-9_-]+',
-						'param4' => '[a-zA-Z0-9_-]+',
-						'param5' => '[a-zA-Z0-9_-]+',
-						'param6' => '[a-zA-Z0-9_-]+',
-						'param7' => '[a-zA-Z0-9_-]+',
-						'param8' => '[a-zA-Z0-9_-]+',
-						'param9' => '[a-zA-Z0-9_-]+',
-						'param10' => '[a-zA-Z0-9_-]+',
-					),
 					'defaults' => array(
 						'controller' => 'Application\Controller\Search',
 						'action' => 'discover'
@@ -563,6 +577,16 @@ return array(
 					'defaults' => array(
 						'controller' => 'Application\Controller\Ajax',
 						'action'     => 'explorelink',
+					),
+				),
+			),	
+			'google_ads' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+				'options' => array(
+					'route'    => '/adsource',
+					'defaults' => array(
+						'controller' => 'Application\Controller\Ajax',
+						'action'     => 'googleads',
 					),
 				),
 			),	

@@ -19,7 +19,7 @@ function getExplore(coords) {
 		data: { "coords": coords }
 	}).done(function ( data ) {
 		if ((data.FullName != '')&&(data.Link != '')) {
-			$('#explore-btn-link').prop('href',"/videos/" + data.Link);
+			$('#explore-btn-link').prop('href', data.Link);
 			$('#explore-btn-location').html('Explore ' + data.FullName);
 			$('.explore-btn-wrapper').css('display','block');
 		}

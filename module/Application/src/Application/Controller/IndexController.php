@@ -11,6 +11,7 @@ namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Zend\View\Model\JsonModel;
 use \Application\Forms\ContactForm;
 
 class IndexController extends AbstractActionController
@@ -30,27 +31,27 @@ class IndexController extends AbstractActionController
     public function indexAction()
     {
 		$this->init();
-		$SectionMapper = new \Townspot\SectionBlock\Mapper($this->getServiceLocator());
-		$_onScreen = $SectionMapper->findOneByBlockName('On Screen');
-		$_dailyHighlights = $SectionMapper->findOneByBlockName('Daily Highlights');
-		$_staffFavorites = $SectionMapper->findOneByBlockName('Staff Favorites');
+        $cache                      = $this->getServiceLocator()->get('cache-general');        
+		$cache->clearExpired();
 		
-		$dailyHighlights = array();
-		$staffFavorites = array();
-		
-		foreach ($_dailyHighlights->getSectionMedia() as $media) {
-			$dailyHighlights[] = $media->getMedia();
+        if ($results = $cache->getItem('home')) {
+			return new ViewModel($results);
 		}
-		foreach ($_staffFavorites->getSectionMedia() as $media) {
-			$staffFavorites[] = $media->getMedia();
-		}
-        return new ViewModel(
-			array(
-				'onScreen' 			=> $_onScreen->getSectionMedia(),
-				'dailyHighlights' 	=> $dailyHighlights,
-				'staffFavorites' 	=> $staffFavorites,
-			)
+
+		$SectionMapper 		= new \Townspot\SectionBlock\Mapper($this->getServiceLocator());
+		$onScreen 			= $SectionMapper->getSectionMediaByBlockName('On Screen');
+		$dailyHighlights 	= $SectionMapper->getSectionMediaByBlockName('Daily Highlights');
+		$staffFavorites 	= $SectionMapper->getSectionMediaByBlockName('Staff Favorites');
+
+		$results			= array(
+			'onScreenCount'		=> count($onScreen),
+			'onScreen' 			=> json_encode($onScreen),
+			'dailyHighlights' 	=> json_encode($dailyHighlights),
+			'staffFavorites' 	=> json_encode($staffFavorites),
 		);
+		$cache->setItem('home', $results);
+		
+		return new ViewModel($results);
     }
 	
     public function contactAction()

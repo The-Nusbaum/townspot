@@ -28,6 +28,8 @@ class Entity extends \Townspot\Entity
 	protected $_province;
 	
 	protected $_users;
+	
+	protected $_media;
 
 	public function __construct()
 	{
@@ -35,6 +37,7 @@ class Entity extends \Townspot\Entity
 		$this->_updated = new \DateTime();
 		$this->_neighborhoods = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->_users = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->_media = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	public function setName($value)
@@ -121,6 +124,18 @@ class Entity extends \Townspot\Entity
 		return $this;
 	}
 
+	public function addMedia(\Townspot\Media\Entity $value)
+	{
+		$this->_media->add($value);
+		return $this;
+	}
+
+	public function removeMedia($key)
+	{
+		$this->_media->remove($key);
+		return $this;
+	}
+	
 	public function getId()
 	{
 		return $this->_id;
@@ -186,6 +201,11 @@ class Entity extends \Townspot\Entity
 		return $this->_users;
 	}
 	
+	public function getMedia()
+	{
+		return $this->_media;
+	}
+
 	public function getFullName()
 	{
 		$abbrev = null;
@@ -204,5 +224,12 @@ class Entity extends \Townspot\Entity
 				htmlentities(strtolower($this->getProvince()->getName())),
 				htmlentities(strtolower($this->getName()))
 		);
+	}
+	
+	public function getRandomMedia()
+	{
+		$media = $this->getMedia();
+		$randkey = rand(0,count($media));
+		return $media[$randkey];
 	}
 }

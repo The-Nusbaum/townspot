@@ -52,27 +52,26 @@ class VideoIndex extends AbstractIndex
 		}
 		$index = $this->getIndex();
 		\ZendSearch\Lucene\Analysis\Analyzer\Analyzer::setDefault(new \ZendSearch\Lucene\Analysis\Analyzer\Common\TextNum\CaseInsensitive());
-		$row['series_id'] = $row['series_id'] ?: 0;
+		$row['series'] = $row['series'] ?: '';
 		$row['episode_number'] = $row['episode_number'] ?: 0;
 		try {
 			$doc = new Document();	
-			$doc->addField(Field::Text('objectid', $row['objectid']));	
+			$doc->addField(Field::Text('objectid', $row['id']));	
 			$doc->addField(Field::Text('title', $row['title']));	
 			$doc->addField(Field::Text('views', $row['views']));	
-			$doc->addField(Field::Text('created', $row['created']));	
+			$doc->addField(Field::Text('created', strtotime($row['created'])));	
 			$doc->addField(Field::Text('categories', $row['categories']));	
 			$doc->addField(Field::Text('logline', htmlentities(strip_tags($row['logline']))));	
 			$doc->addField(Field::Text('description', htmlentities(strip_tags($row['description']))));	
-			$doc->addField(Field::Text('user_id', $row['user_id']));	
-			$doc->addField(Field::Text('city_id', $row['city_id']));	
-			$doc->addField(Field::Text('province_id', $row['province_id']));	
-			$doc->addField(Field::Text('series_id', $row['series_id']));	
-			$doc->addField(Field::Text('episode_number', $row['episode_number']));	
+			$doc->addField(Field::Text('user', $row['user']));	
+			$doc->addField(Field::Text('city', $row['city']));	
+			$doc->addField(Field::Text('province', $row['province']));	
 			$index->addDocument($doc);
 		} catch (\Doctrine\ORM\EntityNotFoundException $e) {
 		} catch (\ZendSearch\Lucene\Exception\RuntimeException $e) {
 		} catch (\ZendGData\App\HttpException $e) {
 		}
+		sleep(1);
 	}
 	
 	public function update($row)
@@ -88,60 +87,31 @@ class VideoIndex extends AbstractIndex
 		}
 		$index = $this->getIndex();
 		$match = null;
-		$matches = $this->getIndex()->find('objectid:' . $row['objectid']);
+		$matches = $this->getIndex()->find('objectid:' . $row['id']);
 		if ($matches) {
 			$match = array_shift($matches);
 			$this->getIndex()->delete($match->id);
 		}
 	}
 	
-	public function find($query,$sortField = null,$sortType = null,$sortOrder = null)
-	{
-		$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
-		$results = array();
-		if ($sortField) {
-			$matches = $this->getIndex()->find($query,$sortField);
-		} elseif (($sortField)&&($sortType)) {
-			$matches = $this->getIndex()->find($query,$sortField,$sortType);
-		} elseif (($sortField)&&($sortType)&&($sortOrder)) {
-			$matches = $this->getIndex()->find($query,$sortField,$sortType,$sortOrder);
-		} else {
-			$matches = $this->getIndex()->find($query);
-		}
-		foreach ($matches as $hit) {	
-			$results[] = $mediaMapper->find($hit->objectid);
-		}
-		return $results;
-	}
-
 	protected function _getArrayFromObject($obj)
 	{
 		$row = array(
-			'objectid'			=> $obj->getId(),
+			'id'				=> $obj->getId(),
 			'title'				=> $obj->getTitle(),
 			'logline'			=> $obj->getLogline(),
 			'description'		=> $obj->getDescription(),
 			'views'				=> $obj->getViews(false),
 			'created'			=> $obj->getCreated()->format('Y-m-d H:i:s'),
-			'user_id'			=> $obj->getUser()->getId(),
-			'city_id'			=> $obj->getCity()->getId(),
-			'province_id'		=> $obj->getProvince()->getId(),
-			'series_id'			=> 0,
-			'episode_number'	=> 0
+			'user'				=> $obj->getUser()->getUsername(),
+			'city'				=> $obj->getCity()->getName(),
+			'province'			=> $obj->getProvince()->getName(),
 		);
 		$categories = array();
 		foreach ($obj->getCategories() as $category) {
-			$categories[] = $category->getId();
+			$categories[] = $category->getName();
 		}
 		$row['categories'] = implode('::',$categories);
-		$seriesMapper = new \Townspot\SeriesEpisode\Mapper($this->getServiceLocator());
-		$series = $seriesMapper->findByMedia($obj);
-		if ($series) {
-			if (count($series)) {
-				$row['series_id'] = $series->getSeries()->getId();
-				$row['episode_number'] = $series->getEpisodeNumber();
-			}
-		}
 		return $row;
 	}
 }

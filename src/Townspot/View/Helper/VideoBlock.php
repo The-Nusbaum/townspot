@@ -26,7 +26,7 @@ class VideoBlock extends AbstractHelper implements ServiceLocatorAwareInterface
 		$rate_up			= count($media->getRatings(true));
 		$rate_down			= count($media->getRatings(false));
 		$position_class		= ' ' . $position;
-
+		
 		$html .= "<div class=\"video-preview{position}\">\n";
 		$html .= "	<a href=\"{media_link}\">\n";
 		$html .= "		<img class=\"img-responsive preview-img\" src=\"{preview_image}\" alt=\"{title_escaped}\">\n";

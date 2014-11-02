@@ -47,22 +47,24 @@ class LocationIndex extends AbstractIndex
 
 	public function add($row)
 	{
-//		if ($row instanceof \Townspot\City\Entity) {
-//			$row = $this->_getArrayFromObject($row);
-//		}
+		if ($row instanceof \Townspot\City\Entity) {
+			$row = $this->_getArrayFromObject($row);
+		}
 		$index = $this->getIndex();
 		\ZendSearch\Lucene\Analysis\Analyzer\Analyzer::setDefault(new \ZendSearch\Lucene\Analysis\Analyzer\Common\TextNum\CaseInsensitive());
 		try {
 			$doc = new Document();	
 			$doc->addField(Field::Text('objectid', $row['id']));	
-			$doc->addField(Field::Text('city_name', htmlentities($row['name'])));	
-			$doc->addField(Field::Text('province_name', htmlentities($row['province_name'])));	
+			$doc->addField(Field::Text('city', htmlentities($row['city'])));	
+			$doc->addField(Field::Text('province', htmlentities($row['province'])));	
 			$doc->addField(Field::Text('province_abbrev', htmlentities($row['province_abbrev'])));	
+			$doc->addField(Field::Text('media_count', $row['media_count']));	
 			$index->addDocument($doc);
 		} catch (\Doctrine\ORM\EntityNotFoundException $e) {
 		} catch (\ZendSearch\Lucene\Exception\RuntimeException $e) {
 		} catch (\ZendGData\App\HttpException $e) {
 		}
+		sleep(1);
 	}
 	
 	public function update($row)
@@ -73,9 +75,9 @@ class LocationIndex extends AbstractIndex
 
 	public function remove($row)
 	{
-//		if ($row instanceof \Townspot\City\Entity) {
-//			$row = $this->_getArrayFromObject($row);
-//		}
+		if ($row instanceof \Townspot\City\Entity) {
+			$row = $this->_getArrayFromObject($row);
+		}
 		$index = $this->getIndex();
 		$match = null;
 		$matches = $this->getIndex()->find('objectid:' . $row['id']);
@@ -85,32 +87,14 @@ class LocationIndex extends AbstractIndex
 		}
 	}
 	
-	public function find($query,$sortField = null,$sortType = null,$sortOrder = null)
-	{
-		$cityMapper = new \Townspot\City\Mapper($this->getServiceLocator());
-		$results = array();
-		if ($sortField) {
-			$matches = $this->getIndex()->find($query,$sortField);
-		} elseif (($sortField)&&($sortType)) {
-			$matches = $this->getIndex()->find($query,$sortField,$sortType);
-		} elseif (($sortField)&&($sortType)&&($sortOrder)) {
-			$matches = $this->getIndex()->find($query,$sortField,$sortType,$sortOrder);
-		} else {
-			$matches = $this->getIndex()->find($query);
-		}
-		foreach ($matches as $hit) {	
-			$results[] = $cityMapper->find($hit->objectid);
-		}
-		return $results;
-	}
-
 	protected function _getArrayFromObject($obj)
 	{
-//		return array(
-//			'id'				=> $obj->getId(),
-//			'name'				=> $obj->getName(),
-//			'province_name'		=> $obj->getProvince()->getName(),
-//			'province_abbrev'	=> $obj->getProvince()->getAbbrev()
-//		);
+		return array(
+			'id'				=> $obj->getId(),
+			'city'				=> $obj->getName(),
+			'province'			=> $obj->getProvince()->getName(),
+			'province_abbrev'	=> $obj->getProvince()->getAbbrev(),
+			'media_count'		=> count($obj->getMedia())
+		);
 	}
 }

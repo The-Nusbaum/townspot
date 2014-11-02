@@ -1,3 +1,4 @@
+<script src="/js/searchresults.js"></script>
 <div class="row" id="search-results-page">
 	<div class="col-xs-6">
 		<h1>Search Results for: <?= $this->searchTerm; ?></h1>	
@@ -5,4 +6,55 @@
 	<div class="col-xs-6">
 		<h2 id="search-result-count">Results Found: <?= $this->matchesFound; ?></h2>
 	</div>
+	<div class="row">
+		<div class="col-xs-12 sort-select">
+			<select name="sort" id="sort">
+<?php 
+	$sorts = array(
+		'title:asc'			=> 'Alphabetical [A-Z]',
+		'title:desc'		=> 'Alphabetical [Z-A]',
+		'created:desc'		=> 'Date Added [Most Recent First]',
+		'created:asc'		=> 'Date Added [Most Recent Last]',
+		'views:desc'		=> 'Play Count [Most First]',
+		'views:asc'			=> 'Play Count [Least First]',
+	);
+	foreach ($sorts as $key => $value) {
+		if ($key == $Sort) {
+			print '<option value="' . $key . '" selected="selected">' . $value . '</option>';
+		} else {
+			print '<option value="' . $key . '">' . $value . '</option>';
+		}
+	}
+?>
+			</select>
+		</div>
+	</div>
+	<div class="row" id="search-results"></div>
+	<div class="row loading-spinner">
+		<div class="col-xs-12">
+			<img class="data-loading" src="/img/loading.gif">
+		</div>
+	</div>
 </div>
+<div aria-hidden="true" id="Loading" aria-labelledby="Loading" role="dialog" tabindex="-1" class="modal fade" style="display: none;">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-body">
+			<img class="data-loading" src="/img/loading.gif">
+			<div>Loading...</div>
+        </div>
+      </div>
+    </div>
+</div>
+<br/>
+<br/>
+<br/>
+<?= $this->partial('partials/backbone/search-template.phtml'); ?>
+<script>
+$().Search({
+	searchId: '<?= $this->searchId; ?>',
+	searchTerm: '<?= $this->searchTerm; ?>',
+	sortTerm: '<?= $this->sortTerm; ?>',
+	page: <?= $this->page; ?>,
+});
+</script>

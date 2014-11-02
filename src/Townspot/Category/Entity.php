@@ -19,6 +19,8 @@ class Entity extends \Townspot\Entity
 
 	protected $_updated;
 
+	protected $_media;
+
 	public function __construct()
 	{
 		$this->_created = new \DateTime();
@@ -114,9 +116,22 @@ class Entity extends \Townspot\Entity
 		return $this->_updated;
 	}
 	
-	public function getDiscoverLink()
+	public function getMedia()
 	{
-		$link = '/discover' . $this->getDiscoverLevels();;
+		return $this->_media;
+	}
+
+	public function getDiscoverLink($location = null)
+	{
+		if (($location instanceof \Townspot\Province\Entity)||
+			($location instanceof \Townspot\Province\Entity)) {
+				$link = $location->getDiscoverLink();
+		} elseif (isset($_SESSION['DiscoverLocation'])) {
+			$link = $_SESSION['DiscoverLocation']->getDiscoverLink();
+		} else {
+			$link = '/discover';
+		}
+		$link .= $this->getDiscoverLevels();;
 		return $link;
 	}
 
