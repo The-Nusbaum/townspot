@@ -4,6 +4,27 @@ $sourceDb = new mysqli('localhost', 'root', '', 'townspot_dev');
 $targetDb = new mysqli('localhost', 'root', '', 'tsz');
 
 //Migrate User
+//$targetDb->query('truncate tsz.user');
+//$targetDb->query('truncate tsz.user_social_media');
+//$targetDb->query('truncate tsz.user_role_linker');
+//$targetDb->query('truncate tsz.user_oauth');
+//$targetDb->query('truncate tsz.user_follow');
+//$targetDb->query('truncate tsz.user_event');
+//$targetDb->query('truncate tsz.artist_comment');
+//$targetDb->query('truncate tsz.user_activity');
+//$targetDb->query('truncate tsz.media');
+//$targetDb->query('truncate tsz.media_category_linker');
+//$targetDb->query('truncate tsz.media_comment');
+//$targetDb->query('truncate tsz.encoding');
+//$targetDb->query('truncate tsz.rating');
+//$targetDb->query('truncate tsz.user_favorite');
+//$targetDb->query('truncate tsz.series');
+//$targetDb->query('truncate tsz.series_season');
+//$targetDb->query('truncate tsz.series_category_linker');
+//$targetDb->query('truncate tsz.series_episodes');
+//$targetDb->query('truncate tsz.section_media');
+
+//Migrate User
 $sql = "SELECT * FROM townspot_dev.users order by id";
 if ($result = $sourceDb->query($sql)) {
 	while ($row = $result->fetch_assoc()) {
@@ -280,14 +301,14 @@ if ($result = $sourceDb->query($sql)) {
 				$row['id'],
 				$row['user_id'],
 				$row['name'],
-				$row['description']
+				(@$row['description']) ?: ''
 			));
 			$targetDb->query(sprintf("INSERT INTO tsz.series_season (`id`,`series_id`,`season_number`,`name`,`description`,`created`) VALUES (%d,%d,%d,'%s','%s',NOW());\n",
 				$season_id,
 				$row['id'],
 				1,
 				$row['name'],
-				$row['description']
+				(@$row['description']) ?: ''
 			));
 			$series_seasons[$row['id']] = $season_id;
 			$season_id++;
@@ -312,14 +333,13 @@ if ($result = $sourceDb->query($sql)) {
 $sql = "SELECT * FROM townspot_dev.video_episodes";
 if ($result = $sourceDb->query($sql)) {
 	while ($row = $result->fetch_assoc()) {
-		if (isset($series_seasons[$row['series_id']])) {
-			if ($row['video_id']) {
-				$targetDb->query(sprintf("INSERT INTO tsz.series_episodes (`season_id`,`media_id`,`episode_number`) VALUES (%d,%d,%d);\n",
-					$series_seasons[$row['series_id']],
-					$row['video_id'],
-					$row['episodeNumber']
-				));
-			}
+		if ($row['video_id']) {
+			$targetDb->query(sprintf("INSERT INTO tsz.series_episodes (`series_id`,`season_id`,`media_id`,`episode_number`) VALUES (%d,%d,%d,%d);\n",
+				$row['series_id'],
+				(@$series_seasons[$row['series_id']]) ?: 0,
+				$row['video_id'],
+				$row['episodeNumber']
+			));
 		}
 	}
 }
@@ -371,7 +391,9 @@ $targetDb->query("update users set province_id=null where province_id=0");
 $targetDb->query("update media set admin_id=null where admin_id=0");
 $targetDb->query("update media set city_id=null where city_id=0");
 $targetDb->query("update media set province_id=null where province_id=0");
+$targetDb->query("update media set admin_id=null where admin_id=0");
 $targetDb->query("update category set parent_id=null where parent_id=0");
+$targetDb->query("update series_episodes set season_id=null where season_id=0");
 
 function getCity($dbconnection,$cityId) 
 {

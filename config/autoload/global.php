@@ -21,7 +21,47 @@ return array(
         'servers' => array(
             'static_1' => array(
                 'scheme' => 'http',
-                'host' => 'images.townspot.tv',
+                'host' => 'images1.townspot.tv',
+                'port' => 80
+            ),
+            'static_2' => array(
+                'scheme' => 'http',
+                'host' => 'images2.townspot.tv',
+                'port' => 80
+            ),
+            'static_3' => array(
+                'scheme' => 'http',
+                'host' => 'images3.townspot.tv',
+                'port' => 80
+            ),
+            'static_4' => array(
+                'scheme' => 'http',
+                'host' => 'images4.townspot.tv',
+                'port' => 80
+            ),
+            'static_5' => array(
+                'scheme' => 'http',
+                'host' => 'images5.townspot.tv',
+                'port' => 80
+            ),
+            'static_6' => array(
+                'scheme' => 'http',
+                'host' => 'images6.townspot.tv',
+                'port' => 80
+            ),
+            'static_7' => array(
+                'scheme' => 'http',
+                'host' => 'images7.townspot.tv',
+                'port' => 80
+            ),
+            'static_8' => array(
+                'scheme' => 'http',
+                'host' => 'images8.townspot.tv',
+                'port' => 80
+            ),
+            'static_9' => array(
+                'scheme' => 'http',
+                'host' => 'images9.townspot.tv',
                 'port' => 80
             ),
         ),
@@ -30,6 +70,56 @@ return array(
 		'id' => 'UA-33048703-1',
 		'domain_name'  => 'townspot.tv',
 	),
+    'google_adsense' => array(
+		'publisher-id' => 'ca-pub-4550038254482078',
+		'ads' => array(
+			'leaderboard' => array(
+				'phone' => array(
+					'id' 		=> 1011020740,
+					'width'		=> 234,
+					'height'	=> 60,
+				),
+				'mobile' => array(
+					'id' 		=> 2766955547,
+					'width'		=> 320,
+					'height'	=> 50,
+				),
+				'tablet' => array(
+					'id' 		=> 5441220349,
+					'width'		=> 468,
+					'height'	=> 60,
+				),
+				'desktop' => array(
+					'id' 		=> 9042539146,
+					'width'		=> 728,
+					'height'	=> 90,
+				),
+			),
+			'rectangle' => array(
+				'phone' => array(
+					'id' 		=> 1011020740,
+					'width'		=> 234,
+					'height'	=> 60,
+				),
+				'mobile' => array(
+					'id' 		=> 2766955547,
+					'width'		=> 320,
+					'height'	=> 50,
+				),
+				'tablet' => array(
+					'id' 		=> 5441220349,
+					'width'		=> 468,
+					'height'	=> 60,
+				),
+				'desktop' => array(
+					'id' 		=> 3824886349,
+					'width'		=> 180,
+					'height'	=> 150,
+				),
+			),
+		),
+        'enable' => false,
+    ),
 	'zfcuser' => array(
 		'zend_db_adapter' => 'Zend\Db\Adapter\Adapter',
 		//'user_entity_class' => 'ZfcUser\Entity\User',
@@ -93,6 +183,9 @@ return array(
         )
     ),
     'service_manager' => array(
+        'abstract_factories' => array(
+            'ZfSnapGoogleAdSense\View\Helper\Renderer\ViewFactory' => 'ZfSnapGoogleAdSense\View\Helper\Renderer\ViewFactory',
+        ),
         'aliases' => array(
             'zfcuser_zend_db_adapter' => (isset($settings['zend_db_adapter'])) ? $settings['zend_db_adapter']: 'Zend\Db\Adapter\Adapter',
         ),
@@ -103,5 +196,21 @@ return array(
         'invokables' => array(
             'Townspot\Authentication\Adapter\Db' => '\Townspot\Authentication\Adapter\Db',
 		),
+    ),
+    'view_helpers' => array(
+        'aliases' => array(
+            'adsense' => 'googleAdSense',
+        ),
+        'factories' => array(
+            'googleAdSense' => 'ZfSnapGoogleAdSense\View\Helper\GoogleAdSenseFactory',
+        ),
+    ),
+    'view_manager' => array(
+        'template_map' => array(
+            'zf-snap-google-adsense-renderer-view-asynchronous' => APPLICATION_PATH . '/src/Townspot/Adsense/view/asynchronous.phtml',
+            'zf-snap-google-adsense-renderer-view-html'         => APPLICATION_PATH . '/src/Townspot/Adsense/view//html.phtml',
+            'zf-snap-google-adsense-renderer-view-placeholdit'  => APPLICATION_PATH . '/src/Townspot/Adsense/view/placeholdit.phtml',
+            'zf-snap-google-adsense-renderer-view-synchronous'  => APPLICATION_PATH . '/src/Townspot/Adsense/view/synchronous.phtml',
+        ),
     ),
 );

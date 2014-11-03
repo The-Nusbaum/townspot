@@ -22,14 +22,12 @@ class Image extends AbstractHelper
     public function user($id,$width,$height) {
         if ($height) $h = "&h=$height";
         else $h='';
-        $rand = rand(0,9);
-        return "http://images$rand.townspot.tv/resizer.php?id=$id&w=$width$h&type=profile";
+		return $this->getView()->linkCdn("/resizer.php?id=$id&w=$width$h&type=profile");
     }
 
     public function video($id,$width,$height) {
         if ($height) $h = "&h=$height";
         else $h='';
-        $rand = rand(0,9);
-        return "http://images$rand.townspot.tv/resizer.php?id=$id&w=$width$h";
+		return $this->getView()->linkCdn("/resizer.php?id=$id&w=$width$h");
     }
 }

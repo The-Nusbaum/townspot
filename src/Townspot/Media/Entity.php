@@ -348,12 +348,16 @@ class Entity extends \Townspot\Entity
 		return $this->_id;
 	}
 
-	public function getTitle($formatted = false)
+	public function getTitle($formatted = false,$escaped = false)
 	{
-		if (!$formatted) {
-			return $this->_title;
+		$title = $this->_title;
+		if ($escaped) {
+			$title = htmlentities($title);
 		}
-		$title = preg_replace('/[^A-Za-z0-9- ]/', '', $this->_title);
+		if (!$formatted) {
+			return $title;
+		}
+		$title = preg_replace('/[^A-Za-z0-9- ]/', '', $title);
 		return str_replace(' ','_',$title);
 	}
 
@@ -367,19 +371,37 @@ class Entity extends \Townspot\Entity
 		return $this->_source;
 	}
 
-	public function getLogline()
+	public function getLogline($escaped = false)
 	{
-		return $this->_logline;
+		$logline = $this->_logline;
+		if ($escaped) {
+			$logline = htmlentities($logline);
+		}
+		return $logline;
 	}
 
-	public function getDescription()
+	public function getDescription($escaped = false)
 	{
-		return $this->_description;
+		$description = $this->_description;
+		if ($escaped) {
+			$description = preg_replace('/<br\s*\/?\s*>/', "\n", $description);
+			$description = strip_tags($description);
+			$description = htmlentities($description);
+			$description = nl2br($description);
+		}
+		return $description;
 	}
 
-	public function getWhyWeChose()
+	public function getWhyWeChose($escaped = false)
 	{
-		return $this->_why_we_chose;
+		$why_we_chose = $this->_why_we_chose;
+		if ($escaped) {
+			$why_we_chose = preg_replace('/<br\s*\/?\s*>/', "\n", $why_we_chose);
+			$why_we_chose = strip_tags($why_we_chose);
+			$why_we_chose = htmlentities($why_we_chose);
+			$why_we_chose = nl2br($why_we_chose);
+		}
+		return $why_we_chose;
 	}
 
 	public function getUrl()
@@ -392,17 +414,16 @@ class Entity extends \Townspot\Entity
 		return $this->_preview_image;
 	}
 
-	public function getViews()
+	public function getViews($fromSource = true)
 	{
-		switch ($this->getSource()) {
-			case 'youtube':
+		if ($fromSource) {
+			if ($this->getSource() == 'youtube') {
 				$ytId = $this->getYtVideoId();
 				$videoEntry = $this->_getYtVideo($ytId);
 				return $videoEntry->getStatistics()->getViewCount();
-			default:
-				return $this->_views;
+			}
 		}
-		return 0;
+		return $this->_views;
 	}
 
 	public function getDuration($formatted = false)
@@ -537,8 +558,11 @@ class Entity extends \Townspot\Entity
 		return $this->_tags;
 	}
 
-	public function getCommentsAbout()
+	public function getCommentsAbout($order = 'ASC')
 	{
+		if ($order == 'ASC') {
+			return array_reverse($this->_comments_about->toArray());
+		} 
 		return $this->_comments_about;
 	}
 	
@@ -588,7 +612,7 @@ class Entity extends \Townspot\Entity
 	{
 		return sprintf('/videos/%d/%s',
 			$this->getId(),
-			$this->getTitle(true)
+			strtolower($this->getTitle(true))
 		);
 	}
 	
@@ -600,7 +624,7 @@ class Entity extends \Townspot\Entity
 		);
 	}
 	
-	public function getResizerLink($width,$height)
+	public function getResizerLink($width = 342,$height = 257)
 	{
 		if (!(preg_match('/ytimg/',$this->getPreviewImage()))) {
 			return sprintf('/resizer.php?id=%d&w=%d&h=%d',
@@ -611,7 +635,18 @@ class Entity extends \Townspot\Entity
 		return $this->getPreviewImage();
 	}
 	
-	public function getLocation($includeNeighborhood = false)
+	public function getResizerCdnLink($width = 342,$height = 257)
+	{
+		$imageServer = "http://images" . rand(0,9) . ".townspot.tv";
+		$link = $this->getResizerLink($width,$height);
+		
+		if (preg_match('/^http/',$link)) {
+			return $link;
+		}
+		return $imageServer . $link;
+	}
+	
+	public function getLocation($includeNeighborhood = false,$escaped = false)
 	{
 		$location = sprintf("%s, %s",
 			$this->getCity()->getName(),
@@ -620,6 +655,9 @@ class Entity extends \Townspot\Entity
 			if ($neighborhood = $this->getNeighborhood()) {
 				$location .= sprintf(" (%s)",$neighborhood);
 			}
+		}
+		if ($escaped) {
+			$location = htmlentities($location);
 		}
 		return $location;
 	}

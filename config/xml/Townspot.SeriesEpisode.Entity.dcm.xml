@@ -3,8 +3,6 @@
 		<id name="_id" column="id" type="bigint">
 			<generator strategy="AUTO" />
 		</id>
-		<field name="_name" column="name" nullable="false" type="string"/>
-		<field name="_description" column="description" type="string"/>
         <many-to-one field="_series" target-entity="Townspot\Series\Entity" inversed-by="_episodes">
             <join-column name="series_id" referenced-column-name="id" />
         </many-to-one>

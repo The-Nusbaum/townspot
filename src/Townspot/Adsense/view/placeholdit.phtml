@@ -1,0 +1,4 @@
+<div class="advertisement" data-width="<?= $this->ad->getWidth(); ?>">
+	<div class="advertisement-title">advertisement</div>
+	<img src="http://placehold.it/<?= $this->ad->getWidth(); ?>x<?= $this->ad->getHeight(); ?>/<?= $this->params['backgroundColor']; ?>/<?= $this->params['textColor']; ?><?php if($this->params['useAdNameToText']): ?>&amp;text=<?= $this->ad->getName(); ?><?php endif; ?>" width="<?= $this->width; ?>" height="<?= $this->height; ?>" style="display:inline-block">
+</div>

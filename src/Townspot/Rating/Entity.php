@@ -29,9 +29,9 @@ class Entity extends \Townspot\Entity
 
 	public function setRating($value)
 	{
-		if ($rating === true) {
+		if ($value === true) {
 			$this->_rating = 1;
-		} elseif ($rating === false) {
+		} elseif ($value === false) {
 			$this->_rating = -1;
 		}
 		return $this;

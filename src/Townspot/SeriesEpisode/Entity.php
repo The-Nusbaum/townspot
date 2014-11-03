@@ -5,10 +5,6 @@ class Entity extends \Townspot\Entity
 {
 	protected $_id;
 
-	protected $_name;
-
-	protected $_description;
-
 	protected $_season;
 
 	protected $_media;
@@ -19,18 +15,6 @@ class Entity extends \Townspot\Entity
 
 	public function __construct()
 	{
-	}
-
-	public function setName($value)
-	{
-		$this->_name = $value;
-		return $this;
-	}
-
-	public function setDescription($value)
-	{
-		$this->_description = $value;
-		return $this;
 	}
 
 	public function setSeason(\Townspot\SeriesSeason\Entity $value)
@@ -60,16 +44,6 @@ class Entity extends \Townspot\Entity
 	public function getId()
 	{
 		return $this->_id;
-	}
-
-	public function getName()
-	{
-		return $this->_name;
-	}
-
-	public function getDescription()
-	{
-		return $this->_description;
 	}
 
 	public function getSeason()

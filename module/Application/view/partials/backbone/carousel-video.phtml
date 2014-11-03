@@ -1,0 +1,41 @@
+<script type="text/template" id="carousel-video">
+	<div class="item <%- classname %>">
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="video-preview">
+					<a href="<%- link %>">
+						<img class="img-responsive preview-img" alt="<%- escaped_title %>" src="<%- image %>">
+					</a>
+					<div class="carousel-caption">
+						<a href="<%- link %>">
+							<div class="video-title">
+								<h3 title="<%- escaped_location %>" class="dot-text"><%- escaped_location %></h3>
+							</div>
+						</a>
+						<div class="carousel-info-button"
+							title="" 
+							data-original-title="<a href='<%- link %>'><%= escaped_title %></a> by <a href='<%- user_profile %>'><%= user %></a>"
+							data-content="<%- escaped_location %><br/><%= escaped_logline %>
+							<footer>
+							<span class='video-duration'><i class='fa fa-clock-o'></i> <%= duration %></span>
+							<span class='video-plays'><i class='fa fa-play'></i> <%= views %></span> 
+							<span class='video-thumbs-up'><i class='fa fa-thumbs-up'></i> <%= rate_up %></span> 
+							<span class='video-thumbs-down'><i class='fa fa-thumbs-down'></i> <%= rate_down %></span>
+							<span class='video-comments'><i class='fa fa-comments'></i> <%= comment_count %></span>
+							</footer>"
+							data-toggle="popover">
+							<i class="fa fa-info-circle"></i>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6 video-info">
+				<div class="internal-wrapper">
+					<h2><a href="<%- link %>"><%- escaped_title %> by <%- user %></a></h2>
+					<div class="active-logline"><%= logline %></div>
+					<div class="active-info"><%= why_we_choose %></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</script>

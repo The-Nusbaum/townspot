@@ -1,0 +1,6 @@
+<div class="advertisement" data-width="<?= $this->ad->getWidth(); ?>">
+	<div class="advertisement-title">advertisement</div>
+	<div style="text-align:center;display:inline-block;line-height:<?php echo $this->ad->getHeight(); ?>px;<?php echo $this->params['style']; ?>;width:<?php echo $this->ad->getWidth(); ?>px;height:<?php echo $this->ad->getHeight(); ?>px;background:<?php echo $this->params['background']; ?>;color:<?php echo $this->params['color']; ?>">
+		<?php echo $this->ad->getName(); ?>
+	</div>
+</div>	

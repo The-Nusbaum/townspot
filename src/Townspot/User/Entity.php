@@ -475,8 +475,11 @@ class Entity extends \Townspot\Entity
 		return $this->_id;
 	}
 
-	public function getUsername()
+	public function getUsername($escaped = false)
 	{
+		if ($escaped) {
+			return htmlentities($this->_username);
+		}
 		return $this->_username;
 	}
 
@@ -678,6 +681,21 @@ class Entity extends \Townspot\Entity
 	public function getProfileLink()
 	{
 		return "/profile/" . $this->getUsername();
+	}
+	
+	public function getProfileImage($width=100,$height=100)
+	{
+		return sprintf('/resizer.php?id=%d&type=profile&w=%d&h=%d',
+			$this->getId(),
+			$width,
+			$height);
+	}
+	
+	public function getRandomMedia()
+	{
+		$media = $this->getMedia();
+		$randkey = array_rand($media,count($media));
+		return $media[$randkey];
 	}
 
     public function getSeries() {

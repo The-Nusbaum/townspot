@@ -6,18 +6,6 @@
 		{
 			"type": "package",	
 			"package": {
-				"name": "townspot/townspotbase",
-				"version": "0.0.2",
-				"source": {
-                    "url": "https://bitbucket.org/mike-hughes/townspotbase",
-					"type": "git",
-					"reference": "master"
-				}
-			}
-		},
-		{
-			"type": "package",	
-			"package": {
 				"name": "tonytomov/jqGrid",
 				"version": "3.6.0",
 				"source": {
@@ -171,7 +159,6 @@
 		"ocramius/ocra-service-manager": "2.2.*@dev",
 		"ocramius/generated-hydrator": "1.0.*@dev",
 		"nitecon/zf2-db-session": "dev-master",
-		"townspot/townspotbase": "0.0.2",
         "evandotpro/edp-module-layouts": "dev-master",
         "lorenzoferrarajr/lfj-opauth": "dev-master",
         "opauth/twitter": "dev-master",
@@ -199,22 +186,15 @@
     },
     "autoload": {
         "classmap": [
-			"vendor/blanchonvincent/cdn-light/Module.php",
-			"vendor/townspot/townspotbase/Module.php",
-			"vendor/townspot/townspotbase/src/TownspotBase/Doctrine/Entity/Container.php",
-			"vendor/townspot/townspotbase/src/TownspotBase/Doctrine/Mapper/AbstractEntityMapper.php",
-			"vendor/townspot/townspotbase/src/TownspotBase/Doctrine/Mapper/EntityMapperInterface.php",
-			"vendor/townspot/townspotbase/src/TownspotBase/Lucene/Index/SearchIndex.php"
+			"vendor/blanchonvincent/cdn-light/Module.php"
 		]
     },
-	{
-		"scripts": {
-			"post-install-cmd": [
-				"ZfSnapGeoip\\Composer\\ScriptHandler::downloadData"
-			],
-			"post-update-cmd": [
-				"ZfSnapGeoip\\Composer\\ScriptHandler::downloadData"
-			]
-		}
+	"scripts": {
+		"post-install-cmd": [
+			"ZfSnapGeoip\\Composer\\ScriptHandler::downloadData"
+		],
+		"post-update-cmd": [
+			"ZfSnapGeoip\\Composer\\ScriptHandler::downloadData"
+		]
 	}	
 }

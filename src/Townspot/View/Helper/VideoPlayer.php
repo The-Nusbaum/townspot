@@ -11,18 +11,21 @@ class VideoPlayer extends AbstractHelper implements ServiceLocatorAwareInterface
 	
     protected $params;
 
-    public function __invoke($mediaId,$params=array())
+    public function __invoke($media,$params=array())
     {
-		$helperPluginManager = $this->getServiceLocator();
-		$serviceManager = $helperPluginManager->getServiceLocator();  	
+		$helperPluginManager	= $this->getServiceLocator();
+		$serviceManager 		= $helperPluginManager->getServiceLocator();  	
 		$mediaMapper = new \Townspot\Media\Mapper($serviceManager);
-		$this->params = $params;
-		if ($media = $mediaMapper->find($mediaId)) {
-			$this->media = $media;
-			$function = $media->getSource();
-			return $this->{$function}();
+		if (is_numeric($media)) {
+			$media = $mediaMapper->find($media);
 		}
-		return null;
+		$media->incrViews();
+		$mediaMapper->setEntity($media)->save();
+		$this->params 			= $params;
+		$this->media = $media;
+		
+		$function = $media->getSource();
+		return $this->{$function}();
     }
 	
     public function internal()
@@ -220,7 +223,7 @@ class VideoPlayer extends AbstractHelper implements ServiceLocatorAwareInterface
     protected function _getRelatedLink()
 	{
 		if (@$this->params['include_related']) {
-			return '/videos/rss/relatedVideos?id=' . $this->media->getId();
+			return '/videos/related/' . $this->media->getId();
 		}
 		return null;
 	}

@@ -14,8 +14,9 @@ return array(
             'VideoPlayer' 	=> 'Townspot\View\Helper\VideoPlayer',
             'VideoCarousel' => 'Townspot\View\Helper\VideoCarousel',
             'VideoBlock' 	=> 'Townspot\View\Helper\VideoBlock',
-            'img' => 'Townspot\View\Helper\Image',
+            'img' 			=> 'Townspot\View\Helper\Image',
             'AddThisLinks' 	=> 'Townspot\View\Helper\AddThisLinks',
+            'Comments' 		=> 'Townspot\View\Helper\Comments',
         ),
     ),
 	'asset_manager' => array(
@@ -51,7 +52,12 @@ return array(
                 ),
                 'js/townspot.js' => array(
                     'kalenjordan/jquery-cookie/jquery.cookie.js',
-					'kalenjordan/jquery-cookie/jquery.cookie.js',
+					'jqgeeks/jquery-timeago/jquery.timeago.js',
+					'underscore/underscore-min.js',
+					'backbone/backbone-min.js',
+					'fredwu/endless-scroll/js/jquery.endless-scroll.js',
+					'resolutionChange.js',
+					'googleads.js',
 					'carousel.js',
 					'infobutton.js',
 					'togglebuttons.js',
@@ -67,6 +73,17 @@ return array(
                 'js/userEdit.js' => array(
                     'userEdit.js'
                 )
+                'js/home.js' => array(
+                    'collection/video.js',
+                    'model/video.js',
+                    'view/video.js',
+                ),
+                'js/searchresults.js' => array(
+                    'collection/searchresult.js',
+                    'model/video.js',
+                    'view/searchresult.js',
+                    'search.js',
+                ),
             ),			
         ),
 /*
@@ -86,11 +103,11 @@ return array(
 					'filter' => 'LessphpFilter',
 				),
 			),
-            'js' => array(
-                array(
-                    'filter' => 'JSMin',
-                ),
-            ),
+//            'js' => array(
+//                array(
+//                    'filter' => 'JSMin',
+//                ),
+//            ),
 		),
     ),
     'router' => array(
@@ -108,10 +125,20 @@ return array(
             'search' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
-                    'route'    => '/search',
+                    'route'    => '/videos/search',
                     'defaults' => array(
                         'controller' => 'Application\Controller\Search',
                         'action'     => 'index',
+                    ),
+                ),
+            ),
+            'search-results' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/videos/searchresults',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Ajax',
+                        'action'     => 'searchresults',
                     ),
                 ),
             ),
@@ -228,6 +255,32 @@ return array(
 					)
 				),			
 			),			
+			'videos_follow' => array(
+				'type' => 'Zend\Mvc\Router\Http\Segment',
+				'options' => array(
+					'route' => '/videos/followartist/:id',
+					'constraints' => array(
+						'id' => '\d+',
+					),
+					'defaults' => array(
+						'controller' => 'Application\Controller\Video',
+						'action' => 'followartist'
+					)
+				),			
+			),
+			'artist_contact' => array(
+				'type' => 'Zend\Mvc\Router\Http\Segment',
+				'options' => array(
+					'route' => '/videos/contactartist/:id',
+					'constraints' => array(
+						'id' => '\d+',
+					),
+					'defaults' => array(
+						'controller' => 'Application\Controller\Video',
+						'action' => 'contactartist'
+					)
+				),			
+			),
 			'video_success' => array(
 				'type' => 'Zend\Mvc\Router\Http\Literal',
 				'options' => array(
@@ -248,16 +301,16 @@ return array(
 					)
 				),			
 			),
-			'videos_add_rating' => array(
+			'videos_add_favorite' => array(
 				'type' => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(
-					'route' => '/videos/ratings/add/:id',
+					'route' => '/videos/favorite/:id',
 					'constraints' => array(
 						'id' => '\d+',
 					),
 					'defaults' => array(
 						'controller' => 'Application\Controller\Video',
-						'action' => 'addrating'
+						'action' => 'favorite'
 					)
 				),			
 			),
@@ -291,21 +344,9 @@ return array(
 				'type' => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(
 					'route' => '/discover[/:param1][/:param2][/:param3][/:param4][/:param5][/:param6][/:param7][/:param8][/:param9][/:param10]',
-					'constraints' => array(
-						'param1' => '[a-zA-Z0-9_-]+',
-						'param2' => '[a-zA-Z0-9_-]+',
-						'param3' => '[a-zA-Z0-9_-]+',
-						'param4' => '[a-zA-Z0-9_-]+',
-						'param5' => '[a-zA-Z0-9_-]+',
-						'param6' => '[a-zA-Z0-9_-]+',
-						'param7' => '[a-zA-Z0-9_-]+',
-						'param8' => '[a-zA-Z0-9_-]+',
-						'param9' => '[a-zA-Z0-9_-]+',
-						'param10' => '[a-zA-Z0-9_-]+',
-					),
 					'defaults' => array(
-						'controller' => 'Application\Controller\Video',
-						'action' => 'index'
+						'controller' => 'Application\Controller\Search',
+						'action' => 'discover'
 					)
 				),			
 			),			
@@ -573,6 +614,16 @@ return array(
 					),
 				),
 			),	
+			'google_ads' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+				'options' => array(
+					'route'    => '/adsource',
+					'defaults' => array(
+						'controller' => 'Application\Controller\Ajax',
+						'action'     => 'googleads',
+					),
+				),
+			),	
 			'admin' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
 				'options' => array(
@@ -643,6 +694,9 @@ return array(
             'Application\Controller\StaticPage' => 'Application\Controller\StaticPageController',
             'Application\Controller\Ajax' 		=> 'Application\Controller\AjaxController',
         ),
+        'factories' => array(
+            'Application\Controller\Console' => 'Application\Controller\ConsoleControllerFactory',
+        ),
     ),
     'view_manager' => array(
         'display_not_found_reason' => true,
@@ -652,14 +706,17 @@ return array(
         'exception_template'       => 'error/index',
         'template_map' => array(
             'application/layout'      => APPLICATION_PATH . '/module/Application/view/layout/layout.phtml',
+            'application/embed'    	  => APPLICATION_PATH . '/module/Application/view/layout/embed.phtml',
             'application/index/index' => APPLICATION_PATH . '/module/Application/view/application/index/index.phtml',
             'error/404'               => APPLICATION_PATH . '/module/Application/view/error/404.phtml',
             'error/index'             => APPLICATION_PATH . '/module/Application/view/error/index.phtml',
         ),
         'template_path_stack' => array(
             APPLICATION_PATH . '/module/Application/view',
-            'zfcuser' => APPLICATION_PATH . '/module/Application/view',
         ),
+		'strategies' => array(
+           'ViewJsonStrategy',
+        ),		
     ),
     'module_layouts' => array(
         'ZfcUser' => 'application/layout',
@@ -703,10 +760,28 @@ return array(
             ),
         )
     ),
-    'console' => array(
+    'console'         => array(
         'router' => array(
             'routes' => array(
-            ),
-        ),
+                'build-lucene-index' => array(
+                    'options' => array(
+                        'route'    => 'lucene build indexes',
+                        'defaults' => array(
+                            'controller' => 'Application\Controller\Console',
+                            'action'     => 'buildindexes',
+                        )
+                    )
+                ),
+                'build-lucene-index-delta' => array(
+                    'options' => array(
+                        'route'    => 'lucene build delta',
+                        'defaults' => array(
+                            'controller' => 'Application\Controller\Console',
+                            'action'     => 'builddelta',
+                        )
+                    )
+                )
+            )
+        )
     ),
 );

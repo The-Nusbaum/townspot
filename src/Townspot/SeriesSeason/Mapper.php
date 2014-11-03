@@ -1,6 +1,6 @@
 <?php
 namespace Townspot\SeriesSeason;
-use TownspotBase\Doctrine\Mapper\AbstractEntityMapper;
+use Townspot\Doctrine\Mapper\AbstractEntityMapper;
 
 class Mapper extends AbstractEntityMapper
 {

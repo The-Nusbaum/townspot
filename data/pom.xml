@@ -26,7 +26,7 @@
             <properties>
                 <db.url>jdbc:mysql://localhost/tsz</db.url>
                 <liquibase.username>root</liquibase.username>
-                <liquibase.password>root</liquibase.password>
+                <liquibase.password></liquibase.password>
                 <dropFirst>true</dropFirst>
             </properties>
         </profile>

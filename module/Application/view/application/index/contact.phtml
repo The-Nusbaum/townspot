@@ -1,0 +1,35 @@
+<h1>Get in Touch</h1>
+<?php
+$form = $this->form;
+$form->prepare();
+$form->setAttribute('action', $this->url('contact'));
+$form->setAttribute('method', 'post');
+$formLabel = $this->plugin('formLabel');
+echo $this->form()->openTag($form);
+?>
+
+<div class="form-group">
+<?= '<label>' . $form->get('name')->getOption('label') . '</label>'; ?>
+<?= $this->formInput($form->get('name')); ?>
+<?= $this->formElementErrors($form->get('name')); ?>
+</div>
+<div class="form-group">
+<?= '<label>' . $form->get('email')->getOption('label') . '</label>'; ?>
+<?= $this->formInput($form->get('email')); ?>
+<?= $this->formElementErrors($form->get('email')); ?>
+</div>
+<div class="form-group">
+<?= '<label>' . $form->get('subject')->getOption('label') . '</label>'; ?>
+<?= $this->formInput($form->get('subject')); ?>
+<?= $this->formElementErrors($form->get('subject')); ?>
+</div>
+<div class="form-group">
+<?= '<label>' . $form->get('message')->getOption('label') . '</label>'; ?>
+<?= $this->formTextarea($form->get('message')); ?>
+<?= $this->formElementErrors($form->get('message')); ?>
+</div>
+<div class="form-group">
+<?= $this->formSubmit($form->get('send')); ?>&nbsp;&nbsp;
+<?= $this->formButton($form->get('reset')); ?>
+</div>
+<?= $this->form()->closeTag() ?>

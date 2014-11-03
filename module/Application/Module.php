@@ -29,6 +29,7 @@ class Module
         \Zend\View\Helper\Navigation::setDefaultAcl($acl);
         \Zend\View\Helper\Navigation::setDefaultRole($role);		
 		$app->getEventManager()->attach('dispatch', array($this, 'setLayout')); // 
+		
 		$serviceManager->get('viewhelpermanager')->setFactory('controllerName', function($sm) use ($e) {
 			$viewHelper = new \Townspot\View\Helper\ControllerName($e->getRouteMatch());
 			return $viewHelper;
@@ -37,11 +38,9 @@ class Module
 			$viewHelper = new \Townspot\View\Helper\ActionName($e->getRouteMatch());
 			return $viewHelper;
 		});
-		$moduleRouteListener = new ModuleRouteListener();
-		$moduleRouteListener->attach($eventManager);
-		$app->getEventManager()->attach('dispatch', array($this, 'setLayout')); //
 
         $events = $eventManager->getSharedManager();
+		
         $events->attach('ZfcUser\Form\Login','init', function($e) {
             $form = $e->getTarget();
             $elements = $form->getElements();
@@ -144,6 +143,14 @@ class Module
             }
 
         });
+
+		//Return all Ajax requests without layout
+		$events->attach(__NAMESPACE__, 'dispatch', function($e) {
+			$result = $e->getResult();
+			if ($result instanceof \Zend\View\Model\ViewModel) {
+				$result->setTerminal($e->getRequest()->isXmlHttpRequest());
+			}
+        });
     }
 
     public function getConfig()
@@ -168,7 +175,9 @@ class Module
 		if (false !== strpos($controller, __NAMESPACE__)) {
 			// Set the layout template
 			$viewModel = $e->getViewModel();
-			$viewModel->setTemplate('application/layout');
+			if (preg_match('/^layout\/layout$/',$viewModel->getTemplate())) {
+				$viewModel->setTemplate('application/layout');
+			}
 		}
 	}
 
@@ -179,8 +188,38 @@ class Module
                 'Zend\Authentication\AuthenticationService' => function($serviceManager) {
                         // If you are using DoctrineORMModule:
                         return $serviceManager->get('doctrine.authenticationservice.orm_default');
-                    }
-            )
+                    },
+				'cache-general' => function () {
+					return \Zend\Cache\StorageFactory::factory(array(
+						'adapter' => array(
+							'name' => 'filesystem',
+							'options' => array(
+								'cache_dir' => APPLICATION_PATH . '/data/cache/general',
+								'ttl' => 3600
+							),
+						),
+						'plugins' => array(
+							'exception_handler' => array('throw_exceptions' => false),
+							'serializer'
+						)					
+					));
+				},
+				'cache-page' => function () {
+					return \Zend\Cache\StorageFactory::factory(array(
+						'adapter' => array(
+							'name' => 'filesystem',
+							'options' => array(
+								'cache_dir' => APPLICATION_PATH . '/data/cache/page',
+								'ttl' => 3600
+							),
+						),
+						'plugins' => array(
+							'exception_handler' => array('throw_exceptions' => false),
+							'serializer'
+						)					
+					));
+				},
+            ),
         );
     }
 }

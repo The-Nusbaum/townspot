@@ -14,15 +14,12 @@ class VideoCarousel extends AbstractHelper implements ServiceLocatorAwareInterfa
 
     public function __invoke($media,$params=array())
     {
-		$helperPluginManager = $this->getServiceLocator();
-		$serviceManager = $helperPluginManager->getServiceLocator();  	
-		$this->media = $media;
-		$this->params = $params;
-		$html  = sprintf("<div id=\"%s\" class=\"%s\" data-ride=\"carousel\">",
-			$this->_getId(),
-			$this->_getClass());
-		$html .= sprintf("<div id=\"%s-inner\" class=\"carousel-inner\">",
-			$this->_getId());
+		$helperPluginManager 	= $this->getServiceLocator();
+		$serviceManager 		= $helperPluginManager->getServiceLocator();  	
+		$this->media 			= $media;
+		$this->params 			= $params;
+		$html  = sprintf("<div id=\"%s\" class=\"%s\" data-ride=\"carousel\">",$this->_getId(),$this->_getClass());
+		$html .= sprintf("<div id=\"%s-inner\" class=\"carousel-inner\">",$this->_getId());
 		$html .= $this->getItems();
 		$html .= "</div>"; 
 		$numberOfPanels = $this->_numberOfPanels();
@@ -67,8 +64,8 @@ class VideoCarousel extends AbstractHelper implements ServiceLocatorAwareInterfa
 		$spanWidth = floor(12/$numberOfItemsPerPanel);
 		$html  = "<div class=\"row\">";
 		for ($i=0; $i < $numberOfItemsPerPanel; $i++) {
-			$position = ($i == 0) ? 'first' : 'in-row';
-			$position = ($i == ($numberOfItemsPerPanel - 1)) ? 'last' : $position;
+			$position = ($i == 0) 								? 'first' : 'in-row';
+			$position = ($i == ($numberOfItemsPerPanel - 1)) 	? 'last' : $position;
 			$html .= sprintf("<div class=\"col-xs-%d\">",$spanWidth);
 			$mediaIndex = ($index * $numberOfItemsPerPanel) + $i;
 			if (!isset($this->media[$mediaIndex])) {
