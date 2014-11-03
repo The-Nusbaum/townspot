@@ -113,37 +113,32 @@ $.fn.Series = function( options )
         getSeries : function(refresh){
             if(!refresh) refresh = false;
             $.getJSON(
-                '/api/series/getUserSeries'+ options.user_id,
+                '/api/series/getUserSeries/'+ options.user_id,
                 {
                     page: options.series_page
                 },
                 function(data){
-                    console.log(data);
                     var html = '';
-                    options.series_totalpages = data;
-                    for (i=0;i < options.series_limit;i++) {
-                        if(data[i] != undefined) {
-                            series = data[i];
-                            html += '<li class="series" data-id="'+series.Series.id+'"><div class="col-sm-12">'+
+                    options.series_totalpages = data.pages;
+                    for (x in data.data.series) {
+                            var series = data.data.series[x];
+                        console.log(series);
+                            html += '<li class="series" data-id="'+series.id+'"><div class="col-sm-12">'+
                                 '<div class="panel panel-default">'+
-                                '<div class="panel-heading">'+ series.Series.name +'<span class="pull-right"><i class="fa fa-minus"></i></span></div>'+
+                                '<div class="panel-heading">'+ series.name +'<span class="pull-right"><i class="fa fa-minus"></i></span></div>'+
                                 '<div class="panel-body">'+
                                 '<ul class="series-media-list list-unstyled">';
-                            for (x=0; x < series.Episode.length; x++){
-
-                                media = series.Episode[x];
-                                html +=         '<li class="video" data-id="'+media.Video.id+'"><span class="pull-left"><i class="fa fa-plus"></i> <i class="fa fa-minus"></i></span> '+media.Video.title+' <span class="pull-right"><i class="fa fa-chevron-up"></i> <i class="fa fa-chevron-down"></i></span></li>';
+                            for (i in series.episode){
+                                var media = series.episode[i];
+                                html +=         '<li class="video" data-id="'+id+'"><span class="pull-left"><i class="fa fa-plus"></i> <i class="fa fa-minus"></i></span> '+media.title+' <span class="pull-right"><i class="fa fa-chevron-up"></i> <i class="fa fa-chevron-down"></i></span></li>';
                             }
-
-
                             html +=             '</ul>'+
                                 '</div>'+
                                 '</div>'+
                                 '</div></li>';
-                        }
-
-
                     }
+
+
                     html += methods.generatePagination(options.series_totalpages, options.series_page);
                     $('#manage-series .series-list').children().remove();
                     $('#manage-series .series-list').append(html);
@@ -167,9 +162,7 @@ $.fn.Series = function( options )
         $.getJSON(
             '/api/media/getAvailableSeriesMedia/'+options.user_id+'?page='+options.videos_page,
             function(data){
-                console.log(data)
                 var html = '';
-                console.log(data.data.pages);
                 options.video_totalpages = data.data.pages;
                 var media = data.data.media;
                 for (x in media) {
@@ -221,6 +214,7 @@ $.fn.Series = function( options )
                     name: title
                 },
                 function(data) {
+                    methods.createSeason()
                     methods.getSeries();
                 }
             );
@@ -233,8 +227,8 @@ $.fn.Series = function( options )
             $series.find('.video').each(function(){
                 media[i] = {};
                 media[i]['series_id'] = $series.attr('data-id');
-                media[i]['video_id'] = $(this).attr('data-id');
-                media[i]['episodeNumber'] = i;
+                media[i]['media_id'] = $(this).attr('data-id');
+                media[i]['episode_number'] = i;
                 i++;
             });
 

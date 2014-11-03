@@ -1003,7 +1003,6 @@ div {
 
 .carousel-control {
 	background-image: transparent;
-	top: 40%;
 	width: 0;
 	color: #12497A;
 	&.left {
@@ -1644,22 +1643,7 @@ div {
 	color: red;
 }
 
-@media (max-width: 440px) {
-	.carousel-control {
-		top: 15%;
-	}
-}
-
-@media (max-width: 768px) {
-	.carousel-control {
-		top: 25%;
-	}
-}
-
-
-
-
-@media (min-width: 440px) {
+@media (min-width: 220px) {
 	.carousel-control {
 		top: 15%;
 	}
@@ -1681,6 +1665,15 @@ div {
 				font-size: 12px;
 			}
 		}
+	}
+	.carousel-control {
+		top: 18%;
+	}
+}
+
+@media (min-width: 550px) {
+	.carousel-control {
+		top: 20%;
 	}
 }
 
@@ -1707,6 +1700,9 @@ div {
 	#matching-videos-xs {
 		display: none;
 	}
+	.carousel-control {
+		top: 33%;
+	}
 }
 
 @media (min-width: 880px) {
@@ -1719,6 +1715,9 @@ div {
 				max-height: 300px;
 			}
 		}
+	}
+	.carousel-control {
+		top: 37%;
 	}
 }
 

@@ -206,5 +206,15 @@
 			"vendor/townspot/townspotbase/src/TownspotBase/Doctrine/Mapper/EntityMapperInterface.php",
 			"vendor/townspot/townspotbase/src/TownspotBase/Lucene/Index/SearchIndex.php"
 		]
-    }	
+    },
+	{
+		"scripts": {
+			"post-install-cmd": [
+				"ZfSnapGeoip\\Composer\\ScriptHandler::downloadData"
+			],
+			"post-update-cmd": [
+				"ZfSnapGeoip\\Composer\\ScriptHandler::downloadData"
+			]
+		}
+	}	
 }

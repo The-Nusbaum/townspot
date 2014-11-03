@@ -49,8 +49,7 @@ class UserController extends AbstractActionController
         return $this->_view;
     }
 
-    public function loginAction() {
-    }
+    public function loginAction() {}
 
     public function logoutAction() {
         $this->auth->clearIdentity();

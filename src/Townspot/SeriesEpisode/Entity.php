@@ -12,6 +12,8 @@ class Entity extends \Townspot\Entity
 	protected $_season;
 
 	protected $_media;
+	
+	protected $_series;
 
 	protected $_episode_number;
 
@@ -40,6 +42,12 @@ class Entity extends \Townspot\Entity
 	public function setMedia(\Townspot\Media\Entity $value)
 	{
 		$this->_media = $value;
+		return $this;
+	}
+	
+	public function setSeries(\Townspot\Series\Entity $value)
+	{
+		$this->_series = $value;
 		return $this;
 	}
 
@@ -72,6 +80,11 @@ class Entity extends \Townspot\Entity
 	public function getMedia()
 	{
 		return $this->_media;
+	}
+	
+	public function getSeries()
+	{
+		return $this->_series;
 	}
 
 	public function getEpisodeNumber()

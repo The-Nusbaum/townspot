@@ -15,7 +15,7 @@ return array(
 		'BjyAuthorize',		
 		'CdnLight',
 		'SlmGoogleAnalytics',	
-		'DBSessionStorage',
+		'ZfSnapGeoip',
     ),
     'module_listener_options' => array(
         'module_paths' => array(

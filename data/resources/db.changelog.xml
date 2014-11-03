@@ -44,7 +44,7 @@
             <column name="id" type="INT" autoIncrement="true">
                 <constraints nullable="false" primaryKey="true"/>
             </column>
-			<column defaultValue="0" name="parent_id" type="INT(11)"/>
+			<column name="parent_id" type="INT(11)"/>
 			<column name="name" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>

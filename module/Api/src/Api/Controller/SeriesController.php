@@ -42,14 +42,21 @@ class SeriesController extends \Townspot\Controller\BaseRestfulController
             $data = array(
                 'totalCount' => count($series),
                 'pages' => ceil(count($series)/$limit),
-                'media' => array()
+                'series' => array()
             );
+
+            $episodeMapper = new \Townspot\SeriesEpisode\Mapper($this->getServiceLocator());
 
             $total = 0;
             foreach($series as $i => $s) {
                 if($total == $limit) break;
                 if($i < $offset) continue;
-                $data['series'][] = $s->toArray();
+                $tmpData = $s->toArray();
+                $tmpData['episodes'] = array();
+                foreach($episodeMapper->findBySeriesId($s->getId()) as $e) {
+                    $tmpData['episodes'][] = $e->toArray();
+                }
+                $data['series'][] = $tmpData;
 
                 $total++;
             }

@@ -47,4 +47,20 @@ class VideoIndex extends SearchIndex
 	{
 	
 	}
+	
+	public function find($query)
+	{
+		$results = array();
+		if (is_array($query)) {
+			foreach ($query as $q) {
+				$results = array_merge($results,$this->find($q));
+			}
+		} else {
+			$matches = $this->getIndex()->find($query);
+			foreach ($matches as $hit) {	
+				$results[] = $hit->mediaid; 
+			}
+		}
+		return array_unique($results);
+	}
 }

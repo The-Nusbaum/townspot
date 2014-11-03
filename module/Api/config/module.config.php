@@ -5,6 +5,7 @@ return array(
 //          'Api\Controller\Index' => 'Api\Controller\IndexController',
             'Api\Controller\MediaController' => 'Api\Controller\MediaController',
             'Api\Controller\SeriesController' => 'Api\Controller\SeriesController',
+            'Api\Controller\CategoryController' => 'Api\Controller\CategoryController',
             'model' => 'Api\Controller\ModelController',
         ),
     ),

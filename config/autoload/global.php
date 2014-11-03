@@ -35,11 +35,14 @@ return array(
 		//'user_entity_class' => 'ZfcUser\Entity\User',
 		'enable_registration' => true,
 		'enable_username' => true,
-		'auth_adapters' => array( 100 => 'ZfcUser\Authentication\Adapter\Db' ),
+		'auth_adapters' => array( 
+			100 => 'ZfcUser\Authentication\Adapter\Db', 
+			99 => 'Townspot\Authentication\Adapter\Db' 
+		),
 		'enable_display_name' => true,
 		'auth_identity_fields' => array( 'email','username' ),
-        'login_redirect_route' => 'dashboard'
-		//'user_login_widget_view_template' => 'zfc-user/user/login.phtml',
+        'login_redirect_route' => 'dashboard',
+		//'user_login_widget_view_template' => '/login.phtml',
 		//'allowed_login_states' => array( null, 1 ),
 	),
     'bjyauthorize' => array(
@@ -97,5 +100,8 @@ return array(
             'Zend\Db\Adapter\Adapter' => 'Zend\Db\Adapter\AdapterServiceFactory',
             'DBSessionStorage\Storage\DBStorage' => 'DBSessionStorage\Factory\DBStorageFactory',
         ),
+        'invokables' => array(
+            'Townspot\Authentication\Adapter\Db' => '\Townspot\Authentication\Adapter\Db',
+		),
     ),
 );
