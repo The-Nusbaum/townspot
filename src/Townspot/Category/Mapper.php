@@ -38,8 +38,17 @@ class Mapper extends AbstractEntityMapper
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
 		$stmt->execute();
 		$_results = $stmt->fetchAll();
+		$other = null;
 		foreach ($_results as $result) {
-			$results[] = $this->find($result['id']);
+			$category = $this->find($result['id']);
+			if (strtolower($category->getName()) == 'other') {
+				$other = $category;
+			} else {
+				$results[] = $this->find($result['id']);
+			}
+		}
+		if ($other) {
+			$results[] = $other;
 		}
 		return $results;
 	}
@@ -82,4 +91,13 @@ class Mapper extends AbstractEntityMapper
 		}
 		return $results;
 	}
+	
+	public function findRandom($province_id = null,$city_id = null) 
+	{
+		$results 		= array();
+		$categories = $this->getDiscoverCategories($province_id,$city_id);
+		$randkey = rand(0,count($categories));
+		return $categories[$randkey];
+	}
+	
 }

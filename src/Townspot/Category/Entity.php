@@ -153,8 +153,14 @@ class Entity extends \Townspot\Entity
 		if ($parent = $this->getParent()){
 			$link .= $parent->_getDiscoverLevels();
 		}
-		$link .= '/' . htmlentities(trim($this->getName()));
+		$link .= '/' . htmlentities(trim(strtolower($this->getName())));
 		return $link;
 	}
 	
+	public function getRandomMedia()
+	{
+		$media = $this->getMedia();
+		$randkey = rand(0,(count($media)-1));
+		return $media[$randkey];
+	}
 }

@@ -151,7 +151,7 @@ class Mapper extends AbstractEntityMapper
 		return $results;
 	}
 	
-	public function getDiscoverMedia($province_id = null,$city_id=null,$category_id = null,$sort = 'date:desc') 
+	public function getDiscoverMedia($province_id = null,$city_id=null,$category_id = null,$sort = 'created:desc') 
 	{
 		$results = array();
 		$sql  = "SELECT ";

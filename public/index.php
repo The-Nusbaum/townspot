@@ -3,6 +3,8 @@ defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__DIR
 defined('APPLICATION_ENV') || define('APPLICATION_ENV', (getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'production'));
 defined('VENDOR_PATH') || define('VENDOR_PATH', realpath(APPLICATION_PATH . '/vendor'));
 defined('APPLICATION_NAMESPACE') || define('APPLICATION_NAMESPACE', 'Townspot');
+defined('PROXYPATH') || define('PROXYPATH', APPLICATION_PATH . "/data/proxies");
+
 error_reporting((APPLICATION_ENV == 'development') ? -1 : 0);
 
 date_default_timezone_set('UTC');

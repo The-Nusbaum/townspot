@@ -25,6 +25,14 @@
 		</div>
 	</div>
 <?php } ?>
+<?php if (!$this->matchesFound) { ?>
+	<div class="row">
+		<div class="col-xs-12">
+Sorry no results found<br/>
+Try narrowing your search
+		</div>
+	</div>
+<?php } ?>
 	<div class="row" id="search-results"></div>
 	<div class="row loading-spinner">
 		<div class="col-xs-12">
@@ -49,13 +57,15 @@
 	$('.explore-btn-wrapper').addClass('hidden-explore-btn-wrapper').removeClass('explore-btn-wrapper').css('display','none');
 </script>
 <?= $this->partial('partials/backbone/search-template.phtml'); ?>
+<?php if ($this->matchesFound) { ?>
 <script>
 $().Discover({
 	searchId: '<?= $this->searchId; ?>',
 	province: '<?= $this->province; ?>',
 	city: '<?= $this->city; ?>',
-	categoryId: '<?= $this->activeCategory; ?>',
+	categoryId: '<?= $this->categoryId; ?>',
 	sortTerm: '<?= $this->sortTerm; ?>',
 	page: <?= $this->page; ?>,
 });
 </script>
+<?php } ?>

@@ -68,7 +68,7 @@ class SearchController extends AbstractActionController
     public function discoverAction()
     {
         $results        = array();
-        $sortTerm       = ($this->params()->fromQuery('sort')) ?: 'created:asc';
+        $sortTerm       = ($this->params()->fromQuery('sort')) ?: 'created:desc';
         $page           = $this->params()->fromQuery('page') ?: 1;
         $cache          = $this->getServiceLocator()->get('cache-general');        
         $terms = array();
@@ -142,18 +142,25 @@ class SearchController extends AbstractActionController
 				}
 			}
 		}
-		//Get Categories/SubCategories by City,Province
 		$activeCategory = null;
-		if ($terms) {
-			$terms = $categoryMapper->findFromArray($terms);
-			$selectedCategories = $terms;
-			$activeCategory = array_pop($terms);
-			$activeCategory = $activeCategory['id'];
-			$subcategories = $categoryMapper->findChildrenIdAndName($activeCategory,$provinceId,$cityId);
-			$_SESSION['Discover_Categories'] = $selectedCategories;
-			$_SESSION['Discover_Subcategories'] = $subcategories;
-		} 
-
+		if (in_array('all videos',$terms)) {
+			$activeCategory = -1;
+			$_SESSION['Discover_Categories'] = array(
+				array(
+					'name' => 'all videos')
+				);
+		} else {
+			if ($terms) {
+				$terms = $categoryMapper->findFromArray($terms);
+				$selectedCategories = $terms;
+				$activeCategory = array_pop($terms);
+				$activeCategory = $activeCategory['id'];
+				$subcategories = $categoryMapper->findChildrenIdAndName($activeCategory,$provinceId,$cityId);
+				$_SESSION['Discover_Categories'] = $selectedCategories;
+				$_SESSION['Discover_Subcategories'] = $subcategories;
+			} 
+		}
+		
 		if ($results = $this->executeDiscoverSearch($provinceId, $cityId, $activeCategory,$sortTerm)) {
 			$cache->setItem($searchId, $results);
 			return new ViewModel(
@@ -162,7 +169,7 @@ class SearchController extends AbstractActionController
 					'searchId'  	=> $searchId,
 					'province' 		=> $provinceName,
 					'city'  	 	=> $cityName,
-					'categoryId' => $activeCategory,
+					'categoryId' 	=> $activeCategory,
 					'matchesFound'  => count($results),
 					'sortTerm'  	=> $sortTerm,
 				)
@@ -288,14 +295,28 @@ class SearchController extends AbstractActionController
     protected function executeDiscoverSearch($province_id, $city_id, $category_id,$sort)
     {
 		$results 		= array();
-		$mediaMapper 	= new \Townspot\Media\Mapper($this->getServiceLocator());
-		$matches = $mediaMapper->getDiscoverMedia($province_id,$city_id,$category_id,$sort);
-        foreach ($matches as $match) {    
-            $results[] = array(
-                'type'  => 'media',
-                'id'    => $match['id'],
-            );
-        }
+		if ($category_id) {
+			$mediaMapper 	= new \Townspot\Media\Mapper($this->getServiceLocator());
+			if ($category_id < 0) {
+				$category_id = null;
+			}
+			$matches = $mediaMapper->getDiscoverMedia($province_id,$city_id,$category_id,$sort);
+			foreach ($matches as $match) {    
+				$results[] = array(
+					'type'  => 'media',
+					'id'    => $match['id'],
+				);
+			}
+		} else {
+			$categoryMapper 	= new \Townspot\Category\Mapper($this->getServiceLocator());
+			$matches = $categoryMapper->getDiscoverCategories($province_id,$city_id);
+			foreach ($matches as $match) {    
+				$results[] = array(
+					'type'  => 'category',
+					'id'    => $match->getId(),
+				);
+			}
+		}
 		return $results;
 	}
 	
