@@ -41,8 +41,11 @@ var SearchResultView = Backbone.View.extend({
 				escaped_location: this.get('escaped_location'),
 				rate_up: this.get('rate_up'),
 				rate_down: this.get('rate_down'),
-				why_we_choose: this.get('why_we_choose')
+				why_we_choose: this.get('why_we_choose'),
+				series_name: this.get('series_name'),
+				series_link: this.get('series_link')
 			});
+console.log(this);			
 			_self.$el.append(html);
 		});
 		collection.reset();

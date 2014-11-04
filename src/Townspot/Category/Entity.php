@@ -131,15 +131,27 @@ class Entity extends \Townspot\Entity
 		} else {
 			$link = '/discover';
 		}
-		$link .= $this->getDiscoverLevels();;
+		$link .= $this->_getDiscoverLevels();;
 		return $link;
 	}
 
-	public function getDiscoverLevels()
+	public function getCategoryTree($tree = array())
+	{
+		if ($parent = $this->getParent()){
+			$tree = $parent->getCategoryTree();
+		}
+		$tree[] = array(
+			$this->getId(),
+			$this->getName()
+		);
+		return $tree;
+	}
+
+	protected function _getDiscoverLevels()
 	{
 		$link = '';
 		if ($parent = $this->getParent()){
-			$link .= $parent->getDiscoverLevels();
+			$link .= $parent->_getDiscoverLevels();
 		}
 		$link .= '/' . htmlentities(trim($this->getName()));
 		return $link;

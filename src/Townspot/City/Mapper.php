@@ -9,13 +9,19 @@ class Mapper extends AbstractEntityMapper
 	public function getCitiesHavingMedia($province_id) 
 	{
 		$results = array();
-		$sql = "SELECT DISTINCT media.city_id FROM media ";
-		$sql .= "WHERE media.province_id=" . $province_id;
+		$sql = "SELECT DISTINCT media.city_id, city.name, count(media.id) as media_count FROM media ";
+		$sql .= "JOIN city on media.city_id = city.id ";
+		$sql .= "WHERE media.province_id = " . $province_id;
+		$sql .= " GROUP BY media.city_id ORDER BY city.name";
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
 		$stmt->execute();
 		if ($_results = $stmt->fetchAll()) {
 			foreach ($_results as $result) {
-				$results[] = $this->find($result['city_id']);
+				$results[] = array(
+					'id'			=> $result['city_id'],
+					'name'			=> $result['name'],
+					'media_count'	=> $result['media_count']
+				);
 			}
 		}
 		return $results;

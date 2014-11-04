@@ -113,8 +113,6 @@ class AjaxController extends AbstractActionController
 			'data'		=> array()
 		);
 		$data = array();
-        $searchTerm		= $this->params()->fromPost('searchTerm');
-        $sortTerm       = ($this->params()->fromPost('sortTerm')) ?: 'date:asc';
         $searchId 		= $this->params()->fromPost('searchId');
         $page           = $this->params()->fromPost('page') ?: 1;
 
@@ -123,9 +121,6 @@ class AjaxController extends AbstractActionController
 		$userMapper 	= new \Townspot\User\Mapper($this->getServiceLocator());
 		$mediaMapper 	= new \Townspot\Media\Mapper($this->getServiceLocator());
 
-		if (!$searchId) {
-			$searchId	= md5(serialize(array(session_id(),$searchTerm,$sortTerm)));
-		}
         $cache			= $this->getServiceLocator()->get('cache-general');        
 		$_results 		= $cache->getItem($searchId);
         if (!$_results) {
@@ -181,25 +176,54 @@ class AjaxController extends AbstractActionController
 					);
 				} else {
 					$media = $mediaMapper->find($result['id']);
-					$data[] = array(
-						'id'				=> $media->getId(),
-						'type'				=> 'media',
-						'link'				=> $media->getMediaLink(),
-						'image'				=> $media->getResizerCdnLink(),
-						'escaped_title'		=> $media->getTitle(false,true),
-						'title'				=> $media->getTitle(),
-						'logline'			=> $media->getLogline(),
-						'escaped_logline'	=> $media->getLogline(true),
-						'user'				=> $media->getUser()->getUsername(),
-						'user_profile'		=> $media->getUser()->getProfileLink(),
-						'duration'			=> $media->getDuration(true),
-						'comment_count'		=> count($media->getCommentsAbout()),
-						'views'				=> $media->getViews(),
-						'location'			=> $media->getLocation(),
-						'escaped_location'	=> $media->getLocation(false,true),
-						'rate_up'			=> count($media->getRatings(true)),
-						'rate_down'			=> count($media->getRatings(false)),
-					);
+					$added = false;
+					if ($episodes = $media->getEpisode()) {
+						if ($episode = $episodes[0]) {
+							$data[] = array(
+								'id'				=> $media->getId(),
+								'type'				=> 'media',
+								'link'				=> $media->getMediaLink(),
+								'image'				=> $media->getResizerCdnLink(),
+								'escaped_title'		=> $media->getTitle(false,true),
+								'title'				=> $media->getTitle(),
+								'logline'			=> $media->getLogline(),
+								'escaped_logline'	=> $media->getLogline(true),
+								'user'				=> $media->getUser()->getUsername(),
+								'user_profile'		=> $media->getUser()->getProfileLink(),
+								'duration'			=> $media->getDuration(true),
+								'comment_count'		=> count($media->getCommentsAbout()),
+								'views'				=> $media->getViews(),
+								'location'			=> $media->getLocation(),
+								'escaped_location'	=> $media->getLocation(false,true),
+								'rate_up'			=> count($media->getRatings(true)),
+								'rate_down'			=> count($media->getRatings(false)),
+								'series_name'		=> $episode->getSeries()->getName(),
+								'series_link'		=> $episode->getSeries()->getSeriesLink(),
+							);
+							$added = true;
+						}
+					}
+					if (!$added) {	
+						$data[] = array(
+							'id'				=> $media->getId(),
+							'type'				=> 'media',
+							'link'				=> $media->getMediaLink(),
+							'image'				=> $media->getResizerCdnLink(),
+							'escaped_title'		=> $media->getTitle(false,true),
+							'title'				=> $media->getTitle(),
+							'logline'			=> $media->getLogline(),
+							'escaped_logline'	=> $media->getLogline(true),
+							'user'				=> $media->getUser()->getUsername(),
+							'user_profile'		=> $media->getUser()->getProfileLink(),
+							'duration'			=> $media->getDuration(true),
+							'comment_count'		=> count($media->getCommentsAbout()),
+							'views'				=> $media->getViews(),
+							'location'			=> $media->getLocation(),
+							'escaped_location'	=> $media->getLocation(false,true),
+							'rate_up'			=> count($media->getRatings(true)),
+							'rate_down'			=> count($media->getRatings(false)),
+						);
+					}
 				}
 			}
 			if (count($data) > 6) {

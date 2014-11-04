@@ -43,4 +43,43 @@ class Mapper extends AbstractEntityMapper
 		}
 		return $results;
 	}
+	
+	public function findFromArray($categories) 
+	{
+		$results = array();
+		if (!is_array($categories)) {
+			$categories = array(categories);
+		}
+		$parent = null;
+		while ($categories) {
+			$category = array_shift($categories);
+			$_category = $this->findOneBy(
+				array(
+					'_name'		=> $category,
+					'_parent'	=> $parent,
+				)
+			);
+			if ($_category) {
+				$results[] = array(
+					'id'	=> $_category->getId(),
+					'name'	=> $_category->getName()
+				);
+				$parent = $_category->getId();
+			}
+		}
+		return $results;
+	}
+	
+	public function findChildrenIdAndName($parent = null,$province_id = null,$city_id = null) 
+	{
+		$results 		= array();
+		$categories = $this->getDiscoverCategories($province_id,$city_id,$parent);
+		foreach ($categories as $category) {
+			$results[] = array(
+				'id'	=> $category->getId(),
+				'name'	=> $category->getName()
+			);
+		}
+		return $results;
+	}
 }

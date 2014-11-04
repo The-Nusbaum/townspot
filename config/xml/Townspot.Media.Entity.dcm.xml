@@ -28,6 +28,7 @@
 		<one-to-many field="_comments_about" target-entity="Townspot\MediaComment\Entity" mapped-by="_target" />
 		<one-to-many field="_schedule" target-entity="Townspot\MediaSchedule\Entity" mapped-by="_media" />		
 		<one-to-many field="_section_media" target-entity="Townspot\SectionMedia\Entity" mapped-by="_media" />		
+		<one-to-many field="_episode" target-entity="Townspot\SeriesEpisode\Entity" mapped-by="_media" />		
         <many-to-one field="_user" target-entity="Townspot\User\Entity" inversed-by="_media">
             <join-column name="user_id" referenced-column-name="user_id" />
         </many-to-one>

@@ -29,12 +29,15 @@ class Entity extends \Townspot\Entity
 	
 	protected $_users;
 	
+	protected $_media;
+
 	public function __construct()
 	{
 		$this->_created = new \DateTime();
 		$this->_updated = new \DateTime();
 		$this->_cities = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->_users = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->_media = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
 	public function setName($value)
@@ -121,6 +124,18 @@ class Entity extends \Townspot\Entity
 		return $this;
 	}
 
+	public function addMedia(\Townspot\Media\Entity $value)
+	{
+		$this->_media->add($value);
+		return $this;
+	}
+
+	public function removeMedia($key)
+	{
+		$this->_media->remove($key);
+		return $this;
+	}
+	
 	public function getId()
 	{
 		return $this->_id;
@@ -184,6 +199,11 @@ class Entity extends \Townspot\Entity
 	public function getUsers()
 	{
 		return $this->_users;
+	}
+	
+	public function getMedia()
+	{
+		return $this->_media;
 	}
 	
 	public function getDiscoverLink()

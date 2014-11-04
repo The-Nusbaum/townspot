@@ -75,6 +75,8 @@ class Entity extends \Townspot\Entity
 
 	protected $_section_media;
 	
+	protected $_episode;
+	
 	public function __construct()
 	{
 		$this->_created = new \DateTime();
@@ -576,6 +578,11 @@ class Entity extends \Townspot\Entity
 		return $this->_section_media;
 	}
 	
+	public function getEpisode()
+	{
+		return $this->_episode;
+	}
+
 	public function getMediaUrl($resolution = 'HD')
 	{
 		switch ($this->getSource()) {

@@ -38,6 +38,12 @@ class Module
 			$viewHelper = new \Townspot\View\Helper\ActionName($e->getRouteMatch());
 			return $viewHelper;
 		});
+		$serviceManager->get('viewhelpermanager')->setFactory('getmapper', function($sm) use ($e) {
+		print $sm;
+		die;
+		
+		
+		});
 
         $events = $eventManager->getSharedManager();
 		

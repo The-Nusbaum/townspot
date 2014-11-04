@@ -39,8 +39,11 @@
     <body id="townspot">
 		<nav role="navigation" class="navbar navbar-inverse">
 			<?= $this->navigation('navigation')->menu()->setPartial('partials/menu')->render(); ?>	
+<?php if (($this->controllerName() == 'search') && ($this->actionName() == 'discover')) { ?>			
+			<?= $this->DiscoverNav(); ?>
+<?php } ?>			
 		</nav>
-		<div class="container explore-btn-wrapper"">
+		<div class="container explore-btn-wrapper">
 			<a href="#" id="explore-btn-link">
 				<button class="explore-btn">
 					<span id="explore-btn-location"></span>
@@ -52,7 +55,7 @@
 		</div>		
         <div class="container">
             <div id="fb-root"></div>
-        <div class="container" id="<?= $this->controllerName(); ?>-<?= $this->controllerName(); ?>">
+        <div class="container" id="<?= $this->controllerName(); ?>-<?= $this->actionName(); ?>">
             <?php echo $this->content; ?>
         </div> 
 		<nav id="footer" role="navigation" class="navbar navbar-footer">
@@ -84,5 +87,10 @@
 				</div>
 			</div>
 		</nav>
+<?php if (isset($_SESSION['DiscoverLink'])) { ?>
+<script>
+	$('#discover-menu-link').attr('href','<?= $_SESSION['DiscoverLink']; ?>');
+</script>
+<?php } ?>
     </body>
 </html>
