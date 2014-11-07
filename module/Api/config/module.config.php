@@ -6,25 +6,26 @@ return array(
             'Api\Controller\MediaController' => 'Api\Controller\MediaController',
             'Api\Controller\SeriesController' => 'Api\Controller\SeriesController',
             'Api\Controller\CategoryController' => 'Api\Controller\CategoryController',
+            'Api\Controller\UserController' => 'Api\Controller\UserController',
             'model' => 'Api\Controller\ModelController',
         ),
     ),
     // The following section is new and should be added to your file
     'router' => array(
         'routes' => array(
-            'Api' => array(
+            'custom_methods' => array(
                 'type'    => 'Segment',
                 'options' => array(
-                    'route'    => '/api/[:model][/:id]',
+                    'route'    => '/api/[:model][/:method][/:id]',
                     'defaults' => array(
                         'controller' => 'model'
                     ),
                 ),
             ),
-            'custom_methods' => array(
+            'Api' => array(
                 'type'    => 'Segment',
                 'options' => array(
-                    'route'    => '/api/[:model][/:method][/:id]',
+                    'route'    => '/api/[:model][/:id]',
                     'defaults' => array(
                         'controller' => 'model'
                     ),

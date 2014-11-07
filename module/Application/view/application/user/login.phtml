@@ -1,25 +1,4 @@
-<div class="container login">
-    <div class="row">
-        <h1 class="col-sm-12">Login</h1>
-    </div>
-    <div class="row">
-        <?= $this->flashMessenger()->render('default', array('alert', 'alert-warning', 'show', 'list-unstyled'));?>
-    </div>
-    <div class="row">
-        <hr class="col-sm-12"/>
-    </div>
-    <div class="row">
-        <div class="col-sm-5 col-sm-offset-1 users form" id="login-form">
+
             <?php echo $this->zfcUserLoginWidget(); ?>
-        </div>
-        <div class="col-sm-5 oauth">
-            <div class="row">
-                <a href='/user/opauth/login/facebook' class="login-with-facebook btn btn-facebook btn-primary col-sm-12"><i class='fa fa-facebook'></i> Login with Facebook</a>
-            </div>
-            <div class="row">
-                <a href="/user/opauth/login/twitter" class="btn btn-twitter btn-primary link col-sm-12"><i class='fa fa-twitter'></i> Login With Twitter</a>
-            </div>
-        </div>
-    </div>
-</div>
+
 

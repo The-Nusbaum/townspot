@@ -14,7 +14,7 @@ class FooterForm extends Form {
     public function __construct($name = null)
     {
         parent::__construct('uploadFooter');
-        $this->setAttribute('method', 'post');
+        $this->setAttribute('method', 'POST');
 
         $this->add(array(
             'name' => 'allow_contact',

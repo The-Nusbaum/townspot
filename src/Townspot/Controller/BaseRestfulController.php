@@ -135,7 +135,7 @@ class BaseRestfulController extends AbstractRestfulController
 
     public function delete($id)
     {   // Action used for DELETE requests
-        $this->setEntity($this->getMapper()->findOneById($id));
+        $this->setEntity($this->getMapper()->find($id));
 
         if($this->getEntity()) {
             $this->getMapper()->setEntity($this->getEntity());
@@ -150,6 +150,10 @@ class BaseRestfulController extends AbstractRestfulController
 
 
         return new JsonModel($this->getResponse()->build());
+    }
+
+    public function deleteList($id) {
+        return $this->delete($id);
     }
 
     function parse_raw_http_request($input)

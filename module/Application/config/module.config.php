@@ -63,7 +63,8 @@ return array(
 					'togglebuttons.js',
 					'geolocation.js',
 					'expander.js',
-                    //'moxiecode/plupload/js/plupload.min.js',
+                    'plupload/moxie.min.js',
+                    'plupload/plupload.min.js',
                     'tinymce/tinymce/tinymce.js',
 
                 ),
@@ -72,7 +73,7 @@ return array(
                 ),
                 'js/userEdit.js' => array(
                     'userEdit.js'
-                )
+                ),
                 'js/home.js' => array(
                     'collection/video.js',
                     'model/video.js',
@@ -169,8 +170,8 @@ return array(
 						'action'     => 'embed',
 					),
 				),
-			),	
-			'add-video' => array(
+			),
+            'add-video' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
                     'route'    => '/add-video',
@@ -179,7 +180,17 @@ return array(
                         'action'     => 'upload',
                     ),
                 ),
-			),
+            ),
+            'sign-up' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/sign-up',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\User',
+                        'action'     => 'register',
+                    ),
+                ),
+            ),
 			'upload' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -190,6 +201,16 @@ return array(
                     ),
                 ),
 			),
+            'review' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/videos/review',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Video',
+                        'action'     => 'review',
+                    ),
+                ),
+            ),
 			'video_edit' => array(
 				'type' => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(
@@ -392,7 +413,7 @@ return array(
                     ),
                 ),
             ),
-            'userEdit' => array(
+            'manage_series' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
                     'route'    => '/user/manageseries',
@@ -633,7 +654,18 @@ return array(
 						'action'     => 'index',
 					),
 				),
-			),	
+			),
+            'upload_files' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/file/upload',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\File',
+                        'action'     => 'upload',
+                    ),
+                ),
+            ),
+
             'application' => array(
                 'type'    => 'Literal',
                 'options' => array(
@@ -693,6 +725,7 @@ return array(
             'Application\Controller\User' 		=> 'Application\Controller\UserController',
             'Application\Controller\StaticPage' => 'Application\Controller\StaticPageController',
             'Application\Controller\Ajax' 		=> 'Application\Controller\AjaxController',
+            'Application\Controller\File' 		=> 'Application\Controller\FileController',
         ),
         'factories' => array(
             'Application\Controller\Console' => 'Application\Controller\ConsoleControllerFactory',

@@ -21,6 +21,11 @@ class VideoController extends AbstractActionController
         $this->_view = new ViewModel();
         $this->auth = new \Zend\Authentication\AuthenticationService();
         $this->_view->setVariable('authdUser',$this->auth->getIdentity());
+
+        if ($this->flashMessenger()->hasMessages()) {
+            $this->_view->setVariable('flash',$this->flashMessenger()->getMessages());
+        }
+
 	}
 	
 	public function init($title = null) 
@@ -29,7 +34,7 @@ class VideoController extends AbstractActionController
 		$this->getServiceLocator()
 			 ->get('ViewHelperManager')
 			 ->get('HeadTitle')
-			 ->set($title);
+			 ->set($title)
 			 ->set('TownSpot &bull; Your Town. Your Talent. Spotlighted');
 
 	}
@@ -281,6 +286,9 @@ class VideoController extends AbstractActionController
         $footerForm = new \Application\Forms\Video\Upload\FooterForm('footerForm');
         $this->_view->setVariable('footerForm',$footerForm);
 
+        $videoMediaForm = new \Application\Forms\Video\Upload\VideoMediaForm('videoMediaForm');
+        $this->_view->setVariable('videoMediaForm',$videoMediaForm);
+
         $this->getServiceLocator()
             ->get('viewhelpermanager')
             ->get('HeadScript')->appendFile('/js/upload.js');
@@ -396,6 +404,101 @@ class VideoController extends AbstractActionController
 		print "Remove Comment";
 		die;
 	}
+
+    public function reviewAction() {
+        $request = $this->getRequest();
+        $data = $request->getPost();
+        $this->_view->setVariable('data',$data);
+
+        $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+        $user = $userMapper->find($data->get('user_id'));
+
+        $countryMapper = new \Townspot\Country\Mapper($this->getServiceLocator());
+        $country = $countryMapper->find($data->get('country_id'));
+
+        $provinceMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
+        $province = $provinceMapper->find($data->get('province_id'));
+
+        $cityMapper = new \Townspot\City\Mapper($this->getServiceLocator());
+        $city = $cityMapper->find($data->get('city_id'));
+
+        $categoryMapper = new \Townspot\Category\Mapper($this->getServiceLocator());
+        $categories = $categoryMapper->findAll();
+        foreach($categories as $c) {
+            $allCategories[$c->getId()] = $c->getName();
+        }
+
+        $this->_view->setVariable('state',$province->getName());
+        $this->_view->setVariable('city',$city->getName());
+        $this->_view->setVariable('allCategories',$allCategories);
+
+        if($this->getRequest()->isPost()){
+            if($data->get('youtube_url') && !$data->get('review_ok')) {
+                $client = new \Zend\Http\Client('https://example.org', array(
+                    'adapter' => 'Zend\Http\Client\Adapter\Curl'
+                ));
+                $client->getAdapter()->setCurlOption(CURLOPT_SSL_VERIFYPEER, false);
+                $yt = new \ZendGData\YouTube(
+                    $client,
+                    'Townspot',
+                    "872367745273-sbsiuc81kh9o70ok3macc15d2ebpl440.apps.googleusercontent.com",
+                    "AI39si7sp4rb57_29xMFWO2AoT8DDc0dKYklw7_IsUYpEhsxSL-DNK60f3eIF7OK_Iy0_xYm1eAxX2skGO57B6oHd6qJHHiPZA"
+
+                );
+
+                preg_match('/v=([^&]*)/i',$data->get('youtube_url'),$idMatches);
+                if(!empty($idMatches[1])) {
+                    $id = $idMatches[1];
+                } else {
+                    //no id
+                }
+
+                $ytVideo = $yt->getVideoEntry($id);
+                $data->set('title',$ytVideo->getTitle())
+                    ->set('description',$ytVideo->getVideoDescription())
+                    ->set('duration',$ytVideo->getVideoDuration())
+                    ->set('on_media_server',1)
+                    ->set('preview_url',$ytVideo->getVideoThumbnails()[3]['url'])
+                    ->set('source','youtube')
+                    ->set('video_url',$data->get('youtube_url'));
+
+            } elseif(!$data->get('review_ok')) {
+                //do nothing?
+            } else {
+                $mediaEntity = new \Townspot\Media\Entity();
+                $mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
+                $mediaEntity->setUser($user)
+                    ->setCountry($country)
+                    ->setProvince($province)
+                    ->setCity($city)
+                    ->setTitle($data->get('title'))
+                    ->setLogline($data->get('logline'))
+                    ->setDescription($data->get('description'))
+                    ->setUrl($data->get('video_url'))
+                    ->setPreviewImage($data->get('preview_url'))
+                    ->setAuthorised($data->get('authorised'))
+                    ->setAllowContact($data->get('allow_contact'))
+                    ->setSource($data->get('source'))
+                    ->setDuration($data->get('duration'));
+
+                $categoryMapper = new \Townspot\Category\Mapper($this->getServiceLocator());
+                foreach($data->get('selCat') as $vc) {
+                    $cat = $categoryMapper->find($vc);
+                    $mediaEntity->addCategory($cat);
+                }
+
+                $mediaMapper->setEntity($mediaEntity);
+                $mediaMapper->save();
+
+                $this->flashMessenger()->addMessage('Your video upload was successful. It will be reviewed by our staff for content and quality.');
+
+                return $this->redirect()->toRoute('upload');
+            }
+        }
+
+
+        return $this->_view;
+    }
 	
 	
 	

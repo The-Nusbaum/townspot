@@ -1,0 +1,69 @@
+<div class="container">
+    <?php if($data->get('source') == 'youtube'): ?>
+    <div class="alert alert-success" role="alert" style="display:block">This is the information we pulled from youtube, our staff will review and categorize your video, but you can edit it once it is approved</div>
+    <?php endif; ?>
+    <div class="row">
+        <div class="col-sm-12">
+            <h3>Review Your Video</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-md-push-8">
+            <img class="img-responsive" src="<?= $data->get('preview_url') ?>" alt="preview image"/>
+        </div>
+        <div class="col-md-8 col-md-pull-4">
+            <dl class="dl-horizontal">
+                <dt>State</dt>
+                <dd><?= $state?></dd>
+                <dt>City</dt>
+                <dd><?= $city ?></dd>
+                <dt>Title</dt>
+                <dd><?= $data->get('title') ?></dd>
+                <?php if ($data->get('logline')): ?>
+                    <dt>Logline</dt>
+                    <dd><?= $data->get('logline');?></dd>
+                <?php endif; ?>
+                <dt>Description</dt>
+                <dd><?= $data->get('description');?></dd>
+                <?php if($data->get('selCat')): ?>
+                    <dt>Categories</dt>
+                    <dd>
+                        <ul class="list-unstyled">
+                            <?php foreach($data->get('selCat') as $vc) : ?>
+                                <li><?= $allCategories[$vc]?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </dd>
+                <?php endif; ?>
+            </dl>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <form method="POST">
+                <input type="hidden" name="country_id" value="<?= $data->get('country_id');?>"/>
+                <input type="hidden" name="province_id" value="<?= $data->get('province_id');?>"/>
+                <input type="hidden" name="user_id" value="<?= $data->get('user_id');?>"/>
+                <input type="hidden" name="city_id" value="<?= $data->get('city_id');?>"/>
+                <input type="hidden" name="title" value="<?= $data->get('title');?>"/>
+                <input type="hidden" name="logline" value="<?= $data->get('logline');?>"/>
+                <input type="hidden" name="description" value="<?= $data->get('description');?>"/>
+                <input type="hidden" name="video_url" value="<?= $data->get('video_url');?>"/>
+                <input type="hidden" name="preview_url" value="<?= $data->get('preview_url');?>"/>
+                <input type="hidden" name="youtube_url" value="<?= $data->get('youtube_url');?>"/>
+                <input type="hidden" name="allow_contact" value="<?= $data->get('allow_contact');?>"/>
+                <input type="hidden" name="authorised" value="<?= $data->get('authorised');?>"/>
+                <input type="hidden" name="debut_time" value="<?= $data->get('debut_time');?>"/>
+                <input type="hidden" name="on_media_server" value="<?= $data->get('on_media_server');?>"/>
+                <input type="hidden" name="source" value="<?= $data->get('source');?>"/>
+                <input type="hidden" name="duration" value="<?= $data->get('duration');?>"/>
+                <?php foreach($data->get('selCat') as $i => $vc) : ?>
+                    <input type="hidden" name="selCat[<?= $i ?>]" value="<?= $vc ?>"/>
+                <?php endforeach; ?>
+                <input type="hidden" name="review_ok" value="1">
+            <button class="btn btn-primary form-control" type="submit">Looks Good!</button>
+            </form>
+        </div>
+    </div>
+
+</div>

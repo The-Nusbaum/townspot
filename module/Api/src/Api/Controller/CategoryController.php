@@ -44,7 +44,7 @@ class CategoryController extends \Townspot\Controller\BaseRestfulController
     }
 
     public function getTieredCategoriesAction() {
-        $topLevel = $this->_getChildren(0);
+        $topLevel = $this->_getChildren(null);
 
         $data = array();
 

@@ -31,7 +31,7 @@ class ModelController extends \Townspot\Controller\BaseRestfulController
             $mapperClass = "\\Townspot\\".$model."\\Mapper";
             $controllerClass = "\\Api\\Controller\\{$this->getModel()}Controller";
 
-            if(class_exists($controllerClass)) {
+            if($this->getRequest()->isGet() && class_exists($controllerClass)) {
                 header('Content-type: application/json');
                 if(method_exists(new $controllerClass, $method.'Action')) {
                     $response = $this->forward()->dispatch($controllerClass,array('action'=>$method,'id' => $id))->getVariables();

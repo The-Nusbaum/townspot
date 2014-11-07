@@ -130,13 +130,23 @@ class Form extends \Zend\Form\Form {
                 $html .= "<textarea name='$name' class='form-control $class' id='$id'>$value</textarea>";
                 break;
             case 'plupload-image':
-                $html .= "<div class='profilePic'>";
-		        $html .= "<div class='help-block well text-center'>$label</div>";
+                $html .= "<button id='plupload-image' class='form-control' style='position: relative; z-index: 1;'>";
+                $html .= "$label";
+                $html .= "</button>";
                 $html .= "<div class='form-group'>";
 			    $html .= "<img id='$id' src='$value' class='picPreview img-responsive'>";
-                $html .= "<input type='hidden' name='image_url' id='plupPicVal' value='$value'>";
+                $html .= "<input type='hidden' name='$name' id='plupPicVal' value='$value'>";
+                $html .= "</div>";
+                break;
+            case 'plupload-video':
+                $html .= "<button id='plupload-video' class='form-control' style='position: relative; z-index: 1;'>";
+                $html .= "$label";
+                $html .= "</button>";
+                $html .= "<div class='progress'>";
+                $html .= "<div class='progress-bar' role='progressbar' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100' style='width: 0%;'>";
                 $html .= "</div>";
                 $html .= "</div>";
+                $html .= "<input type='hidden' id='videofile' value='' name='$name'>";
                 break;
             case 'button':
                 $btn_class =$e->getAttribute('button-class');
@@ -160,7 +170,7 @@ class Form extends \Zend\Form\Form {
                 if(is_array($subColumns)) {
                     $subColWidth = floor(12 / count($subColumns));
                     foreach ($subColumns as $colName => $options) {
-                        $html .= "<div class='col-md-$subColWidth'>'";
+                        $html .= "<div class='col-md-$subColWidth'>";
                         $html .= "<h3>$colName</h3>";
                         $colClass = '';
                         if(!empty($options['class'])) $colClass = " ".$options['class'];

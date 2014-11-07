@@ -62,12 +62,20 @@
 
                             ).done(function(data){
                                     if(data.success) {
-                                        $target.parents('.list').remove();
+                                        $stats = $target.parents('.stats');
+                                        $stats.prev().remove();
+                                        $stats.remove();
                                         $('.videoCount').text($('#videos .video').length);
                                     }
                                 });
                         }
                     });
+                });
+
+                $('.stats .edit').click(function(e){
+                    var $target = $(e.target);
+                    var id = $target.parents('ul').attr('data-id');
+                    window.location = "/video/edit/" + id;
                 });
 
                 //calculate the offset

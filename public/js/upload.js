@@ -1,6 +1,23 @@
 var upload = {
     categories: [],
     init: function(){
+        tinyMCE.init({
+            mode: "textareas",
+            theme_url: "/js/tinymceTheme.js",
+            skin_url: "/css/tinymce",
+            content_css: "/css/tinymce",
+            menubar:false,
+            statusbar: false,
+            setup: function(editor) {
+                editor.on('change', function(e) {
+                    var editor = tinyMCE.activeEditor
+                    editor.save();
+                    $(editor.getElement()).change();
+                });
+            }
+        });
+        upload.pluploadImage();
+        upload.pluploadVideo();
         upload.populateCategories();
         upload.clearData();
         $('body').on('click','.category, .category > span',function(e){
@@ -9,7 +26,7 @@ var upload = {
         $('body').on('click','.selectedCategories .fa-times',function(e) {
             upload.removeCat(e);
         });
-        $('input, select, textarea').change(function(e){
+        $('hidden, input, select, textarea').change(function(e){
             upload.setVal(e);
         });
         $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
@@ -18,6 +35,69 @@ var upload = {
         $('#submitForm').submit(function(e){
             upload.submit(e);
         });
+    },
+    pluploadImage: function() {
+        var photo_uploader = new plupload.Uploader({
+            runtimes : 'html5',
+            browse_button : 'plupload-image', // you can pass in id...
+            url : "/file/upload",
+            unique_names: true,
+            filters : {
+                max_file_size : '10mb',
+                mime_types: [
+                    {title : "Image files", extensions : "jpg,gif,png"},
+                ]
+            },
+            init: {
+                FileUploaded: function(up, files) {
+                    $('#preview_url').attr('src',"/files/"+files.target_name);
+                    $('#plupPicVal').val("/files/"+files.target_name);
+                    $('#plupPicVal').change();
+                },
+
+                FilesAdded: function(up, files) {
+                    $.each(files, function(i, file) {
+                        photo_uploader.start();
+                    });
+                }
+            }
+        });
+
+        photo_uploader.init();
+    },
+    pluploadVideo: function() {
+        var video_uploader = new plupload.Uploader({
+            runtimes : 'html5',
+            browse_button : 'plupload-video', // you can pass in id...
+            url : "/file/upload",
+            unique_names: true,
+            filters : {
+                max_file_size : '100gb',
+                mime_types: [
+                    {title : "Video files", extensions : "mp4,mov,qt,flv,f4v,wmv,asf,mpg,vob,m2v,mp2,m4v,avi,webm,ogv,ogg,mxf,mts,mkv,r3d,rm,ram,flac,mj2,mpeg,3gp"},
+                ]
+            },
+            multi_selection : false,
+            init: {
+                FileUploaded: function(up, files) {
+                    $('#videofile').val("/files/"+files.target_name);
+                    $('#videofile').change();
+                },
+
+                FilesAdded: function(up, files) {
+                    $.each(files, function(i, file) {
+                        video_uploader.start();
+                    });
+                },
+
+                UploadProgress: function (up, file) {
+                    $('.progress .progress-bar').attr('style','width:'+up.total.percent+'%;');
+                    $('.progress .progress-bar').attr('aria-valuenow',up.total.percent)
+                }
+            }
+        });
+
+        video_uploader.init();
     },
     clearData: function(){
         $('#submitForm').children('input').remove();
@@ -59,7 +139,7 @@ var upload = {
                 $('.noyoutube').show();
             }
         } else {
-            if($('#videofile').val() == '' && $('#youtubeUrl').val() == '' ) {
+            if($('#videofile').val() == '' ) {
                 error = true;
                 $('.novideo').show();
             }
@@ -75,7 +155,7 @@ var upload = {
                 error = true;
                 $('.nodescription').show();
             }
-            if($('#picUpload').attr('src') == 'http://images.townspot.tv/resizer.php?id=none&w=390') {
+            if($('#preview_url').attr('src') == 'http://images.townspot.tv/resizer.php?id=none') {
                 error = true;
                 $('.nopreview').show();
             }

@@ -38,7 +38,8 @@ class UserController extends AbstractActionController
 
         $this->getServiceLocator()
             ->get('viewhelpermanager')
-            ->get('HeadScript')->appendFile('/js/townspot.js');
+            ->get('HeadScript')->appendFile('/js/townspot.js')
+            ->appendFile('/js/userProfile.js');
 
         $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
         $user = $userMapper->findOneById($this->auth->getIdentity());
@@ -97,6 +98,23 @@ class UserController extends AbstractActionController
         $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
         $user = $userMapper->findOneById($this->auth->getIdentity());
         $this->_view->setVariable('user',$user);
+        return $this->_view;
+    }
+
+    public function registerAction() {
+        $countryMapper = new \Townspot\Country\Mapper($this->getServiceLocator());
+        $countries = $countryMapper->findAll();
+
+        $provinceMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
+        $provinces = $provinceMapper->findByCountry(99);
+
+        $form = new \Application\Forms\User\Register('user',$countries,$provinces);
+        $this->_view->setVariable('form',$form);
+
+        $this->getServiceLocator()
+            ->get('viewhelpermanager')
+            ->get('HeadScript')->appendFile('/js/userRegister.js');
+
         return $this->_view;
     }
 }

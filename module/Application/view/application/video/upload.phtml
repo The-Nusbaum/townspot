@@ -1,4 +1,7 @@
 <div class="container" id="videoUpload">
+    <?php foreach($flash as $f): ?>
+        <div class="alert alert-success" role="alert" style="display:block;"><?= $f ?></div>
+    <?php endforeach; ?>
     <div class="row">
         <div class="col-md-10 col-md-offset-1 row">
             <div class="col-sm-12">
@@ -18,13 +21,18 @@
         </div>
         <div class="tab-content">
             <div id="upload" class="tab-pane">
-                <?= $manualForm ?>
+                <div class="col-md-8">
+                    <?= $manualForm ?>
+                </div>
+                <div class="col-md-4">
+                    <?= $videoMediaForm ?>
+                </div>
+
             </div>
             <div class="tab-pane  active" id="youtube">
                 <h3 class="center-block" style="width:225px"><img class="youtubelogo" src="/img/youtube.png" alt="youtube"> Submission</h3>
                 <?= $ytForm ?>
                 <div class="help-block text-center">Just provide us with a <img class="youtubelogo" src="/img/youtube.png" alt="youtube"> URL and we'll take it from there!</span>
-                <div class="alert alert-warning noyoutube" style="display:none">You must provide a video</div>
             </div>
         </div>
     </div>
@@ -39,7 +47,7 @@
         </div>
         <div class="row">
             <div class="col-md-10 col-md-offset-1 form-group">
-                <form id="submitForm" action="/video/review">
+                <form id="submitForm" action="/videos/review" method="POST">
                     <button id="submit" class="form-control btn btn-primary" type="submit">Submit Video</button>
                 </form>
             </div>

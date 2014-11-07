@@ -79,6 +79,22 @@ class Edit extends Form
             ),
         ));
         $this->add(array(
+            'name' => 'password_requirements',
+            'attributes' => array(
+                'type' => 'custom-block',
+                'label' => 'Password Requirements',
+                'inner-html' => "<ul class='list-unstyled'>
+				                <li>One uppercase Letter</li>
+				                <li>One lowercase Letter</li>
+				                <li>One number</li>
+				                <li>at least 8 characters</li>
+				                <li>no more than 15 characters</li>
+				            </ul>",
+                'errorId' => 'invalidpass',
+                'errorMessage' => 'You must enter a valid password'
+            )
+        ));
+        $this->add(array(
             'name' => 'password',
             'attributes' => array(
                 'type'  => 'password',
@@ -188,7 +204,7 @@ class Edit extends Form
             'attributes' => array(
                 'type'  => 'plupload-image',
                 'column' => 2,
-                'label' => 'Please click the image to choose a profile Picture',
+                'label' => 'Please choose a profile Picture',
                 'class' => 'profilePic',
                 'value' => 'http://images.townspot.tv/resizer.php?id=none&type=profile'
             ),
@@ -219,25 +235,17 @@ class Edit extends Form
                 'type'  => 'checkbox',
                 'label' => 'Allow other users to contact me',
                 'column' => 'span',
-                'width' => 4,
+                'width' => 6,
             ),
         ));
-        $this->add(array(
-            'name' => 'terms_agreement',
-            'attributes' => array(
-                'type'  => 'checkbox',
-                'label' => 'Receive email notifications',
-                'column' => 'span',
-                'width' => 4,
-            ),
-        ));
+
         $this->add(array(
             'name' => 'email_notifications',
             'attributes' => array(
                 'type'  => 'checkbox',
                 'label' => 'Receive Email Notifications',
                 'column' => 'span',
-                'width' => 4,
+                'width' => 6,
             ),
         ));
 
