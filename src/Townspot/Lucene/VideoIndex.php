@@ -66,6 +66,7 @@ class VideoIndex extends AbstractIndex
 			$doc->addField(Field::Text('user', $row['user']));	
 			$doc->addField(Field::Text('city', $row['city']));	
 			$doc->addField(Field::Text('province', $row['province']));	
+			$doc->addField(Field::Text('series_name', $row['series_name']));	
 			$index->addDocument($doc);
 		} catch (\Doctrine\ORM\EntityNotFoundException $e) {
 		} catch (\ZendSearch\Lucene\Exception\RuntimeException $e) {

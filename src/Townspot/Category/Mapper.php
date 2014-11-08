@@ -38,9 +38,66 @@ class Mapper extends AbstractEntityMapper
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
 		$stmt->execute();
 		$_results = $stmt->fetchAll();
+		$other = null;
 		foreach ($_results as $result) {
-			$results[] = $this->find($result['id']);
+			$category = $this->find($result['id']);
+			if (strtolower($category->getName()) == 'other') {
+				$other = $category;
+			} else {
+				$results[] = $this->find($result['id']);
+			}
+		}
+		if ($other) {
+			$results[] = $other;
 		}
 		return $results;
 	}
+	
+	public function findFromArray($categories) 
+	{
+		$results = array();
+		if (!is_array($categories)) {
+			$categories = array(categories);
+		}
+		$parent = null;
+		while ($categories) {
+			$category = array_shift($categories);
+			$_category = $this->findOneBy(
+				array(
+					'_name'		=> $category,
+					'_parent'	=> $parent,
+				)
+			);
+			if ($_category) {
+				$results[] = array(
+					'id'	=> $_category->getId(),
+					'name'	=> $_category->getName()
+				);
+				$parent = $_category->getId();
+			}
+		}
+		return $results;
+	}
+	
+	public function findChildrenIdAndName($parent = null,$province_id = null,$city_id = null) 
+	{
+		$results 		= array();
+		$categories = $this->getDiscoverCategories($province_id,$city_id,$parent);
+		foreach ($categories as $category) {
+			$results[] = array(
+				'id'	=> $category->getId(),
+				'name'	=> $category->getName()
+			);
+		}
+		return $results;
+	}
+	
+	public function findRandom($province_id = null,$city_id = null) 
+	{
+		$results 		= array();
+		$categories = $this->getDiscoverCategories($province_id,$city_id);
+		$randkey = rand(0,count($categories));
+		return $categories[$randkey];
+	}
+	
 }

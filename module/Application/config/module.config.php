@@ -17,6 +17,7 @@ return array(
             'img' 			=> 'Townspot\View\Helper\Image',
             'AddThisLinks' 	=> 'Townspot\View\Helper\AddThisLinks',
             'Comments' 		=> 'Townspot\View\Helper\Comments',
+            'DiscoverNav' 	=> 'Townspot\View\Helper\DiscoverNav',
         ),
     ),
 	'asset_manager' => array(
@@ -85,18 +86,22 @@ return array(
                     'view/searchresult.js',
                     'search.js',
                 ),
+                'js/discoverpage.js' => array(
+                    'collection/searchresult.js',
+                    'model/video.js',
+                    'view/searchresult.js',
+                    'discover.js',
+                ),
             ),			
         ),
-/*
-		'caching' => array(
-            'default' => array(
-                'cache'     => 'AssetManager\\Cache\\FilePathCache',
-                'options' => array(
-					'dir' => APPLICATION_PATH . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'static',
-                ),
-            ),
-        ),		
-*/
+//		'caching' => array(
+//            'default' => array(
+//                'cache'     => 'AssetManager\\Cache\\FilePathCache',
+//                'options' => array(
+//					'dir' => APPLICATION_PATH . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'static',
+//                ),
+//            ),
+//        ),		
 		'filters' => array(
 			'css' => array(
 				array(
@@ -764,6 +769,7 @@ return array(
 			array(
 				'label' 		=> 'Discover',
                 'route' 		=> 'discover',
+                'id' 			=> 'discover-menu-link',
             ),
 			array(
 				'label' 		=> 'Upload',

@@ -151,41 +151,26 @@ class Mapper extends AbstractEntityMapper
 		return $results;
 	}
 	
-	public function getDiscoverMedia($province_id = null,$city_id=null,$categories = array(),$sort = 'date:desc') 
+	public function getDiscoverMedia($province_id = null,$city_id=null,$category_id = null,$sort = 'created:desc') 
 	{
 		$results = array();
 		$sql  = "SELECT ";
-		$sql .= " media.id ";
+		$sql .= " DISTINCT media.id ";
 		$sql .= "FROM  ";
 		$sql .= " media ";
 		$sql .= "JOIN media_category_linker on media_category_linker.media_id = media.id ";
-		$sql .= "JOIN category on media_category_linker.category_id = category.id ";
 		$where = array('media.approved = 1');
-		$having = array();
 		if ($province_id) {
 			$where[] = 'media.province_id=' . $province_id;
 		}
 		if ($city_id) {
 			$where[] = 'media.city_id=' . $city_id;
 		}
-		if ($categories) {
-			if ($categories[0] != 'all videos') {
-				$previous = '';
-				foreach ($categories as $category) {
-					if ($previous) {
-						$category = $previous . '::' . $category;
-					}
-					$having[] = "LOWER(GROUP_CONCAT(category.name SEPARATOR '::')) LIKE '" . $category . "%'";
-					$previous = $category;
-				}
-			}
+		if ($category_id) {
+			$where[] = 'media_category_linker.category_id=' . $category_id;
 		}
 		if ($where) {
 			$sql .= " WHERE " . implode(' AND ',$where);
-		}
-		$sql .= " GROUP BY media.id";
-		if ($having) {
-			$sql .= " HAVING " . implode(' AND ',$having);
 		}
         list($sortField,$sortOrder) = explode(':',$sort);
         if ($sortField == 'title') {

@@ -113,26 +113,31 @@ class AjaxController extends AbstractActionController
 			'data'		=> array()
 		);
 		$data = array();
-        $searchTerm		= $this->params()->fromPost('searchTerm');
-        $sortTerm       = ($this->params()->fromPost('sortTerm')) ?: 'date:asc';
         $searchId 		= $this->params()->fromPost('searchId');
         $page           = $this->params()->fromPost('page') ?: 1;
-
+		
+		$categoryMapper = new \Townspot\Category\Mapper($this->getServiceLocator());
 		$cityMapper 	= new \Townspot\City\Mapper($this->getServiceLocator());
 		$seriesMapper 	= new \Townspot\Series\Mapper($this->getServiceLocator());
 		$userMapper 	= new \Townspot\User\Mapper($this->getServiceLocator());
 		$mediaMapper 	= new \Townspot\Media\Mapper($this->getServiceLocator());
 
-		if (!$searchId) {
-			$searchId	= md5(serialize(array(session_id(),$searchTerm,$sortTerm)));
-		}
         $cache			= $this->getServiceLocator()->get('cache-general');        
 		$_results 		= $cache->getItem($searchId);
+		$category = false;
         if (!$_results) {
 			$results['reload'] = true;
 		} else {
-			$startRange = ($page - 1) * 11;
-			$pageResults = array_slice($_results,$startRange,11);
+			if ($_results[0]['type'] != 'category') {
+				$startRange = ($page - 1) * 11;
+				$pageResults = array_slice($_results,$startRange,11);
+			} else {
+				$category = true;
+				$pageResults = $_results;
+				if ($page > 1) {
+					$pageResults = array();
+				}
+			}
 			foreach ($pageResults as $index => $result) {
 				if ($result['type'] == 'city') {
 					$city = $cityMapper->find($result['id']);
@@ -146,6 +151,17 @@ class AjaxController extends AbstractActionController
 						'title'				=> $city->getFullName(),
 						'location'			=> $city->getFullName(),
 						'escaped_location'	=> $city->getFullName(),
+					);
+				} elseif ($result['type'] == 'category') {
+					$category = $categoryMapper->find($result['id']);
+					$media = $category->getRandomMedia();
+					$data[] = array(
+						'id'				=> $category->getId(),
+						'type'				=> 'category',
+						'link'				=> $category->getDiscoverLink(),
+						'image'				=> $media->getResizerCdnLink(),
+						'escaped_title'		=> $category->getName(),
+						'title'				=> $category->getName(),
 					);
 				} elseif ($result['type'] == 'series') {
 					$series = $seriesMapper->find($result['id']);
@@ -181,25 +197,76 @@ class AjaxController extends AbstractActionController
 					);
 				} else {
 					$media = $mediaMapper->find($result['id']);
-					$data[] = array(
-						'id'				=> $media->getId(),
-						'type'				=> 'media',
-						'link'				=> $media->getMediaLink(),
-						'image'				=> $media->getResizerCdnLink(),
-						'escaped_title'		=> $media->getTitle(false,true),
-						'title'				=> $media->getTitle(),
-						'logline'			=> $media->getLogline(),
-						'escaped_logline'	=> $media->getLogline(true),
-						'user'				=> $media->getUser()->getUsername(),
-						'user_profile'		=> $media->getUser()->getProfileLink(),
-						'duration'			=> $media->getDuration(true),
-						'comment_count'		=> count($media->getCommentsAbout()),
-						'views'				=> $media->getViews(),
-						'location'			=> $media->getLocation(),
-						'escaped_location'	=> $media->getLocation(false,true),
-						'rate_up'			=> count($media->getRatings(true)),
-						'rate_down'			=> count($media->getRatings(false)),
+					$added = false;
+					if ($episodes = $media->getEpisode()) {
+						if ($episode = $episodes[0]) {
+							if ($series = $episode->getSeries()) {
+								$data[] = array(
+									'id'				=> $media->getId(),
+									'type'				=> 'media',
+									'link'				=> $media->getMediaLink(),
+									'image'				=> $media->getResizerCdnLink(),
+									'escaped_title'		=> $media->getTitle(false,true),
+									'title'				=> $media->getTitle(),
+									'logline'			=> $media->getLogline(),
+									'escaped_logline'	=> $media->getLogline(true),
+									'user'				=> $media->getUser()->getUsername(),
+									'user_profile'		=> $media->getUser()->getProfileLink(),
+									'duration'			=> $media->getDuration(true),
+									'comment_count'		=> count($media->getCommentsAbout()),
+									'views'				=> $media->getViews(),
+									'location'			=> $media->getLocation(),
+									'escaped_location'	=> $media->getLocation(false,true),
+									'rate_up'			=> count($media->getRatings(true)),
+									'rate_down'			=> count($media->getRatings(false)),
+									'series_name'		=> $series->getName(),
+									'series_link'		=> $series->getSeriesLink(),
+								);
+								$added = true;
+							}
+						}
+					}
+					if (!$added) {	
+						$data[] = array(
+							'id'				=> $media->getId(),
+							'type'				=> 'media',
+							'link'				=> $media->getMediaLink(),
+							'image'				=> $media->getResizerCdnLink(),
+							'escaped_title'		=> $media->getTitle(false,true),
+							'title'				=> $media->getTitle(),
+							'logline'			=> $media->getLogline(),
+							'escaped_logline'	=> $media->getLogline(true),
+							'user'				=> $media->getUser()->getUsername(),
+							'user_profile'		=> $media->getUser()->getProfileLink(),
+							'duration'			=> $media->getDuration(true),
+							'comment_count'		=> count($media->getCommentsAbout()),
+							'views'				=> $media->getViews(),
+							'location'			=> $media->getLocation(),
+							'escaped_location'	=> $media->getLocation(false,true),
+							'rate_up'			=> count($media->getRatings(true)),
+							'rate_down'			=> count($media->getRatings(false)),
+						);
+					}
+				}
+			}
+			if ($category) {
+				if($data) {
+					$randkey = rand(0,count($data));
+					$category = $categoryMapper->find($data[$randkey]['id']);
+					$media = $category->getRandomMedia();
+					$link = '/discover';
+					if (isset($_SESSION['DiscoverLocation'])) {
+						$link = $_SESSION['DiscoverLocation']->getDiscoverLink();
+					}
+					$all = array(
+						'id'			=> 0,
+						'type'			=> 'category',
+						'link'			=> $link . '/all videos',
+						'image'			=> $media->getResizerCdnLink(),
+						'escaped_title'	=> 'All Videos',
+						'title'			=> 'All Videos',
 					);
+					array_unshift($data,$all);
 				}
 			}
 			if (count($data) > 6) {

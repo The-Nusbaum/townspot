@@ -261,7 +261,16 @@ li {
 			font-size: 14px;
 		}
 	}
+	&.category {
+		.video-title {
+			.dot-text {
+				height: 32px;
+			}
+		}
+	}
 }
+
+
 
 
 
@@ -325,7 +334,7 @@ li {
 	-o-transform: translateY(-50%);
 }
 
-.tablet-small {
+.tablet-wide {
 	display: none;
 }
 
@@ -1676,6 +1685,15 @@ div {
 	}
 }
 
+@media (min-width: 480px) {
+	.tablet-small {
+		display: none !important;
+	}
+	.tablet-wide {
+		display: block !important;
+	}
+}
+	
 @media (min-width: 500px) {
 	.tablet-ad {
 		display: block;

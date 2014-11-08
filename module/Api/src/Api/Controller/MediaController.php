@@ -36,26 +36,10 @@ class MediaController extends \Townspot\Controller\BaseRestfulController
             $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
             $user = $userMapper->find($id);
 
-            $seriesMapper = new \Townspot\Series\Mapper($this->getServiceLocator());
-            $series = $seriesMapper->findByUserId($user->getId());
-
-            $seriesMediaMapper = new \Townspot\SectionMedia\Mapper($this->getServiceLocator());
-
-            $inSeriesList = array();
-            foreach($series as $s) {
-                $seriesMedia = $seriesMediaMapper->findBySeriesId($s->getId());
-                foreach($seriesMedia as $sm){
-                    $inSeriesList[] = $sm->getMediaId();
-                }
-
-            }
-
             $media = $this->getMapper()
                 ->findByUser($user);
 
             $data = array(
-                'totalCount' => count($media),
-                'pages' => ceil(count($media)/$limit),
                 'media' => array()
             );
 
@@ -63,12 +47,14 @@ class MediaController extends \Townspot\Controller\BaseRestfulController
             foreach($media as $i => $m) {
                 if($total == $limit) break;
                 if($i < $offset) continue;
-                if(in_array($m->getId(),$inSeriesList)) continue;
                 if($m->getOnMediaServer() && $m->getApproved()) {
                     $data['media'][] = $m->toArray();
                 }
                 $total++;
             }
+
+            $data['totalCount'] = count($data['media']);
+            $data['pages'] = ceil(count($data['media'])/$limit);
 
             $this->getResponse()
                 ->setCode(200)

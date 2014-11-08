@@ -4,13 +4,13 @@
 <% } else if (type == "category") { %>
 	<div class="col-sm-4 loading">
 		<div class="video-preview">
-			<a href="#" class="category-selector" data-name="<%- escaped_title %>" data-id="<%- id %>">
+			<a href="<%- link %>">
 				<img alt="<%- escaped_title %>" src="<%- image %>" class="img-responsive preview-img">
 			</a>
-			<div class="carousel-caption">
+			<div class="carousel-caption category">
 				<div class="video-title">
 					<h3 title="<%- escaped_title %>" class="dot-text">
-						<a href="#" class="category-selector" data-name="<%- escaped_title %>" data-id="<%- id %>">
+						<a href="<%- link %>">
 							<div class="dot-text"><%= escaped_title %></div>
 						</a>
 					</h3>
@@ -91,11 +91,19 @@
 							<div class="dot-text"><%= escaped_title %></div>
 						</a>
 					</h3>
+<% if (series_name == '') { %>	
 					<h3 class="dot-text">
                         <a href="<%- user_profile %>">
 							<div class="dot-text">by <%- user %></div>
 						</a>
 					</h3>
+<% } else { %>		
+					<h3 class="dot-text">
+                        <a href="<%- link %>">
+							<div class="dot-text">Series: <%- series_name %></div>
+						</a>
+					</h3>
+<% } %>		
 					<h3 title="<%- escaped_location %>" class="dot-text"><%- escaped_location %></h3>
 				</div>
 				<div class="info-button <%- position %>"

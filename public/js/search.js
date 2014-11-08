@@ -6,7 +6,7 @@
         var defaults = {
 			searchId: '',
 			searchTerm: '',
-			sortTerm: 'date:asc',
+			sortTerm: 'created:asc',
 			page: 1
 		};
         var methods = 
@@ -27,8 +27,6 @@
 					type: "POST",
 					data: { 
 						searchId: options.searchId,
-						searchTerm: options.searchTerm,
-						sortTerm: options.sortTerm,
 						page: options.page,
 					}
 				}).done(function ( data ) {
@@ -68,6 +66,8 @@
 			},
             updateOrder : function(element)              
             {
+				options.sort = $(element).val();
+				window.location.href = "/videos/search?q=" + options.searchTerm + "&sort=" + options.sort;
 			}
 		}
         var options = $.extend(defaults, options);
