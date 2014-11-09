@@ -18,9 +18,11 @@ class Mapper extends AbstractEntityMapper
 				 FROM user 
 				 JOIN media on user.user_id = media.user_id
 				 JOIN province on user.province_id = province.id
-				 JOIN city on user.city_id = city.id";
+				 JOIN city on user.city_id = city.id
+			     WHERE media.approved = 1 ";
 		if ($dateTime) {
-			$sql .= " WHERE user.updated >= '" . $dateTime->format('Y-m-d H:i:s') . "'";
+			$sql .= " AND (media.updated >= '" . $dateTime->format('Y-m-d H:i:s') . "'";
+			$sql .= " OR user.updated >= '" . $dateTime->format('Y-m-d H:i:s') . "')";
 		}
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
 		$stmt->execute();

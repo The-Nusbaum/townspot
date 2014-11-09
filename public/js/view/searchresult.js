@@ -45,7 +45,6 @@ var SearchResultView = Backbone.View.extend({
 				series_name: this.get('series_name'),
 				series_link: this.get('series_link')
 			});
-console.log(this);			
 			_self.$el.append(html);
 		});
 		collection.reset();

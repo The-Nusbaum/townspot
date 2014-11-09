@@ -1,7 +1,7 @@
 <script src="/js/discoverpage.js"></script>
 <div class="row">
 <?php if ($this->matchesFound) { ?>
-	<div class="row">
+	<div class="row" id="discover-sort">
 		<div class="col-xs-12 sort-select">
 			<select name="sort" id="sort">
 <?php 
@@ -57,15 +57,25 @@ Try narrowing your search
 	$('.explore-btn-wrapper').addClass('hidden-explore-btn-wrapper').removeClass('explore-btn-wrapper').css('display','none');
 </script>
 <?= $this->partial('partials/backbone/search-template.phtml'); ?>
-<?php if ($this->matchesFound) { ?>
 <script>
+<?php if ($this->matchesFound) { ?>
 $().Discover({
 	searchId: '<?= $this->searchId; ?>',
 	province: '<?= $this->province; ?>',
 	city: '<?= $this->city; ?>',
 	categoryId: '<?= $this->categoryId; ?>',
 	sortTerm: '<?= $this->sortTerm; ?>',
+	terms: <?= $this->terms; ?>,
 	page: <?= $this->page; ?>,
+	data: <?= $this->data; ?>
 });
-</script>
+<?php } else { ?>
+$().Discover({
+	province: '<?= $this->province; ?>',
+	city: '<?= $this->city; ?>',
+	categoryId: '<?= $this->categoryId; ?>',
+	sortTerm: '<?= $this->sortTerm; ?>',
+	terms: <?= $this->terms; ?>
+});
 <?php } ?>
+</script>

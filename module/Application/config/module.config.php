@@ -36,6 +36,12 @@ return array(
                     'socialmedia.css',
                     'style.less',
                 ),
+                'css/admin.css' => array(
+                    'xxs.less',
+                    'socialmedia.css',
+                    'style.less',
+                    'admin.less',
+                ),
                 'js/townspot.js' => array(
 					'kalenjordan/jquery-cookie/jquery.cookie.js',
 					'jqgeeks/jquery-timeago/jquery.timeago.js',
@@ -123,6 +129,17 @@ return array(
                     ),
                 ),
             ),
+            'discover-results' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/videos/discoverresults',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Ajax',
+                        'action'     => 'discoverresults',
+                    ),
+                ),
+            ),
+			
 			'video_player' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(

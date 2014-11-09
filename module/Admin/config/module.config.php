@@ -205,10 +205,8 @@ return array(
         'not_found_template'       => 'error/404',
         'exception_template'       => 'error/index',
         'template_map' => array(
-            'layout/layout'           => APPLICATION_PATH . '/module/Admin/view/layout/layout.phtml',
+            'admin/layout'            => APPLICATION_PATH . '/module/Admin/view/layout/layout.phtml',
             'admin/index/index' 	  => APPLICATION_PATH . '/module/Admin/view/admin/index/index.phtml',
-            'error/404'               => APPLICATION_PATH . '/module/Admin/view/error/404.phtml',
-            'error/index'             => APPLICATION_PATH . '/module/Admin/view/error/index.phtml',
         ),
         'template_path_stack' => array(
             APPLICATION_PATH . '/module/Admin/view',
@@ -220,4 +218,134 @@ return array(
             ),
         ),
     ),
+    'router' => array(
+        'routes' => array(
+            'admin-home' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Index',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'admin-users' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/users',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\User',
+                        'action'     => 'index',
+                        'type' 		 => 'user',
+                    ),
+                ),
+            ),
+            'admin-user-add' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/user/add',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\User',
+                        'action'     => 'add',
+                        'type' 		 => 'user',
+                    ),
+                ),
+            ),
+            'admin-admins' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/admins',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\User',
+                        'action'     => 'index',
+                        'type' 		 => 'admin',
+                    ),
+                ),
+            ),
+            'admin-admin-add' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/user/add',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\User',
+                        'action'     => 'add',
+                        'type' 		 => 'admin',
+                    ),
+                ),
+            ),
+            'admin-artists' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/admins',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\User',
+                        'action'     => 'index',
+                        'type' 		 => 'artist',
+                    ),
+                ),
+            ),
+            'admin-artist-add' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/user/add',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\User',
+                        'action'     => 'add',
+                        'type' 		 => 'artist',
+                    ),
+                ),
+            ),
+            'admin-series' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/series',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Series',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'admin-add-series' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/series/add',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Series',
+                        'action'     => 'add',
+                    ),
+                ),
+            ),
+            'admin-video' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/video',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Media',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+            'admin-add-video' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/video/add',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Media',
+                        'action'     => 'add',
+                    ),
+                ),
+            ),
+            'admin-videocategories' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/videocategories',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\MediaCategories',
+                        'action'     => 'index',
+                    ),
+                ),
+            ),
+		)
+	)
 );

@@ -5,40 +5,13 @@ use Zend\View\Helper\AbstractHelper;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;  
 use Zend\ServiceManager\ServiceLocatorInterface;  
 
-class DiscoverNav extends AbstractHelper implements ServiceLocatorAwareInterface  
+class AdminNav extends AbstractHelper implements ServiceLocatorAwareInterface  
 {  
     public function __invoke()
     {
 		$html = '';
 		$helperPluginManager	= $this->getServiceLocator();
 		$serviceManager 		= $helperPluginManager->getServiceLocator();  	
-		$provinceMapper 		= new \Townspot\Province\Mapper($serviceManager);
-		$cityMapper 			= new \Townspot\City\Mapper($serviceManager);
-		$provinces 				= $provinceMapper->getProvincesHavingMedia();
-		$cities					= array();
-		$provinceId				= (isset($_SESSION['Discover_Province'])) ? $_SESSION['Discover_Province'] : null;
-		$cityId					= (isset($_SESSION['Discover_City'])) ? $_SESSION['Discover_City'] : null;
-		$categoriesSelected		= (isset($_SESSION['Discover_Categories'])) ? $_SESSION['Discover_Categories'] : null;
-		$subCategories			= (isset($_SESSION['Discover_Subcategories'])) ? $_SESSION['Discover_Subcategories'] : null;
-		$provinceSelected 		= null;
-		$citySelected 			= null;
-		$media_count		 	= 0;
-		$city_media_count	 	= 0;
-		foreach ($provinces as $province) {
-			$media_count += $province['media_count'];
-			if ($province['id'] == $provinceId) {
-				$provinceSelected = $province['name'];
-			}
-		}
-		if ($provinceId) {
-			$cities			= $cityMapper->getCitiesHavingMedia($provinceId);
-			foreach ($cities as $city) {
-				$city_media_count += $city['media_count'];
-				if ($city['id'] == $cityId) {
-					$citySelected = $city['name'];
-				}
-			}
-		}
 		$html .= '<nav class="navbar navbar-townspot" id="discover-nav" role="navigation">';
 		$html .= '    <div class="container-fluid">';
 		$html .= '        <div id="townspot-nav">';
@@ -119,11 +92,7 @@ class DiscoverNav extends AbstractHelper implements ServiceLocatorAwareInterface
 		if ($categoriesSelected) {
 			$html .= '					<td class="nowrap">';
 			foreach ($categoriesSelected as $index => $category) {
-				$displayName = $category['name'];
-				if ($displayName == 'all videos') {
-					$displayName = 'All';
-				}
-				$html .= '					    <span class="selected-category" data-name="' . strtolower(htmlentities($category['name'])) . '">' . $displayName . '&nbsp;<img class="remove-category-' .  $index . '" src="/img/delete.png"></span>';
+				$html .= '					    <span class="selected-category" data-name="' . strtolower(htmlentities($category['name'])) . '">' . $category['name'] . '&nbsp;<img class="remove-category-' .  $index . '" src="/img/delete.png"></span>';
 			}
 			$html .= '					</td>';
 		}

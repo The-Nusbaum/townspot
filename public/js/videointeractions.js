@@ -54,8 +54,8 @@
 					data: { "rating": rating }
 				}).done(function ( data ) {
 					if (typeof rating !== "undefined") {
-						$('#up-ratings').html(data.up);
-						$('#down-ratings').html(data.down);
+						$('#up-ratings').html(data.rate_up);
+						$('#down-ratings').html(data.rate_down);
 					}
 					if (data.my_rating != '') {
 						$('#rate-up').removeClass('disabled');
@@ -215,8 +215,7 @@
 			},
             sendToLogin : function()              
             {
-				alert("Redirect to login");
-//				window.location = "/login?redirect=" + encodeURIComponent(document.URL);
+				window.location = "/login?redirect=" + encodeURIComponent(document.URL);
             },
 		}
         var options = $.extend(defaults, options);

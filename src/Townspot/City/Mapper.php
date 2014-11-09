@@ -36,9 +36,11 @@ class Mapper extends AbstractEntityMapper
 					   province.abbrev as province_abbrev,
 					   count(media.id) as media_count 
 					   FROM `city` JOIN province on province.id = city.province_id 
-					   JOIN media on media.city_id = city.id";
+					   JOIN media on media.city_id = city.id
+					   WHERE media.approved = 1 ";
 		if ($dateTime) {
-			$sql .= " WHERE city.updated >= '" . $dateTime->format('Y-m-d H:i:s') . "'";
+			$sql .= " AND (media.updated >= '" . $dateTime->format('Y-m-d H:i:s') . "'";
+			$sql .= " OR city.updated >= '" . $dateTime->format('Y-m-d H:i:s') . "')";
 		}
 		$sql .= " GROUP BY city.id";
 		

@@ -398,11 +398,3 @@
   // plugin defaults
   $.fn.expander.defaults = $.expander.defaults;
 })(jQuery);
-
-
-$('div.expandable').expander({
-	expandText: 'read&nbsp;more',
-	userCollapseText: 'read&nbsp;less',
-	slicePoint: 80,
-	expandPrefix: ' '
-});

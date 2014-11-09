@@ -35,21 +35,20 @@ class VideoController extends AbstractActionController
 		$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
 		if ($media = $mediaMapper->find($videoId)) {
 			$this->getServiceLocator()
-				 ->get('ViewHelperManager')
-				 ->get('HeadScript')
-				 ->appendFile('/js/videointeractions.js','text/javascript');
+				->get('ViewHelperManager')
+				->get('HeadScript')
+				->appendFile('/js/videointeractions.js','text/javascript');
 			$this->init($media->getTitle());
 			$relatedMedia  = $mediaMapper->getMediaLike($media);
-			return new ViewModel(
-				array(
-					'media'    => $media,
-					'related'  => $relatedMedia
-				)
+			$results = array(
+				'media'    => $media,
+				'related'  => $relatedMedia
 			);
 		} else {
-			//Error
+			$this->getResponse()->setStatusCode(404);
+			return; 
 		}
-		return null;
+		return new ViewModel( $results );
     }
 	
     public function embedAction()
@@ -88,9 +87,10 @@ class VideoController extends AbstractActionController
 		$userRating = null;
 		if ($media = $mediaMapper->find($videoId)) {
 			if ($this->zfcUserAuthentication()->hasIdentity()) {
-				$loggedInUser = $this->zfcUserAuthentication()->getIdentity()->getId();
+				$userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+				$loggedInUser = $userMapper->find($this->zfcUserAuthentication()->getIdentity()->getId());
 				foreach ($media->getRatings() as $rating) {
-					if ($rating->getUser()->getId() == $loggedInUser) {
+					if ($rating->getUser() == $loggedInUser) {
 						$userRating = $rating;
 					}
 				}

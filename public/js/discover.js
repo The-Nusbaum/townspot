@@ -9,7 +9,9 @@
 			city: 		'',
 			categoryId: 0,
 			sortTerm: 	'created:asc',
+			terms: 		[],
 			page: 		1,
+			ceaseFire: 	false
 		};
         var methods = 
         {
@@ -33,6 +35,7 @@
 				if (options.sortTerm != 'created:asc') {
 					url = url + '?sort=' + options.sortTerm;
 				}
+				$('#Loading').modal('show');
 				window.location.href = url.toLowerCase();
 			},
 			encodeStr : function(string)              
@@ -120,50 +123,53 @@
 			},
             getResults : function(category)              
             {
-				if (options.page == 1) {
-					$('#Loading').modal('show');
-				} else {
-					$('.loading-spinner').css('display','block');
-				}
+				$('.loading-spinner').css('display','block');
 				$.ajax({
-					url: "/videos/searchresults",
+					url: "/videos/discoverresults",
 					type: "POST",
 					data: { 
 						searchId: options.searchId,
 						page: options.page,
+						terms: options.terms,
+						sortTerm: options.sortTerm,
 					}
 				}).done(function ( data ) {
-					if (data.reload) {
-						//Redirect
-					} else {
-						$.each(data.data, function() {
-							searchResultsCollection.add(new Video(this));
-						});
-						searchResultsView.render(searchResultsCollection);
-						options.page = options.page + 1;
-						$(document).endlessScroll({
-							inflowPixels: 50,
-							fireDelay: 10,
-							callback: function(i) {
-								methods.getResults(false);
-							},
-							ceaseFire: function() {
-								if (data.data.length < 12) {
-									return true;
-								}
-								if (data.data.length == 0) {
-									return true;
-								}
-								return false;
-							}
-						});
-						setTimeout( function() { 
-							$('#Loading').modal('hide');
-							$('.loading').removeClass('loading'); 
-							$('.loading-spinner').css('display','none');
-						}, 500 );
-						setInfoButtons();
-						loadAds();
+					options.data = data.data;
+					methods.renderPage();
+				});
+			},
+            renderPage : function()              
+            {
+				$.each(options.data, function() {
+					if (this.type == 'category') {
+						options.ceaseFire = true;
+						$('#discover-sort').css('display','none');
+					}
+					searchResultsCollection.add(new Video(this));
+				});
+				searchResultsView.render(searchResultsCollection);
+				setInfoButtons();
+				loadAds();
+				setTimeout( function() { 
+					$('#Loading').modal('hide');
+					$('.loading').removeClass('loading'); 
+					$('.loading-spinner').css('display','none');
+				}, 100 );
+				options.page = options.page + 1;
+					$(document).endlessScroll({
+					inflowPixels: 50,
+					fireDelay: 10,
+					callback: function(i) {
+						methods.getResults();
+					},
+					ceaseFire: function() {
+						if (options.data.length < 12) {
+							options.ceaseFire = true;
+						}
+						if (options.data.length == 0) {
+							options.ceaseFire = true;
+						}
+						return options.ceaseFire;
 					}
 				});
 			}
@@ -181,6 +187,8 @@
 		$('.remove-category-3').click(function() { methods.removeCategory3() });
 		$('.remove-category-4').click(function() { methods.removeCategory4() });
 		$('.remove-category-5').click(function() { methods.removeCategory5() });
-		methods.getResults();
+		$(document).on('click', '.category-preview', function()  { $('#Loading').modal('show'); });
+		methods.renderPage();
     };
 })(jQuery);
+

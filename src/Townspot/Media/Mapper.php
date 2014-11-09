@@ -12,7 +12,8 @@ class Mapper extends AbstractEntityMapper
 		$sql = "SELECT id, ( 3959 * acos( cos( radians(%s) ) * cos( radians( latitude ) ) ";
 		$sql .= "* cos( radians( longitude ) - radians(%s) ) + ";
 		$sql .= "sin( radians(%s) ) * sin(radians(latitude)) ) ) AS distance ";
-		$sql .= "from media HAVING distance < 10000 ";
+		$sql .= "from media WHERE media.approved=1";
+		$sql .= " HAVING distance < 10000 ";
 		$sql .= "ORDER BY distance ";
 		$sql .= "LIMIT 1;";
 		$sql = sprintf($sql,$lat,$long,$lat);
@@ -48,7 +49,6 @@ class Mapper extends AbstractEntityMapper
 		$sql .= "JOIN category on media_category_linker.category_id = category.id ";
 		$sql .= "LEFT JOIN series_episodes on series_episodes.media_id = media.id ";
 		$sql .= "WHERE media.approved = 1 ";
-		$sql .= "AND (series_episodes.series_id IS NULL) ";
 		if ($dateTime) {
 			$sql .= " AND media.updated >= '" . $dateTime->format('Y-m-d H:i:s') . "'";
 		}
@@ -56,6 +56,27 @@ class Mapper extends AbstractEntityMapper
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
 		$stmt->execute();
 		return $stmt->fetchAll();
+	}
+
+	public function getRandom() 
+	{
+		$results = array();
+		$sql  = "SELECT ";
+		$sql .= " media.id ";
+		$sql .= "FROM  ";
+		$sql .= " media ";
+		$sql .= "WHERE media.approved = 1 ";
+		$sql .= " ORDER BY RAND()";
+		$sql .= " LIMIT 1";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+		if ($results = $stmt->fetchAll()) {
+			$results = array_shift($results);
+			if ($media = $this->find($results['id'])) {
+				return $media;
+			}
+		}
+		return null;
 	}
 
 	public function getMediaLike($object,$limit=3) 
@@ -151,14 +172,16 @@ class Mapper extends AbstractEntityMapper
 		return $results;
 	}
 	
-	public function getDiscoverMedia($province_id = null,$city_id=null,$category_id = null,$sort = 'created:desc') 
+	public function getDiscoverMedia($province_id = null,$city_id=null,$category_id = null,$sort = 'created:desc',$page=1,$limit=11) 
 	{
 		$results = array();
 		$sql  = "SELECT ";
-		$sql .= " DISTINCT media.id ";
+		$sql .= " DISTINCT media.id, series.id as series_id ";
 		$sql .= "FROM  ";
 		$sql .= " media ";
 		$sql .= "JOIN media_category_linker on media_category_linker.media_id = media.id ";
+		$sql .= "LEFT JOIN series_episodes on series_episodes.media_id = media.id ";
+		$sql .= "LEFT JOIN series on series_episodes.series_id = series.id ";
 		$where = array('media.approved = 1');
 		if ($province_id) {
 			$where[] = 'media.province_id=' . $province_id;
@@ -181,6 +204,7 @@ class Mapper extends AbstractEntityMapper
 			$sql .= " ORDER BY media.created";
         }
 		$sql .= ($sortOrder == 'asc') ? ' ASC' : ' DESC';
+		$sql .= " LIMIT " . (($page - 1) * $limit) . "," . $limit;
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
 		$stmt->execute();
 		return $stmt->fetchAll();

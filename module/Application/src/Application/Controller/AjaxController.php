@@ -108,179 +108,161 @@ class AjaxController extends AbstractActionController
 	
     public function searchresultsAction()
     {
-        $results = array(
-			'reload'	=> false,
-			'data'		=> array()
-		);
 		$data = array();
         $searchId 		= $this->params()->fromPost('searchId');
         $page           = $this->params()->fromPost('page') ?: 1;
-		
-		$categoryMapper = new \Townspot\Category\Mapper($this->getServiceLocator());
-		$cityMapper 	= new \Townspot\City\Mapper($this->getServiceLocator());
-		$seriesMapper 	= new \Townspot\Series\Mapper($this->getServiceLocator());
-		$userMapper 	= new \Townspot\User\Mapper($this->getServiceLocator());
-		$mediaMapper 	= new \Townspot\Media\Mapper($this->getServiceLocator());
-
-        $cache			= $this->getServiceLocator()->get('cache-general');        
-		$_results 		= $cache->getItem($searchId);
-		$category = false;
-        if (!$_results) {
-			$results['reload'] = true;
-		} else {
-			if ($_results[0]['type'] != 'category') {
-				$startRange = ($page - 1) * 11;
-				$pageResults = array_slice($_results,$startRange,11);
-			} else {
-				$category = true;
-				$pageResults = $_results;
-				if ($page > 1) {
-					$pageResults = array();
-				}
-			}
-			foreach ($pageResults as $index => $result) {
-				if ($result['type'] == 'city') {
-					$city = $cityMapper->find($result['id']);
-					$media = $city->getRandomMedia();
-					$data[] = array(
-						'id'				=> $city->getId(),
-						'type'				=> 'city',
-						'link'				=> $city->getDiscoverLink(),
-						'image'				=> $media->getResizerCdnLink(),
-						'escaped_title'		=> $city->getFullName(),
-						'title'				=> $city->getFullName(),
-						'location'			=> $city->getFullName(),
-						'escaped_location'	=> $city->getFullName(),
-					);
-				} elseif ($result['type'] == 'category') {
-					$category = $categoryMapper->find($result['id']);
-					$media = $category->getRandomMedia();
-					$data[] = array(
-						'id'				=> $category->getId(),
-						'type'				=> 'category',
-						'link'				=> $category->getDiscoverLink(),
-						'image'				=> $media->getResizerCdnLink(),
-						'escaped_title'		=> $category->getName(),
-						'title'				=> $category->getName(),
-					);
-				} elseif ($result['type'] == 'series') {
-					$series = $seriesMapper->find($result['id']);
-					$media = $series->getRandomMedia();
-					$data[] = array(
-						'id'				=> $series->getId(),
-						'type'				=> 'series',
-						'link'				=> $series->getSeriesLink(),
-						'image'				=> $media->getResizerCdnLink(),
-						'escaped_title'		=> $series->getName(),
-						'title'				=> $series->getName(),
-						'user'				=> $series->getUser()->getUsername(),
-						'user_profile'		=> $series->getUser()->getProfileLink(),
-						'location'			=> $media->getLocation(),
-						'escaped_location'	=> $media->getLocation(false,true),
-						'series_name'		=> $series->getName(),
-						'series_link'		=> $series->getSeriesLink(),
-					);
-				} elseif ($result['type'] == 'user') {
-					$user = $userMapper->find($result['id']);
-					$media = $user->getRandomMedia();
-					$data[] = array(
-						'id'				=> $user->getId(),
-						'type'				=> 'user',
-						'link'				=> $user->getProfileLink(),
-						'image'				=> $media->getResizerCdnLink(),
-						'escaped_title'		=> $user->getUsername(true),
-						'title'				=> $user->getUsername(),
-						'user'				=> $user->getUsername(),
-						'user_profile'		=> $user->getProfileLink(),
-						'location'			=> $media->getLocation(),
-						'escaped_location'	=> $media->getLocation(false,true),
-					);
-				} else {
-					$media = $mediaMapper->find($result['id']);
-					$added = false;
-					if ($episodes = $media->getEpisode()) {
-						if ($episode = $episodes[0]) {
-							if ($series = $episode->getSeries()) {
-								$data[] = array(
-									'id'				=> $media->getId(),
-									'type'				=> 'media',
-									'link'				=> $media->getMediaLink(),
-									'image'				=> $media->getResizerCdnLink(),
-									'escaped_title'		=> $media->getTitle(false,true),
-									'title'				=> $media->getTitle(),
-									'logline'			=> $media->getLogline(),
-									'escaped_logline'	=> $media->getLogline(true),
-									'user'				=> $media->getUser()->getUsername(),
-									'user_profile'		=> $media->getUser()->getProfileLink(),
-									'duration'			=> $media->getDuration(true),
-									'comment_count'		=> count($media->getCommentsAbout()),
-									'views'				=> $media->getViews(),
-									'location'			=> $media->getLocation(),
-									'escaped_location'	=> $media->getLocation(false,true),
-									'rate_up'			=> count($media->getRatings(true)),
-									'rate_down'			=> count($media->getRatings(false)),
-									'series_name'		=> $series->getName(),
-									'series_link'		=> $series->getSeriesLink(),
-								);
-								$added = true;
-							}
-						}
-					}
-					if (!$added) {	
-						$data[] = array(
-							'id'				=> $media->getId(),
-							'type'				=> 'media',
-							'link'				=> $media->getMediaLink(),
-							'image'				=> $media->getResizerCdnLink(),
-							'escaped_title'		=> $media->getTitle(false,true),
-							'title'				=> $media->getTitle(),
-							'logline'			=> $media->getLogline(),
-							'escaped_logline'	=> $media->getLogline(true),
-							'user'				=> $media->getUser()->getUsername(),
-							'user_profile'		=> $media->getUser()->getProfileLink(),
-							'duration'			=> $media->getDuration(true),
-							'comment_count'		=> count($media->getCommentsAbout()),
-							'views'				=> $media->getViews(),
-							'location'			=> $media->getLocation(),
-							'escaped_location'	=> $media->getLocation(false,true),
-							'rate_up'			=> count($media->getRatings(true)),
-							'rate_down'			=> count($media->getRatings(false)),
-						);
-					}
-				}
-			}
-			if ($category) {
-				if($data) {
-					$randkey = rand(0,count($data));
-					$category = $categoryMapper->find($data[$randkey]['id']);
-					$media = $category->getRandomMedia();
-					$link = '/discover';
-					if (isset($_SESSION['DiscoverLocation'])) {
-						$link = $_SESSION['DiscoverLocation']->getDiscoverLink();
-					}
-					$all = array(
-						'id'			=> 0,
-						'type'			=> 'category',
-						'link'			=> $link . '/all videos',
-						'image'			=> $media->getResizerCdnLink(),
-						'escaped_title'	=> 'All Videos',
-						'title'			=> 'All Videos',
-					);
-					array_unshift($data,$all);
-				}
-			}
-			if (count($data) > 6) {
-				$ad = array(
-					array(
-						'type'				=> 'ad',
-						'title'				=> 'search',
-					)
-				);
-				array_splice( $data, 7, 0, $ad );
-			}
-		}
-		$results['data'] = $data;
+        $searchTerm 	= $this->params()->fromPost('searchTerm');
+        $sortTerm 		= $this->params()->fromPost('sortTerm');
+        list($sortField,$sortOrder) = explode(':',$sortTerm);
+        $sortOrder  = ($sortOrder == 'desc') ? SORT_DESC : SORT_ASC;
+		$search		= new \Townspot\Search\Search($this->getServiceLocator());
+		$results    = $search->keywordSearch($searchTerm, $sortField, $sortOrder,$page);
         $json = new JsonModel($results);
         return $json;
     }
+	
+    public function discoverresultsAction()
+    {
+		$data = array();
+        $searchId 		= $this->params()->fromPost('searchId');
+        $page           = $this->params()->fromPost('page') ?: 1;
+        $terms 			= $this->params()->fromPost('terms');
+        $sortTerm 		= $this->params()->fromPost('sortTerm');
+		$search		= new \Townspot\Search\Search($this->getServiceLocator());
+		$results    = $search->discoverSearch($terms, $sortTerm, $page);
+        $json = new JsonModel($results);
+        return $json;
+    }
+
+    protected function executeSearch($searchTerm, $sortField, $sortOrder)
+    {
+        $cache                      = $this->getServiceLocator()->get('cache-general');        
+		$seriesMapper 			= new \Townspot\Series\Mapper($this->getServiceLocator());
+
+        \ZendSearch\Lucene\Analysis\Analyzer\Analyzer::setDefault(
+            new \ZendSearch\Lucene\Analysis\Analyzer\Common\TextNum\CaseInsensitive()
+        );
+		$results = array();
+		
+        //City Search
+        $locationIndex              = new \Townspot\Lucene\LocationIndex($this->getServiceLocator());
+        $query                      = new \ZendSearch\Lucene\Search\Query\MultiTerm();
+        $query->addTerm(new \ZendSearch\Lucene\Index\Term($searchTerm, 'city'));
+        $query->addTerm(new \ZendSearch\Lucene\Index\Term($searchTerm, 'province'));
+        $matches                    = $locationIndex->find($query,'city',SORT_STRING,$sortOrder);
+        foreach ($matches as $hit) {
+            $results[] = array(
+                'type'  => 'city',
+                'id'    => $hit->objectid,
+            );
+        }
+
+        //User Search
+        $artistIndex                = new \Townspot\Lucene\ArtistIndex($this->getServiceLocator());
+        $query                      = new \ZendSearch\Lucene\Search\Query\MultiTerm();
+        $query->addTerm(new \ZendSearch\Lucene\Index\Term($searchTerm, 'username'));
+        $query->addTerm(new \ZendSearch\Lucene\Index\Term($searchTerm, 'artist_name'));
+        if ($sortField == 'created') {
+            $matches = $artistIndex->find($query,'created',SORT_NUMERIC,$sortOrder);
+        } else {
+            $matches = $artistIndex->find($query,'username',SORT_STRING,$sortOrder);
+        }
+        foreach ($matches as $hit) {    
+            $results[] = array(
+                'type'  => 'artist',
+                'id'    => $hit->objectid,
+            );
+        }
+
+        //Series Search
+        $seriesIndex                = new \Townspot\Lucene\SeriesIndex($this->getServiceLocator());
+        $query                      = new \ZendSearch\Lucene\Search\Query\MultiTerm();
+        $query->addTerm(new \ZendSearch\Lucene\Index\Term($searchTerm, 'name'));
+        $query->addTerm(new \ZendSearch\Lucene\Index\Term($searchTerm, 'description'));
+        $query->addTerm(new \ZendSearch\Lucene\Index\Term($searchTerm, 'media_titles'));
+        $query->addTerm(new \ZendSearch\Lucene\Index\Term($searchTerm, 'media_descriptions'));
+        $query->addTerm(new \ZendSearch\Lucene\Index\Term($searchTerm, 'media_loglines'));
+        if ($sortField == 'created') {
+            $matches = $seriesIndex->find($query,'created',SORT_NUMERIC,$sortOrder);
+        } else {
+            $matches = $seriesIndex->find($query,'name',SORT_STRING,$sortOrder);
+        }
+        foreach ($matches as $hit) {    
+//            $results[] = array(
+//                'type'  => 'series',
+//                'id'    => $hit->objectid,
+//            );
+			$series = $seriesMapper->find($hit->objectid);
+			$episodes = $series->getEpisodes();
+			if ($sortOrder == SORT_DESC) {
+				$_episodes = array();
+				foreach ($episodes as $episode) {
+					$_episodes[] = $episode;
+				}
+				$episodes = array_reverse($_episodes);
+			}
+			foreach ($episodes as $episode) {
+				$results[] = array(
+					'type'  => 'media',
+					'id'    => $episode->getMedia()->getId(),
+				);
+			}
+        }
+		
+        //Media Search
+        $mediaIndex                 = new \Townspot\Lucene\VideoIndex($this->getServiceLocator());
+        $query                      = new \ZendSearch\Lucene\Search\Query\MultiTerm();
+        $query->addTerm(new \ZendSearch\Lucene\Index\Term($searchTerm, 'title'));
+        $query->addTerm(new \ZendSearch\Lucene\Index\Term($searchTerm, 'logline'));
+        $query->addTerm(new \ZendSearch\Lucene\Index\Term($searchTerm, 'description'));
+        $query->addTerm(new \ZendSearch\Lucene\Index\Term($searchTerm, 'series_name'));
+        if ($sortField == 'created') {
+            $matches = $mediaIndex->getIndex()
+  		                          ->find($query,'created',SORT_NUMERIC,$sortOrder);
+        } elseif ($sortField == 'views') {
+            $matches = $mediaIndex->getIndex()
+			                      ->find($query,'views',SORT_NUMERIC,$sortOrder);
+        } else {
+            $matches = $mediaIndex->getIndex()
+			                      ->find($query,'title',SORT_STRING,$sortOrder);
+        }
+
+        foreach ($matches as $hit) {   
+			$results[] = array(
+				'type'  => 'media',
+				'id'    => $hit->objectid,
+			);
+        }
+		
+		return $results;
+	}
+	
+    protected function executeDiscoverSearch($province_id, $city_id, $category_id,$sort)
+    {
+		$results 		= array();
+		if ($category_id) {
+			$mediaMapper 	= new \Townspot\Media\Mapper($this->getServiceLocator());
+			if ($category_id < 0) {
+				$category_id = null;
+			}
+			$matches = $mediaMapper->getDiscoverMedia($province_id,$city_id,$category_id,$sort);
+			foreach ($matches as $match) {    
+				$results[] = array(
+					'type'  => 'media',
+					'id'    => $match['id'],
+				);
+			}
+		} else {
+			$categoryMapper 	= new \Townspot\Category\Mapper($this->getServiceLocator());
+			$matches = $categoryMapper->getDiscoverCategories($province_id,$city_id);
+			foreach ($matches as $match) {    
+				$results[] = array(
+					'type'  => 'category',
+					'id'    => $match->getId(),
+				);
+			}
+		}
+		return $results;
+	}
+	
 }
