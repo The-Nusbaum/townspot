@@ -697,5 +697,13 @@ class Entity extends \Townspot\Entity
 		$randkey = array_rand($media,count($media));
 		return $media[$randkey];
 	}
-	
+
+    public function getSeries() {
+        return $this->_series;
+    }
+
+    public function setSeries($value) {
+        $this->_series = $value;
+        return $this;
+    }
 }

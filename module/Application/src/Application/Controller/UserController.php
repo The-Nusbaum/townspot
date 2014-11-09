@@ -38,7 +38,9 @@ class UserController extends AbstractActionController
 
         $this->getServiceLocator()
             ->get('viewhelpermanager')
-            ->get('HeadScript')->appendFile('/js/userProfile.js');
+            ->get('HeadScript')->appendFile('/js/townspot.js')
+            ->appendFile('/js/userProfile.js');
+
         $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
         $user = $userMapper->findOneById($this->auth->getIdentity());
         $this->_view->setVariable('user',$user);
@@ -48,10 +50,7 @@ class UserController extends AbstractActionController
         return $this->_view;
     }
 
-    public function loginAction() 
-	{
-
-    }
+    public function loginAction() {}
 
     public function logoutAction() {
         $this->auth->clearIdentity();
@@ -60,9 +59,62 @@ class UserController extends AbstractActionController
     }
 
     public function editAction() {
-        $form = new \Application\Forms\User\Edit();
+        $request = $this->getRequest();
+        $post = $request->getPost();
+
+        $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+        $user = $userMapper->findOneById($this->auth->getIdentity());
+
+        $countryMapper = new \Townspot\Country\Mapper($this->getServiceLocator());
+        $countries = $countryMapper->findAll();
+
+        $provinceMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
+        $provinces = $provinceMapper->findByCountry($user->getCountry());
+
+        $cityMapper = new \Townspot\City\Mapper($this->getServiceLocator());
+        $cities = $cityMapper->findByProvince($user->getProvince());
+
+        $form = new \Application\Forms\User\Edit('user',$countries,$provinces,$cities);
+        $userData = $user->toArray();
+        $userData['user_id'] = $userData['id'];
+        $form->setData($userData);
+
+        $form->setData($user->toArray());
+        $this->_view->setVariable('form', $form);
+
+        $this->getServiceLocator()
+            ->get('viewhelpermanager')
+            ->get('HeadScript')->appendFile('/js/userEdit.js');
+
+
+        return $this->_view;
+    }
+
+    public function manageseriesAction() {
+        $this->getServiceLocator()
+            ->get('viewhelpermanager')
+            ->get('HeadScript')->appendFile('/js/manageseries.js');
+
+        $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+        $user = $userMapper->findOneById($this->auth->getIdentity());
+        $this->_view->setVariable('user',$user);
+        return $this->_view;
+    }
+
+    public function registerAction() {
+        $countryMapper = new \Townspot\Country\Mapper($this->getServiceLocator());
+        $countries = $countryMapper->findAll();
+
+        $provinceMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
+        $provinces = $provinceMapper->findByCountry(99);
+
+        $form = new \Application\Forms\User\Register('user',$countries,$provinces);
         $this->_view->setVariable('form',$form);
-        $this->_view->setVariable('foo','bar');
+
+        $this->getServiceLocator()
+            ->get('viewhelpermanager')
+            ->get('HeadScript')->appendFile('/js/userRegister.js');
+
         return $this->_view;
     }
 }

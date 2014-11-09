@@ -170,7 +170,7 @@
 		"tinymce/tinymce": "dev-master",
 		"trentrichardson/jquery-timepicker-addon": "dev-master",
 		"newerton/fullcalendar": "dev-master",
-		"moxiecode/plupload": "dev-master",
+		"moxiecode/plupload": "2.1.2",
 		"jqgeeks/jquery-timeago": "dev-master",
 		"videlalvaro/php-amqplib": "2.4.*@dev",
 		"snapshotpl/zf-snap-geoip": "dev-master",

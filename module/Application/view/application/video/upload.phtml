@@ -1,0 +1,71 @@
+<div class="container" id="videoUpload">
+    <?php foreach($flash as $f): ?>
+        <div class="alert alert-success" role="alert" style="display:block;"><?= $f ?></div>
+    <?php endforeach; ?>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1 row">
+            <div class="col-sm-12">
+                <h2>Submit a Video</h2>
+            </div>
+            <?= $headForm ?>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <ul class="nav nav-tabs nav-justified">
+                    <li id="youtab" class="active">
+                        <a href="#youtube" data-toggle="tab">Submit Via <img class="youtubelogo" src='/img/youtube.png' alt="youtube"></a>
+                    </li>
+                    <li><a href="#upload" data-toggle="tab">Submit via Upload</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="tab-content">
+            <div id="upload" class="tab-pane">
+                <div class="col-md-8">
+                    <?= $manualForm ?>
+                </div>
+                <div class="col-md-4">
+                    <?= $videoMediaForm ?>
+                </div>
+
+            </div>
+            <div class="tab-pane  active" id="youtube">
+                <h3 class="center-block" style="width:225px"><img class="youtubelogo" src="/img/youtube.png" alt="youtube"> Submission</h3>
+                <?= $ytForm ?>
+                <div class="help-block text-center">Just provide us with a <img class="youtubelogo" src="/img/youtube.png" alt="youtube"> URL and we'll take it from there!</span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="row well well-lg">
+                    <?= $footerForm ?>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 form-group">
+                <form id="submitForm" action="/videos/review" method="POST">
+                    <button id="submit" class="form-control btn btn-primary" type="submit">Submit Video</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="resultModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Your video Upload...</h4>
+                </div>
+                <div class="modal-body">
+                    <p class="content"></p>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <script>
+        upload.init();
+    </script>

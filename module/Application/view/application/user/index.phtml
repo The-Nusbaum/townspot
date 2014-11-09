@@ -6,7 +6,7 @@
     <div class="col-sm-8">
         <ul class="nav nav-pills pull-right">
             <?php if ($canEdit): ?>
-                <li><a href="/users/manageseries">Manage My Series</a></li>
+                <li><a href="/user/manageseries">Manage My Series</a></li>
             <?php endif; ?>
             <li class="active"><a href="#profile" data-toggle="tab">Profile</a></li>
             <!-- <li><a href="#events" data-toggle="tab">Events</a></li> -->
@@ -165,10 +165,11 @@
 
             <?php foreach($user->getCommentsAbout() as $comment): ?>
                 <div class="row col-xs-12 comment">
-                    <a class="col-xs-2" href="/u/<?=$comment['user_id']?>"><img class="img-responsive" src="<?= $this->img('user',$comment['user_id'],100,100)?>" alt="a"/></a>
-                    <?php $time = strtotime($comment['created']) + $TZoffset; ?>
+                    <a class="col-xs-2" href="/u/<?=$comment->getUser()->getId()
+                    ?>"><img class="img-responsive" src="<?= $this->img('user',$comment->getUser()->getId(),100,100)?>" alt="a"/></a>
+                    <?php $time = strtotime($comment->getCreated())?>
                     <?php $time = date('Y-m-d H:i:s', $time); ?>
-                    <p class="col-xs-9 offset-xs-1"><?=$comment['comment']?><br><a href="/u/<?=$comment['user_id']?>"><?=$comment['Commenter']['username']?></a> - <abbr class="timeago" title="<?= $time ?>"></abbr></p>
+                    <p class="col-xs-9 offset-xs-1"><?=$comment->getComment()?><br><a href="/u/<?=$comment->getUser()->getId()?>"><?=$comment->getUser()->getId()?></a> - <abbr class="timeago" title="<?= $time ?>"></abbr></p>
                 </div>
             <?php endforeach; ?>
         </div>
@@ -290,17 +291,17 @@
 </div>
 <div class="tab-pane" id="videos">
     <div class="row">
-        <h3 class="col-sm-12"><?= ($canEdit)?'Your':$user->getUsername()."'s" ?> Videos (<?= count($user->getMedia())?>):</h3>
+        <h3 class="col-sm-12"><?= ($canEdit)?'Your':$user->getUsername()."'s" ?> Videos (<span class='videoCount'><?= count($user->getMedia())?></span>):</h3>
     </div>
     <div class="row">&nbsp;</div>
     <div class="list row">
         <?php foreach($user->getMedia() as $v) :?>
             <?php
-                $ups = $downs = 0;
-                foreach($v->getRatings() as $r) {
-                    if($r->getRating()) $ups++;
-                    else $downs++;
-                }
+            $ups = $downs = 0;
+            foreach($v->getRatings() as $r) {
+                if($r->getRating()) $ups++;
+                else $downs++;
+            }
             ?>
             <div class="col-sm-6 video">
                 <a href="/videos/<?=$v->getId()?>/<?= urlencode($v->getTitle())?>" class="thumbnail">
@@ -363,7 +364,7 @@
                         <dd><?=$downs?></dd>
                     </dl>
                     <h4>Video Actions</h4>
-                    <ul class="list-unstyled">
+                    <ul class="list-unstyled" data-id="<?=$v->getId()?>">
                         <li class="delete"><i class="fa fa-times"></i> Delete</li>
                         <li class="edit"><i class="fa fa-pencil"></i> Edit</li>
                     </ul>

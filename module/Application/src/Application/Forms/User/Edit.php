@@ -5,10 +5,29 @@ use Townspot\Form\Form;
 
 class Edit extends Form
 {
-    public function __construct($name = null)
+    protected $_countries;
+    protected $_provinces;
+    protected $_cities;
+
+    public function __construct($name = null,$colCountries = null, $colProvinces = null, $colCities = null)
     {
         // we want to ignore the name passed
         parent::__construct('user');
+
+        $this->setAttribute('id','userEdit');
+
+        foreach($colCountries as $c) {
+            $countries[$c->getId()] = $c->getName();
+        }
+
+        foreach($colProvinces as $p) {
+            $provinces[$p->getId()] = $p->getName();
+        }
+
+        foreach($colCities as $c) {
+            $cities[$c->getId()] = $c->getName();
+        }
+
         $this->setAttribute('method', 'post');
         $this->setAttribute('columns',2);
         $this->add(array(
@@ -26,7 +45,7 @@ class Edit extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'artist_name',
+            'name' => 'artistName',
             'attributes' => array(
                 'type'  => 'text',
                 'label' => 'Artist Name',
@@ -42,7 +61,7 @@ class Edit extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'first_name',
+            'name' => 'firstName',
             'attributes' => array(
                 'type'  => 'text',
                 'label' => 'First Name',
@@ -51,13 +70,29 @@ class Edit extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'last_name',
+            'name' => 'lastName',
             'attributes' => array(
                 'type'  => 'text',
                 'label' => 'Last Name',
                 'length' => '50',
                 'width' => 6,
             ),
+        ));
+        $this->add(array(
+            'name' => 'password_requirements',
+            'attributes' => array(
+                'type' => 'custom-block',
+                'label' => 'Password Requirements',
+                'inner-html' => "<ul class='list-unstyled'>
+				                <li>One uppercase Letter</li>
+				                <li>One lowercase Letter</li>
+				                <li>One number</li>
+				                <li>at least 8 characters</li>
+				                <li>no more than 15 characters</li>
+				            </ul>",
+                'errorId' => 'invalidpass',
+                'errorMessage' => 'You must enter a valid password'
+            )
         ));
         $this->add(array(
             'name' => 'password',
@@ -78,7 +113,7 @@ class Edit extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'display_name',
+            'name' => 'displayName',
             'attributes' => array(
                 'type'  => 'text',
                 'label' => 'Display Name',
@@ -91,9 +126,13 @@ class Edit extends Form
             'attributes' => array(
                 'type'  => 'select',
                 'label' => 'Country',
-                'placeholder' => 'Please select a Country'
+                'placeholder' => 'Please select a Country',
+            ),
+            'options' => array(
+                'value_options' => $countries
             ),
         ));
+
         $this->add(array(
             'type' => 'Zend\Form\Element\Select',
             'name' => 'province_id',
@@ -102,6 +141,9 @@ class Edit extends Form
                 'label' => 'State',
                 'placeholder' => 'Please select a State',
                 'width' => 6,
+            ),
+            'options' => array(
+                'value_options' => $provinces
             ),
         ));
         $this->add(array(
@@ -113,6 +155,9 @@ class Edit extends Form
                 'placeholder' => 'Please select a City',
                 'width' => 6,
             ),
+            'options' => array(
+                'value_options' => $cities
+            ),
         ));
         $this->add(array(
             'name' => 'neighborhood',
@@ -122,7 +167,7 @@ class Edit extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'about_me',
+            'name' => 'aboutMe',
             'attributes' => array(
                 'type'  => 'textarea',
                 'label' => 'About Me',
@@ -159,7 +204,7 @@ class Edit extends Form
             'attributes' => array(
                 'type'  => 'plupload-image',
                 'column' => 2,
-                'label' => 'Please click the image to choose a profile Picture',
+                'label' => 'Please choose a profile Picture',
                 'class' => 'profilePic',
                 'value' => 'http://images.townspot.tv/resizer.php?id=none&type=profile'
             ),
@@ -190,25 +235,27 @@ class Edit extends Form
                 'type'  => 'checkbox',
                 'label' => 'Allow other users to contact me',
                 'column' => 'span',
-                'width' => 4,
+                'width' => 6,
             ),
         ));
-        $this->add(array(
-            'name' => 'terms_agreement',
-            'attributes' => array(
-                'type'  => 'checkbox',
-                'label' => 'Receive email notifications',
-                'column' => 'span',
-                'width' => 4,
-            ),
-        ));
+
         $this->add(array(
             'name' => 'email_notifications',
             'attributes' => array(
                 'type'  => 'checkbox',
                 'label' => 'Receive Email Notifications',
                 'column' => 'span',
-                'width' => 4,
+                'width' => 6,
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'submit',
+            'attributes' => array(
+                'type'  => 'button',
+                'btn-type' => 'submit',
+                'label' => 'Save Changes',
+                'column' => 'span',
             ),
         ));
 

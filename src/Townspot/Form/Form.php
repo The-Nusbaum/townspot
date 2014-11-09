@@ -11,7 +11,10 @@ namespace Townspot\Form;
 class Form extends \Zend\Form\Form {
     public function __toString() {
         $html = '';
-        $html .= "<form role='form' action='{$this->getAttribute('action')}' method='{$this->getAttribute('method')}'>";
+        $html .= "<form role='form' action='{$this->getAttribute('action')}' method='{$this->getAttribute('method')}'";
+        $id = $this->getAttribute('id');
+        if($id) $html .= " id='$id'";
+        $html .= ">";
         $columns = $this->getAttribute('columns');
         if(!$columns) $columns = 1;
 
@@ -23,7 +26,9 @@ class Form extends \Zend\Form\Form {
         for ($i = 0; $i < $columns; $i++) {
             $html .= "<div class='col-md-$colWidth'>";
             foreach ($this->getElements() as $e) {
-                if ($e->getAttribute('column') != $colnum) continue;
+                $column = $e->getAttribute('column');
+                if(!$column) $column = 1;
+                if ( $column != $colnum) continue;
                 $html .= $this->_renderElement($e);
             }
             $html .= "</div>";
@@ -59,20 +64,26 @@ class Form extends \Zend\Form\Form {
         $length = $e->getAttribute('maxlength');
         $type = $e->getAttribute('type');
         $value = $e->getValue();
-        $id = $e->getAttribute('id') || $name;
+        $id = $e->getAttribute('id');
+        $errorId = $e->getAttribute('errorId');
+        $errorMessage = $e->getAttribute('errorMessage');
+        if(!$id) $id = $name;
         $placeholder = $e->getAttribute('placeholder');
         if(!$placeholder) $placeholder = $label;
 
-        if($width) {
-            $html .= "<div class='col-md-$width'>";
-        } else {
-            $html .= "<div class='col-md-12'>";
+        if($type != 'hidden') {
+            if ($width) {
+                $html .= "<div class='col-md-$width'>";
+            } else {
+                $html .= "<div class='col-md-12'>";
+            }
+            $html .= "<div class='form-group'>";
+            $html .= "<div class='input $type'>";
         }
-        $html .= "<div class='form-group'>";
-        $html .= "<div class='input $type'>";
 
 
         switch($type) {
+            case 'hidden':
             case 'text':
             case 'password':
             case 'email':
@@ -88,14 +99,16 @@ class Form extends \Zend\Form\Form {
                 if($label) $html .= "<label for='$name'>$label</label>";
                 $html .= "<select name='$name' id='$id' class='form-control $class'>";
                 $html .= "<option value=''>$placeholder</option>";
-                foreach($e->getValueOptions() as $value => $text) {
-                    $html .= "<option value='$value'>$text</option>";
+                foreach($e->getValueOptions() as $key => $text) {
+                    if($value == $key) $selected = ' selected';
+                    else $selected = '';
+                    $html .= "<option value='$key'$selected>$text</option>";
                 }
                 $html .= "</select>";
                 break;
             case 'radio':
                 if($label) $html .= "<label for='$name'>$label</label>";
-                $html .= "<input type='hidden' name='$name' id='$id' value='0'>";
+                $html .= "<input type='hidden' name='$name' value='0'>";
                 $html .= "<div>";
                 $radioWidth = floor(12 / count($e->getValueOptions()));
                 foreach($e->getValueOptions() as $key => $text) {
@@ -109,38 +122,84 @@ class Form extends \Zend\Form\Form {
                 if($label) $html .= "<label for='$name'>$label</label>";
                 if($value) $checked = " checked='1'";
                 else $checked = '';
-                $html .= "<input type='hidden' name='$name' id='$id' value='0'>";
+                $html .= "<input type='hidden' name='$name' value='0'>";
                 $html .= "<input type='$type' name='$name' id='$id' value='1'$checked>";
                 break;
             case 'textarea':
                 if($label) $html .= "<label for='$name'>$label</label>";
-                $html .= "<textarea name='$name' class='form-control $class'></textarea>";
+                $html .= "<textarea name='$name' class='form-control $class' id='$id'>$value</textarea>";
                 break;
             case 'plupload-image':
-                $html .= "<div class='profilePic'>";
-		        $html .= "<div class='help-block well text-center'>$label</div>";
+                $html .= "<button id='plupload-image' class='form-control' style='position: relative; z-index: 1;'>";
+                $html .= "$label";
+                $html .= "</button>";
                 $html .= "<div class='form-group'>";
 			    $html .= "<img id='$id' src='$value' class='picPreview img-responsive'>";
-                $html .= "<input type='hidden' name='image_url' id='plupPicVal' value='$value'>";
+                $html .= "<input type='hidden' name='$name' id='plupPicVal' value='$value'>";
+                $html .= "</div>";
+                break;
+            case 'plupload-video':
+                $html .= "<button id='plupload-video' class='form-control' style='position: relative; z-index: 1;'>";
+                $html .= "$label";
+                $html .= "</button>";
+                $html .= "<div class='progress'>";
+                $html .= "<div class='progress-bar' role='progressbar' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100' style='width: 0%;'>";
                 $html .= "</div>";
                 $html .= "</div>";
+                $html .= "<input type='hidden' id='videofile' value='' name='$name'>";
                 break;
             case 'button':
                 $btn_class =$e->getAttribute('button-class');
                 if(!$btn_class) $btn_class = 'primary';
-
                 $html .= "<button class='btn btn-$btn_class form-control $class''";
                 if($id) $html .= " id='$id'";
+                $btn_type = $e->getAttribute('btn-type');
+                if($btn_type) $html .= " type='$btn_type'";
                 $html .= ">";
                 if($label) $html .= $label;
                 else $html .= "submit";
                 $html .= "</button>";
                 break;
+            case 'custom-block':
+                if($label) $html .= "<h3>$label</h3>";
+                $html .= $e->getAttribute('inner-html');
+                break;
+            case 'tree':
+                if($label) $html .= "<h3>$label</h3>";
+                $subColumns = $e->getAttribute('tree-columns');
+                if(is_array($subColumns)) {
+                    $subColWidth = floor(12 / count($subColumns));
+                    foreach ($subColumns as $colName => $options) {
+                        $html .= "<div class='col-md-$subColWidth'>";
+                        $html .= "<h3>$colName</h3>";
+                        $colClass = '';
+                        if(!empty($options['class'])) $colClass = " ".$options['class'];
+                        $html .= "<ul class='list-group$colClass'>";
+                        if(!empty($v['parents']) && $v['parents']) $parent = 'parent ';
+                        else $parent = '';
+                        if(!empty($v['item-class'])) $itemClass= " ".$v['item-class'];
+                        $itemClass = '';
+                        if(!empty($options['values']) && is_array($options['values'])){
+                            foreach($options['values'] as $valId => $valName){
+                                $html .= "<li class='list-group-item$parent$itemClass' data-id='$valId'>$valName</li>";
+                            }
+                        }
+                        $html .= "</ul>";
+                        $html .= "</div>";
+                    }
+
+                }
+                break;
+        }
+        if($errorId) {
+            $html .= "<div class='alert alert-warning  $errorId' style='display:none'>$errorMessage</div>";
         }
 
-        $html .= "</div>";
-        $html .= "</div>";
-        $html .= "</div>";
+        if($type != 'hidden') {
+            $html .= "</div>";
+            $html .= "</div>";
+            $html .= "</div>";
+        }
 
         return $html;
     }

@@ -25,13 +25,18 @@ class ModelController extends \Townspot\Controller\BaseRestfulController
 
 
             $model = ucFirst($controller->params()->fromRoute('model'));
+            $method = $controller->params()->fromRoute('method');
+            $id = $controller->params()->fromRoute('id');
             $this->setModel($model);
             $mapperClass = "\\Townspot\\".$model."\\Mapper";
             $controllerClass = "\\Api\\Controller\\{$this->getModel()}Controller";
 
-            if(class_exists($controllerClass)) {
+            if($this->getRequest()->isGet() && class_exists($controllerClass)) {
                 header('Content-type: application/json');
-                die(json_encode($this->forward()->dispatch($controllerClass)->getVariables()));
+                if(method_exists(new $controllerClass, $method.'Action')) {
+                    $response = $this->forward()->dispatch($controllerClass,array('action'=>$method,'id' => $id))->getVariables();
+                } else $response = $this->forward()->dispatch($controllerClass)->getVariables();
+                die(json_encode($response));
             }
 
             $this->setMapper(new $mapperClass($this->getServiceLocator()));

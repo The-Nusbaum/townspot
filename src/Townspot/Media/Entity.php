@@ -129,7 +129,7 @@ class Entity extends \Townspot\Entity
 
 	public function setUrl($value)
 	{
-		$uri = Zend\Uri\UriFactory::factory($value);
+		$uri = \Zend\Uri\UriFactory::factory($value);
 		if ($uri->isValid()) {
 			$this->_url = $value;
 		}
@@ -138,7 +138,7 @@ class Entity extends \Townspot\Entity
 
 	public function setPreviewImage($value)
 	{
-		$uri = Zend\Uri\UriFactory::factory($value);
+		$uri = \Zend\Uri\UriFactory::factory($value);
 		if ($uri->isValid()) {
 			$this->_preview_image = $value;
 		}

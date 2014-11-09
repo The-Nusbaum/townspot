@@ -50,14 +50,32 @@
                 $('.unfav').click(function(e){
                     methods.unfav(e);
                 });
-                $('.stats .delete').click(function(){
+                $('.stats .delete').click(function(e){
+                    var $target = $(e.target);
+                    var id = $target.parents('ul').attr('data-id');
                     bootbox.confirm("Are you sure?", function(result) {
                         if(result){
-                            $.get(
-                                '/'
-                            );
+                            $.ajax({
+                                    type: 'DELETE',
+                                    url: '/api/media/'+id
+                                }
+
+                            ).done(function(data){
+                                    if(data.success) {
+                                        $stats = $target.parents('.stats');
+                                        $stats.prev().remove();
+                                        $stats.remove();
+                                        $('.videoCount').text($('#videos .video').length);
+                                    }
+                                });
                         }
                     });
+                });
+
+                $('.stats .edit').click(function(e){
+                    var $target = $(e.target);
+                    var id = $target.parents('ul').attr('data-id');
+                    window.location = "/video/edit/" + id;
                 });
 
                 //calculate the offset

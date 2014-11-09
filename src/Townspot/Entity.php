@@ -17,7 +17,9 @@ class Entity {
             $propname = lcfirst(ltrim($method, 'get'));
             $value = $this->{$method}();
             if(is_object($value)) {
-                if(method_exists($value,'getId')) {
+                if(get_class($value) == 'DateTime') {
+                    $value = $value->format('Y-m-d H:i:s');
+                } elseif(method_exists($value,'getId')) {
                     $propname .= '_id';
                     $value = $value->getId();
                 } else {

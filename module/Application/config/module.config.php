@@ -36,6 +36,21 @@ return array(
                     'socialmedia.css',
                     'style.less',
                 ),
+                'css/tinymce/skin.min.css' => array(
+                    'tinymce/tinymce/skins/lightgray/skin.min.css'
+                ),
+                'css/tinymce/content.min.css' => array(
+                    'tinymce/tinymce/skins/lightgray/content.min.css'
+                ),
+                'css/tinymce/fonts/tinymce.woff' => array(
+                    'tinymce/tinymce/skins/lightgray/fonts/tinymce.woff'
+                ),
+                'css/tinymce/fonts/tinymce.ttf' => array(
+                    'tinymce/tinymce/skins/lightgray/fonts/tinymce.ttf'
+                ),
+                'css/tinymce/fonts/tinymce.svg' => array(
+                    'tinymce/tinymce/skins/lightgray/fonts/tinymce.svg'
+                ),
                 'css/admin.css' => array(
                     'xxs.less',
                     'socialmedia.css',
@@ -43,7 +58,7 @@ return array(
                     'admin.less',
                 ),
                 'js/townspot.js' => array(
-					'kalenjordan/jquery-cookie/jquery.cookie.js',
+                    'kalenjordan/jquery-cookie/jquery.cookie.js',
 					'jqgeeks/jquery-timeago/jquery.timeago.js',
 					'underscore/underscore-min.js',
 					'backbone/backbone-min.js',
@@ -55,6 +70,16 @@ return array(
 					'togglebuttons.js',
 					'geolocation.js',
 					'expander.js',
+                    'plupload/moxie.min.js',
+                    'plupload/plupload.min.js',
+                    'tinymce/tinymce/tinymce.js',
+
+                ),
+                'js/tinymceTheme.js' => array(
+                    'tinymce/tinymce/themes/modern/theme.min.js'
+                ),
+                'js/userEdit.js' => array(
+                    'userEdit.js'
                 ),
                 'js/home.js' => array(
                     'collection/video.js',
@@ -167,8 +192,8 @@ return array(
 						'action'     => 'embed',
 					),
 				),
-			),	
-			'add-video' => array(
+			),
+            'add-video' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
                     'route'    => '/add-video',
@@ -177,7 +202,17 @@ return array(
                         'action'     => 'upload',
                     ),
                 ),
-			),
+            ),
+            'sign-up' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/sign-up',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\User',
+                        'action'     => 'register',
+                    ),
+                ),
+            ),
 			'upload' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -188,6 +223,16 @@ return array(
                     ),
                 ),
 			),
+            'review' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/videos/review',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Video',
+                        'action'     => 'review',
+                    ),
+                ),
+            ),
 			'video_edit' => array(
 				'type' => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(
@@ -387,6 +432,16 @@ return array(
                     'defaults' => array(
                         'controller' => 'Application\Controller\User',
                         'action'     => 'edit',
+                    ),
+                ),
+            ),
+            'manage_series' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/user/manageseries',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\User',
+                        'action'     => 'manageseries',
                     ),
                 ),
             ),
@@ -621,7 +676,18 @@ return array(
 						'action'     => 'index',
 					),
 				),
-			),	
+			),
+            'upload_files' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/file/upload',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\File',
+                        'action'     => 'upload',
+                    ),
+                ),
+            ),
+
             'application' => array(
                 'type'    => 'Literal',
                 'options' => array(
@@ -681,6 +747,7 @@ return array(
             'Application\Controller\User' 		=> 'Application\Controller\UserController',
             'Application\Controller\StaticPage' => 'Application\Controller\StaticPageController',
             'Application\Controller\Ajax' 		=> 'Application\Controller\AjaxController',
+            'Application\Controller\File' 		=> 'Application\Controller\FileController',
         ),
         'factories' => array(
             'Application\Controller\Console' => 'Application\Controller\ConsoleControllerFactory',
