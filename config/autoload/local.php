@@ -1,9 +1,9 @@
 <?php
 $db = array(
-		'host'     => 'localhost',
+		'host'     => '216.157.108.165',
 		'port'     => '3306',
-		'user'     => 'root',
-		'password' => '',
+		'user'     => 'tsz_user',
+		'password' => 'sh@Fnrt1ps0',
 		'dbname'   => 'tsz',
 );
 
