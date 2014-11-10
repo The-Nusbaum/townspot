@@ -53,27 +53,27 @@
 				</button>
 			</a>
 		</div>		
-        <div class="container">
-            <div id="fb-root"></div>
         <div class="container" id="<?= $this->controllerName(); ?>-<?= $this->actionName(); ?>">
+            <div id="fb-root"></div>
+        <div class="container main-content">
             <?php echo $this->content; ?>
         </div> 
 		<nav id="footer" role="navigation" class="navbar navbar-footer">
 			<div class="container hidden-xs">
 				<ul class="nav navbar-nav navbar-left">
 					<li><a href="/">&copy; 2013 TownSpot, Inc.</a></li>
-					<li><a href="/privacy">Privacy</a></li>
-					<li><a href="/terms-conditions">Terms</a></li>
-					<li><a href="/contact-us">Contact</a></li>
-					<li><a target='_blank' href="http://backstage.townspot.tv/advertise-2/"><strong>Advertise with Us</strong></a></li>
-					<li><a href="/what-is-townspot">What is TownSpot?</a></li>
+					<li class="hidden-xss hidden-xs hidden-sm"><a href="/privacy">Privacy</a></li>
+					<li class="hidden-xss hidden-xs hidden-sm"><a href="/terms-conditions">Terms</a></li>
+					<li class="hidden-xss hidden-xs hidden-sm"><a href="/contact-us">Contact</a></li>
+					<li class="hidden-xss hidden-xs hidden-sm"><a target='_blank' href="http://backstage.townspot.tv/advertise-2/"><strong>Advertise with Us</strong></a></li>
+					<li class="hidden-xs hidden-sm hidden-xss"><a href="/what-is-townspot">What is TownSpot?</a></li>
 				</ul>
 				<div class="nav navbar-nav navbar-right social-media">
 					<ul>
 						<li><a target="_blank" title="Follow on facebook" href="http://www.facebook.com/townspot" class="socialmedia-facebook-medium"></a></li>
 						<li><a target="_blank" title="Follow on twitter" href="http://www.twitter.com/townspottv" class="socialmedia-twitter-medium"></a></li>
-						<li><a target="_blank" title="Follow on linkedin" href="http://www.linkedin.com/company/townspot-inc" class="socialmedia-linkedin-medium"></a></li>
-						<li><a target="_blank" title="Follow on pinterest" href="http://www.pinterest.com/townspot" class="socialmedia-pinterest-medium"></a></li>
+						<li class="hidden-xs hidden-sm"><a target="_blank" title="Follow on linkedin" href="http://www.linkedin.com/company/townspot-inc" class="socialmedia-linkedin-medium"></a></li>
+						<li class="hidden-xs hidden-sm"><a target="_blank" title="Follow on pinterest" href="http://www.pinterest.com/townspot" class="socialmedia-pinterest-medium"></a></li>
 					</ul>
 				</div>
 			</div>
@@ -92,5 +92,15 @@
 	$('#discover-menu-link').attr('href','<?= $_SESSION['DiscoverLink']; ?>');
 </script>
 <?php } ?>
+<script>
+$(function() {
+	$('.expandable').expander({
+		expandText: 'read&nbsp;more',
+		userCollapseText: 'read&nbsp;less',
+		slicePoint: 80,
+		expandPrefix: ' '
+	});
+});
+</script>
     </body>
 </html>

@@ -20,9 +20,11 @@ class Mapper extends AbstractEntityMapper
 						GROUP_CONCAT(media.logline SEPARATOR ' ') as media_loglines
 				 FROM series
 				 JOIN series_episodes on series_episodes.series_id = series.id
-				 JOIN media on series_episodes.media_id = media.id";
+				 JOIN media on series_episodes.media_id = media.id
+			     WHERE media.approved = 1 ";
 		if ($dateTime) {
-			$sql .= " WHERE series.updated >= '" . $dateTime->format('Y-m-d H:i:s') . "'";
+			$sql .= " AND (media.updated >= '" . $dateTime->format('Y-m-d H:i:s') . "'";
+			$sql .= " OR series.updated >= '" . $dateTime->format('Y-m-d H:i:s') . "')";
 		}
 		$sql .= " GROUP BY series.id";
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);

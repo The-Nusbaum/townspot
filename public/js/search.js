@@ -5,9 +5,10 @@
 		var searchResultsView 			= new SearchResultView({el: 		'#search-results'});		
         var defaults = {
 			searchId: '',
+			page: 1,
 			searchTerm: '',
 			sortTerm: 'created:asc',
-			page: 1
+			data: []
 		};
         var methods = 
         {
@@ -28,50 +29,53 @@
 					data: { 
 						searchId: options.searchId,
 						page: options.page,
+						searchTerm: options.searchTerm,
+						sortTerm: options.sortTerm,
 					}
 				}).done(function ( data ) {
-					if (data.reload) {
-						//Redirect
-					} else {
-						$.each(data.data, function() {
-							searchResultsCollection.add(new Video(this));
-						});
-						searchResultsView.render(searchResultsCollection);
-						options.page = options.page + 1;
-						$(document).endlessScroll({
-							inflowPixels: 50,
-							fireDelay: 10,
-							callback: function(i) {
-								methods.getResults(false);
-							},
-							ceaseFire: function() {
-								if (data.data.length < 12) {
-									return true;
-								}
-								if (data.data.length == 0) {
-									return true;
-								}
-								return false;
-							}
-						});
-						setTimeout( function() { 
-							$('#Loading').modal('hide');
-							$('.loading').removeClass('loading'); 
-							$('.loading-spinner').css('display','none');
-						}, 500 );
-						setInfoButtons();
-						loadAds();
-					}
+					options.data = data.data;
+					methods.renderPage();
 				});
 			},
             updateOrder : function(element)              
             {
 				options.sort = $(element).val();
 				window.location.href = "/videos/search?q=" + options.searchTerm + "&sort=" + options.sort;
+			},
+            renderPage : function()              
+            {
+				$.each(options.data, function() {
+					searchResultsCollection.add(new Video(this));
+				});
+				searchResultsView.render(searchResultsCollection);
+				setInfoButtons();
+				loadAds();
+				setTimeout( function() { 
+					$('#Loading').modal('hide');
+					$('.loading').removeClass('loading'); 
+					$('.loading-spinner').css('display','none');
+				}, 100 );
+				options.page = options.page + 1;
+					$(document).endlessScroll({
+					inflowPixels: 50,
+					fireDelay: 10,
+					callback: function(i) {
+						methods.getResults();
+					},
+					ceaseFire: function() {
+						if (options.data.length < 12) {
+							return true;
+						}
+						if (options.data.length == 0) {
+							return true;
+						}
+						return false;
+					}
+				});
 			}
 		}
         var options = $.extend(defaults, options);
 		$('#sort').change(function() { methods.updateOrder(this) });
-		methods.getResults();
+		methods.renderPage();
     };
 })(jQuery);

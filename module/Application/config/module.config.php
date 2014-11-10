@@ -51,6 +51,12 @@ return array(
                 'css/tinymce/fonts/tinymce.svg' => array(
                     'tinymce/tinymce/skins/lightgray/fonts/tinymce.svg'
                 ),
+                'css/admin.css' => array(
+                    'xxs.less',
+                    'socialmedia.css',
+                    'style.less',
+                    'admin.less',
+                ),
                 'js/townspot.js' => array(
                     'kalenjordan/jquery-cookie/jquery.cookie.js',
 					'jqgeeks/jquery-timeago/jquery.timeago.js',
@@ -99,7 +105,7 @@ return array(
                 'cache'     => 'AssetManager\\Cache\\FilePathCache',
                 'options' => array(
 					'dir' => APPLICATION_PATH . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'static',
-               ),
+                ),
             ),
         ),		
 		'filters' => array(
@@ -148,6 +154,17 @@ return array(
                     ),
                 ),
             ),
+            'discover-results' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/videos/discoverresults',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Ajax',
+                        'action'     => 'discoverresults',
+                    ),
+                ),
+            ),
+			
 			'video_player' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(
@@ -819,7 +836,16 @@ return array(
                             'action'     => 'builddelta',
                         )
                     )
-                )
+                ),
+                'clear-cache' => array(
+                    'options' => array(
+                        'route'    => 'cache clear',
+                        'defaults' => array(
+                            'controller' => 'Application\Controller\Console',
+                            'action'     => 'clearcache',
+                        )
+                    )
+                ),
             )
         )
     ),

@@ -39,8 +39,9 @@ class Module
     }
 	
 	public function setLayout($e) {
-		$matches = $e->getRouteMatch();
+		$matches    = $e->getRouteMatch();
 		$controller = $matches->getParam('controller');
+		$action     = $matches->getParam('action');
 		if (false !== strpos($controller, __NAMESPACE__)) {
 			// Set the layout template
 			$viewModel = $e->getViewModel();

@@ -3,26 +3,25 @@
 $sourceDb = new mysqli('localhost', 'root', '', 'townspot_dev');
 $targetDb = new mysqli('localhost', 'root', '', 'tsz');
 
-//Migrate User
-//$targetDb->query('truncate tsz.user');
-//$targetDb->query('truncate tsz.user_social_media');
-//$targetDb->query('truncate tsz.user_role_linker');
-//$targetDb->query('truncate tsz.user_oauth');
-//$targetDb->query('truncate tsz.user_follow');
-//$targetDb->query('truncate tsz.user_event');
-//$targetDb->query('truncate tsz.artist_comment');
-//$targetDb->query('truncate tsz.user_activity');
-//$targetDb->query('truncate tsz.media');
-//$targetDb->query('truncate tsz.media_category_linker');
-//$targetDb->query('truncate tsz.media_comment');
-//$targetDb->query('truncate tsz.encoding');
-//$targetDb->query('truncate tsz.rating');
-//$targetDb->query('truncate tsz.user_favorite');
-//$targetDb->query('truncate tsz.series');
-//$targetDb->query('truncate tsz.series_season');
-//$targetDb->query('truncate tsz.series_category_linker');
-//$targetDb->query('truncate tsz.series_episodes');
-//$targetDb->query('truncate tsz.section_media');
+$targetDb->query('truncate tsz.user');
+$targetDb->query('truncate tsz.user_social_media');
+$targetDb->query('truncate tsz.user_role_linker');
+$targetDb->query('truncate tsz.user_oauth');
+$targetDb->query('truncate tsz.user_follow');
+$targetDb->query('truncate tsz.user_event');
+$targetDb->query('truncate tsz.artist_comment');
+$targetDb->query('truncate tsz.user_activity');
+$targetDb->query('truncate tsz.media');
+$targetDb->query('truncate tsz.media_category_linker');
+$targetDb->query('truncate tsz.media_comment');
+$targetDb->query('truncate tsz.encoding');
+$targetDb->query('truncate tsz.rating');
+$targetDb->query('truncate tsz.user_favorite');
+$targetDb->query('truncate tsz.series');
+$targetDb->query('truncate tsz.series_season');
+$targetDb->query('truncate tsz.series_category_linker');
+$targetDb->query('truncate tsz.series_episodes');
+$targetDb->query('truncate tsz.section_media');
 
 //Migrate User
 $sql = "SELECT * FROM townspot_dev.users order by id";
@@ -75,7 +74,7 @@ if ($result = $sourceDb->query($sql)) {
 			));
 		}
 		if ($row['status'] == 'A') {
-			if ($row['role'] == 'admin') {
+			if (($row['is_admin'])||($row['role'] == 'admin')) {
 				$targetDb->query(sprintf("INSERT INTO tsz.user_role_linker (`user_id`,`role_id`) VALUES ('%s','Administrator');\n",
 					$row['id']
 				));
@@ -359,7 +358,7 @@ if ($result = $sourceDb->query($sql)) {
 }
 
 //Migrate onstage
-$sql = "SELECT * FROM townspot_dev.video_onstage";
+$sql = "SELECT * FROM townspot_dev.video_onstage where city_id=0";
 if ($result = $sourceDb->query($sql)) {
 	while ($row = $result->fetch_assoc()) {
 		if ($row['video_id']) {
@@ -373,7 +372,7 @@ if ($result = $sourceDb->query($sql)) {
 }
 
 //Migrate spotlight
-$sql = "SELECT * FROM townspot_dev.video_spotlights";
+$sql = "SELECT * FROM townspot_dev.video_spotlights where city_id=0";
 if ($result = $sourceDb->query($sql)) {
 	while ($row = $result->fetch_assoc()) {
 		if ($row['video_id']) {
@@ -394,6 +393,11 @@ $targetDb->query("update media set province_id=null where province_id=0");
 $targetDb->query("update media set admin_id=null where admin_id=0");
 $targetDb->query("update category set parent_id=null where parent_id=0");
 $targetDb->query("update series_episodes set season_id=null where season_id=0");
+$targetDb->query("delete from series_eposides where series_id=0");
+$targetDb->query("delete from series_season where series_id=0");
+$targetDb->query("delete from series_category_linker where series_id=0");
+$targetDb->query("DELETE from series_episodes where series_episodes.series_id NOT IN (SELECT DISTINCT id from series)");
+$targetDb->query("DELETE from media where media.user_id NOT IN (SELECT DISTINCT user_id from user)");
 
 function getCity($dbconnection,$cityId) 
 {

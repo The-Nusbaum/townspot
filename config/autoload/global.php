@@ -118,7 +118,7 @@ return array(
 				),
 			),
 		),
-        'enable' => false,
+        'enable' => true,
     ),
 	'zfcuser' => array(
 		'zend_db_adapter' => 'Zend\Db\Adapter\Adapter',

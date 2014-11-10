@@ -105,6 +105,25 @@ class ConsoleController extends AbstractActionController
 		$videoIndex->optimize();
         $this->writeLine('Optimizecompleted', Color::GREEN);
 	}
+
+    /**
+     */
+    public function clearcacheAction()
+    {
+		$cachePath = APPLICATION_PATH . '/data/cache';
+		if ($handle = opendir($cachePath)) {
+			while (false !== ($file = readdir($handle))) {
+				if (!preg_match('/^\./',$file)) {
+					$file = $cachePath . '/' . $file;
+					if (is_dir($file)) {
+						$this->deleteDirectoryContents($file);
+					}
+				}
+			}
+			closedir($handle);
+		}
+    }
+
     /**
      * @param string $text
      * @param int $color
@@ -114,4 +133,17 @@ class ConsoleController extends AbstractActionController
     {
         $this->console->writeLine($text, $color, $bgColor);
     }
+	
+	protected function deleteDirectoryContents($path) {
+		$path = str_replace('\\','/',$path);
+		$files = glob($path . '*', GLOB_MARK);
+		foreach ($files as $file) {
+			if (is_dir($file)) {
+				$this->deleteDirectoryContents($file);
+				rmdir($file);
+			} else {
+				unlink($file);
+			}
+		}
+	}	
 }

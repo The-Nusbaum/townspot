@@ -71,6 +71,17 @@ li {
 	}
 }
 
+.user-menu {
+	margin-top: 10px !important;
+}
+
+#video-player {
+	padding: 0px;
+	.video-info {
+		margin-left: 5px;
+		margin-right: 5px;
+	}
+}
 .popover {
 	position: absolute;
 	top: 0px;
@@ -150,8 +161,12 @@ li {
 		overflow: hidden;
 		.internal-wrapper {
 			width: 100%;
-			max-height: 405px;
 		}
+	}
+	.carousel-caption {
+		left: 0px;
+		right: 0px;
+		bottom: 0px;
 	}
 }
 
@@ -233,7 +248,7 @@ li {
 }
 
 .carousel-caption, .video-caption {
-	background: none repeat scroll 0 0 rgba(18, 73, 122, 0.75);
+	background: none repeat scroll 0 0 rgba(18, 73, 122, 0.75) !important;
 	color: #ffffff;
 	bottom: 2px;
 	left: 2px;
@@ -470,6 +485,10 @@ li {
 }
 
 #townspot-nav {
+	padding-left: 0px !important;
+	.nav-logo {
+		font-size: 18px;
+	}
 	.user-dropdown {
 		font-size: 18px;
 		margin-top: -4px;
@@ -499,7 +518,7 @@ li {
 	}
 	.dropdown-menu {
 		margin-top: 0px;
-		padding-top: 0px;
+		padding-top: 5px;
 		background-color: #ffffff;
 		color: #12497A;
 		.state-selector {
@@ -660,6 +679,10 @@ li {
 #discover-nav {
 	margin-bottom: 0px;
 	padding-bottom: 0px;
+}
+
+#discover-sort {
+	margin-bottom: 5px;
 }
 
 #Loading {
@@ -1743,9 +1766,21 @@ div {
 			top: 35%;
 		}
 	}
+	#video-player {
+		width: 80% !important;
+	}
 }
 
 @media (max-width: 769px) {
+	#index-index {
+		padding-left: 0px;
+		padding-right: 0px;
+		.main-content {
+			padding-left: 0px;
+			padding-right: 0px;
+		}
+	}
+	
 	#townspot-nav {
 		ul {
 			&.navbar-left {

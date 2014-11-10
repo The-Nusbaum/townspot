@@ -1,7 +1,7 @@
 <?php
 return array(
     'modules' => array(
-        'ZendDeveloperTools',
+//        'ZendDeveloperTools',
         'DoctrineModule',
         'DoctrineORMModule',
         'AssetManager',

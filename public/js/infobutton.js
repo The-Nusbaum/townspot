@@ -1,7 +1,7 @@
 function setInfoButtons() {
 	$('.info-button').popover('destroy');
 	$('.carousel-info-button').popover('destroy');
-
+	
 	$(".info-button.first").popover({html: true, placement: 'right'});
 	$(".info-button.in-row").popover({html: true, placement: 'left'});
 	$(".info-button.last").popover({html: true, placement: 'left'});

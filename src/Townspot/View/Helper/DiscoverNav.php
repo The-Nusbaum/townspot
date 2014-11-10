@@ -119,7 +119,11 @@ class DiscoverNav extends AbstractHelper implements ServiceLocatorAwareInterface
 		if ($categoriesSelected) {
 			$html .= '					<td class="nowrap">';
 			foreach ($categoriesSelected as $index => $category) {
-				$html .= '					    <span class="selected-category" data-name="' . strtolower(htmlentities($category['name'])) . '">' . $category['name'] . '&nbsp;<img class="remove-category-' .  $index . '" src="/img/delete.png"></span>';
+				$displayName = $category['name'];
+				if ($displayName == 'all videos') {
+					$displayName = 'All';
+				}
+				$html .= '					    <span class="selected-category" data-name="' . strtolower(htmlentities($category['name'])) . '">' . $displayName . '&nbsp;<img class="remove-category-' .  $index . '" src="/img/delete.png"></span>';
 			}
 			$html .= '					</td>';
 		}

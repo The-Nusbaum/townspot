@@ -18,12 +18,65 @@ class Mapper extends AbstractEntityMapper
 				 FROM user 
 				 JOIN media on user.user_id = media.user_id
 				 JOIN province on user.province_id = province.id
-				 JOIN city on user.city_id = city.id";
+				 JOIN city on user.city_id = city.id
+			     WHERE media.approved = 1 ";
 		if ($dateTime) {
-			$sql .= " WHERE user.updated >= '" . $dateTime->format('Y-m-d H:i:s') . "'";
+			$sql .= " AND (media.updated >= '" . $dateTime->format('Y-m-d H:i:s') . "'";
+			$sql .= " OR user.updated >= '" . $dateTime->format('Y-m-d H:i:s') . "')";
 		}
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
 		$stmt->execute();
 		return $stmt->fetchAll();
+	}
+	
+	public function getStats() 
+	{
+		$sql  = "SELECT count(*) as user_count ";
+		$sql .= "FROM tsz.user";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+		return $stmt->fetch();
+	}
+
+	public function getTopArtistStats($count = 10) 
+	{
+		$sql  = "SELECT media.user_id,user.username,count(media.id) as video_count from media ";
+		$sql .= "JOIN user on media.user_id = user.user_id ";
+		$sql .= "GROUP BY user_id ";
+		$sql .= "ORDER BY video_count DESC ";
+		$sql .= "LIMIT " . $count;
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+		return $stmt->fetchAll();
+	}
+	
+	public function getTopCommenterStats($count = 10) 
+	{
+		$sql  = "SELECT media_comment.user_id,user.username,count(media_comment.id) as comment_count from media_comment ";
+		$sql .= "JOIN user on media_comment.user_id = user.user_id ";
+		$sql .= "GROUP BY user_id ";
+		$sql .= "ORDER BY comment_count DESC ";
+		$sql .= "LIMIT " . $count;
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+		return $stmt->fetchAll();
+	}
+	
+	public function findByType($type = null) 
+	{
+		$results = array();
+		$sql  = "SELECT user.user_id as id FROM tsz.user ";
+		$sql .= "JOIN user_role_linker on user.user_id = user_role_linker.user_id ";
+		$sql .= "WHERE user_role_linker.role_id='" . $type . "'";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+		if ($_results = $stmt->fetchAll()) {
+			foreach ($_results as $result) {
+				if ($user = $this->find($result['id'])) {
+					$results[] = $user;
+				}
+			}
+		}
+		return $results;
 	}
 }
