@@ -28,4 +28,38 @@ class Mapper extends AbstractEntityMapper
 		$stmt->execute();
 		return $stmt->fetchAll();
 	}
+	
+	public function getStats() 
+	{
+		$sql  = "SELECT count(*) as user_count ";
+		$sql .= "FROM tsz.user";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+		return $stmt->fetch();
+	}
+
+	public function getTopArtistStats($count = 10) 
+	{
+		$sql  = "SELECT media.user_id,user.username,count(media.id) as video_count from media ";
+		$sql .= "JOIN user on media.user_id = user.user_id ";
+		$sql .= "GROUP BY user_id ";
+		$sql .= "ORDER BY video_count DESC ";
+		$sql .= "LIMIT " . $count;
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+		return $stmt->fetchAll();
+	}
+	
+	public function getTopCommenterStats($count = 10) 
+	{
+		$sql  = "SELECT media_comment.user_id,user.username,count(media_comment.id) as comment_count from media_comment ";
+		$sql .= "JOIN user on media_comment.user_id = user.user_id ";
+		$sql .= "GROUP BY user_id ";
+		$sql .= "ORDER BY comment_count DESC ";
+		$sql .= "LIMIT " . $count;
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+		return $stmt->fetchAll();
+	}
+	
 }

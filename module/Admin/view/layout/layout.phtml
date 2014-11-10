@@ -25,71 +25,77 @@
         <?= $this->headScript()->appendFile($this->basePath() . '/js/admin.js'); ?>
 	</head>
 	<body>
-		<div class="container-fluid">
-			<div class="collapse navbar-collapse" id="admin-navigation">
-				<ul class="nav navbar-nav">
-					<li><a href="<?= $this->url('admin-home'); ?>" id="home" ><i class="fa fa-home"></i>&nbsp;Home</a></li>
-					<li class="navbar-text hidden-desktop"><hr /></li>
-				</ul>
-				<ul class="nav navbar-nav navbar-right">
-					<li class="visible-desktop"><a href="<?= $this->url('home'); ?>">EXIT ADMIN</a></li>
-					<li class="visible-desktop"><a href="<?= $this->url('logout'); ?>"><i class="fa fa-power-off"></i>&nbsp;LOGOUT</a></li>
-				</ul>
-			</div>
+		<div class="container">
+			<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+				<div class="container">
+					<ul class="nav navbar-nav">
+						<li><a href="<?= $this->url('admin-home'); ?>" id="home" ><i class="fa fa-home"></i>&nbsp;Home</a></li>
+					</ul>
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="<?= $this->url('home'); ?>">EXIT ADMIN</a></li>
+						<li><a href="<?= $this->url('logout'); ?>"><i class="fa fa-power-off"></i>&nbsp;LOGOUT</a></li>
+					</ul>
+				</div>
+			</nav>
 		</div>
-		<div class="container-fluid">
-			<div class="collapse navbar-collapse" id="admin-sub-navigation">
-				<ul class="nav nav-tabs" id="admin-tab">
-					<li>
-						<div class="btn-group">
-							<a href="<?= $this->url('admin-home'); ?>" class="btn btn-inverse admin-btn"><i class="fa fa-dashboard"></i> Dashboard</a>
-						</div>
-					</li>
-					<li class="dropdown">
-						<div class="btn-group">
-							<a href="<?= $this->url('admin-artists'); ?>" class="btn btn-info admin-btn dropdown-toggle"><i class="fa fa-group"></i> Artists&nbsp;<i class="fa fa-caret-square-o-down"></i></a>
-							<ul class="dropdown-menu">
-								<li><a href="<?= $this->url('admin-artist-add'); ?>"><i class="fa fa-user"></i> Add Artist</a></li>
-							</ul>
-						</div>
-					</li>
-					<li class="dropdown">
-						<div class="btn-group">
-							<a href="<?= $this->url('admin-users'); ?>" class="btn btn-info admin-btn dropdown-toggle"><i class="fa fa-group"></i> Users&nbsp;<i class="fa fa-caret-square-o-down"></i></a>
-							<ul class="dropdown-menu">
-								<li><a href="<?= $this->url('admin-user-add'); ?>"><i class="fa fa-user"></i> Add User</a></li>
-							</ul>
-						</div>
-					</li>
-					<li class="dropdown">
-						<div class="btn-group">
-							<a href="<?= $this->url('admin-series'); ?>" class="btn btn-inverse admin-btn dropdown-toggle"><i class="fa fa-film"></i> Series&nbsp;<i class="fa fa-caret-square-o-down"></i></a>
-							<ul class="dropdown-menu">
-								<li><a href="<?= $this->url('admin-series'); ?>"><i class="fa fa-film"></i> Add Series</a></li>
-							</ul>
-						</div>
-					</li>
-					<li class="dropdown">
-						<div class="btn-group">
-							<a href="<?= $this->url('admin-video'); ?>" class="btn btn-primary admin-btn dropdown-toggle"><i class="fa fa-film"></i> Videos&nbsp;<i class="fa fa-caret-square-o-down"></i></a>
-							<ul class="dropdown-menu">
-								<li><a href="<?= $this->url('admin-add-video'); ?>"><i class="fa fa-film"></i> Add Video</a></li>
-								<li class="divider"></li>							
-								<li><a href="<?= $this->url('admin-videocategories'); ?>"><i class="fa fa-list"></i> Manage Video Categories</a></li>
-							</ul>
-						</div>
-					</li>
-					<li class="dropdown">
-						<div class="btn-group">
-							<a href="<?= $this->url('admin-admins'); ?>" class="btn btn-danger admin-btn dropdown-toggle"><i class="fa fa-group"></i> Admins&nbsp;<i class="fa fa-caret-square-o-down"></i></a>
-							<ul class="dropdown-menu">
-								<li><a href="<?= $this->url('admin-admin-add'); ?>"><i class="fa fa-user"></i> Add Admin</a></li>
-							</ul>
-						</div>
-					</li>
-				</ul>
-			</div>
-        </div>
+		<br/>
+		<br/>
+		<br/>
+		<div class="container">
+			<nav class="navbar" role="navigation">
+				<div class="container-fluid">
+					<ul class="nav nav-tabs" id="admin-tab">
+						<li>
+							<div class="btn-group">
+								<a href="<?= $this->url('admin-home'); ?>" class="btn admin-btn btn-inverse"><i class="fa fa-dashboard"></i> Dashboard</a>
+							</div>
+						</li>
+						<li class="dropdown">
+							<div class="btn-group">
+								<a href="<?= $this->url('admin-artists'); ?>" class="btn btn-info admin-btn dropdown-toggle"><i class="fa fa-group"></i> Artists&nbsp;<i class="fa fa-caret-square-o-down"></i></a>
+								<ul class="dropdown-menu">
+									<li><a href="<?= $this->url('admin-artist-add'); ?>"><i class="fa fa-user"></i> Add Artist</a></li>
+								</ul>
+							</div>
+						</li>
+						<li class="dropdown">
+							<div class="btn-group">
+								<a href="<?= $this->url('admin-users'); ?>" class="btn btn-info admin-btn dropdown-toggle"><i class="fa fa-group"></i> Users&nbsp;<i class="fa fa-caret-square-o-down"></i></a>
+								<ul class="dropdown-menu">
+									<li><a href="<?= $this->url('admin-user-add'); ?>"><i class="fa fa-user"></i> Add User</a></li>
+								</ul>
+							</div>
+						</li>
+						<li class="dropdown">
+							<div class="btn-group">
+								<a href="<?= $this->url('admin-series'); ?>" class="btn btn-inverse admin-btn dropdown-toggle"><i class="fa fa-film"></i> Series&nbsp;<i class="fa fa-caret-square-o-down"></i></a>
+								<ul class="dropdown-menu">
+									<li><a href="<?= $this->url('admin-series'); ?>"><i class="fa fa-film"></i> Add Series</a></li>
+								</ul>
+							</div>
+						</li>
+						<li class="dropdown">
+							<div class="btn-group">
+								<a href="<?= $this->url('admin-video'); ?>" class="btn btn-primary admin-btn dropdown-toggle"><i class="fa fa-film"></i> Videos&nbsp;<i class="fa fa-caret-square-o-down"></i></a>
+								<ul class="dropdown-menu">
+									<li><a href="<?= $this->url('admin-add-video'); ?>"><i class="fa fa-film"></i> Add Video</a></li>
+								</ul>
+							</div>
+						</li>
+						<li class="dropdown">
+							<div class="btn-group">
+								<a href="<?= $this->url('admin-admins'); ?>" class="btn btn-danger admin-btn dropdown-toggle"><i class="fa fa-group"></i> Admins&nbsp;<i class="fa fa-caret-square-o-down"></i></a>
+								<ul class="dropdown-menu">
+									<li><a href="<?= $this->url('admin-admin-add'); ?>"><i class="fa fa-user"></i> Add Admin</a></li>
+								</ul>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</nav>
+		</div>
+		<br/>		
+		<br/>		
         <div class="container" id="admin-<?= $this->controllerName(); ?>-<?= $this->actionName(); ?>">
             <?php echo $this->content; ?>
         </div> 

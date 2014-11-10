@@ -209,4 +209,29 @@ class Mapper extends AbstractEntityMapper
 		$stmt->execute();
 		return $stmt->fetchAll();
 	}
+	
+	public function getStats() 
+	{
+		$sql  = "SELECT count(*) as media_count, ";
+        $sql .= "SUM(views) as view_count, ";
+        $sql .= "(SELECT count(*) from media_comment) as comment_count, ";
+        $sql .= "(SELECT count(*) from rating where rating.rating=1) as up_rating_count, ";
+        $sql .= "(SELECT count(*) from rating where rating.rating=-1) as down_rating_count ";
+		$sql .= "FROM tsz.media";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+		return $stmt->fetch();
+	}
+
+	public function getTopStats($count = 10) 
+	{
+		$sql  = "SELECT id,title,views ";
+		$sql .= "FROM tsz.media ";
+		$sql .= "ORDER BY views DESC ";
+		$sql .= "LIMIT " . $count;
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+		return $stmt->fetchAll();
+	}
+	
 }

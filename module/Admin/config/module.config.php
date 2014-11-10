@@ -277,7 +277,7 @@ return array(
             'admin-artists' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
-                    'route'    => '/admin/admins',
+                    'route'    => '/admin/artists',
                     'defaults' => array(
                         'controller' => 'Admin\Controller\User',
                         'action'     => 'index',
@@ -343,6 +343,39 @@ return array(
                     'defaults' => array(
                         'controller' => 'Admin\Controller\MediaCategories',
                         'action'     => 'index',
+                    ),
+                ),
+            ),
+            'admin-stafffavorites' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/stafffavorites',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Section',
+                        'action'     => 'media',
+                        'section' 	 => 'favorites',
+                    ),
+                ),
+            ),
+            'admin-stage' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/stage',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Section',
+                        'action'     => 'media',
+                        'section' 	 => 'stage',
+                    ),
+                ),
+            ),
+            'admin-spotlight' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/spotlight',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Section',
+                        'action'     => 'media',
+                        'section' 	 => 'spotlight',
                     ),
                 ),
             ),

@@ -23,6 +23,19 @@ class IndexController extends AbstractActionController
     public function indexAction()
     {
 		$this->isAuthenticated();
-        return new ViewModel();
+		$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
+		$userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+		$stats['media'] = $mediaMapper->getStats();
+		$stats['user'] = $userMapper->getStats();
+		$stats['views'] = $mediaMapper->getTopStats();
+		$stats['artist'] = $userMapper->getTopArtistStats();
+		$stats['comments'] = $userMapper->getTopCommenterStats();
+		$loggedInUser = $userMapper->find($this->zfcUserAuthentication()->getIdentity()->getId());
+		return new ViewModel( 
+			array(
+				'stats'			=> $stats,
+				'loggedInUser'	=> $loggedInUser,
+			)
+		);
     }
 }

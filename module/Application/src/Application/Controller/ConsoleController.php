@@ -105,6 +105,14 @@ class ConsoleController extends AbstractActionController
 		$videoIndex->optimize();
         $this->writeLine('Optimizecompleted', Color::GREEN);
 	}
+
+    /**
+     */
+    public function clearcacheAction()
+    {
+	
+    }
+
     /**
      * @param string $text
      * @param int $color

@@ -100,14 +100,16 @@ return array(
                 ),
             ),			
         ),
-//		'caching' => array(
-//            'default' => array(
-//                'cache'     => 'AssetManager\\Cache\\FilePathCache',
-//                'options' => array(
-//					'dir' => APPLICATION_PATH . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'static',
-//                ),
-//            ),
-//        ),		
+/*
+		'caching' => array(
+            'default' => array(
+                'cache'     => 'AssetManager\\Cache\\FilePathCache',
+                'options' => array(
+					'dir' => APPLICATION_PATH . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'static',
+                ),
+            ),
+        ),		
+*/
 		'filters' => array(
 			'css' => array(
 				array(
@@ -836,7 +838,16 @@ return array(
                             'action'     => 'builddelta',
                         )
                     )
-                )
+                ),
+                'clear-cache' => array(
+                    'options' => array(
+                        'route'    => 'cache clear',
+                        'defaults' => array(
+                            'controller' => 'Application\Controller\Console',
+                            'action'     => 'clearcache',
+                        )
+                    )
+                ),
             )
         )
     ),

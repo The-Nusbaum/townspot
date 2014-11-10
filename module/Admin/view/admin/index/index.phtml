@@ -1,44 +1,139 @@
-<div class="jumbotron">
-    <h1><?php echo sprintf($this->translate('Welcome to %sZend Framework 2%s'), '<span class="zf-green">', '</span>') ?></h1>
-    <p><?php echo sprintf($this->translate('Congratulations! You have successfully installed the %sZF2 Skeleton Application%s. You are currently running Zend Framework version %s. This skeleton can serve as a simple starting point for you to begin building your application on ZF2.'), '<a href="https://github.com/zendframework/ZendSkeletonApplication" target="_blank">', '</a>', \Zend\Version\Version::VERSION) ?></p>
-    <p><a class="btn btn-success btn-lg" href="https://github.com/zendframework/zf2" target="_blank"><?php echo $this->translate('Fork Zend Framework 2 on GitHub') ?> &raquo;</a></p>
-</div>
-
+<h1>Welcome <?= $this->loggedInUser->getUsername(); ?></h1>
 <div class="row">
-
-    <div class="col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?php echo $this->translate('Follow Development') ?></h3>
-            </div>
-            <div class="panel-body">
-                <p><?php echo sprintf($this->translate('Zend Framework 2 is under active development. If you are interested in following the development of ZF2, there is a special ZF2 portal on the official Zend Framework website which provides links to the ZF2 %swiki%s, %sdev blog%s, %sissue tracker%s, and much more. This is a great resource for staying up to date with the latest developments!'), '<a href="http://framework.zend.com/wiki/display/ZFDEV2/Home">', '</a>', '<a href="http://framework.zend.com/zf2/blog">', '</a>', '<a href="https://github.com/zendframework/zf2/issues">', '</a>') ?></p>
-                <p><a class="btn btn-success pull-right" href="http://framework.zend.com/zf2" target="_blank"><?php echo $this->translate('ZF2 Development Portal') ?> &raquo;</a></p>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?php echo $this->translate('Discover Modules') ?></h3>
-            </div>
-            <div class="panel-body">
-                <p><?php echo sprintf($this->translate('The community is working on developing a community site to serve as a repository and gallery for ZF2 modules. The project is available %son GitHub%s. The site is currently live and currently contains a list of some of the modules already available for ZF2.'), '<a href="https://github.com/zendframework/modules.zendframework.com">', '</a>') ?></p>
-                <p><a class="btn btn-success pull-right" href="http://modules.zendframework.com/" target="_blank"><?php echo $this->translate('Explore ZF2 Modules') ?> &raquo;</a></p>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <h3 class="panel-title"><?php echo $this->translate('Help &amp; Support') ?></h3>
-            </div>
-            <div class="panel-body">
-                <p><?php echo sprintf($this->translate('If you need any help or support while developing with ZF2, you may reach us via IRC: %s#zftalk on Freenode%s. We\'d love to hear any questions or feedback you may have regarding the beta releases. Alternatively, you may subscribe and post questions to the %smailing lists%s.'), '<a href="irc://irc.freenode.net/zftalk">', '</a>', '<a href="http://framework.zend.com/wiki/display/ZFDEV/Mailing+Lists">', '</a>') ?></p>
-                <p><a class="btn btn-success pull-right" href="http://webchat.freenode.net?channels=zftalk" target="_blank"><?php echo $this->translate('Ping us on IRC') ?> &raquo;</a></p>
-            </div>
-        </div>
-    </div>
+	<div class="col-sm-12">
+		<h2>Your City At A Glance - <?= $this->loggedInUser->getCity()->getFullName(); ?></h2>
+	</div>
 </div>
+<div class="row">
+	<div class="col-sm-3">
+		<ul>
+			<li>Staff Favorites
+				<ul>
+					<li><a href="<?= $this->url('admin-stafffavorites'); ?>">Staff Favorites</a></li>
+				</ul>
+			</li>
+			<ul>
+				<li><a href="<?= $this->url('admin-stage'); ?>">On Stage</a></li>
+				<li><a href="<?= $this->url('admin-spotlight'); ?>">Spotlight</a></li>
+			</ul>
+			<li>Videos
+				<ul>
+					<li><a href="/admin/video?approved=0">Unapproved Videos</a></li>
+				</ul>
+			</li>
+			<li>Artists
+				<ul>
+					<li><a href="/admin/artists?status=Uncomfirmed">Unverified Artists</a></li>
+				</ul>
+			</li>
+			<li>Users
+				<ul>
+					<li><a href="/admin/users?status=Uncomfirmed">Unverified Users</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+	<div class="col-sm-9">
+		<div class="row">
+			<div class="col-sm-12">
+				<table style="width: 100%; border: 1px solid #000000;">
+					<tr>
+						<th colspan="5" style="border: 1px solid #000000; text-align: center;">Videos</th>
+						<th rowspan="2" style="border: 1px solid #000000; text-align: center;">Users</th>
+					</tr>
+					<tr>				
+						<th style="border: 1px solid #000000; text-align: center;">Count</th>
+						<th style="border: 1px solid #000000; text-align: center;">Views</th>
+						<th style="border: 1px solid #000000; text-align: center;">Comments</th>
+						<th style="border: 1px solid #000000; text-align: center;">Rated Up</th>
+						<th style="border: 1px solid #000000; text-align: center;">Rated Down</th>
+					</tr>
+					<tr>				
+						<th style="border: 1px solid #000000; text-align: center;"><?= $this->stats['media']['media_count']; ?></th>
+						<th style="border: 1px solid #000000; text-align: center;"><?= $this->stats['media']['view_count']; ?></th>
+						<th style="border: 1px solid #000000; text-align: center;"><?= $this->stats['media']['comment_count']; ?></th>
+						<th style="border: 1px solid #000000; text-align: center;"><?= $this->stats['media']['up_rating_count']; ?></th>
+						<th style="border: 1px solid #000000; text-align: center;"><?= $this->stats['media']['down_rating_count']; ?></th>
+						<th style="border: 1px solid #000000; text-align: center;"><?= $this->stats['user']['user_count']; ?></th>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+	    		<h3>Videos</h3>
+	    		<div id="top_videos" style="width: 100%; height: 400px;"></div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+	    		<h3>Artists</h3>
+	    		<div id="top_artists" style="width: 100%; height: 400px;"></div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+	    		<h3>Users</h3>
+	    		<div id="top_commenters" style="width: 100%; height: 400px;"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<?php 
+$arData = array();
+foreach ($this->stats['views'] as $record) {
+	$arData['Video'][] = "['{$record['title']}', {$record['views']}]";
+}
+foreach ($this->stats['artist'] as $record) {
+	$arData['Artist'][] = "['{$record['username']}', {$record['video_count']}]";
+}
+foreach ($this->stats['comments'] as $record) {
+	$arData['Commenting'][] = "['{$record['username']}', {$record['comment_count']}]";
+}
+?>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+	google.load("visualization", "1", {packages:["corechart"]});
+    google.setOnLoadCallback(drawCharts);
+    
+    function drawCharts() {
+    	drawTopVideos();
+    	drawTopActiveUsers();
+    	drawTopCommentingUsers();
+    }
+    
+    function drawTopVideos() {
+        var data = google.visualization.arrayToDataTable([
+          ['Video', 'Views'],
+<?= implode(', ',$arData['Video']); ?>          
+        ]);
+        var options = {
+          title: 'Video Views'
+        };
+        var chart = new google.visualization.BarChart(document.getElementById('top_videos'));
+        chart.draw(data, options);
+    }
+
+    function drawTopActiveUsers() {
+        var data = google.visualization.arrayToDataTable([
+          ['User', 'Videos'],
+<?= implode(', ',$arData['Artist']); ?>          
+        ]);
+        var options = {
+          title: 'Artists'
+        };
+        var chart = new google.visualization.BarChart(document.getElementById('top_artists'));
+        chart.draw(data, options);
+    }
+    function drawTopCommentingUsers() {
+        var data = google.visualization.arrayToDataTable([
+          ['User', 'Comments'],
+<?= implode(', ',$arData['Commenting']); ?>          
+        ]);
+        var options = {
+          title: 'Users'
+        };
+        var chart = new google.visualization.BarChart(document.getElementById('top_commenters'));
+        chart.draw(data, options);
+    }
+    </script>
