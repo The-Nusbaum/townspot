@@ -3,7 +3,6 @@
 $sourceDb = new mysqli('localhost', 'root', '', 'townspot_dev');
 $targetDb = new mysqli('localhost', 'root', '', 'tsz');
 
-//Migrate User
 $targetDb->query('truncate tsz.user');
 $targetDb->query('truncate tsz.user_social_media');
 $targetDb->query('truncate tsz.user_role_linker');
