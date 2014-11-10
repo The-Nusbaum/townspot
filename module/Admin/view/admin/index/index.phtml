@@ -1,0 +1,139 @@
+<h1>Welcome <?= $this->loggedInUser->getUsername(); ?></h1>
+<div class="row">
+	<div class="col-sm-12">
+		<h2>Your City At A Glance - <?= $this->loggedInUser->getCity()->getFullName(); ?></h2>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-3">
+		<ul>
+			<li>Staff Favorites
+				<ul>
+					<li><a href="<?= $this->url('admin-stafffavorites'); ?>">Staff Favorites</a></li>
+				</ul>
+			</li>
+			<ul>
+				<li><a href="<?= $this->url('admin-stage'); ?>">On Stage</a></li>
+				<li><a href="<?= $this->url('admin-spotlight'); ?>">Spotlight</a></li>
+			</ul>
+			<li>Videos
+				<ul>
+					<li><a href="/admin/video?approved=0">Unapproved Videos</a></li>
+				</ul>
+			</li>
+			<li>Artists
+				<ul>
+					<li><a href="/admin/artists?status=Uncomfirmed">Unverified Artists</a></li>
+				</ul>
+			</li>
+			<li>Users
+				<ul>
+					<li><a href="/admin/users?status=Uncomfirmed">Unverified Users</a></li>
+				</ul>
+			</li>
+		</ul>
+	</div>
+	<div class="col-sm-9">
+		<div class="row">
+			<div class="col-sm-12">
+				<table style="width: 100%; border: 1px solid #000000;">
+					<tr>
+						<th colspan="5" style="border: 1px solid #000000; text-align: center;">Videos</th>
+						<th rowspan="2" style="border: 1px solid #000000; text-align: center;">Users</th>
+					</tr>
+					<tr>				
+						<th style="border: 1px solid #000000; text-align: center;">Count</th>
+						<th style="border: 1px solid #000000; text-align: center;">Views</th>
+						<th style="border: 1px solid #000000; text-align: center;">Comments</th>
+						<th style="border: 1px solid #000000; text-align: center;">Rated Up</th>
+						<th style="border: 1px solid #000000; text-align: center;">Rated Down</th>
+					</tr>
+					<tr>				
+						<th style="border: 1px solid #000000; text-align: center;"><?= $this->stats['media']['media_count']; ?></th>
+						<th style="border: 1px solid #000000; text-align: center;"><?= $this->stats['media']['view_count']; ?></th>
+						<th style="border: 1px solid #000000; text-align: center;"><?= $this->stats['media']['comment_count']; ?></th>
+						<th style="border: 1px solid #000000; text-align: center;"><?= $this->stats['media']['up_rating_count']; ?></th>
+						<th style="border: 1px solid #000000; text-align: center;"><?= $this->stats['media']['down_rating_count']; ?></th>
+						<th style="border: 1px solid #000000; text-align: center;"><?= $this->stats['user']['user_count']; ?></th>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+	    		<h3>Videos</h3>
+	    		<div id="top_videos" style="width: 100%; height: 400px;"></div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+	    		<h3>Artists</h3>
+	    		<div id="top_artists" style="width: 100%; height: 400px;"></div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+	    		<h3>Users</h3>
+	    		<div id="top_commenters" style="width: 100%; height: 400px;"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<?php 
+$arData = array();
+foreach ($this->stats['views'] as $record) {
+	$arData['Video'][] = "['{$record['title']}', {$record['views']}]";
+}
+foreach ($this->stats['artist'] as $record) {
+	$arData['Artist'][] = "['{$record['username']}', {$record['video_count']}]";
+}
+foreach ($this->stats['comments'] as $record) {
+	$arData['Commenting'][] = "['{$record['username']}', {$record['comment_count']}]";
+}
+?>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+	google.load("visualization", "1", {packages:["corechart"]});
+    google.setOnLoadCallback(drawCharts);
+    
+    function drawCharts() {
+    	drawTopVideos();
+    	drawTopActiveUsers();
+    	drawTopCommentingUsers();
+    }
+    
+    function drawTopVideos() {
+        var data = google.visualization.arrayToDataTable([
+          ['Video', 'Views'],
+<?= implode(', ',$arData['Video']); ?>          
+        ]);
+        var options = {
+          title: 'Video Views'
+        };
+        var chart = new google.visualization.BarChart(document.getElementById('top_videos'));
+        chart.draw(data, options);
+    }
+
+    function drawTopActiveUsers() {
+        var data = google.visualization.arrayToDataTable([
+          ['User', 'Videos'],
+<?= implode(', ',$arData['Artist']); ?>          
+        ]);
+        var options = {
+          title: 'Artists'
+        };
+        var chart = new google.visualization.BarChart(document.getElementById('top_artists'));
+        chart.draw(data, options);
+    }
+    function drawTopCommentingUsers() {
+        var data = google.visualization.arrayToDataTable([
+          ['User', 'Comments'],
+<?= implode(', ',$arData['Commenting']); ?>          
+        ]);
+        var options = {
+          title: 'Users'
+        };
+        var chart = new google.visualization.BarChart(document.getElementById('top_commenters'));
+        chart.draw(data, options);
+    }
+    </script>

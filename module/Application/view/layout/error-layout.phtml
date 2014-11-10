@@ -1,0 +1,106 @@
+<?php echo $this->doctype(); ?>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <?= $this->headTitle('townspot.tv')->setSeparator(' - ')->setAutoEscape(false) ?>
+        <?= $this->headMeta()
+				 ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+				 ->appendName('robots','NOODP')
+				 ->appendName('MSSmartTagsPreventParsing','true')
+				 ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+				 ->appendHttpEquiv('Pragma','no-cache')
+				 ->appendHttpEquiv('cache-control','no-cache')
+				 ->appendHttpEquiv('expires',date('r'))
+				 ->appendName('description',
+							  "TownSpot.tv is the Local Video Network spotlighting local talent across the country through a curated video directory.");
+		?>
+        <?= $this->headLink(array(	'rel' => 'shortcut icon', 
+									'type' => 'image/vnd.microsoft.icon', 
+									'href' => $this->basePath() . '/img/favicon.ico'
+			))->appendStylesheet('//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css')	
+			  ->appendStylesheet('//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css')
+			  ->appendStylesheet('//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css')
+			  ->appendStylesheet('//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css','screen')
+			  ->appendStylesheet($this->basePath() . '/css/townspot.css');
+		?>
+		<?= $this->headScript()->prependFile('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js','text/javascript')
+                               ->prependFile('//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js','text/javascript');
+		?>
+		<?= $this->headScript()->appendFile('//jwpsrv.com/library/y3klzqiFEeKGEyIACpYGxA.js','text/javascript')
+		                       ->appendFile('//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js','text/javascript')
+		                       ->appendFile('//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js','text/javascript')
+		                       ->appendFile('//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js','text/javascript')
+		                       ->appendFile('//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js','text/javascript')
+		                       ->appendFile('//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.3.0/bootbox.min.js','text/javascript')
+							   ->appendFile($this->basePath() . '/js/townspot.js');
+		?>
+		<script src="https://apis.google.com/js/platform.js" async defer></script>
+    </head>
+    <body id="townspot">
+		<nav role="navigation" class="navbar navbar-inverse">
+			<?= $this->navigation('navigation')->menu()->setPartial('partials/menu')->render(); ?>	
+<?php if (($this->controllerName() == 'search') && ($this->actionName() == 'discover')) { ?>			
+			<?= $this->DiscoverNav(); ?>
+<?php } ?>			
+		</nav>
+		<div class="container explore-btn-wrapper">
+			<a href="#" id="explore-btn-link">
+				<button class="explore-btn">
+					<span id="explore-btn-location"></span>
+					<span class="fa-stack fa-sm">
+						<i class="fa fa-chevron-right fa-stack-1x"></i>
+					</span>
+				</button>
+			</a>
+		</div>		
+        <div class="container">
+            <div id="fb-root"></div>
+        <div class="container main-content" id="<?= $this->controllerName(); ?>-<?= $this->actionName(); ?>">
+            <?php echo $this->content; ?>
+        </div> 
+		<nav id="footer" role="navigation" class="navbar navbar-footer">
+			<div class="container hidden-xs">
+				<ul class="nav navbar-nav navbar-left">
+					<li><a href="/">&copy; 2013 TownSpot, Inc.</a></li>
+					<li><a href="/privacy">Privacy</a></li>
+					<li><a href="/terms-conditions">Terms</a></li>
+					<li><a href="/contact-us">Contact</a></li>
+					<li><a target='_blank' href="http://backstage.townspot.tv/advertise-2/"><strong>Advertise with Us</strong></a></li>
+					<li><a href="/what-is-townspot">What is TownSpot?</a></li>
+				</ul>
+				<div class="nav navbar-nav navbar-right social-media">
+					<ul>
+						<li><a target="_blank" title="Follow on facebook" href="http://www.facebook.com/townspot" class="socialmedia-facebook-medium"></a></li>
+						<li><a target="_blank" title="Follow on twitter" href="http://www.twitter.com/townspottv" class="socialmedia-twitter-medium"></a></li>
+						<li><a target="_blank" title="Follow on linkedin" href="http://www.linkedin.com/company/townspot-inc" class="socialmedia-linkedin-medium"></a></li>
+						<li><a target="_blank" title="Follow on pinterest" href="http://www.pinterest.com/townspot" class="socialmedia-pinterest-medium"></a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="container visible-xs">
+				<div class="pull-left footer-contact">&copy; 2013 <a href="/contact-us">TownSpot, Inc.</a></div>
+				<div class="pull-right social-media">
+					<ul>
+						<li><a target="_blank" title="Follow on facebook" href="http://www.facebook.com/townspot" class="socialmedia-facebook-medium"></a></li>
+						<li><a target="_blank" title="Follow on twitter" href="http://www.twitter.com/townspottv" class="socialmedia-twitter-medium"></a></li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+<?php if (isset($_SESSION['DiscoverLink'])) { ?>
+<script>
+	$('#discover-menu-link').attr('href','<?= $_SESSION['DiscoverLink']; ?>');
+</script>
+<?php } ?>
+<script>
+$(function() {
+	$('.expandable').expander({
+		expandText: 'read&nbsp;more',
+		userCollapseText: 'read&nbsp;less',
+		slicePoint: 80,
+		expandPrefix: ' '
+	});
+});
+</script>
+    </body>
+</html>
