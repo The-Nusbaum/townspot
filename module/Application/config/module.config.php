@@ -100,7 +100,6 @@ return array(
                 ),
             ),			
         ),
-/*
 		'caching' => array(
             'default' => array(
                 'cache'     => 'AssetManager\\Cache\\FilePathCache',
@@ -109,7 +108,6 @@ return array(
                 ),
             ),
         ),		
-*/
 		'filters' => array(
 			'css' => array(
 				array(
