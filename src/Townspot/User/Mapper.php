@@ -62,4 +62,21 @@ class Mapper extends AbstractEntityMapper
 		return $stmt->fetchAll();
 	}
 	
+	public function findByType($type = null) 
+	{
+		$results = array();
+		$sql  = "SELECT user.user_id as id FROM tsz.user ";
+		$sql .= "JOIN user_role_linker on user.user_id = user_role_linker.user_id ";
+		$sql .= "WHERE user_role_linker.role_id='" . $type . "'";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+		if ($_results = $stmt->fetchAll()) {
+			foreach ($_results as $result) {
+				if ($user = $this->find($result['id'])) {
+					$results[] = $user;
+				}
+			}
+		}
+		return $results;
+	}
 }
