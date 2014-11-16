@@ -145,5 +145,26 @@ class ConsoleController extends AbstractActionController
 				unlink($file);
 			}
 		}
-	}	
+	}
+
+    public function buildCachesAction() {
+        $stateMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
+        $states = $stateMapper->findBy(array('country'=>99));
+
+        $catMapper = new \Townspot\Categories\Mapper($this->getServiceLocator());
+        $cats = $stateMapper->findAll();
+
+        $ip = $_SERVER['SERVER_ADDR'];
+
+        foreach($cats as $cat) {
+            $ch = curl_init();
+            curl_setopt($ch,CURLOPT_URL,"http://$ip/videos/discover");
+            curl_setopt($ch,CURLOPT_POST,true);
+            curl_setopt($ch,CURLOPT_POSTFIELDS,array(
+                "sort" => "created:desc",
+
+            ));
+        }
+        foreach()
+    }
 }

@@ -11,3 +11,7 @@ php public/index.php lucene build indexes
 Clearing All Cache
 ------------------------------------------------
 php public/index.php cache clear
+
+Build composer classmap
+------------------------------------------------
+composer dump-autoload --optimize
