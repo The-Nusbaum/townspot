@@ -693,9 +693,11 @@ class Entity extends \Townspot\Entity
 	
 	public function getRandomMedia()
 	{
-		$media = $this->getMedia();
-		$randkey = array_rand($media,count($media));
-		return $media[$randkey];
+		if ($media = $this->getMedia()) {
+			$randkey = rand(0,(count($media)-1));
+			return $media[$randkey];
+		}
+		return null;
 	}
 
     public function getSeries() {

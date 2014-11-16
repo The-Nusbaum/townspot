@@ -62,6 +62,7 @@ class Mapper extends AbstractEntityMapper
 		$parent = null;
 		while ($categories) {
 			$category = array_shift($categories);
+			$category = html_entity_decode($category);
 			$_category = $this->findOneBy(
 				array(
 					'_name'		=> $category,

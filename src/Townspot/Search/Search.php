@@ -6,6 +6,7 @@ use Townspot\Lucene\ArtistIndex;
 use Townspot\Lucene\SeriesIndex;
 use Townspot\Lucene\VideoIndex;
 use \ZendSearch\Lucene\Search\Query\MultiTerm;
+use \ZendSearch\Lucene\Search\Query\Fuzzy;
 use \ZendSearch\Lucene\Index\Term;
 use Zend\ServiceManager\ServiceLocatorAwareInterface,
     Zend\ServiceManager\ServiceLocatorInterface;
@@ -23,26 +24,48 @@ class Search implements ServiceLocatorAwareInterface
         $cache			= $this->getServiceLocator()->get('cache-general');        
 		$cache->clearExpired();
         $results 		= $cache->getItem($searchId);
-
 		if (!$results) {
+			$_cities 	= array();
+			$_artists 	= array();
+			$_series 	= array();
+			$_media 		= array();
+			$cityData 	= array();
+			$artistData	= array();
+			$seriesData	= array();
+			$mediaData	= array();
+			
 			$cityMapper 	= new \Townspot\City\Mapper($this->getServiceLocator());
 			$seriesMapper 	= new \Townspot\Series\Mapper($this->getServiceLocator());
 			$userMapper 	= new \Townspot\User\Mapper($this->getServiceLocator());
 			$mediaMapper 	= new \Townspot\Media\Mapper($this->getServiceLocator());
+			$locationIndex = new LocationIndex($this->getServiceLocator());
+			$artistIndex   = new ArtistIndex($this->getServiceLocator());
+			$mediaIndex    = new VideoIndex($this->getServiceLocator());
+			$seriesIndex   = new SeriesIndex($this->getServiceLocator());
 		
 			\ZendSearch\Lucene\Analysis\Analyzer\Analyzer::setDefault(
 				new \ZendSearch\Lucene\Analysis\Analyzer\Common\TextNum\CaseInsensitive()
 			);
+
 			//City Search
-			$locationIndex = new LocationIndex($this->getServiceLocator());
-			$query         = new MultiTerm();
-			$query->addTerm(new Term($keyword, 'city'));
-			$query->addTerm(new Term($keyword, 'province'));
+			$query         = new Fuzzy(new Term($keyword, 'city'));
 			$matches       = $locationIndex->find($query,'city',SORT_STRING,$sortOrder);
 			foreach ($matches as $hit) {
-				$city = $cityMapper->find($hit->objectid);
+				$_cities[] = $hit->objectid;
+			}
+			$query         = new Fuzzy(new Term($keyword, 'province'));
+			$matches       = $locationIndex->find($query,'city',SORT_STRING,$sortOrder);
+			foreach ($matches as $hit) {
+				$_cities[] = $hit->objectid;
+			}
+			$_cities = array_unique($_cities);
+			foreach ($_cities as $id) {
+				$city = $cityMapper->find($id);
 				$media = $city->getRandomMedia();
-				$data[] = array(
+				$sortBy = strtotime($city->getFullName());
+				$sortBy = strtolower($sortBy);	
+				$sortBy = preg_replace('/[^a-z0-9 -]+/', '', $sortBy);		
+				$cityData[$sortBy][] = array(
 					'id'				=> $city->getId(),
 					'type'				=> 'city',
 					'link'				=> $city->getDiscoverLink(),
@@ -53,49 +76,84 @@ class Search implements ServiceLocatorAwareInterface
 					'escaped_location'	=> $city->getFullName(),
 				);
 			}
+
 			//Artist Search
-			$artistIndex   = new ArtistIndex($this->getServiceLocator());
-			$query         = new MultiTerm();
-			$query->addTerm(new Term($keyword, 'username'));
-			$query->addTerm(new Term($keyword, 'artist_name'));
-			if ($sortField == 'created') {
-				$matches = $artistIndex->find($query,'created',SORT_NUMERIC,$sortOrder);
-			} else {
-				$matches = $artistIndex->find($query,'username',SORT_STRING,$sortOrder);
-			}
+			$query         = new Fuzzy(new Term($keyword, 'username'));
+			$matches       = $artistIndex->find($query,'username',SORT_STRING,$sortOrder);
 			foreach ($matches as $hit) {
-				$user = $userMapper->find($hit->objectid);
-				$media = $user->getRandomMedia();
-				$data[] = array(
-					'id'				=> $user->getId(),
-					'type'				=> 'user',
-					'link'				=> $user->getProfileLink(),
-					'image'				=> $media->getResizerCdnLink(),
-					'escaped_title'		=> $user->getUsername(true),
-					'title'				=> $user->getUsername(),
-					'user'				=> $user->getUsername(),
-					'user_profile'		=> $user->getProfileLink(),
-					'location'			=> $media->getLocation(),
-					'escaped_location'	=> $media->getLocation(false,true),
-				);
+				$_artists[] = $hit->objectid;
 			}
-			//Artist Search
-			$seriesIndex   = new SeriesIndex($this->getServiceLocator());
-			$query         = new MultiTerm();
-			$query->addTerm(new Term($keyword, 'name'));
-			$query->addTerm(new Term($keyword, 'description'));
-			$query->addTerm(new Term($keyword, 'media_titles'));
-			$query->addTerm(new Term($keyword, 'media_descriptions'));
-			$query->addTerm(new Term($keyword, 'media_loglines'));
-			if ($sortField == 'created') {
-				$matches = $seriesIndex->find($query,'created',SORT_NUMERIC,$sortOrder);
-			} else {
-				$matches = $seriesIndex->find($query,'name',SORT_STRING,$sortOrder);
-			}
+			$query         = new Fuzzy(new Term($keyword, 'artist_name'));
+			$matches       = $artistIndex->find($query,'username',SORT_STRING,$sortOrder);
 			foreach ($matches as $hit) {
-				$series = $seriesMapper->find($hit->objectid);
+				$_artists[] = $hit->objectid;
+			}
+			$_artists = array_unique($_artists);
+			
+			foreach ($_artists as $id) {
+				$user = $userMapper->find($id);
+				if ($media = $user->getRandomMedia()) {
+					if ($sortField == 'created') {
+						$sortBy = $user->getCreated()->getTimestamp();
+					} else {
+						$sortBy = $user->getUsername();
+					}
+					$sortBy = strtolower($sortBy);	
+					$sortBy = preg_replace('/[^a-z0-9 -]+/', '', $sortBy);		
+					$artistData[$sortBy][] = array(
+						'id'				=> $user->getId(),
+						'type'				=> 'user',
+						'link'				=> $user->getProfileLink(),
+						'image'				=> $media->getResizerCdnLink(),
+						'escaped_title'		=> $user->getUsername(true),
+						'title'				=> $user->getUsername(),
+						'user'				=> $user->getUsername(),
+						'user_profile'		=> $user->getProfileLink(),
+						'location'			=> $media->getLocation(),
+						'escaped_location'	=> $media->getLocation(false,true),
+					);
+				}
+			}
+			//Series Search
+			$query         = new Fuzzy(new Term($keyword, 'name'));
+			$matches       = $seriesIndex->find($query,'name',SORT_STRING,$sortOrder);
+			foreach ($matches as $hit) {
+				$_series[] = $hit->objectid;
+			}
+			$query         = new Fuzzy(new Term($keyword, 'description'));
+			$matches       = $seriesIndex->find($query,'name',SORT_STRING,$sortOrder);
+			foreach ($matches as $hit) {
+				$_series[] = $hit->objectid;
+			}
+/*
+			$query         = new Fuzzy(new Term($keyword, 'media_titles'));
+			$matches       = $seriesIndex->find($query,'name',SORT_STRING,$sortOrder);
+			foreach ($matches as $hit) {
+				$_series[] = $hit->objectid;
+			}
+			$query         = new Fuzzy(new Term($keyword, 'media_descriptions'));
+			$matches       = $seriesIndex->find($query,'name',SORT_STRING,$sortOrder);
+			foreach ($matches as $hit) {
+				$_series[] = $hit->objectid;
+			}
+			$query         = new Fuzzy(new Term($keyword, 'media_loglines'));
+			$matches       = $seriesIndex->find($query,'name',SORT_STRING,$sortOrder);
+			foreach ($matches as $hit) {
+				$_series[] = $hit->objectid;
+			}
+*/
+			$_series = array_unique($_series);
+			foreach ($_series as $id) {
+				$series = $seriesMapper->find($id);
 				$media = $series->getRandomMedia();
-				$data[] = array(
+				if ($sortField == 'created') {
+					$sortBy = $series->getCreated()->getTimestamp();
+				} else {
+					$sortBy = $series->getName();
+				}
+				$sortBy = strtolower($sortBy);	
+				$sortBy = preg_replace('/[^a-z0-9 -]+/', '', $sortBy);		
+				$seriesData[$sortBy][] = array(
 					'id'				=> $series->getId(),
 					'type'				=> 'series',
 					'link'				=> $series->getSeriesLink(),
@@ -110,26 +168,44 @@ class Search implements ServiceLocatorAwareInterface
 					'series_link'		=> $series->getSeriesLink(),
 				);
 			}
-			$mediaIndex    = new VideoIndex($this->getServiceLocator());
-			$query         = new MultiTerm();
-			$query->addTerm(new Term($keyword, 'title'));
-			$query->addTerm(new Term($keyword, 'logline'));
-			$query->addTerm(new Term($keyword, 'description'));
-			$query->addTerm(new Term($keyword, 'series_name'));
-			if ($sortField == 'created') {
-				$matches = $mediaIndex->getIndex()->find($query,'created',SORT_NUMERIC,$sortOrder);
-			} elseif ($sortField == 'views') {
-				$matches = $mediaIndex->getIndex()->find($query,'views',SORT_NUMERIC,$sortOrder);
-			} else {
-				$matches = $mediaIndex->getIndex()->find($query,'title',SORT_STRING,$sortOrder);
+			//Media Search
+			$query         = new Fuzzy(new Term($keyword, 'title'));
+			$matches       = $mediaIndex->find($query,'title',SORT_STRING,$sortOrder);
+			foreach ($matches as $hit) {
+				$_media[] = $hit->objectid;
 			}
-			foreach ($matches as $hit) {   
-				$media = $mediaMapper->find($hit->objectid);
+			$query         = new Fuzzy(new Term($keyword, 'logline'));
+			$matches       = $mediaIndex->find($query,'logline',SORT_STRING,$sortOrder);
+			foreach ($matches as $hit) {
+				$_media[] = $hit->objectid;
+			}
+			$query         = new Fuzzy(new Term($keyword, 'description'));
+			$matches       = $mediaIndex->find($query,'description',SORT_STRING,$sortOrder);
+			foreach ($matches as $hit) {
+				$_media[] = $hit->objectid;
+			}
+			$query         = new Fuzzy(new Term($keyword, 'series_name'));
+			$matches       = $mediaIndex->find($query,'series_name',SORT_STRING,$sortOrder);
+			foreach ($matches as $hit) {
+				$_media[] = $hit->objectid;
+			}
+			$_media = array_unique($_media);
+			foreach ($_media as $id) {
+				$media = $mediaMapper->find($id);
+				if ($sortField == 'created') {
+					$sortBy = $media->getCreated()->getTimestamp();
+				} elseif ($sortField == 'views') {
+					$sortBy = $media->getViews();
+				} else {
+					$sortBy = $media->getTitle();
+				}
+				$sortBy = strtolower($sortBy);	
+				$sortBy = preg_replace('/[^a-z0-9 -]+/', '', $sortBy);	
 				$added = false;
 				if ($episodes = $media->getEpisode()) {
 					if ($episode = $episodes[0]) {
 						if ($series = $episode->getSeries()) {
-							$data[] = array(
+							$mediaData[$sortBy][] = array(
 								'id'				=> $media->getId(),
 								'type'				=> 'media',
 								'link'				=> $media->getMediaLink(),
@@ -155,7 +231,7 @@ class Search implements ServiceLocatorAwareInterface
 					}
 				}
 				if (!$added) {	
-					$data[] = array(
+					$mediaData[$sortBy][] = array(
 						'id'				=> $media->getId(),
 						'type'				=> 'media',
 						'link'				=> $media->getMediaLink(),
@@ -175,6 +251,30 @@ class Search implements ServiceLocatorAwareInterface
 						'rate_down'			=> count($media->getRatings(false)),
 					);
 				}
+			}
+			if ($sortOrder == SORT_DESC) {
+				krsort($cityData);
+				krsort($artistData);
+				krsort($seriesData);
+				krsort($mediaData);
+			} else {
+				ksort($cityData);
+				ksort($artistData);
+				ksort($seriesData);
+				ksort($mediaData);
+			}
+			$data 		= array();
+			foreach ($cityData as $key => $cities) {
+				$data = array_merge($data,$cities);
+			}
+			foreach ($artistData as $key => $artists) {
+				$data = array_merge($data,$artists);
+			}
+			foreach ($seriesData as $key => $series) {
+				$data = array_merge($data,$series);
+			}
+			foreach ($mediaData as $key => $media) {
+				$data = array_merge($data,$media);
 			}
 			$results = array(
 				'searchId' 		=> $searchId,
@@ -203,6 +303,7 @@ class Search implements ServiceLocatorAwareInterface
         $cache			= $this->getServiceLocator()->get('cache-general');        
 		$cache->clearExpired();
         $results 		= $cache->getItem($searchId);
+		$results = false;
 		if (!$results) {
 			$provinceId		= null;
 			$provinceName	= null;
