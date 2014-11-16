@@ -19,7 +19,8 @@ var Video = Backbone.Model.extend({
         rate_down: '',
         why_we_choose: '',
 		series_name: '',
-		series_link: ''
+		series_link: '',
+		image_source: ''
 	},
 	initialize: function(){
     }

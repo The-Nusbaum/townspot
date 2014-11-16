@@ -5,5 +5,5 @@ function resolutionChange() {
 var resizeTimer;
 $(window).resize(function() {
     clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(resolutionChange, 500);
+    resizeTimer = setTimeout(resolutionChange, 1000);
 });

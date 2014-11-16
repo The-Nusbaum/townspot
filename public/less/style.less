@@ -1696,7 +1696,10 @@ div {
 
 .phone-ad, .mobile-ad, .tablet-ad, .desktop-ad {
 	text-align: center;
-	display: none;
+}
+
+.tablet-ad {
+	width: 100% !important;
 }
 
 @media (min-width: 400px) {
@@ -1743,11 +1746,21 @@ div {
 }
 
 @media (min-width: 768px) {
+	.container {
+		width: 100%;
+	}
 	#matching-videos {
 		display: block;
 	}
 	#matching-videos-xs {
 		display: none;
+	}
+	.img-youtube {
+		max-height: 249px;
+	}
+
+	.img-internal {
+		max-height: 249px;
 	}
 }
 	
@@ -1798,5 +1811,11 @@ div {
 				}
 			}
 		}
+	}
+}
+
+@media (max-width: 575px) {
+	.col-wide {
+		width: 100% !important;
 	}
 }

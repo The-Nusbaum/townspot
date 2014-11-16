@@ -1,11 +1,11 @@
 <script type="text/template" id="search-template">
 <% if (type == "ad") { %>
-	<div class="col-sm-4 google-ad loading" data-position="rectangle" ></div>
+	<div class="col-sm-4 col-xs-6 google-ad loading" data-position="rectangle" ></div>
 <% } else if (type == "category") { %>
-	<div class="col-sm-4 loading">
+	<div class="col-sm-4 col-xs-6 col-wide loading">
 		<div class="video-preview category-preview">
 			<a href="<%- link %>">
-				<img alt="<%- escaped_title %>" src="<%- image %>" class="img-responsive preview-img">
+				<img alt="<%- escaped_title %>" src="<%- image %>" class="img-responsive preview-img img-<%- image_source %>">
 			</a>
 			<div class="carousel-caption category">
 				<div class="video-title">
@@ -19,10 +19,10 @@
 		</div>
 	</div>
 <% } else if (type == "city") { %>
-	<div class="col-sm-4 loading">
+	<div class="col-sm-4 col-xs-6 col-wide loading">
 		<div class="video-preview">
 			<a href="<%- link %>">
-				<img alt="<%- escaped_title %>" src="<%- image %>" class="img-responsive preview-img">
+				<img alt="<%- escaped_title %>" src="<%- image %>" class="img-responsive preview-img img-<%- image_source %>">
 			</a>
 			<div class="carousel-caption small">
 				<div class="video-title">
@@ -36,10 +36,10 @@
 		</div>
 	</div>
 <% } else if (type == "user") { %>
-	<div class="col-sm-4 loading">
+	<div class="col-sm-4 col-xs-6 col-wide loading">
 		<div class="video-preview">
 			<a href="<%- link %>">
-				<img alt="<%- escaped_title %>" src="<%- image %>" class="img-responsive preview-img">
+				<img alt="<%- escaped_title %>" src="<%- image %>" class="img-responsive preview-img img-<%- image_source %>">
 			</a>
 			<div class="carousel-caption small">
 				<div class="video-title">
@@ -55,10 +55,10 @@
 		</div>
 	</div>
 <% } else if (type == "series") { %>
-	<div class="col-sm-4 loading">
+	<div class="col-sm-4 col-xs-6 col-wide loading">
 		<div class="video-preview">
 			<a href="<%- link %>">
-				<img alt="<%- escaped_title %>" src="<%- image %>" class="img-responsive preview-img">
+				<img alt="<%- escaped_title %>" src="<%- image %>" class="img-responsive preview-img img-<%- image_source %>">
 			</a>
 			<div class="carousel-caption small">
 				<div class="video-title">
@@ -79,10 +79,10 @@
 		</div>
 	</div>
 <% } else {%>		
-	<div class="col-sm-4 loading">
+	<div class="col-sm-4 col-xs-6 col-wide loading">
 		<div class="video-preview <%- position %>">
 			<a href="<%- link %>">
-				<img class="img-responsive preview-img" alt="<%- escaped_title %>" src="<%- image %>">
+				<img class="img-responsive preview-img img-<%- image_source %>" alt="<%- escaped_title %>" src="<%- image %>">
 			</a>
 			<div class="carousel-caption small">
 				<div class="video-title">

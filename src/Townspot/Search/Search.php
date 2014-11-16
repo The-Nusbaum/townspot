@@ -74,6 +74,7 @@ class Search implements ServiceLocatorAwareInterface
 					'title'				=> $city->getFullName(),
 					'location'			=> $city->getFullName(),
 					'escaped_location'	=> $city->getFullName(),
+					'image_source'		=> $media->getSource(),
 				);
 			}
 
@@ -111,6 +112,7 @@ class Search implements ServiceLocatorAwareInterface
 						'user_profile'		=> $user->getProfileLink(),
 						'location'			=> $media->getLocation(),
 						'escaped_location'	=> $media->getLocation(false,true),
+						'image_source'		=> $media->getSource(),
 					);
 				}
 			}
@@ -166,6 +168,7 @@ class Search implements ServiceLocatorAwareInterface
 					'escaped_location'	=> $media->getLocation(false,true),
 					'series_name'		=> $series->getName(),
 					'series_link'		=> $series->getSeriesLink(),
+					'image_source'		=> $media->getSource(),
 				);
 			}
 			//Media Search
@@ -225,6 +228,7 @@ class Search implements ServiceLocatorAwareInterface
 								'rate_down'			=> count($media->getRatings(false)),
 								'series_name'		=> $series->getName(),
 								'series_link'		=> $series->getSeriesLink(),
+								'image_source'		=> $media->getSource(),
 							);
 							$added = true;
 						}
@@ -249,6 +253,7 @@ class Search implements ServiceLocatorAwareInterface
 						'escaped_location'	=> $media->getLocation(false,true),
 						'rate_up'			=> count($media->getRatings(true)),
 						'rate_down'			=> count($media->getRatings(false)),
+						'image_source'		=> $media->getSource(),
 					);
 				}
 			}
@@ -388,6 +393,7 @@ class Search implements ServiceLocatorAwareInterface
 						'escaped_location'	=> $media->getLocation(false,true),
 						'rate_up'			=> count($media->getRatings(true)),
 						'rate_down'			=> count($media->getRatings(false)),
+						'image_source'		=> $media->getSource(),
 					);
 					if ($match['series_id']) {
 						$series = $seriesMapper->find($match['series_id']);
@@ -405,6 +411,7 @@ class Search implements ServiceLocatorAwareInterface
 					'image'				=> $media->getResizerCdnLink(),
 					'escaped_title'		=> 'All Videos',
 					'title'				=> 'All Videos',
+					'image_source'		=> $media->getSource(),
 				);
 				$categoryMapper 	= new \Townspot\Category\Mapper($this->getServiceLocator());
 				$matches = $categoryMapper->getDiscoverCategories($provinceId,$cityId);
@@ -417,6 +424,7 @@ class Search implements ServiceLocatorAwareInterface
 						'image'				=> $media->getResizerCdnLink(),
 						'escaped_title'		=> $category->getName(),
 						'title'				=> $category->getName(),
+						'image_source'		=> $media->getSource(),
 					);				
 				}
 			}
