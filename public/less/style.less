@@ -1422,6 +1422,7 @@ div {
 		&.active {
 			.panel-heading {
 				background-color: blue;
+                background-image: none;
 				color: white;
 			}
 		}
@@ -1444,6 +1445,9 @@ div {
 }
 
 #userProfile {
+    h3 {
+      margin-top: 1em;
+    }
 	.center {
 		text-align: center;
 	}
@@ -1470,6 +1474,7 @@ div {
 			max-height: 195px;
 		}
 		h3 {
+          margin-top: 0.5em;
 			border-bottom: 1px solid whitesmoke;
 		}
 		#map-canvas {
@@ -1519,7 +1524,14 @@ div {
   }
 
 	#videos, #favorites {
-		.popover {
+        .popover-title {
+            margin-top: 0px;
+            margin: 0px
+        }
+		.popover-content {
+          font-size: 10px;
+          margin: 0;
+          padding: 0 13px !important;
 		}
 		.list {
 			&.row {
@@ -1546,7 +1558,17 @@ div {
 						position: absolute;
 						bottom: -5px;
 						right: 1px;
+                        top: 5px;
 					}
+                    .info-button {
+                        position: absolute;
+                        bottom: -5px;
+                        right: 18px;
+                        top: 4px;
+                        div {
+                          display: block;
+                        }
+                    }
 					.more-info {
 						position: absolute;
 						top: 1px;
@@ -1696,7 +1718,10 @@ div {
 
 .phone-ad, .mobile-ad, .tablet-ad, .desktop-ad {
 	text-align: center;
-	display: none;
+}
+
+.tablet-ad {
+	width: 100% !important;
 }
 
 @media (min-width: 400px) {
@@ -1743,11 +1768,21 @@ div {
 }
 
 @media (min-width: 768px) {
+	.container {
+		width: 100%;
+	}
 	#matching-videos {
 		display: block;
 	}
 	#matching-videos-xs {
 		display: none;
+	}
+	.img-youtube {
+		max-height: 249px;
+	}
+
+	.img-internal {
+		max-height: 249px;
 	}
 }
 	
@@ -1798,5 +1833,11 @@ div {
 				}
 			}
 		}
+	}
+}
+
+@media (max-width: 575px) {
+	.col-wide {
+		width: 100% !important;
 	}
 }

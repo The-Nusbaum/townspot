@@ -405,6 +405,131 @@ class VideoController extends AbstractActionController
 		die;
 	}
 
+    protected function _tierCats($cats) {
+        $categoryMapper = new \Townspot\Category\Mapper($this->getServiceLocator());
+        $data = array();
+        foreach($cats as $c) {
+            if($c instanceof \Townspot\Category\Entity) {
+                $categories = $c->getCategoryTree();
+                foreach($categories as $k => $t) {
+                    switch($k) {
+                        case 0:
+                            if(empty($data[$t[0]])) {
+                                $data[$t[0]] = array(
+                                    'id' => $t[0],
+                                    'name' => $t[1],
+                                    'children' => array()
+                                );
+                            }
+                            break;
+                        case 1;
+                            if(empty($data[$categories[0][0]]['children'][$t[0]])) {
+                                $data[$categories[0][0]]['children'][$t[0]] = array(
+                                    'id' => $t[0],
+                                    'name' => $t[1],
+                                    'children' => array()
+                                );
+                            }
+                            break;
+                        case 2;
+                            if(empty($data[$categories[0][0]]['children'][$categories[1][0]][$t[0]])) {
+                                $data[$categories[0][0]]['children'][$categories[1][0]][$t[0]] = array(
+                                    'id' => $t[0],
+                                    'name' => $t[1],
+                                    'children' => false
+                                );
+                            }
+                            break;
+                    }
+
+                }
+            }
+        }
+        return $data;
+    }
+
+    public function editAction() {
+        $id = $this->params()->fromRoute('id');
+        $mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
+        $media = $mediaMapper->find($id);
+
+        //this tells the IDE what class we have as well as checks for a non-empty object
+        if($media instanceof \Townspot\Media\Entity) {
+            if($media->getUser()->getId() == $this->auth->getIdentity()) {
+                if(!$this->getRequest()->isPost()) {
+
+                    $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+                    $user = $userMapper->findOneById($this->auth->getIdentity());
+
+                    $countryMapper = new \Townspot\Country\Mapper($this->getServiceLocator());
+                    $countries = $countryMapper->findAll();
+
+                    $provinceMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
+                    $provinces = $provinceMapper->findByCountry($user->getCountry());
+
+                    $cityMapper = new \Townspot\City\Mapper($this->getServiceLocator());
+                    $cities = $cityMapper->findByProvince($user->getProvince());
+
+                    $categoryMapper = new \Townspot\Category\Mapper($this->getServiceLocator());
+                    $categories = $categoryMapper->findByParent(0);
+
+                    $headForm = new \Application\Forms\Video\Upload\HeadForm('uploadHeader', $countries, $provinces, $cities);
+
+                    $data = $media->toArray();
+                    $data['selectedCategories'] = $this->_tierCats($media->getCategories());
+                    if ($data['source'] == 'youtube') $data['youtube_url'] = $data['url'];
+
+                    $headForm->setData($data);
+                    $this->_view->setVariable('headForm', $headForm);
+
+                    $mainForm = new \Application\Forms\Video\EditForm('manualForm');
+                    $mainForm->setData($data);
+                    $this->_view->setVariable('mainForm', $mainForm);
+
+                    $videoMediaForm = new \Application\Forms\Video\Upload\VideoMediaForm('videoMediaForm');
+                    $videoMediaForm->setData($data);
+                    $this->_view->setVariable('videoMediaForm', $videoMediaForm);
+
+                    $this->_view->setVariable('data', $data);
+
+                    $this->getServiceLocator()
+                        ->get('viewhelpermanager')
+                        ->get('HeadScript')->appendFile('/js/edit.js');
+                } else {
+                    foreach($this->params()->fromPost() as $field => $value) {
+                        if(method_exists($media,"set".ucfirst($field))) {
+                            $method = "set".ucfirst($field);
+                            $media->$method($value);
+                        }
+                    }
+                    foreach($media->getCategories() as $key => $cat) {
+                        $media->removeCategory($key);
+                    }
+                    $mediaMapper->setEntity($media)->save();
+
+                    $categoryMapper = new \Townspot\Category\Mapper($this->getServiceLocator());
+                    foreach($this->params()->fromPost('selCat') as $cat_id) {
+                        $cat = $categoryMapper->find($cat_id);
+                        $media->addCategory($cat);
+                    }
+
+                    $mediaMapper->setEntity($media)->save();
+
+                    $this->flashMessenger()->addMessage('Your video has been edited.');
+
+                    return $this->redirect()->toRoute('dashboard');
+
+                }
+            } else {
+                //throw exception and 403
+            }
+        } else {
+            //throw exception and 404
+        }
+
+        return $this->_view;
+    }
+
     public function reviewAction() {
         $request = $this->getRequest();
         $data = $request->getPost();

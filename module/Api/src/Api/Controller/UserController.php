@@ -46,4 +46,53 @@ class UserController extends \Townspot\Controller\BaseRestfulController
             ->setMessage('A user by that email address has already been registered');
         return new JsonModel($this->getResponse()->build());
     }
+
+    public function removeFavoriteAction() {
+        $auth =  new \Zend\Authentication\AuthenticationService();
+        $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+        $user = $userMapper->find($auth->getIdentity());
+
+        if(empty($user)) {
+            $this->getResponse()
+                ->setSuccess(false)
+                ->setMessage('You must be logged in to perform this action');
+            return new JsonModel($this->getResponse()->build());
+        }
+
+        $id = $this->params()->fromRoute('id');
+
+            $user->removeFavorite($id);
+            $userMapper->setEntity($user)->save();
+            $this->getResponse()
+                ->setCode(200)
+                ->setSuccess(true);
+
+        return new JsonModel($this->getResponse()->build());
+    }
+
+    public function addFavoriteAction() {
+        $auth =  new \Zend\Authentication\AuthenticationService();
+        $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+        $user = $userMapper->find($auth->getIdentity());
+
+        if(empty($user)) {
+            $this->getResponse()
+                ->setSuccess(false)
+                ->setMessage('You must be logged in to perform this action');
+            return new JsonModel($this->getResponse()->build());
+        }
+
+        $id = $this->params()->fromRoute('id');
+
+        $mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
+        $media = $mediaMapper->find($id);
+
+        $user->addFavorite($media);
+        $userMapper->setEntity($user)->save();
+        $this->getResponse()
+            ->setCode(200)
+            ->setSuccess(true);
+
+        return new JsonModel($this->getResponse()->build());
+    }
 } 

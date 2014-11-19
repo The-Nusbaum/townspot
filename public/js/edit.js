@@ -19,7 +19,6 @@ var upload = {
         upload.pluploadImage();
         upload.pluploadVideo();
         upload.populateCategories();
-        upload.clearData();
         $('body').on('click','.category, .category > span',function(e){
             upload.addCategory(e);
         });
@@ -28,6 +27,9 @@ var upload = {
         });
         $('hidden, input, select, textarea').change(function(e){
             upload.setVal(e);
+        });
+        $('#youtube_url').change(function(){
+            $('#submitForm [name=url]').val($(this.val()));
         });
         $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
             upload.clearData();
@@ -82,6 +84,7 @@ var upload = {
                 FileUploaded: function(up, files) {
                     $('#videofile').val("/files/"+files.target_name);
                     $('#videofile').change();
+                    $('#youtube_url').val('');
                 },
 
                 FilesAdded: function(up, files) {
@@ -98,12 +101,6 @@ var upload = {
         });
 
         video_uploader.init();
-    },
-    clearData: function(){
-        $('#submitForm').children('input').remove();
-        $('#headForm select, #headForm input').each(function(){
-            upload.setVal($(this));
-        });
     },
     setVal: function(param){
         if(param && param.jquery) {
@@ -131,6 +128,7 @@ var upload = {
         if(!upload.validateForm()) e.preventDefault();
     },
     validateForm: function(){
+        return true;
         $('.alert').hide();
         var error = false
         if($('#youtab').hasClass('active')) {

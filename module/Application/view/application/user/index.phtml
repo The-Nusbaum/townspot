@@ -75,9 +75,9 @@
                     <h3>Website</h3>
                     <div><a href='<?= $user->getWebsite() ?>' target="_blank"><?= $user->getWebsite() ?></a></div>
                 <?php endif; ?>
-                <?php if(!empty($tweets)) : ?>
+                <?php if($user->getUserSocial() != null) : ?>
                     <h3>Twitter</h3>
-                    <div><a href="http://twitter.com/<?= $user['User']['twitter'] ?>" target="_blank">@<?= $user['User']['twitter'] ?></a></div>
+                    <div><a href="http://twitter.com/<?= $user->getUserSocial()[0]->getLink() ?>" target="_blank">@<?= $user->getUserSocial()[0]->getLink() ?></a></div>
                 <?php endif; ?>
             </div>
         </div>
@@ -113,7 +113,7 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
     <div class="col-md-6" id="twitter">
-        <?php if(empty($tweets)) : ?>
+        <?php if(!$user->getUserSocial()) : ?>
             <div class="noTwitter">
                 <img src="/img/TSLogo_Full_SML.png" alt="TownSpot"/>
                 <?php if($canEdit): ?>
@@ -123,12 +123,11 @@
                 <?php endif; ?>
             </div>
         <?php else: ?>
-        <a class="twitter-timeline" href="https://twitter.com/tatiana"
             <a class="twitter-timeline"  href="https://twitter.com/TownSpotTV"
                data-widget-id="460868174456434689"
-               data-screen-name="<?=$user['User']['twitter']?>"
+               data-screen-name="<?= $user->getUserSocial()[0]->getLink() ?>"
                data-show-replies="false"
-               data-tweet-limit="5">Tweets by @<?=$user['User']['twitter']?></a>
+               data-tweet-limit="5">Tweets by @<?= $user->getUserSocial()[0]->getLink() ?></a>
             <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
         <?php endif; ?>
 
@@ -165,11 +164,9 @@
 
             <?php foreach($user->getCommentsAbout() as $comment): ?>
                 <div class="row col-xs-12 comment">
-                    <a class="col-xs-2" href="/u/<?=$comment->getUser()->getId()
-                    ?>"><img class="img-responsive" src="<?= $this->img('user',$comment->getUser()->getId(),100,100)?>" alt="a"/></a>
-                    <?php $time = strtotime($comment->getCreated())?>
-                    <?php $time = date('Y-m-d H:i:s', $time); ?>
-                    <p class="col-xs-9 offset-xs-1"><?=$comment->getComment()?><br><a href="/u/<?=$comment->getUser()->getId()?>"><?=$comment->getUser()->getId()?></a> - <abbr class="timeago" title="<?= $time ?>"></abbr></p>
+                    <a class="col-xs-2" href="/u/<?=$comment->getUser()->getId()?>">
+                        <img class="img-responsive" src="<?= $this->img('user',$comment->getUser()->getId(),100,100)?>" alt="a"/></a>
+                    <p class="col-xs-9 offset-xs-1"><?=$comment->getComment()?><br><a href="/u/<?=$comment->getUser()->getId()?>"><?=$comment->getUser()->getId()?></a> - <abbr class="timeago" title="<?= $comment->getCreated()->format('Y-m-d H:i:s') ?>"></abbr></p>
                 </div>
             <?php endforeach; ?>
         </div>
@@ -305,7 +302,7 @@
             ?>
             <div class="col-sm-6 video">
                 <a href="/videos/<?=$v->getId()?>/<?= urlencode($v->getTitle())?>" class="thumbnail">
-                    <?php if(preg_match('/ytimg/',$v->getPreviewImage())): ?>
+                    <?php if(preg_match('/(?:ytimg)|(?:files)/',$v->getPreviewImage())): ?>
                         <img class="img-responsive" src="<?= $v->getPreviewImage() ?>" alt="<?=$v->getTitle()?>">
                     <?php else: ?>
                         <img src="<?= $this->img('video',$v->getId(),720,540) ?>" alt="<?=$v->getTitle()?>">
@@ -315,33 +312,20 @@
                 <div class="caption">
                     <div class="info-button">
                         <div role="button"
-                             data-content="<?= $v->getCity()->getName() ?>, <?= $v->getProvince()->getName() ?><br/><?= $v->getLogLine()?>"
                              data-toggle="popover"
                              class="more-info popover-btn"
                              href="#"
-                             data-title="<?= $v->getTitle()?>"
                              data-placement="left"
-                             data-footer="
-                                        <span class='video-duration'>
-                                            <i class='fa fa-clock-o'></i>
-                                            <?=$v->getDuration()?>
-                                        </span>
-                                        <span class='video-plays'>
-                                            <i class='fa fa-play'></i>
-                                            <?=$v->getViews()?>
-                                        </span>
-                                        <span class='video-thumbs-up'>
-                                            <i class='fa fa-thumbs-up'></i>
-                                            <?= $ups ?>
-                                        </span>
-                                        <span class='video-thumbs-down'>
-                                            <i class='fa fa-thumbs-down'></i>
-                                            <?= $downs ?></span>
-                                        <span class='video-comments'>
-                                            <i class='fa fa-comments'></i>
-                                            <?=count($v->getCommentsAbout())?>
-                                        </span>
-							        ">
+                             data-original-title="<a href='<?= $v->getMediaLink() ?>'><?= htmlentities($v->getTitle()) ?></a> by <a href='<?=$v->getUser()->getProfileLink()?>'><?=$v->getUser()->getDisplayName()?></a>"
+                             data-content="<div class='location'><?= $v->getCity()->getName() ?>, <?= $v->getProvince()->getName() ?></div><div class='text'><?= $v->getLogline()?></div>
+                                    <footer>
+                                    <span class='video-duration'><i class='fa fa-clock-o'></i> <?= $v->getDuration()?></span>
+                                    <span class='video-plays'><i class='fa fa-play'></i> <?=$v->getViews()?></span>
+                                    <span class='video-thumbs-up'><i class='fa fa-thumbs-up'></i> <?=$ups ?></span>
+                                    <span class='video-thumbs-down'><i class='fa fa-thumbs-down'></i> <?= $downs ?></span>
+                                    <span class='video-comments'><i class='fa fa-comments'></i> <?=count($v->getCommentsAbout()) ?></span>
+                                    </footer>"
+                            >
                             <i class="fa fa-info-circle"></i>
                         </div>
                     </div>
@@ -389,17 +373,33 @@
         <?php endif; ?>
         <div class="list">
             <?php //var_dump($user->getFavorites()); ?>
-            <?php foreach($user->getFavorites() as $v) :?>
-                <div class="col-sm-6 video" data-id="<?=$v->getId()?>">
+            <?php foreach($user->getFavorites() as $k => $v) :?>
+                <div class="col-sm-6 video" data-id="<?=$v->getId()?>" data-key="<?=$k ?>">
                     <a href="/videos/<?=$v->getId()?>/<?= urlencode($v->getTitle())?>" class="thumbnail">
                         <img src="<?= $this->img('video',$v->getId(),720,540) ?>" alt="<?=$v->getTitle()?>">
                     </a>
 
                     <div class="caption">
+                        <h4><a href="<?= $v->getMediaLink() ?>"><?=$v->getTitle()?></a></h4>
                         <div class="info-button">
-                            <div role="button" data-placement="left" data-content="<?= $v->getCity()->getName() ?>, <?= $v->getProvince()->getName() ?><br/><?= $v->getLogline()?>" data-toggle="popover" class="more-info popover-btn" href="#" data-title="<?= $v->getTitle()?>" data-footer="<span class='video-duration'><i class='fa fa-clock-o'></i> <?= $v->getDuration()?></span> <span class='video-plays'><i class='fa fa-play'></i> <?=$v->getViews()?></span> <span class='video-thumbs-up'><i class='fa fa-thumbs-up'></i> <?=$ups ?></span> <span class='video-thumbs-down'><i class='fa fa-thumbs-down'></i> <?= $downs ?></span> <span class='video-comments'><i class='fa fa-comments'></i> <?=count($v->getCommentsAbout()) ?></span>"><i class="fa fa-info-circle"></i></div>
+                            <div role="button"
+                                 data-placement="left"
+                                 data-toggle="popover"
+                                 class="more-info popover-btn" href="#"
+                                 data-original-title="<a href='<?= $v->getMediaLink() ?>'><?= htmlentities($v->getTitle()) ?></a> by <a href='<?=$v->getUser()->getProfileLink()?>'><?=$v->getUser()->getDisplayName()?></a>"
+                                 data-content="<div class='location'><?= $v->getCity()->getName() ?>, <?= $v->getProvince()->getName() ?></div><div class='text'><?= $v->getLogline()?></div>
+                                    <footer>
+                                    <span class='video-duration'><i class='fa fa-clock-o'></i> <?= $v->getDuration()?></span>
+                                    <span class='video-plays'><i class='fa fa-play'></i> <?=$v->getViews()?></span>
+                                    <span class='video-thumbs-up'><i class='fa fa-thumbs-up'></i> <?=$ups ?></span>
+                                    <span class='video-thumbs-down'><i class='fa fa-thumbs-down'></i> <?= $downs ?></span>
+                                    <span class='video-comments'><i class='fa fa-comments'></i> <?=count($v->getCommentsAbout()) ?></span>
+                                    </footer>"
+                            >
+                                <i class="fa fa-info-circle"></i>
+                            </div>
                         </div>
-                        <h4><a href="/videos/<?=$v->getId()?>/<?= urlencode($v->getTitle())?>"><?=$v->getTitle()?></a></h4>
+
                         <?php if($canEdit) : ?>
                             <a href="javascript:void()" class="unfav"><i class="fa fa-times-circle"></i></a>
                         <?php endif; ?>
@@ -433,4 +433,33 @@
             share_email: '<?= $user->getAllowContact() ?>'
         })
     );
+</script>
+<script type="text/javascript"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCa1RYJsf-C94cTQo34GC59DkiijUq_54s&sensor=true">
+</script>
+<script type="text/javascript">
+
+    var lat = $('#map-canvas').attr('data-lat');
+    if(!lat) lat = 0;
+    var long = $('#map-canvas').attr('data-long');
+    if (!long) long = 0;
+    var markerTitle = $('#map-canvas').attr('data-title');
+    if (!markerTitle) markerTitle = 'no data';
+    function initialize() {
+        var myLatlng = new google.maps.LatLng(lat,long);
+        var mapOptions = {
+            center: myLatlng,
+            zoom: 8
+        };
+        var map = new google.maps.Map(document.getElementById("map-canvas"),
+            mapOptions);
+
+        var marker = new google.maps.Marker({
+            position: myLatlng,
+            map: map,
+            title:markerTitle
+        });
+    }
+    google.maps.event.addDomListener(window, 'load', initialize);
+
 </script>

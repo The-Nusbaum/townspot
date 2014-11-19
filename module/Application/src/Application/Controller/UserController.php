@@ -117,4 +117,19 @@ class UserController extends AbstractActionController
 
         return $this->_view;
     }
+
+    public function linkAction() {
+        $provider = $this->params()->fromRoute('provider');
+        $opauth_service = $this->getServiceLocator()->get('opauth_service');
+
+        // set custom login and callback routes
+        $opauth_service->setLoginUrlName('link_callback');
+        $opauth_service->setCallbackUrlName('link_callback');
+
+        return $opauth_service->redirect($provider, 'link_callback');
+    }
+
+    public function linkCallbackAction() {
+        die('foo');
+    }
 }

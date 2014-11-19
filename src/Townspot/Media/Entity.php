@@ -631,7 +631,7 @@ class Entity extends \Townspot\Entity
 		);
 	}
 	
-	public function getResizerLink($width = 342,$height = 257)
+	public function getResizerLink($width = 332,$height = 249)
 	{
 		if (!(preg_match('/ytimg/',$this->getPreviewImage()))) {
 			return sprintf('/resizer.php?id=%d&w=%d&h=%d',
@@ -642,7 +642,7 @@ class Entity extends \Townspot\Entity
 		return $this->getPreviewImage();
 	}
 	
-	public function getResizerCdnLink($width = 342,$height = 257)
+	public function getResizerCdnLink($width = 332,$height = 249)
 	{
 		$imageServer = "http://images" . rand(0,9) . ".townspot.tv";
 		$link = $this->getResizerLink($width,$height);

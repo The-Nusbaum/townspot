@@ -73,6 +73,7 @@ return array(
                     'plupload/moxie.min.js',
                     'plupload/plupload.min.js',
                     'tinymce/tinymce/tinymce.js',
+                    'general_init.js'
 
                 ),
                 'js/tinymceTheme.js' => array(
@@ -124,6 +125,26 @@ return array(
     ),
     'router' => array(
         'routes' => array(
+            'link' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/link/[:provider]',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\User',
+                        'action'     => 'link',
+                    ),
+                ),
+            ),
+            'link_callback' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/link-callback',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\User',
+                        'action'     => 'linkCallback',
+                    ),
+                ),
+            ),
             'home' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -462,12 +483,12 @@ return array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(
 					'route'    => '/profile/:username',
-					'constraints' => array(
-						'username' => '\d+',
-					),
+					//'constraints' => array(
+					//	'username' => '\d+',
+					//),
 					'defaults' => array(
 						'controller' => 'Application\Controller\User',
-						'action'     => 'profile',
+						'action'     => 'index',
 					),
 				),
 			),	

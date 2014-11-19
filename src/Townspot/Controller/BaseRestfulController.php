@@ -21,7 +21,12 @@ class BaseRestfulController extends AbstractRestfulController
     protected $_entity;
     protected $_response;
 
-    public function getList()
+    public function setEventManager(EventManagerInterface $eventManager)
+    {
+        header('Content-type: application/json');
+        parent::setEventManager($eventManager);
+    }
+    public function getListAction()
     {   // Action used for GET requests without resource Id
         $this->getResponse()->setSuccess(false)
             ->setData(null)
@@ -45,8 +50,9 @@ class BaseRestfulController extends AbstractRestfulController
         return new JsonModel($this->getResponse()->build());
     }
 
-    public function get($id)
+    public function getAction()
     {   // Action used for GET requests with resource Id
+        $id = $this->params()->fromRoute('id');
         $this->setEntity($this->getMapper()->findOneById($id));
         if($this->getEntity()) {
             $this->getResponse()
@@ -60,7 +66,7 @@ class BaseRestfulController extends AbstractRestfulController
         return new JsonModel($this->getResponse()->build());
     }
 
-    public function create($data)
+    public function createAction($data)
     {   // Action used for POST requests
         $this->getMapper()->setEntity($this->getEntity());
         foreach($this->params()->fromPost() as $field => $value) {
@@ -92,8 +98,10 @@ class BaseRestfulController extends AbstractRestfulController
         return new JsonModel($this->getResponse()->build());
     }
 
-    public function update($id, $data)
+    public function updateAction()
     {   // Action used for PUT requests
+        $id = $this->params()->fromRoute('id');
+        $data = $this->params()->fromPost('data');
         $this->setEntity($this->getMapper()->findOneById($id));
 
         if($this->getEntity()) {
@@ -133,8 +141,9 @@ class BaseRestfulController extends AbstractRestfulController
         return new JsonModel($this->getResponse()->build());
     }
 
-    public function delete($id)
+    public function deleteAction()
     {   // Action used for DELETE requests
+        $id = $this->params()->fromRoute('id');
         $this->setEntity($this->getMapper()->find($id));
 
         if($this->getEntity()) {
@@ -152,7 +161,7 @@ class BaseRestfulController extends AbstractRestfulController
         return new JsonModel($this->getResponse()->build());
     }
 
-    public function deleteList($id) {
+    public function deleteListAction($id) {
         return $this->delete($id);
     }
 

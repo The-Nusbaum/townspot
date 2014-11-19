@@ -16,7 +16,7 @@ class VideoMediaForm extends Form {
         // we want to ignore the name passed
         parent::__construct('VideoMediaForm');
         $this->add(array(
-            'name' => 'video_url',
+            'name' => 'url',
             'attributes' => array(
                 'type'  => 'plupload-video',
                 'label' => '<i class="fa fa-video-camera"></i> Choose Video',
@@ -27,12 +27,11 @@ class VideoMediaForm extends Form {
         ));
 
         $this->add(array(
-            'name' => 'preview_url',
+            'name' => 'previewImage',
             'attributes' => array(
                 'type'  => 'plupload-image',
                 'label' => '<i class="fa fa-camera"></i> Choose Picture',
                 'class' => 'picUpload',
-                'value' => 'http://images.townspot.tv/resizer.php?id=none',
                 'errorId' => 'nopreview',
                 'errorMessage' => 'You must upload an Image'
 

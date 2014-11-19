@@ -35,6 +35,8 @@ class SearchController extends AbstractActionController
         $searchId   = md5(serialize(array(time(),session_id(),$searchTerm,$sortTerm)));
         list($sortField,$sortOrder) = explode(':',$sortTerm);
         $sortOrder  = ($sortOrder == 'desc') ? SORT_DESC : SORT_ASC;
+		$searchTerm = strtolower($searchTerm);	
+		$searchTerm = preg_replace('/[^a-z0-9 -]+/', '', $searchTerm);		
 
 		$search		= new \Townspot\Search\Search($this->getServiceLocator());
 		$results    = $search->keywordSearch($searchTerm, $sortField, $sortOrder,$page);

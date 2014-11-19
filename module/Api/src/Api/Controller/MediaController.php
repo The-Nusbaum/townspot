@@ -47,7 +47,9 @@ class MediaController extends \Townspot\Controller\BaseRestfulController
             foreach($media as $i => $m) {
                 if($total == $limit) break;
                 if($i < $offset) continue;
-                if($m->getOnMediaServer() && $m->getApproved()) {
+                if($m->getOnMediaServer()
+                    && $m->getApproved()
+                    && count($m->getEpisode()) == 0) {
                     $data['media'][] = $m->toArray();
                 }
                 $total++;
