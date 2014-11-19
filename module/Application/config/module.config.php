@@ -99,16 +99,22 @@ return array(
                     'view/searchresult.js',
                     'discover.js',
                 ),
+                'js/admin.js' => array(
+					'trentrichardson/jquery-timepicker-addon/dist/jquery-ui-timepicker-addon.min.js',
+                    'datefield.js',
+//                    'twitter/typeahead.js/dist/typeahead.bundle.min.js',
+//                    'usernameTypeahead.js',
+				),
             ),			
         ),
-		'caching' => array(
-            'default' => array(
-                'cache'     => 'AssetManager\\Cache\\FilePathCache',
-                'options' => array(
-					'dir' => APPLICATION_PATH . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'static',
-                ),
-            ),
-        ),		
+//		'caching' => array(
+//            'default' => array(
+//                'cache'     => 'AssetManager\\Cache\\FilePathCache',
+//                'options' => array(
+//					'dir' => APPLICATION_PATH . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'static',
+//                ),
+//            ),
+//        ),		
 		'filters' => array(
 			'css' => array(
 				array(

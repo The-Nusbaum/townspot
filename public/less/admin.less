@@ -14,7 +14,7 @@
 }
 
 .admin-btn {
-	width: 110px;
+	min-width: 110px;
 	position: relative;
 	font-size: 13px !important;
 	.icon-collapse {
@@ -65,12 +65,13 @@
 .breadcrumb-wrapper{
 	background-color: #F5F5F5;
     background-repeat: repeat-x;
-    border-color: #B3B3B3;
     border-image: none;
     border-radius: 4px 4px 4px 4px;
-    border-style: solid;
-    border-width: 1px;
+    border-width: 0px;
 	height: 40px;
+	.admin-btn {
+		margin-top: 3px;
+	}
 	.user-navbar {
 		padding-right: 10px;
 	}

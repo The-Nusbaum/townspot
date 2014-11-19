@@ -79,4 +79,22 @@ class Mapper extends AbstractEntityMapper
 		}
 		return $results;
 	}
+	
+	public function usernameTypeahead($value = null,$limit = 10) 
+	{
+		$results = array();
+		$sql  = "SELECT DISTINCT user.username
+				 FROM user 
+			     WHERE user.username LIKE '" . $value . "%'
+				 LIMIT " . $limit;
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+		$_results = $stmt->fetchAll();
+		foreach ($_results as $result) {
+			$value = array_shift($result);
+			$results[] = array('val'	=> $value);
+		}
+		return $results;
+	}
+	
 }

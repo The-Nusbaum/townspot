@@ -151,7 +151,6 @@
 		"zf-commons/zfc-base": "0.1.2",
 		"zf-commons/zfc-user": "2.0.*@dev",	
 		"zf-commons/zfc-admin": "dev-master",
-		"twitter/typeahead.js": "dev-master",
 		"ocramius/proxy-manager": "0.5.1",
 		"twig/twig": "1.16.*@dev",
 		"ptachoire/cssembed": "dev-master",

@@ -172,7 +172,7 @@ class Mapper extends AbstractEntityMapper
 		return $results;
 	}
 	
-	public function getDiscoverMedia($province_id = null,$city_id=null,$category_id = null,$sort = 'created:desc',$page=1,$limit=11) 
+	public function getDiscoverMedia($province_id = null,$city_id=null,$category_id = null,$sort = 'created:desc') 
 	{
 		$results = array();
 		$sql  = "SELECT ";
@@ -204,7 +204,6 @@ class Mapper extends AbstractEntityMapper
 			$sql .= " ORDER BY media.created";
         }
 		$sql .= ($sortOrder == 'asc') ? ' ASC' : ' DESC';
-		$sql .= " LIMIT " . (($page - 1) * $limit) . "," . $limit;
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
 		$stmt->execute();
 		return $stmt->fetchAll();
