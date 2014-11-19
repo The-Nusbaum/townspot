@@ -24,6 +24,11 @@ class UserController extends AbstractActionController
     {
 		$this->isAuthenticated();
 		$type = $this->params()->fromRoute('type');
+		return new ViewModel( 
+			array(
+				'type'			=> $type,
+			)
+		);
     }
 	
     public function addAction()
@@ -42,4 +47,8 @@ class UserController extends AbstractActionController
 		$this->isAuthenticated();
     }
 	
+    public function showAction()
+    {
+		$this->isAuthenticated();
+    }
 }
