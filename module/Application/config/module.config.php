@@ -73,6 +73,7 @@ return array(
                     'plupload/moxie.min.js',
                     'plupload/plupload.min.js',
                     'tinymce/tinymce/tinymce.js',
+                    'general_init.js'
 
                 ),
                 'js/tinymceTheme.js' => array(
@@ -98,16 +99,22 @@ return array(
                     'view/searchresult.js',
                     'discover.js',
                 ),
+                'js/admin.js' => array(
+					'trentrichardson/jquery-timepicker-addon/dist/jquery-ui-timepicker-addon.min.js',
+                    'datefield.js',
+//                    'twitter/typeahead.js/dist/typeahead.bundle.min.js',
+//                    'usernameTypeahead.js',
+				),
             ),			
         ),
-		'caching' => array(
-            'default' => array(
-                'cache'     => 'AssetManager\\Cache\\FilePathCache',
-                'options' => array(
-					'dir' => APPLICATION_PATH . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'static',
-                ),
-            ),
-        ),		
+//		'caching' => array(
+//            'default' => array(
+//                'cache'     => 'AssetManager\\Cache\\FilePathCache',
+//                'options' => array(
+//					'dir' => APPLICATION_PATH . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'cache' . DIRECTORY_SEPARATOR . 'static',
+//                ),
+//            ),
+//        ),		
 		'filters' => array(
 			'css' => array(
 				array(
@@ -124,6 +131,26 @@ return array(
     ),
     'router' => array(
         'routes' => array(
+            'link' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/link/[:provider]',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\User',
+                        'action'     => 'link',
+                    ),
+                ),
+            ),
+            'link_callback' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/link-callback',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\User',
+                        'action'     => 'linkCallback',
+                    ),
+                ),
+            ),
             'home' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -462,12 +489,12 @@ return array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(
 					'route'    => '/profile/:username',
-					'constraints' => array(
-						'username' => '\d+',
-					),
+					//'constraints' => array(
+					//	'username' => '\d+',
+					//),
 					'defaults' => array(
 						'controller' => 'Application\Controller\User',
-						'action'     => 'profile',
+						'action'     => 'index',
 					),
 				),
 			),	

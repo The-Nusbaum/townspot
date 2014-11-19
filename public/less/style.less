@@ -1100,6 +1100,7 @@ div {
 }
 
 .video-player {
+	max-width: 825px;
 	#comment-field {
 		border-radius: 4px;
 		border: 2px solid #12497A;
@@ -1422,6 +1423,7 @@ div {
 		&.active {
 			.panel-heading {
 				background-color: blue;
+                background-image: none;
 				color: white;
 			}
 		}
@@ -1444,6 +1446,9 @@ div {
 }
 
 #userProfile {
+    h3 {
+      margin-top: 1em;
+    }
 	.center {
 		text-align: center;
 	}
@@ -1470,6 +1475,7 @@ div {
 			max-height: 195px;
 		}
 		h3 {
+          margin-top: 0.5em;
 			border-bottom: 1px solid whitesmoke;
 		}
 		#map-canvas {
@@ -1519,7 +1525,14 @@ div {
   }
 
 	#videos, #favorites {
-		.popover {
+        .popover-title {
+            margin-top: 0px;
+            margin: 0px
+        }
+		.popover-content {
+          font-size: 10px;
+          margin: 0;
+          padding: 0 13px !important;
 		}
 		.list {
 			&.row {
@@ -1546,7 +1559,17 @@ div {
 						position: absolute;
 						bottom: -5px;
 						right: 1px;
+                        top: 5px;
 					}
+                    .info-button {
+                        position: absolute;
+                        bottom: -5px;
+                        right: 18px;
+                        top: 4px;
+                        div {
+                          display: block;
+                        }
+                    }
 					.more-info {
 						position: absolute;
 						top: 1px;

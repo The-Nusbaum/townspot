@@ -200,13 +200,12 @@ class Edit extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'image_url',
+            'name' => 'imageUrl',
             'attributes' => array(
                 'type'  => 'plupload-image',
                 'column' => 2,
                 'label' => 'Please choose a profile Picture',
                 'class' => 'profilePic',
-                'value' => 'http://images.townspot.tv/resizer.php?id=none&type=profile'
             ),
         ));
         $this->add(array(
@@ -230,7 +229,7 @@ class Edit extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'allow_contact',
+            'name' => 'allowContact',
             'attributes' => array(
                 'type'  => 'checkbox',
                 'label' => 'Allow other users to contact me',
@@ -240,7 +239,7 @@ class Edit extends Form
         ));
 
         $this->add(array(
-            'name' => 'email_notifications',
+            'name' => 'emailNotification',
             'attributes' => array(
                 'type'  => 'checkbox',
                 'label' => 'Receive Email Notifications',

@@ -1,0 +1,55 @@
+<h1><?= $this->type; ?> Management</h1>
+<div class="row breadcrumb-wrapper">
+	<div class="col-sm-8">
+		<ol class="breadcrumb">
+			<li><a href="#">Home</a></li>
+			<li class="active">Users</li>
+		</ol>	
+	</div>
+	<div class="col-sm-4">
+		<a class="btn btn-default admin-btn pull-right" href="<?= $this->url('admin-' . strtolower($this->type) . '-add'); ?>">Add <?= $this->type; ?></a>
+	</div>
+</div>
+<br/>
+<div class="row" id="admin-search">
+	<div class="col-sm-12">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12"><b>Search <?= $this->type; ?></b></div>
+			</div>
+			<div class="row">
+				<div class="col-sm-3">
+					<label>UserName</label><br/>
+					<input id="search-username" type="text" placeholder="UserName" class="col-sm-12 typeahead">
+				</div>
+				<div class="col-sm-2">
+					<label>State</label>
+					<select id="search-province" data-ref="State" data-target="search-city" class="col-sm-12"></select>
+				</div>
+				<div class="col-sm-3">
+					<label>City</label>
+					<select id="search-city" data-ref="City" class="col-sm-12"></select>
+				</div>
+				<div class="col-sm-2">
+					<label>Added On or After</label>
+					<input id="search-created-after" type="text" class="col-sm-8 datefield"></i>
+				</div>
+				<div class="col-sm-2">
+					<label>Added On or Before</label>
+					<input id="search-created-before" type="text" class="col-sm-8 datefield"></i>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12 pull-right">
+					<label>Status</label><br />
+					<select id="search-verified">
+						<option value="A">Verified Users</option>
+						<option value="P">Unverified Users</option>
+					</select>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+</script>

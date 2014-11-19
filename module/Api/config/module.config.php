@@ -16,16 +16,7 @@ return array(
             'custom_methods' => array(
                 'type'    => 'Segment',
                 'options' => array(
-                    'route'    => '/api/[:model][/:method][/:id]',
-                    'defaults' => array(
-                        'controller' => 'model'
-                    ),
-                ),
-            ),
-            'Api' => array(
-                'type'    => 'Segment',
-                'options' => array(
-                    'route'    => '/api/[:model][/:id]',
+                    'route'    => '/api/[:model[/:method[/:id]]]',
                     'defaults' => array(
                         'controller' => 'model'
                     ),

@@ -23,6 +23,16 @@ return array(
                     ),
                 ),
             ),
+            'admin-typeahead' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/typeahead',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Index',
+                        'action'     => 'typeahead',
+                    ),
+                ),
+            ),
             'admin-users' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -52,6 +62,18 @@ return array(
                     'defaults' => array(
                         'controller' => 'Admin\Controller\User',
                         'action'     => 'edit',
+                        'type' 		 => 'User',
+                    ),
+                ),
+            ),
+            'admin-user-show' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/user/show',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\User',
+                        'action'     => 'show',
+                        'type' 		 => 'User',
                     ),
                 ),
             ),
@@ -76,7 +98,7 @@ return array(
                     ),
                 ),
             ),
-            'admin-admin-add' => array(
+            'admin-administrator-add' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
                     'route'    => '/admin/admin/add',
@@ -87,17 +109,29 @@ return array(
                     ),
                 ),
             ),
-            'admin-admin-edit' => array(
+            'admin-administrator-edit' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
                     'route'    => '/admin/admin/edit',
                     'defaults' => array(
                         'controller' => 'Admin\Controller\User',
                         'action'     => 'edit',
+                        'type' 		 => 'Administrator',
                     ),
                 ),
             ),
-            'admin-admin-delete' => array(
+            'admin-administrator-show' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/admin/show',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\User',
+                        'action'     => 'show',
+                        'type' 		 => 'Administrator',
+                    ),
+                ),
+            ),
+            'admin-administrator-delete' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
                     'route'    => '/admin/admin/delete',
@@ -136,6 +170,18 @@ return array(
                     'defaults' => array(
                         'controller' => 'Admin\Controller\User',
                         'action'     => 'edit',
+                        'type' 		 => 'Artist',
+                    ),
+                ),
+            ),
+            'admin-artist-show' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/artist/show',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\User',
+                        'action'     => 'show',
+                        'type' 		 => 'Artist',
                     ),
                 ),
             ),

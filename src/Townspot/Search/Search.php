@@ -28,7 +28,7 @@ class Search implements ServiceLocatorAwareInterface
 			$_cities 	= array();
 			$_artists 	= array();
 			$_series 	= array();
-			$_media 		= array();
+			$_media 	= array();
 			$cityData 	= array();
 			$artistData	= array();
 			$seriesData	= array();
@@ -304,11 +304,10 @@ class Search implements ServiceLocatorAwareInterface
 
     public function discoverSearch($terms,$sortTerm, $page = 1)
     {
-        $searchId       = md5(serialize(array($terms,$sortTerm,$page)));
+        $searchId       = md5(serialize(array($terms,$sortTerm)));
         $cache			= $this->getServiceLocator()->get('cache-general');        
 		$cache->clearExpired();
         $results 		= $cache->getItem($searchId);
-		$results = false;
 		if (!$results) {
 			$provinceId		= null;
 			$provinceName	= null;
@@ -369,9 +368,9 @@ class Search implements ServiceLocatorAwareInterface
 			if ($activeCategory) {
 				$data = array();
 				if ($activeCategory < 0) {
-					$matches = $mediaMapper->getDiscoverMedia($provinceId,$cityId,null,$sortTerm,$page);
+					$matches = $mediaMapper->getDiscoverMedia($provinceId,$cityId,null,$sortTerm);
 				} else {
-					$matches = $mediaMapper->getDiscoverMedia($provinceId,$cityId,$activeCategory,$sortTerm,$page);
+					$matches = $mediaMapper->getDiscoverMedia($provinceId,$cityId,$activeCategory,$sortTerm);
 				}
 				foreach ($matches as $match) {    
 					$media = $mediaMapper->find($match['id']);
@@ -388,7 +387,7 @@ class Search implements ServiceLocatorAwareInterface
 						'user_profile'		=> $media->getUser()->getProfileLink(),
 						'duration'			=> $media->getDuration(true),
 						'comment_count'		=> count($media->getCommentsAbout()),
-						'views'				=> $media->getViews(),
+						'views'				=> $media->getViews(false),
 						'location'			=> $media->getLocation(),
 						'escaped_location'	=> $media->getLocation(false,true),
 						'rate_up'			=> count($media->getRatings(true)),
@@ -443,6 +442,8 @@ class Search implements ServiceLocatorAwareInterface
 			);
 			$cache->setItem($searchId, $results);
 		}
+		$startRange = ($page - 1) * 11;
+		$results['data'] = array_slice($results['data'],$startRange,11);
 		if (count($results['data']) > 6) {
 			$ad = array(
 				array(

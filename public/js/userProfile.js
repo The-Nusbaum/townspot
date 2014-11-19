@@ -56,8 +56,8 @@
                     bootbox.confirm("Are you sure?", function(result) {
                         if(result){
                             $.ajax({
-                                    type: 'DELETE',
-                                    url: '/api/media/'+id
+                                    type: 'get',
+                                    url: '/api/media/delete/'+id
                                 }
 
                             ).done(function(data){
@@ -75,7 +75,7 @@
                 $('.stats .edit').click(function(e){
                     var $target = $(e.target);
                     var id = $target.parents('ul').attr('data-id');
-                    window.location = "/video/edit/" + id;
+                    window.location = "/videos/edit/" + id;
                 });
 
                 //calculate the offset
@@ -181,16 +181,23 @@
                 $target.remove().prependTo($parent);
             },
             unfav : function(e) {
-                $target = $(e.target).parents('.video');
-                $.ajax({
-                    url: '/api/V1/UserFavorite/'+$target.attr('data-id'),
-                    type: 'DELETE',
-                    success: function(data) {
-                        $target.remove();
+                var $target = $(e.target);
+                var id = $target.parents('.video').attr('data-key');
+                bootbox.confirm("Are you sure?", function(result) {
+                    if(result){
+                        $.ajax({
+                                type: 'get',
+                                url: '/api/user/removeFavorite/'+id
+                            }
+
+                        ).done(function(data){
+                                if(data.success) {
+                                    $stats = $target.parents('.video').remove();
+                                }
+                            });
                     }
                 });
             }
-
         }
         var options = $.extend(defaults, options);
         methods.init();

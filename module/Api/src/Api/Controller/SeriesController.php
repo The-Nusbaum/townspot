@@ -52,9 +52,12 @@ class SeriesController extends \Townspot\Controller\BaseRestfulController
                 if($total == $limit) break;
                 if($i < $offset) continue;
                 $tmpData = $s->toArray();
+                $episodes = $s->getEpisodes();
                 $tmpData['episodes'] = array();
-                foreach($episodeMapper->findBySeriesId($s->getId()) as $e) {
-                    $tmpData['episodes'][] = $e->toArray();
+                foreach($episodes as $e){
+                    $eData = $e->toArray();
+                    $eData['title'] = $e->getMedia()->getTitle();
+                    $tmpData['episodes'][] = $eData;
                 }
                 $data['series'][] = $tmpData;
 
@@ -67,6 +70,54 @@ class SeriesController extends \Townspot\Controller\BaseRestfulController
                 ->setData($data)
                 ->setCount(count($data['series']));
         }
+        return new JsonModel($this->getResponse()->build());
+    }
+
+    public function saveAction() {
+        $series_id = $this->params()->fromPost('series_id');
+        $episodes = $this->params()->fromPost('episodes');
+
+        $seriesMapper = new \Townspot\Series\Mapper($this->getServiceLocator());
+        $episodeMapper = new \Townspot\SeriesEpisode\Mapper($this->getServiceLocator());
+        $mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
+
+        $series = $seriesMapper->find($series_id);
+
+        foreach($series->getEpisodes() as $key => $episode) {
+            $episodeMapper->setEntity($episode)->delete();
+        }
+
+        foreach($episodes as $episodeData) {
+            $media = $mediaMapper->find($episodeData['media_id']);
+            $episode = new \Townspot\SeriesEpisode\Entity();
+            $episode->setEpisodeNumber($episodeData['episode_number'])
+                ->setMedia($media)
+                ->setSeries($series);
+            $episodeMapper->setEntity($episode)->save();
+        }
+    }
+
+    public function deleteAction()
+    {   // Action used for DELETE requests
+        $id = $this->params()->fromRoute('id');
+        $this->setEntity($this->getMapper()->find($id));
+
+        if($this->getEntity()) {
+            $episodeMapper = new \Townspot\SeriesEpisode\Mapper($this->getServiceLocator());
+            foreach($this->getEntity()->getEpisodes() as $e) {
+                $episodeMapper->setEntity($e)->delete();
+            }
+            $this->getMapper()->setEntity($this->getEntity());
+            $this->getMapper()->delete();
+            $this->getResponse()
+                ->setMessage($this->getModel()." record was deleted");
+        } else {
+            $this->getResponse()->setCode(404)
+                ->setSuccess(false)
+                ->setMessage($this->getModel()." record was not found");
+        }
+
+
         return new JsonModel($this->getResponse()->build());
     }
 } 

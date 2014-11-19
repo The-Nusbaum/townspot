@@ -130,12 +130,13 @@ class Form extends \Zend\Form\Form {
                 $html .= "<textarea name='$name' class='form-control $class' id='$id'>$value</textarea>";
                 break;
             case 'plupload-image':
+                $url = $value?$value:'http://images.townspot.tv/resizer.php?id=none';
                 $html .= "<button id='plupload-image' class='form-control' style='position: relative; z-index: 1;'>";
                 $html .= "$label";
                 $html .= "</button>";
                 $html .= "<div class='form-group'>";
-			    $html .= "<img id='$id' src='$value' class='picPreview img-responsive'>";
-                $html .= "<input type='hidden' name='$name' id='plupPicVal' value='$value'>";
+			    $html .= "<img id='$id' src='$url' class='picPreview img-responsive'>";
+                $html .= "<input type='hidden' name='$name' id='plupPicVal' value='$url'>";
                 $html .= "</div>";
                 break;
             case 'plupload-video':
@@ -146,7 +147,8 @@ class Form extends \Zend\Form\Form {
                 $html .= "<div class='progress-bar' role='progressbar' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100' style='width: 0%;'>";
                 $html .= "</div>";
                 $html .= "</div>";
-                $html .= "<input type='hidden' id='videofile' value='' name='$name'>";
+                $url = $value?$value:'';
+                $html .= "<input type='hidden' id='videofile' value='$url' name='$name'>";
                 break;
             case 'button':
                 $btn_class =$e->getAttribute('button-class');
@@ -163,6 +165,13 @@ class Form extends \Zend\Form\Form {
             case 'custom-block':
                 if($label) $html .= "<h3>$label</h3>";
                 $html .= $e->getAttribute('inner-html');
+                break;
+            case 'tree-selections':
+                if($label) $html .= "<h3>$label</h3>";
+                $selClass = $e->getAttribute('selClass')? $e->getAttribute('selClass'):'';
+                $html .= "<span class='$name'>";
+                $html .= $this->iterate_tree_selections($value,$selClass);
+                $html .= "</span>";
                 break;
             case 'tree':
                 if($label) $html .= "<h3>$label</h3>";
@@ -201,6 +210,16 @@ class Form extends \Zend\Form\Form {
             $html .= "</div>";
         }
 
+        return $html;
+    }
+
+    protected function iterate_tree_selections($data,$selClass) {
+        $html = '';
+        foreach($data as $sel) {
+            $html .= " <span class='$selClass' data-id='{$sel['id']}'>{$sel['name']} <i class='fa fa-times'></i>";
+            if($sel['children']) $html .= $this->iterate_tree_selections($sel['children'],$selClass);
+            $html .= "</span>";
+        }
         return $html;
     }
 

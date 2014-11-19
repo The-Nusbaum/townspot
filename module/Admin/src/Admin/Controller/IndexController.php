@@ -3,6 +3,7 @@ namespace Admin\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Zend\View\Model\JsonModel;
 
 class IndexController extends AbstractActionController
 {
@@ -38,4 +39,18 @@ class IndexController extends AbstractActionController
 			)
 		);
     }
+	
+    public function typeaheadAction()
+    {
+		$field = $this->params()->fromQuery('field');
+		$query = $this->params()->fromQuery('query');
+		list($repository,$field) = explode('::',$field);
+		$mapperClass = "\\Townspot\\" . ucfirst($repository) . "\\Mapper";
+		$function = $field . "Typeahead";
+		$mapper = new $mapperClass($this->getServiceLocator());
+		$results = $mapper->$function($query);
+		$json = new JsonModel($results);
+        return $json;
+    }
+	
 }

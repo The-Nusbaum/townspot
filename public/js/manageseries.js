@@ -29,8 +29,8 @@ $.fn.Series = function( options )
             $('.series-list').on('click','.series .panel-heading .fa-minus',function(e){
                 var series_id = $(this).parents('.series').attr('data-id');
                 $.ajax({
-                    url: '/api/V1/Series/'+series_id,
-                    type: 'DELETE',
+                    url: '/api/series/delete/'+series_id,
+                    type: 'get',
                     success: function(data) {
                         methods.getSeries(true);
                     }
@@ -119,7 +119,7 @@ $.fn.Series = function( options )
                 },
                 function(data){
                     var html = '';
-                    options.series_totalpages = data.pages;
+                    options.series_totalpages = data.data.pages;
                     for (x in data.data.series) {
                             var series = data.data.series[x];
                         console.log(series);
@@ -128,9 +128,9 @@ $.fn.Series = function( options )
                                 '<div class="panel-heading">'+ series.name +'<span class="pull-right"><i class="fa fa-minus"></i></span></div>'+
                                 '<div class="panel-body">'+
                                 '<ul class="series-media-list list-unstyled">';
-                            for (i in series.episode){
-                                var media = series.episode[i];
-                                html +=         '<li class="video" data-id="'+id+'"><span class="pull-left"><i class="fa fa-plus"></i> <i class="fa fa-minus"></i></span> '+media.title+' <span class="pull-right"><i class="fa fa-chevron-up"></i> <i class="fa fa-chevron-down"></i></span></li>';
+                            for (i in series.episodes){
+                                var media = series.episodes[i];
+                                html +=         '<li class="video" data-id="'+media.id+'"><span class="pull-left"><i class="fa fa-plus"></i> <i class="fa fa-minus"></i></span> '+media.title+' <span class="pull-right"><i class="fa fa-chevron-up"></i> <i class="fa fa-chevron-down"></i></span></li>';
                             }
                             html +=             '</ul>'+
                                 '</div>'+
@@ -208,13 +208,13 @@ $.fn.Series = function( options )
         },
         createSeries: function(title){
             $.post(
-                '/api/series',
+                '/api/series/create',
                 {
                     user_id: options.user_id,
                     name: title
                 },
                 function(data) {
-                    methods.createSeason()
+                    //methods.createSeason()
                     methods.getSeries();
                 }
             );
@@ -233,16 +233,13 @@ $.fn.Series = function( options )
             });
 
             var data = {
-                data: {
                     user_id: options.user_id,
                     series_id: $series.attr('data-id'),
-                    Episode: media
-                }
+                    episodes: media
             };
 
             $.post(
-                //'/api/V1/Series/foo/',
-                '/episode/updateSeries',
+                '/api/series/save',
                 data,
                 function(){
                     if (refresh) methods.getVideos();
