@@ -2,7 +2,6 @@
 return array(
     'controllers' => array(
         'invokables' => array(
-//          'Api\Controller\Index' => 'Api\Controller\IndexController',
             'Api\Controller\MediaController' => 'Api\Controller\MediaController',
             'Api\Controller\SeriesController' => 'Api\Controller\SeriesController',
             'Api\Controller\CategoryController' => 'Api\Controller\CategoryController',
@@ -22,33 +21,6 @@ return array(
                     ),
                 ),
             ),
-/*
-            'Api' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route'    => '/api',
-                    'defaults' => array(
-                        'controller' => 'Api\Controller\Index',
-                        'action'     => 'index',
-                    ),
-                ),
-                'may_terminate' => true,
-                'child_routes' => array(
-                    'default' => array(
-                        'type'    => 'Segment',
-                        'options' => array(
-                            'route'    => '/api/[:controller[/:action]]',
-                            'constraints' => array(
-                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-                            ),
-                            'defaults' => array(
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-*/
         ),
     ),
     'view_manager' => array(

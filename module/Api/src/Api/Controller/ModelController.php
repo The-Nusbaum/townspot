@@ -30,18 +30,19 @@ class ModelController extends \Townspot\Controller\BaseRestfulController
             $this->setModel($model);
             $mapperClass = "\\Townspot\\".$model."\\Mapper";
             $controllerClass = "\\Api\\Controller\\{$this->getModel()}Controller";
-
             if(class_exists($controllerClass)) {
                 if(method_exists(new $controllerClass, $method.'Action')) {
+
                     $response = $this->forward()->dispatch($controllerClass,array('action'=>$method,'id' => $id))->getVariables();
                 } else $response = $this->forward()->dispatch($controllerClass)->getVariables();
                 die(json_encode($response));
             }
-
             $this->setMapper(new $mapperClass($this->getServiceLocator()));
             $entityClass = "\\Townspot\\".$model."\\Entity";
             $this->setEntity(new $entityClass);
             $this->setResponse(new \Townspot\Rest\Response());
+            $action = "{$method}Action";
+            die(json_encode($this->$action()));
         }, 100);
 
     }

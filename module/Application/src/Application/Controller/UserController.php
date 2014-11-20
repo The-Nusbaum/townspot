@@ -26,7 +26,7 @@ class UserController extends AbstractActionController
     {
         $this->_view = new ViewModel();
         $this->auth = new \Zend\Authentication\AuthenticationService();
-        $this->_view->setVariable('authdUser',$this->auth->getIdentity());
+        $this->_view->setVariable('authdUser', $this->auth->getIdentity());
     }
 
     public function indexAction()
@@ -43,12 +43,59 @@ class UserController extends AbstractActionController
 
         $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
         $user = $userMapper->findOneById($this->auth->getIdentity());
-        $this->_view->setVariable('user',$user);
-        $this->_view->setVariable('canEdit',true);
-        $this->_view->setVariable('TZoffset',0);
-        $this->_view->setVariable('',true);
+        //i HATE doing it this way... but whatevs
+        $sql = "select * from user_social_media where source = 'twitter' and user_id = :uid";
+        $query = $userMapper->getEntityManager()->getConnection()->prepare($sql);
+        $query->execute(array(':uid' => $user->getId()));
+        $this->_view->setVariable('twitter', $query->fetchAll()[0]);
+
+        $this->_view->setVariable('user', $user);
+        $this->_view->setVariable('canEdit', true);
+        $this->_view->setVariable('TZoffset', 0);
+        $this->_view->setVariable('', true);
         return $this->_view;
     }
+
+    public function profileAction()
+    {
+        $this->_view->setTemplate('Application/user/index');
+        $username = $this->params()->fromRoute('username');
+        $id = $this->params()->fromRoute('id');
+        $this->getServiceLocator()
+            ->get('ViewHelperManager')
+            ->get('HeadTitle')
+            ->set('TownSpot &bull; Your Town. Your Talent. Spotlighted');
+
+        $this->getServiceLocator()
+            ->get('viewhelpermanager')
+            ->get('HeadScript')->appendFile('/js/townspot.js')
+            ->appendFile('/js/userProfile.js');
+
+        $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+        if($id) {
+            $user = $userMapper->find($id);
+        } else {
+            $user = $userMapper->findOneByUsername($username);
+        }
+        //i HATE doing it this way... but whatevs
+        $sql = "select * from user_social_media where source = 'twitter' and user_id = :uid";
+        $query = $userMapper->getEntityManager()->getConnection()->prepare($sql);
+        $query->execute(array(':uid' => $user->getId()));
+        $this->_view->setVariable('twitter', $query->fetchAll()[0]);
+
+        if($this->auth->getIdentity()) {
+            $authdUser = $userMapper->find($this->auth->getIdentity());
+        } else {
+            $authdUser = false;
+        }
+
+        $this->_view->setVariable('authdUser', $authdUser);
+        $this->_view->setVariable('user', $user);
+        $this->_view->setVariable('canEdit', false);
+        $this->_view->setVariable('TZoffset', 0);
+        return $this->_view;
+    }
+
 
     public function loginAction() {}
 
@@ -75,6 +122,18 @@ class UserController extends AbstractActionController
         $cities = $cityMapper->findByProvince($user->getProvince());
 
         $form = new \Application\Forms\User\Edit('user',$countries,$provinces,$cities);
+
+        $sql = "select * from user_oauth where user_id = :uid";
+        $query = $userMapper->getEntityManager()->getConnection()->prepare($sql);
+        $query->execute(array(':uid'=> $user->getId()));
+        $oauths = $query->fetchAll();
+
+        foreach($oauths as $oauth) {
+            $el = $form->get("link_{$oauth['source']}");
+            $label = ucfirst($oauth['source']);
+            $el->setName("unlink_{$oauth['source']}")
+                ->setAttribute('label',"Unlink $label");
+        }
         $userData = $user->toArray();
         $userData['user_id'] = $userData['id'];
         $form->setData($userData);
@@ -88,6 +147,24 @@ class UserController extends AbstractActionController
 
 
         return $this->_view;
+    }
+
+    public function unlinkAction() {
+        $provider = $this->params()->fromRoute('provider');
+        $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+        $user = $userMapper->findOneById($this->auth->getIdentity());
+
+        $sql = "delete from user_oauth where user_id = :uid and source = :provider ";
+        $query = $userMapper->getEntityManager()->getConnection()->prepare($sql);
+        $query->execute(array(':uid'=> $user->getId(), ':provider' => $provider));
+
+        if($provider == 'twitter') {
+            $sql = "delete from user_social_media where user_id = :uid and source = 'twitter' ";
+            $query = $userMapper->getEntityManager()->getConnection()->prepare($sql);
+            $query->execute(array(':uid' => $user->getId()));
+        }
+
+        $this->redirect()->toRoute('dashboard');
     }
 
     public function manageseriesAction() {
@@ -120,16 +197,44 @@ class UserController extends AbstractActionController
 
     public function linkAction() {
         $provider = $this->params()->fromRoute('provider');
+        $oauth_callback = $this->params()->fromRoute('oauth_callback');
         $opauth_service = $this->getServiceLocator()->get('opauth_service');
 
         // set custom login and callback routes
-        $opauth_service->setLoginUrlName('link_callback');
-        $opauth_service->setCallbackUrlName('link_callback');
+        $opauth_service->setLoginUrlName('custom_lfjopauth_login');
+        $opauth_service->setCallbackUrlName('custom_lfjopauth_callback');
 
-        return $opauth_service->redirect($provider, 'link_callback');
+        return $opauth_service->redirect($provider, 'custom_lfjopauth_callback');
     }
 
     public function linkCallbackAction() {
-        die('foo');
+        $opauth = $_SESSION['opauth'];
+
+        $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+        $user = $userMapper->findOneById($this->auth->getIdentity());
+
+        $oauthMapper = new \Townspot\UserOauth\Mapper($this->getServiceLocator());
+        $socialMapper = new \Townspot\UserSocialMedia\Mapper($this->getServiceLocator());
+
+        $oauth = new \Townspot\UserOauth\Entity();
+        $oauth->setUser($user)
+            ->setExternalId($opauth['auth']['uid'])
+            ->setSource(strtolower($opauth['auth']['provider']));
+        $oauthMapper->setEntity($oauth)->save();
+
+        if($opauth['auth']['provider'] == 'Twitter') {
+            $social = new \Townspot\UserSocialMedia\Entity();
+            $social->setUser($user)
+                ->setSource('twitter')
+                //->setLink('iamiandotme');
+                ->setLink($opauth['auth']['info']['nickname']);
+            $socialMapper->setEntity($social)->save();
+        }
+
+        $this->redirect()->toRoute('dashboard');
+    }
+
+    public function sendEmail() {
+
     }
 }

@@ -9,7 +9,7 @@ class Edit extends Form
     protected $_provinces;
     protected $_cities;
 
-    public function __construct($name = null,$colCountries = null, $colProvinces = null, $colCities = null)
+    public function __construct($name = null,$user, $colCountries = null, $colProvinces = null, $colCities = null)
     {
         // we want to ignore the name passed
         parent::__construct('user');
@@ -208,6 +208,7 @@ class Edit extends Form
                 'class' => 'profilePic',
             ),
         ));
+
         $this->add(array(
             'name' => 'link_twitter',
             'attributes' => array(

@@ -138,33 +138,19 @@
             leaveComment : function() {
                 $target = $('#commentText');
                 $.post(
-                    '/api/V1/UserComment',
+                    '/api/artistComment/create',
                     {
-                        user_id: options.follower_id,
-                        commenter_id: options.followee_id,
+                        target_id: options.follower_id,
+                        user_id: options.followee_id,
                         comment: $target.val()
                     },
                     function(data) {
-                        console.log(data);
-                        comment = data.data.UserComment;
-                        $.getJSON(
-                            '/api/V1/User',
-                            {
-                                q: 'id:'+comment.user_id
-                            },
-                            function(data) {
-                                data = data[0]['User'];
-                                commentDate = new Date(comment.created).getTime();
-                                commentDate = commentDate + options.offset
-                                html = '<div class="row col-xs-12 comment">' +
-                                    '<a class="col-xs-2" href="/u/'+comment.commenter_id+'"><img class="img-responsive" src="http://images.townspot.tv/resizer.php?id='+comment.user_id+'&type=profile&w=100&h=100" alt="a"/></a>' +
-                                    '<p class="col-xs-9 offset-xs-1">'+comment.comment+'<br><a href="/u/'+comment.user_id+'">'+data.username+'</a> - <abbr class="timeago" title="'+new Date(commentDate).toISOString()+'">'+jQuery.timeago(new Date(commentDate).toISOString())+'</abbr></p>'+
-                                    '</div>';
-                                $('#Comments .list').prepend(html);
-                                $('#commentText').val('');
-                            }
-                        );
-
+                        var comment = data.data;
+                        html = '<div class="row col-xs-12 comment">' +
+                            '<a class="col-xs-2" href="/u/'+comment.user_id+'"><img class="img-responsive" src="http://images.townspot.tv/resizer.php?id='+comment.user_id+'&type=profile&w=100&h=100" alt="a"/></a>' +
+                            '<p class="col-xs-9 offset-xs-1">'+comment.comment+'<br><a href="/u/'+comment.user_id+'">'+options.username+'</a> - <abbr class="timeago" title="'+new Date().toISOString()+'">'+jQuery.timeago(new Date().toISOString())+'</abbr></p>'+
+                            '</div>';
+                        $('#Comments .list').prepend(html);
                     }
                 );
 

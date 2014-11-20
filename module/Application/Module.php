@@ -96,7 +96,6 @@ class Module
             if($authenticationResult->isValid() && $authenticationService->hasIdentity()) {
                 $userOauthMapper = new \Townspot\UserOauth\Mapper($e->getTarget()->getServiceLocator());
                 try {
-
                     $external_id = $authenticationResult->getIdentity()['lfjopauth']['opauth'][$provider]["auth"]["uid"];
                     $userOauth = $userOauthMapper->findOneByExternalId($external_id);
 

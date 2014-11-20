@@ -63,6 +63,7 @@ class BaseRestfulController extends AbstractRestfulController
                 ->setSuccess(false)
                 ->setMessage($this->getModel()." record was not found");
         }
+
         return new JsonModel($this->getResponse()->build());
     }
 
@@ -76,7 +77,7 @@ class BaseRestfulController extends AbstractRestfulController
             ));
             if(preg_match('/_id$/',$field)) {
                 $field = str_replace('_id', '', $field);
-                if($field == 'admin') $dataSource = 'User';
+                if(in_array($field,array('admin','target'))) $dataSource = 'User';
                 else {
                     $dataSource = $inflector->filter(array('field' => $field));
                 }
@@ -94,7 +95,7 @@ class BaseRestfulController extends AbstractRestfulController
         $this->getResponse()
             ->setCount(1)
             ->setData($this->getEntity()->toArray());
-
+        die(json_encode($this->getResponse()->build()));
         return new JsonModel($this->getResponse()->build());
     }
 

@@ -131,25 +131,45 @@ return array(
     ),
     'router' => array(
         'routes' => array(
-            'link' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
+            'custom_lfjopauth_login' => array(
+                'type'    => 'Segment',
                 'options' => array(
-                    'route'    => '/link/[:provider]',
-                    'defaults' => array(
-                        'controller' => 'Application\Controller\User',
-                        'action'     => 'link',
+                    'route'    => '/custom/login/[:provider[/:oauth_callback]]',
+                    'constraints' => array(
+                        'provider'       => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'oauth_callback' => '[a-zA-Z][a-zA-Z0-9_-]*'
                     ),
-                ),
+                    'defaults' => array(
+                        'controller'    => 'Application\Controller\User',
+                        'action'        => 'link'
+                    )
+                )
             ),
-            'link_callback' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
+            'custom_lfjopauth_callback' => array(
+                'type'    => 'Segment',
                 'options' => array(
-                    'route'    => '/link-callback',
-                    'defaults' => array(
-                        'controller' => 'Application\Controller\User',
-                        'action'     => 'linkCallback',
+                    'route'    => '/custom/callback/[:provider]',
+                    'constraints' => array(
+                        'provider'  => '[a-zA-Z][a-zA-Z0-9_-]*'
                     ),
-                ),
+                    'defaults' => array(
+                        'controller'    => 'Application\Controller\User',
+                        'action'        => 'linkCallback'
+                    )
+                )
+            ),
+            'unlink' => array(
+                'type'    => 'Segment',
+                'options' => array(
+                    'route'    => '/user/unlink/[:provider]',
+                    'constraints' => array(
+                        'provider'  => '[a-zA-Z][a-zA-Z0-9_-]*'
+                    ),
+                    'defaults' => array(
+                        'controller'    => 'Application\Controller\User',
+                        'action'        => 'unlink'
+                    )
+                )
             ),
             'home' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
@@ -494,7 +514,7 @@ return array(
 					//),
 					'defaults' => array(
 						'controller' => 'Application\Controller\User',
-						'action'     => 'index',
+						'action'     => 'profile',
 					),
 				),
 			),	

@@ -33,7 +33,7 @@
                 <img class='profile-pic img-responsive' src="<?= $this->img('user',$user->getId(),260) ?>" alt="a"/>
                 <h3>Username</h3>
                 <div><?= $user->getUsername() ?></div>
-                <?php if ($canEdit) : ?>
+                <?php if ($canEdit && $authdUser) : ?>
                     <h3>Email</h3>
                     <div><?= $user->getEmail() ?></div>
                 <?php elseif($user->getAllowContact()): ?>
@@ -44,12 +44,12 @@
                         <div class="col-sm-6">
                             <button class="col-sm-4 btn btn-default btn-contact form-control" data-toggle="modal" data-target="#contactModal">Contact</button>
                         </div>
-                        <?php if(!$canEdit): ?>
+                        <?php if(!$canEdit && $authdUser): ?>
                             <div class="col-sm-6">
                                 <?php
                                 $html = '<button class=" form-control btn btn-default btn-follow">Become a fan</button>';
                                 foreach($user->getFollowedBy() as $fan){
-                                    if($fan->getId() == $authdUser) {
+                                    if($fan->getId() == $authdUser->getId()) {
                                         $html = '<button class=" form-control btn btn-default btn-unfollow" data-id="'.$fan['id'].'">Unfan</button>';
                                     }
                                 } ?>
@@ -75,15 +75,15 @@
                     <h3>Website</h3>
                     <div><a href='<?= $user->getWebsite() ?>' target="_blank"><?= $user->getWebsite() ?></a></div>
                 <?php endif; ?>
-                <?php if($user->getUserSocial() != null) : ?>
+                <?php if($twitter != null) : ?>
                     <h3>Twitter</h3>
-                    <div><a href="http://twitter.com/<?= $user->getUserSocial()[0]->getLink() ?>" target="_blank">@<?= $user->getUserSocial()[0]->getLink() ?></a></div>
+                    <div><a href="http://twitter.com/<?= $twitter['link'] ?>" target="_blank">@<?= $twitter['link'] ?></a></div>
                 <?php endif; ?>
             </div>
         </div>
 
     </div>
-
+    <?php if($authdUser):?>
     <div class="modal fade" id="contactModal">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -91,9 +91,10 @@
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title">Contact <?= $user->getUsername() ?></h4>
                 </div>
+
                 <div class="modal-body">
                     <form role="form">
-                        <input type="hidden" class="form-control" id="user_id" value="<?= $authdUser?>">
+                        <input type="hidden" class="form-control" id="user_id" value="<?= $authdUser->getId()?>">
                         <input type="hidden" class="form-control" id="video_creator" value="<?= $user->getId()?>">
                         <div class="form-group">
                             <label for="subject">Subject</label>
@@ -112,8 +113,9 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
+    <?php endif; ?>
     <div class="col-md-6" id="twitter">
-        <?php if(!$user->getUserSocial()) : ?>
+        <?php if(!$twitter) : ?>
             <div class="noTwitter">
                 <img src="/img/TSLogo_Full_SML.png" alt="TownSpot"/>
                 <?php if($canEdit): ?>
@@ -125,9 +127,9 @@
         <?php else: ?>
             <a class="twitter-timeline"  href="https://twitter.com/TownSpotTV"
                data-widget-id="460868174456434689"
-               data-screen-name="<?= $user->getUserSocial()[0]->getLink() ?>"
+               data-screen-name="<?= $twitter['link'] ?>"
                data-show-replies="false"
-               data-tweet-limit="5">Tweets by @<?= $user->getUserSocial()[0]->getLink() ?></a>
+               data-tweet-limit="5">Tweets by @<?= $twitter['link'] ?></a>
             <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
         <?php endif; ?>
 
@@ -148,25 +150,26 @@
         <div class="row">
             <h3 class="col-xs-12">Comments:</h3>
         </div>
+        <?php if($authdUser): ?>
         <div class="row form-group">
             <div class="col-sm-8"><input class='col-sm-8 form-control' placeholder='Leave a Comment' type="text" id="commentText"/></div>
             <div class="col-sm-4">
                 <button class="form-control btn btn-primary" id="comment">Comment</button>
             </div>
-
         </div>
+        <?php endif; ?>
         <div class="row">
             <div class="col-xs-12 control-container">
                 <?= (count($user->getCommentsAbout()) > 5)?'<button class="prev btn btn-default col-xs-12"><i class="fa fa-chevron-up"></i></button>':'' ?>
             </div>
         </div>
         <div class="row list">
-
-            <?php foreach($user->getCommentsAbout() as $comment): ?>
+            <?php $comments = array_reverse($user->getCommentsAbout()->toArray()); ?>
+            <?php foreach($comments as $comment): ?>
                 <div class="row col-xs-12 comment">
                     <a class="col-xs-2" href="/u/<?=$comment->getUser()->getId()?>">
                         <img class="img-responsive" src="<?= $this->img('user',$comment->getUser()->getId(),100,100)?>" alt="a"/></a>
-                    <p class="col-xs-9 offset-xs-1"><?=$comment->getComment()?><br><a href="/u/<?=$comment->getUser()->getId()?>"><?=$comment->getUser()->getId()?></a> - <abbr class="timeago" title="<?= $comment->getCreated()->format('Y-m-d H:i:s') ?>"></abbr></p>
+                    <p class="col-xs-9 offset-xs-1"><?=$comment->getComment()?><br><a href="/u/<?=$comment->getUser()->getId()?>"><?=$comment->getUser()->getUsername()?></a> - <abbr class="timeago" title="<?= $comment->getCreated()->format('Y-m-d H:i:s') ?>"></abbr></p>
                 </div>
             <?php endforeach; ?>
         </div>
@@ -428,7 +431,8 @@
     });
     $(document).ready(
         $().UserProfile({
-            follower_id: <?= $authdUser ?>,
+            username: '<?= $authdUser?$authdUser->getUsername():''; ?>',
+            follower_id: <?= $authdUser? $authdUser->getId():'' ?>,
             followee_id: <?= $user->getId()?>,
             share_email: '<?= $user->getAllowContact() ?>'
         })

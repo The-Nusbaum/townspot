@@ -23,6 +23,25 @@ var userEdit = {
             $this = $(this);
             userEdit.data[$this.attr('name')] = $this.val();
         });
+        $('#link_twitter').click(function(e){
+            e.preventDefault();
+            window.location = "/custom/login/twitter";
+        });
+
+        $('#link_facebook').click(function(e){
+            e.preventDefault();
+            window.location = "/custom/login/facebook";
+        });
+
+        $('#unlink_twitter').click(function(e){
+            e.preventDefault();
+            window.location = "/user/unlink/twitter";
+        });
+
+        $('#unlink_facebook').click(function(e){
+            e.preventDefault();
+            window.location = "/user/unlink/facebook";
+        });
         $("#userEdit").submit(function(e){
             e.preventDefault();
             var editors = tinyMCE.editors;
