@@ -49,6 +49,7 @@ class UserController extends AbstractActionController
         $query->execute(array(':uid' => $user->getId()));
         $this->_view->setVariable('twitter', $query->fetchAll()[0]);
 
+        $this->_view->setVariable('authdUser', $user);
         $this->_view->setVariable('user', $user);
         $this->_view->setVariable('canEdit', true);
         $this->_view->setVariable('TZoffset', 0);

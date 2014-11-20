@@ -41,10 +41,11 @@
                         &nbsp;
                     </div>
                     <div class="row">
+                        <?php if(!$canEdit && $authdUser): ?>
                         <div class="col-sm-6">
                             <button class="col-sm-4 btn btn-default btn-contact form-control" data-toggle="modal" data-target="#contactModal">Contact</button>
                         </div>
-                        <?php if(!$canEdit && $authdUser): ?>
+
                             <div class="col-sm-6">
                                 <?php
                                 $html = '<button class=" form-control btn btn-default btn-follow">Become a fan</button>';
