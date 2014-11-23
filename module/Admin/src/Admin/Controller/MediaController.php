@@ -23,6 +23,13 @@ class MediaController extends AbstractActionController
     public function indexAction()
     {
 		$this->isAuthenticated();
+		$provinceMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
+		return new ViewModel( 
+			array(
+				'type'			=> $this->params()->fromQuery('approved'),
+				'provinces'		=> $provinceMapper->getProvincesHavingMedia(),
+			)
+		);
     }
 	
     public function addAction()

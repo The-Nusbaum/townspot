@@ -31,4 +31,58 @@ class Mapper extends AbstractEntityMapper
 		$stmt->execute();
 		return $stmt->fetchAll();
 	}
+	
+	public function getAdminList($options = array()) 
+	{
+		$where = array();
+		$sort_field = 'user_id';
+		$sort_order = 'ASC';
+		$sql  = "SELECT series.id as id,
+						series.name as title,
+						user.username as username,
+						count(series_episodes.id) as `episodecount`
+						from series 
+						JOIN user on user.user_id = series.user_id
+						LEFT JOIN series_episodes on series_episodes.series_id = series.id";
+		foreach ($options as $key => $value) {
+			if ($value) {
+				switch ($key) {
+					case 'title':
+						$where[] = "series.name LIKE '" . $value . "%'";
+						break;
+					case 'username':
+						$where[] = "user.username LIKE '" . $value . "%'";
+						break;
+					case 'sort_field':
+						$sort_field = $value;
+						break;
+					case 'sort_order':
+						$sort_order = $value;
+						break;
+				}
+			}
+		}
+		if ($where) {
+			$sql .= " WHERE " . implode(' AND ',$where);
+		} 
+		$sql .= " GROUP BY series.id";
+		$sql .= " ORDER BY " . $sort_field . " " . $sort_order;
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+		return $stmt->fetchAll();
+	}
+	
+	public function delete() 
+	{
+        $entity = $this->getEntity();
+		$sql  = "DELETE from series_episodes where series_episodes.series_id=" . $entity->getId();
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+		$sql  = "DELETE from series_season where series_season.series_id=" . $entity->getId();
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+		$sql  = "DELETE from series where id=" . $entity->getId();
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+	}
 }

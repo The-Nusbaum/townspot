@@ -1,0 +1,54 @@
+<h1>Series Management</h1>
+<div class="row breadcrumb-wrapper">
+	<div class="col-sm-8">
+		<ol class="breadcrumb">
+			<li><a href="#">Home</a></li>
+			<li class="active">Series</li>
+		</ol>	
+	</div>
+	<div class="col-sm-4">
+		<a class="btn btn-default admin-btn pull-right" href="<?= $this->url('admin-add-series'); ?>">Add Series</a>
+	</div>
+</div>
+<br/>
+<div class="row" id="admin-search">
+	<div class="col-sm-12">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12"><b>Search Series</b></div>
+			</div>
+			<div class="row">
+				<div class="col-sm-6">
+					<label>Title</label><br/>
+					<input id="search-title" type="text" placeholder="Video Title" class="col-sm-12">
+				</div>
+				<div class="col-sm-6">
+					<label>Artist Name</label><br/>
+					<input id="search-username" type="text" placeholder="Artist Name" class="col-sm-12">
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12" id="record-list-wrapper">
+		<table id="record-list-results">
+			<thead>
+				<tr>
+					<th class="check-field"></th>
+					<th class="active id-field">Id <i id="admin-sort-id" class="icon-admin-sort icon-admin-sort-up"></i></th>
+					<th class="title-field">Title <i id="admin-sort-title" class="icon-admin-sort icon-admin-sort-undefined"></i></th>
+					<th class="episodecount-field">Episode Count<i id="admin-sort-episodecount" class="icon-admin-sort icon-admin-sort-undefined"></i></th>
+					<th class="username-field">Username <i id="admin-sort-username" class="icon-admin-sort icon-admin-sort-undefined"></i></th>
+					<th class="actions-field">Actions</th>
+				</tr>
+			</thead>
+			<tbody>
+			</tbody>
+		</table>
+	</div>
+</div>
+<script src="/js/seriesSearch.js" type="text/javascript"></script>
+<script>
+$().seriesSearch({});
+</script>

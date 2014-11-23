@@ -23,13 +23,23 @@ return array(
                     ),
                 ),
             ),
-            'admin-typeahead' => array(
+            'admin-lookup' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
-                    'route'    => '/admin/typeahead',
+                    'route'    => '/admin/lookup',
                     'defaults' => array(
-                        'controller' => 'Admin\Controller\Index',
-                        'action'     => 'typeahead',
+                        'controller' => 'Admin\Controller\Ajax',
+                        'action'     => 'lookup',
+                    ),
+                ),
+            ),
+            'admin-record-delete' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/delete',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Ajax',
+                        'action'     => 'deleterecord',
                     ),
                 ),
             ),
@@ -41,6 +51,16 @@ return array(
                         'controller' => 'Admin\Controller\User',
                         'action'     => 'index',
                         'type' 		 => 'User',
+                    ),
+                ),
+            ),
+            'admin-user_ajax' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/lookupusers',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Ajax',
+                        'action'     => 'userlist',
                     ),
                 ),
             ),
@@ -62,7 +82,6 @@ return array(
                     'defaults' => array(
                         'controller' => 'Admin\Controller\User',
                         'action'     => 'edit',
-                        'type' 		 => 'User',
                     ),
                 ),
             ),
@@ -73,17 +92,6 @@ return array(
                     'defaults' => array(
                         'controller' => 'Admin\Controller\User',
                         'action'     => 'show',
-                        'type' 		 => 'User',
-                    ),
-                ),
-            ),
-            'admin-user-delete' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route'    => '/admin/user/delete',
-                    'defaults' => array(
-                        'controller' => 'Admin\Controller\User',
-                        'action'     => 'delete',
                     ),
                 ),
             ),
@@ -109,38 +117,6 @@ return array(
                     ),
                 ),
             ),
-            'admin-administrator-edit' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route'    => '/admin/admin/edit',
-                    'defaults' => array(
-                        'controller' => 'Admin\Controller\User',
-                        'action'     => 'edit',
-                        'type' 		 => 'Administrator',
-                    ),
-                ),
-            ),
-            'admin-administrator-show' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route'    => '/admin/admin/show',
-                    'defaults' => array(
-                        'controller' => 'Admin\Controller\User',
-                        'action'     => 'show',
-                        'type' 		 => 'Administrator',
-                    ),
-                ),
-            ),
-            'admin-administrator-delete' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route'    => '/admin/admin/delete',
-                    'defaults' => array(
-                        'controller' => 'Admin\Controller\User',
-                        'action'     => 'delete',
-                    ),
-                ),
-            ),
             'admin-artists' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -163,35 +139,23 @@ return array(
                     ),
                 ),
             ),
-            'admin-artist-edit' => array(
+            'admin-video' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
-                    'route'    => '/admin/artist/edit',
+                    'route'    => '/admin/video',
                     'defaults' => array(
-                        'controller' => 'Admin\Controller\User',
-                        'action'     => 'edit',
-                        'type' 		 => 'Artist',
+                        'controller' => 'Admin\Controller\Media',
+                        'action'     => 'index',
                     ),
                 ),
             ),
-            'admin-artist-show' => array(
+            'admin-video_ajax' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
-                    'route'    => '/admin/artist/show',
+                    'route'    => '/admin/lookupmedia',
                     'defaults' => array(
-                        'controller' => 'Admin\Controller\User',
-                        'action'     => 'show',
-                        'type' 		 => 'Artist',
-                    ),
-                ),
-            ),
-            'admin-artist-delete' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route'    => '/admin/artist/delete',
-                    'defaults' => array(
-                        'controller' => 'Admin\Controller\User',
-                        'action'     => 'delete',
+                        'controller' => 'Admin\Controller\Ajax',
+                        'action'     => 'medialist',
                     ),
                 ),
             ),
@@ -202,6 +166,16 @@ return array(
                     'defaults' => array(
                         'controller' => 'Admin\Controller\Series',
                         'action'     => 'index',
+                    ),
+                ),
+            ),
+            'admin-series_ajax' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/lookupseries',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Ajax',
+                        'action'     => 'serieslist',
                     ),
                 ),
             ),
@@ -225,26 +199,6 @@ return array(
                     ),
                 ),
             ),
-            'admin-series-delete' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route'    => '/admin/series/delete',
-                    'defaults' => array(
-                        'controller' => 'Admin\Controller\Series',
-                        'action'     => 'delete',
-                    ),
-                ),
-            ),
-            'admin-video' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route'    => '/admin/video',
-                    'defaults' => array(
-                        'controller' => 'Admin\Controller\Media',
-                        'action'     => 'index',
-                    ),
-                ),
-            ),
             'admin-add-video' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -265,16 +219,8 @@ return array(
                     ),
                 ),
             ),
-            'admin-video-delete' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route'    => '/admin/video/delete',
-                    'defaults' => array(
-                        'controller' => 'Admin\Controller\Media',
-                        'action'     => 'delete',
-                    ),
-                ),
-            ),
+			
+			
             'admin-videocategories' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -346,12 +292,13 @@ return array(
         'invokables' => array(
             'Admin\Controller\Index' 		=> 'Admin\Controller\IndexController',
             'Admin\Controller\User'  		=> 'Admin\Controller\UserController',
-            'Admin\Controller\Video' 		=> 'Admin\Controller\VideoController',
+            'Admin\Controller\Media' 		=> 'Admin\Controller\MediaController',
             'Admin\Controller\Location' 	=> 'Admin\Controller\LocationController',
             'Admin\Controller\Reporting' 	=> 'Admin\Controller\ReportingController',
             'Admin\Controller\Series' 		=> 'Admin\Controller\SeriesController',
             'Admin\Controller\MediaCategory'=> 'Admin\Controller\MediaCategoryController',
             'Admin\Controller\Section' 		=> 'Admin\Controller\SectionController',
+            'Admin\Controller\Ajax' 		=> 'Admin\Controller\AjaxController',
         ),
     ),
     'view_manager' => array(

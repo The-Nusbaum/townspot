@@ -24,9 +24,13 @@ class UserController extends AbstractActionController
     {
 		$this->isAuthenticated();
 		$type = $this->params()->fromRoute('type');
+		$provinceMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
+				
 		return new ViewModel( 
 			array(
 				'type'			=> $type,
+				'status'		=> $this->params()->fromQuery('status'),
+				'provinces'		=> $provinceMapper->getProvincesHavingMedia(),
 			)
 		);
     }
