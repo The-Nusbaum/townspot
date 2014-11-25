@@ -48,12 +48,12 @@ class Search implements ServiceLocatorAwareInterface
 			);
 
 			//City Search
-			$query         = new Fuzzy(new Term($keyword, 'city'));
+			$query         = new Fuzzy(new Term($keyword, 'city'),0.8);
 			$matches       = $locationIndex->find($query,'city',SORT_STRING,$sortOrder);
 			foreach ($matches as $hit) {
 				$_cities[] = $hit->objectid;
 			}
-			$query         = new Fuzzy(new Term($keyword, 'province'));
+			$query         = new Fuzzy(new Term($keyword, 'province'),0.8);
 			$matches       = $locationIndex->find($query,'city',SORT_STRING,$sortOrder);
 			foreach ($matches as $hit) {
 				$_cities[] = $hit->objectid;
@@ -79,12 +79,12 @@ class Search implements ServiceLocatorAwareInterface
 			}
 
 			//Artist Search
-			$query         = new Fuzzy(new Term($keyword, 'username'));
+			$query         = new Fuzzy(new Term($keyword, 'username'),0.8);
 			$matches       = $artistIndex->find($query,'username',SORT_STRING,$sortOrder);
 			foreach ($matches as $hit) {
 				$_artists[] = $hit->objectid;
 			}
-			$query         = new Fuzzy(new Term($keyword, 'artist_name'));
+			$query         = new Fuzzy(new Term($keyword, 'artist_name'),0.8);
 			$matches       = $artistIndex->find($query,'username',SORT_STRING,$sortOrder);
 			foreach ($matches as $hit) {
 				$_artists[] = $hit->objectid;
@@ -117,12 +117,12 @@ class Search implements ServiceLocatorAwareInterface
 				}
 			}
 			//Series Search
-			$query         = new Fuzzy(new Term($keyword, 'name'));
+			$query         = new Fuzzy(new Term($keyword, 'name'),0.8);
 			$matches       = $seriesIndex->find($query,'name',SORT_STRING,$sortOrder);
 			foreach ($matches as $hit) {
 				$_series[] = $hit->objectid;
 			}
-			$query         = new Fuzzy(new Term($keyword, 'description'));
+			$query         = new Fuzzy(new Term($keyword, 'description'),0.8);
 			$matches       = $seriesIndex->find($query,'name',SORT_STRING,$sortOrder);
 			foreach ($matches as $hit) {
 				$_series[] = $hit->objectid;
@@ -172,22 +172,22 @@ class Search implements ServiceLocatorAwareInterface
 				);
 			}
 			//Media Search
-			$query         = new Fuzzy(new Term($keyword, 'title'));
+			$query         = new Fuzzy(new Term($keyword, 'title'),0.8);
 			$matches       = $mediaIndex->find($query,'title',SORT_STRING,$sortOrder);
 			foreach ($matches as $hit) {
 				$_media[] = $hit->objectid;
 			}
-			$query         = new Fuzzy(new Term($keyword, 'logline'));
+			$query         = new Fuzzy(new Term($keyword, 'logline'),0.8);
 			$matches       = $mediaIndex->find($query,'logline',SORT_STRING,$sortOrder);
 			foreach ($matches as $hit) {
 				$_media[] = $hit->objectid;
 			}
-			$query         = new Fuzzy(new Term($keyword, 'description'));
+			$query         = new Fuzzy(new Term($keyword, 'description'),0.8);
 			$matches       = $mediaIndex->find($query,'description',SORT_STRING,$sortOrder);
 			foreach ($matches as $hit) {
 				$_media[] = $hit->objectid;
 			}
-			$query         = new Fuzzy(new Term($keyword, 'series_name'));
+			$query         = new Fuzzy(new Term($keyword, 'series_name'),0.8);
 			$matches       = $mediaIndex->find($query,'series_name',SORT_STRING,$sortOrder);
 			foreach ($matches as $hit) {
 				$_media[] = $hit->objectid;
