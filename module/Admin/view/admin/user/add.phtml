@@ -1,0 +1,148 @@
+<h1><?= $this->type; ?> Management</h1>
+<div class="row breadcrumb-wrapper">
+	<div class="col-sm-12">
+		<ol class="breadcrumb">
+			<li><a href="#">Home</a></li>
+			<li><a href="/admin/<?= strtolower($this->type); ?>s"><?= $this->type; ?>s</a></li>
+			<li class="active">Add</li>
+		</ol>	
+	</div>
+</div>
+<br/>
+<form enctype="multipart/form-data" method="post" accept-charset="utf-8" class="form-horizontal" role="form">
+	<div class="form-group">
+		<label for="username" class="col-sm-3 heading">Username</label>
+		<div class="col-sm-9">
+			<input type="text" class="form-control" id="username" id="username" placeholder="Username">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="artistname" class="col-sm-3 heading">Artist Name</label>
+		<div class="col-sm-9">
+			<input type="text" class="form-control" id="artistname" id="artistname" placeholder="Artist Name">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="email" class="col-sm-3 heading">Email</label>
+		<div class="col-sm-9">
+			<input type="email" class="form-control" id="email" id="email" placeholder="Email">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="first_name" class="col-sm-3 heading">First Name</label>
+		<div class="col-sm-9">
+			<input type="text" class="form-control" id="first_name" id="first_name" placeholder="First Name">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="last_name" class="col-sm-3 heading">Last Name</label>
+		<div class="col-sm-9">
+			<input type="text" class="form-control" id="last_name" id="last_name" placeholder="Last Name">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="password" class="col-sm-3 heading">Password</label>
+		<div class="col-sm-9">
+			<input type="password" class="form-control" id="password" id="password">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="password2" class="col-sm-3 heading">Confirm Password</label>
+		<div class="col-sm-9">
+			<input type="password" class="form-control" id="password2" id="password2">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="image_url" class="col-sm-3 heading">Profile Picture</label>
+		<div class="col-sm-9">
+			<script src="/js/profilePic.js"></script> 
+			<button class="profpickimg btn btn-large btn-upload" id="profpickimg" style="z-index: 0;"><i class="icon-upload"> </i>Choose Image File</button>
+			<div id="plupPic"></div>
+			<input name="image_url" id="plupPicVal" value="" type="hidden">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="website" class="col-sm-3 heading">Website</label>
+		<div class="col-sm-9">
+			<input type="url" class="form-control" id="website" id="website" placeholder="Website">
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="state" class="col-sm-3 heading">State</label>
+		<div class="col-sm-9">
+			<select name="state" data-style="btn-warning" id="UserState" class="input-xxlarge" autocomplete="off">
+				<option value="">Please choose a state</option>
+<?php foreach ($this->provinces as $province) { ?>
+				<option value="<?= $province['id']; ?>"><?= $province['name']; ?></option>
+<?php } ?>
+			</select>				
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="city" class="col-sm-3 heading">City</label>
+		<div class="col-sm-9">
+			<select name="city" disabled="disabled" data-style="btn-warning" id="UserState" class="input-xxlarge" autocomplete="off">
+			</select>				
+		</div>
+	</div>
+	<div class="form-group">
+		<label for="neighborhood" class="col-sm-3 heading">Neighborhood</label>
+		<div class="col-sm-9">
+			<input type="url" class="form-control" id="neighborhood" id="neighborhood" placeholder="Neighborhood">
+		</div>
+	</div>
+
+	<div class="form-group">
+		<div class="col-sm-3 heading">
+				<label for="UserAboutMe" class="control-label">About Artist</label>
+			</div>
+			<div class="col-sm-9">
+				<div style="visibility: hidden; border-width: 1px; width: 500px;" id="mce_16" class="mce-tinymce mce-container mce-panel" hidefocus="1" tabindex="-1"><div id="mce_16-body" class="mce-container-body mce-stack-layout"><div id="mce_17" class="mce-toolbar-grp mce-container mce-panel mce-first mce-stack-layout-item" hidefocus="1" tabindex="-1"><div id="mce_17-body" class="mce-container-body mce-stack-layout"><div id="mce_18" class="mce-container mce-toolbar mce-first mce-last mce-stack-layout-item" role="toolbar"><div id="mce_18-body" class="mce-container-body mce-flow-layout"><div role="toolbar" id="mce_19" class="mce-container mce-first mce-flow-layout-item mce-btn-group"><div id="mce_19-body"><div aria-disabled="true" aria-label="Undo" aria-labeledby="mce_3" role="button" id="mce_3" class="mce-widget mce-btn mce-first mce-disabled" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-undo"></i></button></div><div aria-disabled="true" aria-label="Redo" aria-labeledby="mce_4" role="button" id="mce_4" class="mce-widget mce-btn mce-last mce-disabled" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-redo"></i></button></div></div></div><div role="toolbar" id="mce_20" class="mce-container mce-flow-layout-item mce-btn-group"><div id="mce_20-body"><div aria-label="Bold" aria-labeledby="mce_5" role="button" id="mce_5" class="mce-widget mce-btn mce-first" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-bold"></i></button></div><div aria-label="Italic" aria-labeledby="mce_6" role="button" id="mce_6" class="mce-widget mce-btn mce-last" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-italic"></i></button></div></div></div><div role="toolbar" id="mce_21" class="mce-container mce-flow-layout-item mce-btn-group"><div id="mce_21-body"><div aria-label="Align left" aria-labeledby="mce_7" role="button" id="mce_7" class="mce-widget mce-btn mce-first" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-alignleft"></i></button></div><div aria-label="Align center" aria-labeledby="mce_8" role="button" id="mce_8" class="mce-widget mce-btn" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-aligncenter"></i></button></div><div aria-label="Align right" aria-labeledby="mce_9" role="button" id="mce_9" class="mce-widget mce-btn" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-alignright"></i></button></div><div aria-label="Justify" aria-labeledby="mce_10" role="button" id="mce_10" class="mce-widget mce-btn mce-last" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-alignjustify"></i></button></div></div></div><div role="toolbar" id="mce_22" class="mce-container mce-flow-layout-item mce-btn-group"><div id="mce_22-body"><div aria-label="Bullet list" aria-labeledby="mce_11" role="button" id="mce_11" class="mce-widget mce-btn mce-first" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-bullist"></i></button></div><div aria-label="Numbered list" aria-labeledby="mce_12" role="button" id="mce_12" class="mce-widget mce-btn" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-numlist"></i></button></div><div aria-label="Decrease indent" aria-labeledby="mce_13" role="button" id="mce_13" class="mce-widget mce-btn" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-outdent"></i></button></div><div aria-label="Increase indent" aria-labeledby="mce_14" role="button" id="mce_14" class="mce-widget mce-btn mce-last" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-indent"></i></button></div></div></div><div role="toolbar" id="mce_23" class="mce-container mce-last mce-flow-layout-item mce-btn-group"><div id="mce_23-body"><div aria-label="Insert/edit link" aria-labeledby="mce_15" role="button" id="mce_15" class="mce-widget mce-btn mce-first mce-last" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-link"></i></button></div></div></div></div></div></div></div><div style="border-width: 1px 0px 0px;" id="mce_24" class="mce-edit-area mce-container mce-panel mce-last mce-stack-layout-item" hidefocus="1" tabindex="-1"><iframe style="width: 100%; height: 227px; display: block;" title="Rich Text Area. Press ALT-F9 for menu. Press ALT-F10 for toolbar. Press ALT-0 for help" allowtransparency="true" src="javascript:&quot;&quot;" id="UserAboutMe_ifr" frameborder="0"></iframe></div></div></div><div style="visibility: hidden; border-width: 1px; display: none;" id="mce_60" class="mce-tinymce mce-container mce-panel" hidefocus="1" tabindex="-1"><div id="mce_60-body" class="mce-container-body mce-stack-layout"><div id="mce_61" class="mce-toolbar-grp mce-container mce-panel mce-first mce-stack-layout-item" hidefocus="1" tabindex="-1"><div id="mce_61-body" class="mce-container-body mce-stack-layout"><div id="mce_62" class="mce-container mce-toolbar mce-first mce-last mce-stack-layout-item" role="toolbar"><div id="mce_62-body" class="mce-container-body mce-flow-layout"><div role="toolbar" id="mce_63" class="mce-container mce-first mce-flow-layout-item mce-btn-group"><div id="mce_63-body"><div aria-disabled="true" aria-label="Undo" aria-labeledby="mce_47" role="button" id="mce_47" class="mce-widget mce-btn mce-first mce-disabled" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-undo"></i></button></div><div aria-disabled="true" aria-label="Redo" aria-labeledby="mce_48" role="button" id="mce_48" class="mce-widget mce-btn mce-last mce-disabled" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-redo"></i></button></div></div></div><div role="toolbar" id="mce_64" class="mce-container mce-flow-layout-item mce-btn-group"><div id="mce_64-body"><div aria-haspopup="true" role="button" id="mce_49" class="mce-widget mce-btn mce-menubtn mce-first mce-last" tabindex="-1"><button id="mce_49-open" role="presentation" type="button" tabindex="-1"><span>Formats</span> <i class="mce-caret"></i></button></div></div></div><div role="toolbar" id="mce_65" class="mce-container mce-flow-layout-item mce-btn-group"><div id="mce_65-body"><div aria-label="Bold" aria-labeledby="mce_50" role="button" id="mce_50" class="mce-widget mce-btn mce-first" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-bold"></i></button></div><div aria-label="Italic" aria-labeledby="mce_51" role="button" id="mce_51" class="mce-widget mce-btn mce-last" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-italic"></i></button></div></div></div><div role="toolbar" id="mce_66" class="mce-container mce-flow-layout-item mce-btn-group"><div id="mce_66-body"><div aria-label="Align left" aria-labeledby="mce_52" role="button" id="mce_52" class="mce-widget mce-btn mce-first" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-alignleft"></i></button></div><div aria-label="Align center" aria-labeledby="mce_53" role="button" id="mce_53" class="mce-widget mce-btn" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-aligncenter"></i></button></div><div aria-label="Align right" aria-labeledby="mce_54" role="button" id="mce_54" class="mce-widget mce-btn" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-alignright"></i></button></div><div aria-label="Justify" aria-labeledby="mce_55" role="button" id="mce_55" class="mce-widget mce-btn mce-last" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-alignjustify"></i></button></div></div></div><div role="toolbar" id="mce_67" class="mce-container mce-flow-layout-item mce-btn-group"><div id="mce_67-body"><div aria-label="Bullet list" aria-labeledby="mce_56" role="button" id="mce_56" class="mce-widget mce-btn mce-first" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-bullist"></i></button></div><div aria-label="Numbered list" aria-labeledby="mce_57" role="button" id="mce_57" class="mce-widget mce-btn" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-numlist"></i></button></div><div aria-label="Decrease indent" aria-labeledby="mce_58" role="button" id="mce_58" class="mce-widget mce-btn" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-outdent"></i></button></div><div aria-label="Increase indent" aria-labeledby="mce_59" role="button" id="mce_59" class="mce-widget mce-btn mce-last" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-indent"></i></button></div></div></div><div role="toolbar" id="mce_68" class="mce-container mce-last mce-flow-layout-item mce-btn-group"><div id="mce_68-body"></div></div></div></div></div></div><div style="border-width: 1px 0px 0px;" id="mce_69" class="mce-edit-area mce-container mce-panel mce-last mce-stack-layout-item" hidefocus="1" tabindex="-1"><iframe style="width: 100%; height: 100px; display: block;" title="Rich Text Area. Press ALT-F9 for menu. Press ALT-F10 for toolbar. Press ALT-0 for help" allowtransparency="true" src="javascript:&quot;&quot;" id="UserAboutMe_ifr" frameborder="0"></iframe></div></div></div><textarea aria-hidden="true" style="display: none; visibility: hidden;" name="about_me" cols="250" rows="10" id="UserAboutMe"></textarea>			</div>
+		</div>
+	<div class="form-group">
+		<div class="col-sm-3 heading">
+				<label for="UserInterests" class="control-label">Artist's Interests</label>
+			</div>
+			<div class="col-sm-9">
+				<div style="visibility: hidden; border-width: 1px; width: 500px;" id="mce_38" class="mce-tinymce mce-container mce-panel" hidefocus="1" tabindex="-1"><div id="mce_38-body" class="mce-container-body mce-stack-layout"><div id="mce_39" class="mce-toolbar-grp mce-container mce-panel mce-first mce-stack-layout-item" hidefocus="1" tabindex="-1"><div id="mce_39-body" class="mce-container-body mce-stack-layout"><div id="mce_40" class="mce-container mce-toolbar mce-first mce-last mce-stack-layout-item" role="toolbar"><div id="mce_40-body" class="mce-container-body mce-flow-layout"><div role="toolbar" id="mce_41" class="mce-container mce-first mce-flow-layout-item mce-btn-group"><div id="mce_41-body"><div aria-disabled="true" aria-label="Undo" aria-labeledby="mce_25" role="button" id="mce_25" class="mce-widget mce-btn mce-first mce-disabled" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-undo"></i></button></div><div aria-disabled="true" aria-label="Redo" aria-labeledby="mce_26" role="button" id="mce_26" class="mce-widget mce-btn mce-last mce-disabled" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-redo"></i></button></div></div></div><div role="toolbar" id="mce_42" class="mce-container mce-flow-layout-item mce-btn-group"><div id="mce_42-body"><div aria-label="Bold" aria-labeledby="mce_27" role="button" id="mce_27" class="mce-widget mce-btn mce-first" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-bold"></i></button></div><div aria-label="Italic" aria-labeledby="mce_28" role="button" id="mce_28" class="mce-widget mce-btn mce-last" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-italic"></i></button></div></div></div><div role="toolbar" id="mce_43" class="mce-container mce-flow-layout-item mce-btn-group"><div id="mce_43-body"><div aria-label="Align left" aria-labeledby="mce_29" role="button" id="mce_29" class="mce-widget mce-btn mce-first" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-alignleft"></i></button></div><div aria-label="Align center" aria-labeledby="mce_30" role="button" id="mce_30" class="mce-widget mce-btn" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-aligncenter"></i></button></div><div aria-label="Align right" aria-labeledby="mce_31" role="button" id="mce_31" class="mce-widget mce-btn" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-alignright"></i></button></div><div aria-label="Justify" aria-labeledby="mce_32" role="button" id="mce_32" class="mce-widget mce-btn mce-last" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-alignjustify"></i></button></div></div></div><div role="toolbar" id="mce_44" class="mce-container mce-flow-layout-item mce-btn-group"><div id="mce_44-body"><div aria-label="Bullet list" aria-labeledby="mce_33" role="button" id="mce_33" class="mce-widget mce-btn mce-first" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-bullist"></i></button></div><div aria-label="Numbered list" aria-labeledby="mce_34" role="button" id="mce_34" class="mce-widget mce-btn" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-numlist"></i></button></div><div aria-label="Decrease indent" aria-labeledby="mce_35" role="button" id="mce_35" class="mce-widget mce-btn" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-outdent"></i></button></div><div aria-label="Increase indent" aria-labeledby="mce_36" role="button" id="mce_36" class="mce-widget mce-btn mce-last" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-indent"></i></button></div></div></div><div role="toolbar" id="mce_45" class="mce-container mce-last mce-flow-layout-item mce-btn-group"><div id="mce_45-body"><div aria-label="Insert/edit link" aria-labeledby="mce_37" role="button" id="mce_37" class="mce-widget mce-btn mce-first mce-last" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-link"></i></button></div></div></div></div></div></div></div><div style="border-width: 1px 0px 0px;" id="mce_46" class="mce-edit-area mce-container mce-panel mce-last mce-stack-layout-item" hidefocus="1" tabindex="-1"><iframe style="width: 100%; height: 227px; display: block;" title="Rich Text Area. Press ALT-F9 for menu. Press ALT-F10 for toolbar. Press ALT-0 for help" allowtransparency="true" src="javascript:&quot;&quot;" id="UserInterests_ifr" frameborder="0"></iframe></div></div></div><div style="visibility: hidden; border-width: 1px; display: none;" id="mce_83" class="mce-tinymce mce-container mce-panel" hidefocus="1" tabindex="-1"><div id="mce_83-body" class="mce-container-body mce-stack-layout"><div id="mce_84" class="mce-toolbar-grp mce-container mce-panel mce-first mce-stack-layout-item" hidefocus="1" tabindex="-1"><div id="mce_84-body" class="mce-container-body mce-stack-layout"><div id="mce_85" class="mce-container mce-toolbar mce-first mce-last mce-stack-layout-item" role="toolbar"><div id="mce_85-body" class="mce-container-body mce-flow-layout"><div role="toolbar" id="mce_86" class="mce-container mce-first mce-flow-layout-item mce-btn-group"><div id="mce_86-body"><div aria-disabled="true" aria-label="Undo" aria-labeledby="mce_70" role="button" id="mce_70" class="mce-widget mce-btn mce-first mce-disabled" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-undo"></i></button></div><div aria-disabled="true" aria-label="Redo" aria-labeledby="mce_71" role="button" id="mce_71" class="mce-widget mce-btn mce-last mce-disabled" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-redo"></i></button></div></div></div><div role="toolbar" id="mce_87" class="mce-container mce-flow-layout-item mce-btn-group"><div id="mce_87-body"><div aria-haspopup="true" role="button" id="mce_72" class="mce-widget mce-btn mce-menubtn mce-first mce-last" tabindex="-1"><button id="mce_72-open" role="presentation" type="button" tabindex="-1"><span>Formats</span> <i class="mce-caret"></i></button></div></div></div><div role="toolbar" id="mce_88" class="mce-container mce-flow-layout-item mce-btn-group"><div id="mce_88-body"><div aria-label="Bold" aria-labeledby="mce_73" role="button" id="mce_73" class="mce-widget mce-btn mce-first" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-bold"></i></button></div><div aria-label="Italic" aria-labeledby="mce_74" role="button" id="mce_74" class="mce-widget mce-btn mce-last" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-italic"></i></button></div></div></div><div role="toolbar" id="mce_89" class="mce-container mce-flow-layout-item mce-btn-group"><div id="mce_89-body"><div aria-label="Align left" aria-labeledby="mce_75" role="button" id="mce_75" class="mce-widget mce-btn mce-first" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-alignleft"></i></button></div><div aria-label="Align center" aria-labeledby="mce_76" role="button" id="mce_76" class="mce-widget mce-btn" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-aligncenter"></i></button></div><div aria-label="Align right" aria-labeledby="mce_77" role="button" id="mce_77" class="mce-widget mce-btn" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-alignright"></i></button></div><div aria-label="Justify" aria-labeledby="mce_78" role="button" id="mce_78" class="mce-widget mce-btn mce-last" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-alignjustify"></i></button></div></div></div><div role="toolbar" id="mce_90" class="mce-container mce-flow-layout-item mce-btn-group"><div id="mce_90-body"><div aria-label="Bullet list" aria-labeledby="mce_79" role="button" id="mce_79" class="mce-widget mce-btn mce-first" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-bullist"></i></button></div><div aria-label="Numbered list" aria-labeledby="mce_80" role="button" id="mce_80" class="mce-widget mce-btn" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-numlist"></i></button></div><div aria-label="Decrease indent" aria-labeledby="mce_81" role="button" id="mce_81" class="mce-widget mce-btn" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-outdent"></i></button></div><div aria-label="Increase indent" aria-labeledby="mce_82" role="button" id="mce_82" class="mce-widget mce-btn mce-last" tabindex="-1"><button role="presentation" type="button" tabindex="-1"><i class="mce-ico mce-i-indent"></i></button></div></div></div><div role="toolbar" id="mce_91" class="mce-container mce-last mce-flow-layout-item mce-btn-group"><div id="mce_91-body"></div></div></div></div></div></div><div style="border-width: 1px 0px 0px;" id="mce_92" class="mce-edit-area mce-container mce-panel mce-last mce-stack-layout-item" hidefocus="1" tabindex="-1"><iframe style="width: 100%; height: 100px; display: block;" title="Rich Text Area. Press ALT-F9 for menu. Press ALT-F10 for toolbar. Press ALT-0 for help" allowtransparency="true" src="javascript:&quot;&quot;" id="UserInterests_ifr" frameborder="0"></iframe></div></div></div><textarea aria-hidden="true" style="display: none; visibility: hidden;" name="interests" cols="250" rows="10" id="UserInterests"></textarea>			</div>
+		</div>
+	<div class="form-group">
+		<div class="col-sm-3 heading"></div>
+			<div class="col-sm-9">
+				<input name="allow_contact" id="UserAllowContact_" value="0" type="hidden"><input name="allow_contact" value="1" id="UserAllowContact" type="checkbox">				<span class="checkbox-label">Allow contact by other users.</span>				
+			</div>
+		</div>
+	<div class="form-group">
+			<div class="col-sm-3 heading"></div>
+			<div class="col-sm-9">
+				<input name="email_notifications" id="UserEmailNotifications_" value="0" type="hidden"><input name="email_notifications" value="1" id="UserEmailNotifications" type="checkbox">				<span class="checkbox-label">Recieve email notifications.</span>				
+			</div>
+		</div>
+	<div class="form-group">
+			<div class="col-sm-3 heading"></div>
+			<div class="col-sm-9">
+				<input name="welcome" id="UserWelcome_" value="0" type="hidden"><input name="welcome" value="1" id="UserWelcome" type="checkbox">				<span class="checkbox-label">Send welcome email?</span>				
+			</div>
+		</div>
+	<div class="form-group">
+			<div class="col-sm-3 heading"></div>
+			<div class="col-sm-9">
+				<input name="pwdreset" id="UserPwdreset_" value="0" type="hidden"><input name="pwdreset" value="1" id="UserPwdreset" type="checkbox">				<span class="checkbox-label">Send password reset email?</span>				
+			</div>
+		</div>
+	<div class="form-group">
+			<div class="col-sm-3 heading"></div>
+			<div class="col-sm-9">
+				
+				Artist will be prompted to accept on initial login
+		</div>
+	<div class="form-group">
+			<div class="span12">
+				<div class="submit-btn">
+					<button class="btn btn-large btn-primary" id="submit-form">Submit</button>
+				</div>
+			</div>
+		</div>
+</form>
+			</div>
+			

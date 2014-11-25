@@ -111,6 +111,8 @@ return array(
                     'searchStatus.js',
                     'searchTitle.js',
                     'adminDelete.js',
+                    'tinymce/tinymce/tinymce.js',
+					
 //                    'twitter/typeahead.js/dist/typeahead.bundle.min.js',
 //                    'usernameTypeahead.js',
 				),

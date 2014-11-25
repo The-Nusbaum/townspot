@@ -1,0 +1,24 @@
+<div class="row breadcrumb-wrapper">
+	<div class="col-sm-12">
+		<ol class="breadcrumb">
+			<li><a href="#">Home</a></li>
+			<li><a href="/admin/users">Users</a></li>
+			<li class="active">View User</li>
+		</ol>	
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12">
+		<h1>View {role} - {username} ({user_id})</h1>
+	</div>
+</div>
+<div class="row">
+	<div class="span12">
+		<div class="pull-right">
+			<a class="btn btn-default navbar-btn pull-right load-modal" href="#ContactUser" data-toggle="modal" data-source="emailUserModal"><i class="fa fa-envelope"></i> Send Message to {role}</a>
+			<a href="#" data-target="/admin/<?= strtolower($action); ?>" class="btn btn-default navbar-btn pull-right delete-request" data-ref="{user_id}" data-func="delete" data-type="User"><i class="fa fa-times"></i> Delete {role}</a>
+			<a href="/admin/user/edit/{user_id}" class="btn btn-default navbar-btn pull-right"><i class="fa fa-edit"></i> Edit {role}</a>
+		</div>
+	</div>
+</div>
+<br/>

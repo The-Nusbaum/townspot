@@ -86,14 +86,18 @@ return array(
                 ),
             ),
             'admin-user-show' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route'    => '/admin/user/show',
-                    'defaults' => array(
-                        'controller' => 'Admin\Controller\User',
-                        'action'     => 'show',
-                    ),
-                ),
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+				'options' => array(
+					'route'    => '/admin/user/show/:id',
+					'constraints' => array(
+						'id' => '\d+',
+						'title' => '[0-9]+',
+					),
+					'defaults' => array(
+						'controller' => 'Admin\Controller\User',
+						'action'     => 'show',
+					),
+				),
             ),
             'admin-admins' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
@@ -131,7 +135,7 @@ return array(
             'admin-artist-add' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
-                    'route'    => '/admin/user/add',
+                    'route'    => '/admin/artist/add',
                     'defaults' => array(
                         'controller' => 'Admin\Controller\User',
                         'action'     => 'add',
