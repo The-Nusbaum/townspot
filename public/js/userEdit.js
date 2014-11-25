@@ -48,7 +48,7 @@ var userEdit = {
 
             $.ajax({
                 method: "POST",
-                url: "/api/user/update" + parseInt($("#userEdit #user_id").val()),
+                url: "/api/user/update/" + parseInt($("#userEdit #user_id").val()),
                 data: userEdit.data,
                 success: function(data){
                     if(data.success) {
