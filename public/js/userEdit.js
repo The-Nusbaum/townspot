@@ -47,8 +47,8 @@ var userEdit = {
             var editors = tinyMCE.editors;
 
             $.ajax({
-                method: "PUT",
-                url: "/api/user/" + parseInt($("#userEdit #user_id").val()),
+                method: "POST",
+                url: "/api/user/update/" + parseInt($("#userEdit #user_id").val()),
                 data: userEdit.data,
                 success: function(data){
                     if(data.success) {
