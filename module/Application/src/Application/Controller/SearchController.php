@@ -30,7 +30,7 @@ class SearchController extends AbstractActionController
     {
 		$this->init();
 		$searchTerm = $this->params()->fromQuery('q');
-        $sortTerm   = ($this->params()->fromQuery('sort')) ?: 'created:desc';
+        $sortTerm   = ($this->params()->fromQuery('sort')) ?: 'relevance:desc';
         $page       = $this->params()->fromQuery('page') ?: 1;
         $searchId   = md5(serialize(array(time(),session_id(),$searchTerm,$sortTerm)));
         list($sortField,$sortOrder) = explode(':',$sortTerm);

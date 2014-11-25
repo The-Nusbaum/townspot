@@ -33,7 +33,7 @@ class Search implements ServiceLocatorAwareInterface
 			$artistData	= array();
 			$seriesData	= array();
 			$mediaData	= array();
-			
+
 			$cityMapper 	= new \Townspot\City\Mapper($this->getServiceLocator());
 			$seriesMapper 	= new \Townspot\Series\Mapper($this->getServiceLocator());
 			$userMapper 	= new \Townspot\User\Mapper($this->getServiceLocator());
@@ -51,18 +51,21 @@ class Search implements ServiceLocatorAwareInterface
 			$query         = new Fuzzy(new Term($keyword, 'city'),0.8);
 			$matches       = $locationIndex->find($query,'city',SORT_STRING,$sortOrder);
 			foreach ($matches as $hit) {
-				$_cities[] = $hit->objectid;
+				$_cities[$hit->objectid] = $hit->score;
 			}
 			$query         = new Fuzzy(new Term($keyword, 'province'),0.8);
 			$matches       = $locationIndex->find($query,'city',SORT_STRING,$sortOrder);
 			foreach ($matches as $hit) {
-				$_cities[] = $hit->objectid;
+				$_cities[$hit->objectid] = $hit->score;
 			}
-			$_cities = array_unique($_cities);
-			foreach ($_cities as $id) {
+			foreach ($_cities as $id => $score) {
 				$city = $cityMapper->find($id);
 				$media = $city->getRandomMedia();
-				$sortBy = strtotime($city->getFullName());
+				if ($sortField == 'relevance') {
+					$sortBy = $score;
+				} else {
+					$sortBy = $city->getFullName();
+				}
 				$sortBy = strtolower($sortBy);	
 				$sortBy = preg_replace('/[^a-z0-9 -]+/', '', $sortBy);		
 				$cityData[$sortBy][] = array(
@@ -75,6 +78,7 @@ class Search implements ServiceLocatorAwareInterface
 					'location'			=> $city->getFullName(),
 					'escaped_location'	=> $city->getFullName(),
 					'image_source'		=> $media->getSource(),
+					'score'				=> $score,
 				);
 			}
 
@@ -82,19 +86,20 @@ class Search implements ServiceLocatorAwareInterface
 			$query         = new Fuzzy(new Term($keyword, 'username'),0.8);
 			$matches       = $artistIndex->find($query,'username',SORT_STRING,$sortOrder);
 			foreach ($matches as $hit) {
-				$_artists[] = $hit->objectid;
+				$_artists[$hit->objectid] = $hit->score;
 			}
 			$query         = new Fuzzy(new Term($keyword, 'artist_name'),0.8);
 			$matches       = $artistIndex->find($query,'username',SORT_STRING,$sortOrder);
 			foreach ($matches as $hit) {
-				$_artists[] = $hit->objectid;
+				$_artists[$hit->objectid] = $hit->score;
 			}
-			$_artists = array_unique($_artists);
 			
-			foreach ($_artists as $id) {
+			foreach ($_artists as $id => $score) {
 				$user = $userMapper->find($id);
 				if ($media = $user->getRandomMedia()) {
-					if ($sortField == 'created') {
+					if ($sortField == 'relevance') {
+						$sortBy = $score;
+					} elseif ($sortField == 'created') {
 						$sortBy = $user->getCreated()->getTimestamp();
 					} else {
 						$sortBy = $user->getUsername();
@@ -113,6 +118,7 @@ class Search implements ServiceLocatorAwareInterface
 						'location'			=> $media->getLocation(),
 						'escaped_location'	=> $media->getLocation(false,true),
 						'image_source'		=> $media->getSource(),
+						'score'				=> $score,
 					);
 				}
 			}
@@ -120,12 +126,12 @@ class Search implements ServiceLocatorAwareInterface
 			$query         = new Fuzzy(new Term($keyword, 'name'),0.8);
 			$matches       = $seriesIndex->find($query,'name',SORT_STRING,$sortOrder);
 			foreach ($matches as $hit) {
-				$_series[] = $hit->objectid;
+				$_series[$hit->objectid] = $hit->score;
 			}
 			$query         = new Fuzzy(new Term($keyword, 'description'),0.8);
 			$matches       = $seriesIndex->find($query,'name',SORT_STRING,$sortOrder);
 			foreach ($matches as $hit) {
-				$_series[] = $hit->objectid;
+				$_series[$hit->objectid] = $hit->score;
 			}
 /*
 			$query         = new Fuzzy(new Term($keyword, 'media_titles'));
@@ -143,12 +149,12 @@ class Search implements ServiceLocatorAwareInterface
 			foreach ($matches as $hit) {
 				$_series[] = $hit->objectid;
 			}
-*/
-			$_series = array_unique($_series);
-			foreach ($_series as $id) {
+			foreach ($_series as $id => $score) {
 				$series = $seriesMapper->find($id);
 				$media = $series->getRandomMedia();
-				if ($sortField == 'created') {
+				if ($sortField == 'relevance') {
+					$sortBy = $score;
+				} elseif ($sortField == 'created') {
 					$sortBy = $series->getCreated()->getTimestamp();
 				} else {
 					$sortBy = $series->getName();
@@ -169,33 +175,37 @@ class Search implements ServiceLocatorAwareInterface
 					'series_name'		=> $series->getName(),
 					'series_link'		=> $series->getSeriesLink(),
 					'image_source'		=> $media->getSource(),
+					'score'				=> $score,
 				);
 			}
+*/
+			
 			//Media Search
 			$query         = new Fuzzy(new Term($keyword, 'title'),0.8);
 			$matches       = $mediaIndex->find($query,'title',SORT_STRING,$sortOrder);
 			foreach ($matches as $hit) {
-				$_media[] = $hit->objectid;
+				$_media[$hit->objectid] = $hit->score;
 			}
 			$query         = new Fuzzy(new Term($keyword, 'logline'),0.8);
 			$matches       = $mediaIndex->find($query,'logline',SORT_STRING,$sortOrder);
 			foreach ($matches as $hit) {
-				$_media[] = $hit->objectid;
+				$_media[$hit->objectid] = $hit->score;
 			}
 			$query         = new Fuzzy(new Term($keyword, 'description'),0.8);
 			$matches       = $mediaIndex->find($query,'description',SORT_STRING,$sortOrder);
 			foreach ($matches as $hit) {
-				$_media[] = $hit->objectid;
+				$_media[$hit->objectid] = $hit->score;
 			}
 			$query         = new Fuzzy(new Term($keyword, 'series_name'),0.8);
 			$matches       = $mediaIndex->find($query,'series_name',SORT_STRING,$sortOrder);
 			foreach ($matches as $hit) {
-				$_media[] = $hit->objectid;
+				$_media[$hit->objectid] = $hit->score;
 			}
-			$_media = array_unique($_media);
-			foreach ($_media as $id) {
+			foreach ($_media as $id => $score) {
 				$media = $mediaMapper->find($id);
-				if ($sortField == 'created') {
+				if ($sortField == 'relevance') {
+					$sortBy = $score;
+				} elseif ($sortField == 'created') {
 					$sortBy = $media->getCreated()->getTimestamp();
 				} elseif ($sortField == 'views') {
 					$sortBy = $media->getViews();
@@ -229,6 +239,7 @@ class Search implements ServiceLocatorAwareInterface
 								'series_name'		=> $series->getName(),
 								'series_link'		=> $series->getSeriesLink(),
 								'image_source'		=> $media->getSource(),
+								'score'				=> $score,
 							);
 							$added = true;
 						}
