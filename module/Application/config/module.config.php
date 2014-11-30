@@ -75,7 +75,6 @@ return array(
                     'plupload/plupload.min.js',
                     'tinymce/tinymce/tinymce.js',
                     'general_init.js'
-
                 ),
                 'js/tinymceTheme.js' => array(
                     'tinymce/tinymce/themes/modern/theme.min.js'

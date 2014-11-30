@@ -1,5 +1,5 @@
 (function($){
-	$('.fa-toggle-o').mouseover(function()  {	
+	$(document).on("mouseover", '.fa-toggle-o', function(event)	{
 		if ($(this).hasClass('disabled') == false) {
 			if ($(this).hasClass('fa-bell-o')) 					{	$(this).removeClass('fa-bell-o').addClass('fa-bell');								}
 			if ($(this).hasClass('fa-arrow-circle-o-down')) 	{	$(this).removeClass('fa-arrow-circle-o-down').addClass('fa-arrow-circle-down');		} 
@@ -36,7 +36,7 @@
 			if ($(this).hasClass('fa-bell-slash-o')) 			{	$(this).removeClass('fa-bell-slash-o').addClass('fa-bell-slash');					}
 		}
 	});
-	$('.fa-toggle-o').mouseout(function()  {	
+	$(document).on("mouseout", '.fa-toggle-o', function(event)	{
 		if ($(this).hasClass('disabled') == false) {
 			if ($(this).hasClass('fa-bell')) 					{	$(this).removeClass('fa-bell').addClass('fa-bell-o');								}
 			if ($(this).hasClass('fa-arrow-circle-down')) 		{	$(this).removeClass('fa-arrow-circle-down').addClass('fa-arrow-circle-o-down');		} 
@@ -74,51 +74,3 @@
 		}
 	});
 })(jQuery);
-//fa-bell-o fa-bell
-//fa-bell-slash fa-bell-slash-o
-//fa-bar-chart-o (alias)fa-bar-chart
-//fa-arrow-circle-o-down fa-arrow-circle-down
-//fa-arrow-circle-o-left fa-arrow-circle-left
-//fa-arrow-circle-o-right fa-arrow-circle-right
-//fa-arrow-circle-o-up fa-arrow-circle-up
-//fa-bookmark-o fa-bookmark
-//fa-building-o fa-building
-//fa-calendar-o fa-calendar
-//fa-check-circle-o fa-check-circle
-//fa-check-square fa-check-square-o
-//fa-circle-o fa-circle
-//fa-close fa-clock-o
-//fa-comment-o fa-comment
-//fa-comments-o fa-comments
-//fa-envelope-o fa-envelope
-//fa-file-o fa-file
-//fa-file-text-o fa-file-text
-//fa-flag-o fa-flag
-//fa-folder-o fa-folder
-//fa-folder-open-o fa-folder-open
-//fa-heart-o fa-heart
-//fa-minus-square-o fa-minus-square
-//fa-paper-plane-o fa-paper-plane
-//fa-pencil-square-o fa-pencil-square
-//fa-play-circle-o fa-play-circle
-//fa-plus-square-o fa-plus-square
-//fa-square-o fa-square
-//fa-star-half-o fa-star-half
-//fa-star-o fa-star
-//fa-thumbs-o-down fa-thumbs-down
-//fa-thumbs-o-up fa-thumbs-up
-//fa-times-circle-o fa-times-circle
-//fa-trash-o fa-trash	
-//fa-bell-slash-o
-//fa-futbol-o
-//fa-soccer-ball-o
-//fa-newspaper-o
-//fa-bar-chart-o
-//fa-bell-o
-//fa-bookmark-o
-//fa-building-o
-//fa-calendar-o
-//fa-caret-square-o-up
-//fa-caret-square-o-down
-//fa-caret-square-o-left
-//fa-caret-square-o-right
