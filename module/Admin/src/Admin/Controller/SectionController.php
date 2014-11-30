@@ -24,18 +24,23 @@ class SectionController extends AbstractActionController
     {
 		$this->isAuthenticated();
     }
-	
-    public function addAction()
-    {
-		$this->isAuthenticated();
-    }
 
-    public function deleteAction()
+    public function mediaAction()
     {
 		$this->isAuthenticated();
+		$section 		= $this->params()->fromRoute('section');	
+		$SectionMapper 	= new \Townspot\SectionBlock\Mapper($this->getServiceLocator());
+		$sectionMedia 	= $SectionMapper->getSectionMediaByBlockName($section);
+
+		return new ViewModel(
+			array(
+				'section'		=> $section,
+				'section_media'	=> $sectionMedia
+			)
+		);
     }
 	
-    public function editAction()
+    public function updateAction()
     {
 		$this->isAuthenticated();
     }

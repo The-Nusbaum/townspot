@@ -163,6 +163,26 @@ return array(
                     ),
                 ),
             ),
+            'admin-video-available' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/availablemedia',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Ajax',
+                        'action'     => 'mediasearch',
+                    ),
+                ),
+            ),
+            'admin-update-section' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/updatesection',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Ajax',
+                        'action'     => 'updatesection',
+                    ),
+                ),
+            ),
             'admin-series' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -242,7 +262,7 @@ return array(
                     'defaults' => array(
                         'controller' => 'Admin\Controller\Section',
                         'action'     => 'media',
-                        'section' 	 => 'favorites',
+                        'section' 	 => 'Staff Favorites',
                     ),
                 ),
             ),
@@ -253,7 +273,7 @@ return array(
                     'defaults' => array(
                         'controller' => 'Admin\Controller\Section',
                         'action'     => 'media',
-                        'section' 	 => 'stage',
+                        'section' 	 => 'On Screen',
                     ),
                 ),
             ),
@@ -264,7 +284,7 @@ return array(
                     'defaults' => array(
                         'controller' => 'Admin\Controller\Section',
                         'action'     => 'media',
-                        'section' 	 => 'spotlight',
+                        'section' 	 => 'Daily Highlights',
                     ),
                 ),
             ),

@@ -129,7 +129,7 @@ class AjaxController extends AbstractActionController
 			
 			$results = $medias;
 		}
-		$json = new JsonModel($series);
+		$json = new JsonModel($results);
         return $json;
     }
 	
@@ -158,6 +158,42 @@ class AjaxController extends AbstractActionController
 			}
 			$object = $objectMapper->find($id);
 			$objectMapper->setEntity($object)->delete();
+		}
+		$json = new JsonModel();
+        return $json;
+	}
+	
+    public function mediasearchAction()
+    {
+		$results = array();
+		$this->isAuthenticated();
+		$request = $this->getRequest();
+        if ($request->isPost()) {
+			$options = array(
+				'title'			=> $request->getPost()->get('title'),
+				'username'		=> $request->getPost()->get('username'),
+				'category'		=> $request->getPost()->get('category'),
+				'sort'			=> $request->getPost()->get('sort_field'),
+				'sort_order'	=> $request->getPost()->get('sort_order')
+			);
+			$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
+			$medias = $mediaMapper->getAvailableMedia($options);
+			$results = $medias;
+		}
+		$json = new JsonModel($results);
+        return $json;
+	}
+	
+    public function updatesectionAction()
+    {
+		$results = array();
+		$this->isAuthenticated();
+		$request = $this->getRequest();
+        if ($request->isPost()) {
+			$section = $request->getPost()->get('section');
+			$videos  = $request->getPost()->get('videos');
+			$SectionMapper 		= new \Townspot\SectionBlock\Mapper($this->getServiceLocator());
+			$_section = $SectionMapper->replaceMedia($section,$videos);
 		}
 		$json = new JsonModel();
         return $json;

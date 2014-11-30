@@ -331,4 +331,56 @@ class Mapper extends AbstractEntityMapper
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
 		$stmt->execute();
 	}
+	
+	public function getAvailableMedia($options = array()) 
+	{
+		$where = array();
+		$sort_field = 'media.id';
+		$sort_order = 'ASC';
+		$sql  = "SELECT DISTINCT media.id,
+						media.title,
+						user.username as username
+						from media
+					JOIN user on user.user_id = media.user_id
+					JOIN media_category_linker on media_category_linker.media_id = media.id";
+		foreach ($options as $key => $value) {
+			if (($value !== null)&&($value !== '')) {
+				switch ($key) {
+					case 'title':
+						$where[] = "media.title LIKE '" . $value . "%'";
+						break;
+					case 'username':
+						$where[] = "user.username LIKE '" . $value . "%'";
+						break;
+					case 'category':
+						$where[] = "media_category_linker.category_id = " . $value;
+						break;
+					case 'sort_field':
+						switch ($value) {
+							case 'id':
+								$sort_field = 'media.id';
+								break;
+							case 'username':
+								$sort_field = 'user.username';
+								break;
+							case 'title':
+								$sort_field = 'media.title';
+								break;
+						}
+						break;
+					case 'sort_order':
+						$sort_order = $value;
+						break;
+				}
+			}
+		}
+		if ($where) {
+			$sql .= " WHERE " . implode(' AND ',$where);
+		} 
+		$sql .= " ORDER BY " . $sort_field . " " . $sort_order;
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+		return $stmt->fetchAll();
+	}
+	
 }

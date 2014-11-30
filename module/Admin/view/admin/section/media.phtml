@@ -1,0 +1,270 @@
+<style>
+.video-list thead tr th:nth-child(1),
+#dashboard-selected-video-list-data tr td:nth-child(1),
+#dashboard-available-video-list-data tr td:nth-child(1) {
+	vertical-align: top;
+	text-align: left;
+    min-width: 65px;
+    max-width: 65px;
+    width: 65px;
+}
+.video-list thead tr th:nth-child(2),
+#dashboard-selected-video-list-data tr td:nth-child(2),
+#dashboard-available-video-list-data tr td:nth-child(2) {
+	vertical-align: top;
+	text-align: left;
+    min-width: 140px;
+    max-width: 140px;
+    width: 140px;
+}
+.video-list thead tr th:nth-child(3),
+#dashboard-selected-video-list-data tr td:nth-child(3),
+#dashboard-available-video-list-data tr td:nth-child(3) {
+	vertical-align: top;
+	text-align: left;
+    min-width: 140px;
+    max-width: 140px;
+    width: 140px;
+}
+
+#dashboard-selected-video-list-data tr:nth-child(2n),
+#dashboard-available-video-list-data tr:nth-child(2n) {
+	background-color: #cccccc;
+}
+
+#dashboard-selected-video-list-data .row_selected,
+#dashboard-available-video-list-data .row_selected {
+    background-color: #006DCC;
+    background-image: linear-gradient(to bottom, #08C, #04C);
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    color: #FFF;
+}
+</style>
+<h1><?= $this->section; ?> Management</h1>
+<div class="row breadcrumb-wrapper">
+	<div class="col-sm-12">
+		<ol class="breadcrumb">
+			<li><a href="#">Home</a></li>
+			<li><a href="/admin">Dashboard</a></li>
+			<li class="active"><?= $this->section; ?></li>
+		</ol>	
+	</div>
+</div>
+<br/>
+<div class="row" id="admin-search">
+	<div class="col-sm-12">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12"><b>Search Available Videos</b></div>
+			</div>
+			<div class="row">
+				<div class="col-sm-4">
+					<label>Title</label><br/>
+					<input id="search-title" type="text" placeholder="Video Title" class="col-sm-12">
+				</div>
+				<div class="col-sm-4">
+					<label>Artist Name</label><br/>
+					<input id="search-username" type="text" placeholder="Artist Name" class="col-sm-12">
+				</div>
+				<div class="col-sm-4">
+					<label>Categories</label><br/>
+					<select id="search-category" class="col-sm-12">
+					</select>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<button class="btn btn-primary pull-right" id="media-search">Search</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-5">
+		<h4>Selected Videos</h4>
+ 		<table class="video-list">
+			<thead>
+				<tr style="border-bottom: 1px solid #000000; font-weight: bold; padding: 3px 18px 3px 10px;">
+					<th>ID</th>
+					<th>Title</th>
+					<th>Artist</th>
+				</tr>
+			</thead>
+		</table>	
+		<div id="dashboard-selected-video-list-wrapper" style="max-height: 500px; overflow: auto;">
+			<table id="dashboard-selected-video-list-data">
+<?php foreach ($this->section_media as $sectionMedia) { ?>
+				<tr data-ref="<?= $sectionMedia['id']; ?>">
+					<td><?= $sectionMedia['id']; ?></td>
+					<td><?= $sectionMedia['escaped_title']; ?></td>
+					<td><?= $sectionMedia['user']; ?></td>
+				</tr>
+<?php } ?>			
+			</table>	
+		</div>
+	</div>
+	<div class="col-sm-2 move-buttons">
+		<button class="btn btn-primary" id="MoveUp"><i class="fa fa-arrow-circle-up"></i></button>
+		<br>
+		<button class="btn btn-primary" id="MoveRight">&gt;&gt;</button>
+		<br>
+		<button class="btn btn-primary" id="MoveLeft">&lt;&lt;</button>
+		<br>
+		<button class="btn btn-primary" id="MoveDown"><i class="fa fa-arrow-circle-down"></i></button>
+	</div>
+	<div class="col-sm-5">
+		<h3>Available Videos</h3>
+ 		<table class="video-list">
+			<thead>
+				<tr style="border-bottom: 1px solid #000000; font-weight: bold; padding: 3px 18px 3px 10px;">
+					<th id="sort-id">ID</th>
+					<th id="sort-title">Title</th>
+					<th id="sort-username">Artist</th>
+				</tr>
+			</thead>
+		</table>	
+		<div id="dashboard-available-video-list-wrapper" style="max-height: 500px; overflow: auto;">
+			<table id="dashboard-available-video-list-data">
+			</table>	
+		</div>
+	</div>
+</div>
+<script>
+(function($){
+    $.fn.availableMedia = function( options ) 
+    {
+        var defaults = {
+			section: '',
+			sort_field: 'id',
+			sort_order: 'ASC',
+			videos: []
+		};
+        var methods = 
+        {
+            setSort : function(field)              
+            {
+				options.sort_field = field;
+				if (options.sort_field == field) {
+					if (options.sort_order == 'ASC') {
+						options.sort_order = 'DESC';
+					} else {
+						options.sort_order = 'ASC';
+					}
+				} else {
+					options.sort_order = 'ASC';
+					options.sort_field = field;
+				}
+				methods.getResults(); 
+			},
+            getResults : function()              
+            {
+				$('#dashboard-available-video-list-data').html('');	
+				methods._getData();
+			},
+            moveRight : function()              
+            {
+				var selectedvideos = $("#dashboard-selected-video-list-data").find("tr.row_selected");
+				$.each(selectedvideos, function() {
+					$(this).remove();
+				});
+				methods._updateSection();
+			},
+            moveLeft : function()              
+            {
+				var selectedvideos = $("#dashboard-available-video-list-data").find("tr.row_selected");
+				$.each(selectedvideos, function() {
+					$(this).removeClass('row_selected');
+					$(this).clone().appendTo( "#dashboard-selected-video-list-data" );
+				});
+				methods._updateSection();
+			},
+            moveUp : function()              
+            {
+				var selectedvideos = $("#dashboard-selected-video-list-data").find("tr.row_selected");
+				$.each(selectedvideos, function() {
+					$(this).prev().before($(this));
+				});
+				methods._updateSection();
+			},
+            moveDown : function()              
+            {
+				var selectedvideos = $("#dashboard-selected-video-list-data").find("tr.row_selected");
+				$.each(selectedvideos, function() {
+					$(this).next().after($(this));
+				});
+				methods._updateSection();
+			},
+            _updateSection : function()              
+            {
+				var videos = [];
+				var selectedvideos = $("#dashboard-selected-video-list-data").find("tr");
+				$.each(selectedvideos, function() {
+					videos.push($(this).data('ref'));
+				});
+				$.ajax({
+					url: "/admin/updatesection",
+					type: "POST",
+					data: { 
+						videos: videos,
+						section: options.section
+					}
+				}).done(function ( data ) {
+				});
+			},
+            _getData : function()   
+            {	
+				$.ajax({
+					url: "/admin/availablemedia",
+					type: "POST",
+					data: { 
+						title: $('#search-title').val(),
+						username: $('#search-username').val(),
+						category: $('#search-category').val(),
+						sort_field: options.sort_field,
+						sort_order: options.sort_order
+					}
+				}).done(function ( data ) {
+					$.each(data, function() {
+						var html = '<tr data-ref="' + this.id + '">';
+						html = html + '<td>' + this.id + '</td>';					
+						html = html + '<td>' + this.title + '</td>';					
+						html = html + '<td>' + this.username + '</td>';					
+						html = html + '</tr>';
+						$('#dashboard-available-video-list-data').append(html);
+					});
+				});
+			}
+		};
+        var options = $.extend(defaults, options);
+		
+		$(document).on("click", '#dashboard-selected-video-list-data tr', function(event)			{ 	
+			if ($(this).hasClass('row_selected')) {
+				$(this).removeClass('row_selected');
+			} else {
+				$(this).addClass('row_selected');
+			}	
+		});		
+		$(document).on("click", '#dashboard-available-video-list-data tr', function(event)			{ 	
+			if ($(this).hasClass('row_selected')) {
+				$(this).removeClass('row_selected');
+			} else {
+				$(this).addClass('row_selected');
+			}	
+		});		
+		$(document).on("click", '#sort-id', function(event)			{ 	methods.setSort('id');  		});	
+		$(document).on("click", '#sort-title', function(event)		{ 	methods.setSort('title');  		});
+		$(document).on("click", '#sort-username', function(event)	{ 	methods.setSort('username'); 	});
+		$(document).on("click", '#media-search', function(event)	{ 	methods.getResults(); 			});
+		$(document).on("click", '#MoveUp', function(event)			{ 	methods.moveUp();	 			});
+		$(document).on("click", '#MoveDown', function(event)		{ 	methods.moveDown(); 			});
+		$(document).on("click", '#MoveLeft', function(event)		{ 	methods.moveLeft(); 			});
+		$(document).on("click", '#MoveRight', function(event)		{ 	methods.moveRight(); 			});
+		methods.getResults(); 
+	};	
+})(jQuery);
+
+$().availableMedia({
+	section: '<?= $this->section; ?>'
+});
+</script>
