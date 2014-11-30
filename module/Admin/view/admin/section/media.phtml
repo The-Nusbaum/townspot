@@ -69,6 +69,35 @@
 				<div class="col-sm-4">
 					<label>Categories</label><br/>
 					<select id="search-category" class="col-sm-12">
+						<option value="" selected>All</option>				
+<?php foreach ($this->category_tree as $category_1) : ?>
+						<option value="<?= $category_1['id']; ?>"><?= $category_1['label']; ?></option>	
+	<?php if (isset($category_1['children'])) : ?>
+	<?php foreach ($category_1['children'] as $category_2) : ?>
+						<option value="<?= $category_2['id']; ?>"><?= $category_1['label']; ?>-><?= $category_2['label']; ?></option>				
+		<?php if (isset($category_2['children'])) : ?>
+		<?php foreach ($category_2['children'] as $category_3) : ?>
+						<option value="<?= $category_3['id']; ?>"><?= $category_1['label']; ?>-><?= $category_2['label']; ?>-><?= $category_3['label']; ?></option>				
+			<?php if (isset($category_3['children'])) : ?>
+			<?php foreach ($category_3['children'] as $category_4) : ?>
+						<option value="<?= $category_4['id']; ?>"><?= $category_1['label']; ?>-><?= $category_2['label']; ?>-><?= $category_3['label']; ?>-><?= $category_4['label']; ?></option>				
+				<?php if (isset($category_4['children'])) : ?>
+				<?php foreach ($category_4['children'] as $category_5) : ?>
+						<option value="<?= $category_5['id']; ?>"><?= $category_1['label']; ?>-><?= $category_2['label']; ?>-><?= $category_3['label']; ?>-><?= $category_4['label']; ?>-><?= $category_5['label']; ?></option>				
+					<?php if (isset($category_5['children'])) : ?>
+					<?php foreach ($category_5['children'] as $category_6) : ?>
+						<option value="<?= $category_6['id']; ?>"><?= $category_1['label']; ?>-><?= $category_2['label']; ?>-><?= $category_3['label']; ?>-><?= $category_4['label']; ?>-><?= $category_5['label']; ?>-><?= $category_6['label']; ?></option>				
+					<?php endforeach; ?>	
+					<?php endif; ?>			
+				<?php endforeach; ?>				
+				<?php endif; ?>			
+			<?php endforeach; ?>				
+			<?php endif; ?>			
+		<?php endforeach; ?>				
+		<?php endif; ?>			
+	<?php endforeach; ?>				
+	<?php endif; ?>			
+<?php endforeach; ?>				
 					</select>
 				</div>
 			</div>

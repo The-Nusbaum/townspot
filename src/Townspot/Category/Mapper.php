@@ -101,4 +101,21 @@ class Mapper extends AbstractEntityMapper
 		return $categories[$randkey];
 	}
 	
+	public function getTreeBranches($id = null,$array = false) 
+	{
+		if ($id) {
+			$sql  = "SELECT id,name as label FROM category WHERE parent_id = " . $id;
+		} else {
+			$sql  = "SELECT id,name as label FROM category WHERE parent_id IS NULL";
+		}
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+		$branches = $stmt->fetchAll();
+		foreach ($branches as $index => $branch) {
+			if ($children = $this->getTreeBranches($branch['id'])) {
+				$branches[$index]['children'] = $children;
+			}
+		}
+		return $branches;
+	}
 }

@@ -28,14 +28,16 @@ class SectionController extends AbstractActionController
     public function mediaAction()
     {
 		$this->isAuthenticated();
+		$categoryMapper 	= new \Townspot\Category\Mapper($this->getServiceLocator());
+		$tree 				= $categoryMapper->getTreeBranches();
 		$section 		= $this->params()->fromRoute('section');	
 		$SectionMapper 	= new \Townspot\SectionBlock\Mapper($this->getServiceLocator());
 		$sectionMedia 	= $SectionMapper->getSectionMediaByBlockName($section);
-
 		return new ViewModel(
 			array(
 				'section'		=> $section,
-				'section_media'	=> $sectionMedia
+				'section_media'	=> $sectionMedia,
+				'category_tree'	=> $tree
 			)
 		);
     }
@@ -44,5 +46,4 @@ class SectionController extends AbstractActionController
     {
 		$this->isAuthenticated();
     }
-	
 }
