@@ -173,6 +173,34 @@ return array(
                     ),
                 ),
             ),
+            'admin-video-approve' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/admin/mediaapprove/[:id]',
+                    'constraints' => array(
+                        'id'  => '[0-9]*'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Ajax',
+                        'action'     => 'mediaupdate',
+                        'type' 		 => 'approve',
+                    ),
+                ),
+            ),
+            'admin-video-unapprove' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/admin/mediaunapprove/[:id]',
+                    'constraints' => array(
+                        'id'  => '[0-9]*'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Ajax',
+                        'action'     => 'mediaupdate',
+                        'type' 		 => 'unapprove',
+                    ),
+                ),
+            ),
             'admin-update-section' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(

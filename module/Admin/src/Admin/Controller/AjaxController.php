@@ -198,4 +198,25 @@ class AjaxController extends AbstractActionController
 		$json = new JsonModel();
         return $json;
 	}
+	
+    public function mediaupdateAction()
+    {
+		$this->isAuthenticated();
+		$videoId = $this->params()->fromRoute('id');
+		$type = $this->params()->fromRoute('type');
+		$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
+		$userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+		if ($media = $mediaMapper->find($videoId)) {
+			$user = $userMapper->find($this->zfcUserAuthentication()->getIdentity()->getId());
+			if ($type == 'approve') {
+				$media->setApproved(true);
+			} else {
+				$media->setApproved(false);
+			}
+			$media->setAdmin($user);
+			$mediaMapper->setEntity($media)->save();
+		}
+		$json = new JsonModel();
+        return $json;
+	}
 }

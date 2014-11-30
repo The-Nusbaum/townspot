@@ -334,7 +334,7 @@ class Mapper extends AbstractEntityMapper
 	
 	public function getAvailableMedia($options = array()) 
 	{
-		$where = array();
+		$where = array('media.approved=1');
 		$sort_field = 'media.id';
 		$sort_order = 'ASC';
 		$sql  = "SELECT DISTINCT media.id,

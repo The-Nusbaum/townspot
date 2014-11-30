@@ -39,6 +39,34 @@
 				options.page = options.page - 1;
 				methods.getResults();
 			},
+            unapprove : function(element)              
+            {
+				var id = $(element).parent().attr('id');
+				id = id.replace('row-','');
+				$.ajax({
+					url: "/admin/mediaunapprove/" + id,
+					type: "POST",
+					data: { } 
+				}).done(function ( data ) {
+				});
+				$(element).removeClass('unapprove').addClass('approve');
+				$(element).css('color','#ff0000');
+				$(element).html('<i class="fa fa-square-o"></i>');
+			},
+            approve : function(element)              
+            {
+				var id = $(element).parent().attr('id');
+				id = id.replace('row-','');
+				$.ajax({
+					url: "/admin/mediaapprove/" + id,
+					type: "POST",
+					data: { } 
+				}).done(function ( data ) {
+				});
+				$(element).removeClass('approve').addClass('unapprove');
+				$(element).css('color','#00ff00');
+				$(element).html('<i class="fa fa-check-square"></i>');
+			},
             _getData : function()   
             {	
 				$.ajax({
@@ -68,9 +96,9 @@
 						html = html + '<td class="views-field">' + this.views + '</td>';					
 						html = html + '<td class="added-field">' + this.added + '</td>';	
 						if (this.status == 1) {
-							html = html + '<td class="status-field" style="text-align: center; color: #00ff00;"><i class="fa fa-check-square"></i></td>';			
+							html = html + '<td class="status-field unapprove" style="text-align: center; color: #00ff00;"><i class="fa fa-check-square"></i></td>';			
 						} else {
-							html = html + '<td class="status-field" style="text-align: center; color: #ff0000;"><i class="fa fa-square-o"></i></td>';			
+							html = html + '<td class="status-field approve" style="text-align: center; color: #ff0000;"><i class="fa fa-square-o"></i></td>';			
 						}
 						html = html + '<td class="actions-field">';
 						html = html + '<a href="/admin/video/show/' + this.id + '"><i class="fa fa-search"></i></a>';
@@ -94,6 +122,8 @@
 		$(document).on("click", '#admin-sort-views', function(event)		{ 	methods.setSort('views',$(this).hasClass('icon-admin-sort-up'));  	});	
 		$(document).on("click", '#admin-sort-added', function(event)		{ 	methods.setSort('added',$(this).hasClass('icon-admin-sort-up'));  	});	
 		$(document).on("click", '#admin-sort-status', function(event)		{ 	methods.setSort('status',$(this).hasClass('icon-admin-sort-up'));  	});	
+		$(document).on("click", '.unapprove', function(event)				{ 	methods.unapprove(this);  	});	
+		$(document).on("click", '.approve', function(event)					{ 	methods.approve(this);  	});	
 		methods.getResults();
 	};	
 })(jQuery);
