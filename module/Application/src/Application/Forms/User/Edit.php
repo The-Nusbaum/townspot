@@ -223,8 +223,9 @@ class Edit extends Form
                 'length' => '50',
             ),
         ));
+
         $this->add(array(
-            'name' => 'image_url',
+            'name' => 'imageUrl',
             'attributes' => array(
                 'type'  => 'plupload-image',
                 'column' => 2,
@@ -235,6 +236,27 @@ class Edit extends Form
                 'errorMessage' => 'You must upload an image'
             ),
         ));
+
+        $this->add(array(
+            'name' => 'link_facebook',
+            'attributes' => array(
+                'type'  => 'button',
+                'column' => 2,
+                'width' => 6,
+                'label' => 'Link Facebook',
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'link_twitter',
+            'attributes' => array(
+                'type'  => 'button',
+                'column' => 2,
+                'width' => 6,
+                'label' => 'Link Twitter',
+            ),
+        ));
+
         $this->add(array(
             'name' => 'allow_contact',
             'attributes' => array(
