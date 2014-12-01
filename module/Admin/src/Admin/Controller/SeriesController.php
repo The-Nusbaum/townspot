@@ -23,6 +23,8 @@ class SeriesController extends AbstractActionController
     public function indexAction()
     {
 		$this->isAuthenticated();
+				
+		return new ViewModel();
     }
 	
     public function addAction()

@@ -56,6 +56,7 @@ return array(
                     'socialmedia.css',
                     'style.less',
                     'admin.less',
+                    'datatables/datatables/media/css/jquery.dataTables.css',
                 ),
                 'js/townspot.js' => array(
                     'kalenjordan/jquery-cookie/jquery.cookie.js',
@@ -75,7 +76,6 @@ return array(
                     'tinymce/tinymce/tinymce.js',
                     'plupload.js',
                     'general_init.js'
-
                 ),
                 'js/tinymceTheme.js' => array(
                     'tinymce/tinymce/themes/modern/theme.min.js'
@@ -102,7 +102,17 @@ return array(
                 ),
                 'js/admin.js' => array(
 					'trentrichardson/jquery-timepicker-addon/dist/jquery-ui-timepicker-addon.min.js',
+                    'datatables/datatables/media/js/jquery.dataTables.js',
                     'datefield.js',
+                    'searchUsername.js',
+                    'searchProvince.js',
+                    'searchCity.js',
+                    'searchCreated.js',
+                    'searchStatus.js',
+                    'searchTitle.js',
+                    'adminDelete.js',
+                    'tinymce/tinymce/tinymce.js',
+					
 //                    'twitter/typeahead.js/dist/typeahead.bundle.min.js',
 //                    'usernameTypeahead.js',
 				),

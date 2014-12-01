@@ -44,10 +44,27 @@ class VideoController extends AbstractActionController
 		$videoId = $this->params()->fromRoute('id');
 		$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
 		if ($media = $mediaMapper->find($videoId)) {
+			$url = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 			$this->getServiceLocator()
 				->get('ViewHelperManager')
 				->get('HeadScript')
 				->appendFile('/js/videointeractions.js','text/javascript');
+			$this->getServiceLocator()
+				->get('ViewHelperManager')
+				->get('HeadMeta')
+				->appendName('description', strip_tags($media->getDescription()))
+				->appendProperty('og:title', $media->getTitle() . ' - townspot.tv')
+				->appendProperty('og:description', strip_tags($media->getDescription()))
+                ->appendProperty('og:site_name', 'townspot.tv')
+                ->appendProperty('og:url', $url)
+                ->appendProperty('og:image', $media->getResizerCdnLink(700,535))
+                ->appendProperty('og:image:width', 700)
+                ->appendName('twitter:card', 'summary')
+				->appendName('twitter:title', $media->getTitle() . ' - townspot.tv')
+				->appendName('twitter:description', strip_tags($media->getDescription()))
+       		    ->appendName('twitter:image', $media->getResizerCdnLink(435,326))
+				->appendName('twitter:image:width', 435);
+				
 			$this->init($media->getTitle());
 			$relatedMedia  = $mediaMapper->getMediaLike($media);
 			$results = array(

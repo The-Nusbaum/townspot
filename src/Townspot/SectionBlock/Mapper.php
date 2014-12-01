@@ -55,4 +55,24 @@ class Mapper extends AbstractEntityMapper
 		}
 		return $media;
 	}
+	
+	public function replaceMedia($blockName, $mediaIds = array()) 
+	{
+		if ($block = $this->findOneByBlockName($blockName)) {
+			$priority = 1;
+			$sql  = "DELETE FROM section_media WHERE section_block_id=" . $block->getId();
+			$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+			$stmt->execute();
+			foreach ($mediaIds as $id) {
+				$sql = sprintf("INSERT INTO section_media ( `section_block_id`, `media_id`, `priority` ) 
+					VALUES ('%d','%d','%d')",
+					$block->getId(),
+					$id,
+					$priority);
+				$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+				$stmt->execute();
+				$priority++;
+			}
+		}
+	}
 }
