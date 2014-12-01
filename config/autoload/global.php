@@ -125,13 +125,15 @@ return array(
 		//'user_entity_class' => 'ZfcUser\Entity\User',
 		'enable_registration' => true,
 		'enable_username' => true,
-		'auth_adapters' => array( 
-			100 => 'ZfcUser\Authentication\Adapter\Db', 
-			99 => 'Townspot\Authentication\Adapter\Db' 
-		),
+		'auth_adapters' => array(
+            100 => 'ZfcUser\Authentication\Adapter\Db',
+            99 => 'Townspot\Authentication\Adapter\Db',
+        ),
+        'password_cost' => 14,
 		'enable_display_name' => true,
 		'auth_identity_fields' => array( 'email','username' ),
         'login_redirect_route' => 'dashboard',
+        'logout_redirect_route' => 'zfcuser-login'
 		//'user_login_widget_view_template' => '/login.phtml',
 		//'allowed_login_states' => array( null, 1 ),
 	),

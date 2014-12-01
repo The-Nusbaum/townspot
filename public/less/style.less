@@ -1547,6 +1547,7 @@ div {
 					bottom: 5px;
 					right: 20px;
 					left: 20px;
+                    padding: 0 10px;
 					a {
 						color: white
 					}
@@ -1614,8 +1615,24 @@ div {
 		padding: 15px;
 	}
 	.upload {
-		margin-bottom: 15px;
+		margin-bottom: 0;
 	}
+
+    .footerForm {
+      .form-group {
+        margin-bottom: inherit;
+        .input {
+          margin-top: 0;
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    #plupload-video,
+    #plupload-image {
+      height: 120px;
+      margin: 2em 0;
+    }
 	.list-group {
 		li.active {
 			background-color: #12497A;
@@ -1653,13 +1670,9 @@ div {
 		margin: 0;
 	}
 
-    #youtab .youtubelogo {
-      width: 75px;
+    .youtubelogo {
+      height: 1.25em;
     }
-
-  #youtube .youtubelogo {
-      width: 99px;
-  }
 }
 
 .youtubelogo {
@@ -1687,6 +1700,7 @@ div {
 		color: white;
 		width: 100%;
 		border-color: white;
+        background-color: #428bca;
 	}
 }
 

@@ -5,6 +5,17 @@ use Townspot\Doctrine\Mapper\AbstractEntityMapper;
 class Mapper extends AbstractEntityMapper
 {
 	protected $_repositoryName = "Townspot\User\Entity";
+
+    public function findByUsernameOrEmail($value) {
+        $sql  = "
+            select user_id from user where username = ? or email = ?
+        ";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        $stmt->execute(array($value, $value));
+        $result = $stmt->fetch();
+
+        return $this->find($result['user_id']);
+    }
 	
 	public function getIndexerRows($dateTime = null) 
 	{
@@ -96,5 +107,4 @@ class Mapper extends AbstractEntityMapper
 		}
 		return $results;
 	}
-	
 }

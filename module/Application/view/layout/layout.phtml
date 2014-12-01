@@ -55,7 +55,11 @@
 		</div>		
         <div class="container" id="<?= $this->controllerName(); ?>-<?= $this->actionName(); ?>">
             <div id="fb-root"></div>
+
         <div class="container main-content">
+            <div class="row">
+                <?= $this->flashMessenger()->render('default', array('alert', 'alert-warning', 'show', 'list-unstyled'));?>
+            </div>
             <?php echo $this->content; ?>
         </div> 
 		<nav id="footer" role="navigation" class="navbar navbar-footer">

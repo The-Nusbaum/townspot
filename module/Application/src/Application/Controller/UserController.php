@@ -9,7 +9,6 @@
 
 namespace Application\Controller;
 
-use Album\Form\EditForm;
 use Symfony\Component\Console\Application;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
@@ -19,6 +18,7 @@ use Zend\Http\Request;
 use DoctrineModule\Authentication\Adapter\ObjectRepository as ObjectRepositoryAdapter;
 use ZendService\Twitter\Twitter;
 use ZendOAuth;
+use Zend\Mail;
 
 class UserController extends AbstractActionController
 {
@@ -47,7 +47,8 @@ class UserController extends AbstractActionController
         $sql = "select * from user_social_media where source = 'twitter' and user_id = :uid";
         $query = $userMapper->getEntityManager()->getConnection()->prepare($sql);
         $query->execute(array(':uid' => $user->getId()));
-        $this->_view->setVariable('twitter', $query->fetchAll()[0]);
+        if($query->rowCount())$this->_view->setVariable('twitter', $query->fetchAll()[0]);
+        else $this->_view->setVariable('twitter', array());
 
         $this->_view->setVariable('authdUser', $user);
         $this->_view->setVariable('user', $user);
@@ -96,9 +97,40 @@ class UserController extends AbstractActionController
         $this->_view->setVariable('TZoffset', 0);
         return $this->_view;
     }
+    protected function _process($values)
+    {
+    // Get our authentication adapter and check credentials
+        $adapter = $this->_getAuthAdapter();
+        $adapter->setIdentity($values['username']);
+        $adapter->setCredential($values['password']);
 
+        $auth = Zend_Auth::getInstance();
+        $result = $auth->authenticate($adapter);
+        if ($result->isValid()) {
+            $user = $adapter->getResultRowObject();
+            $auth->getStorage()->write($user);
+            return true;
+        }
+        return false;
+    }
 
-    public function loginAction() {}
+    protected function _getAuthAdapter() {
+
+        $dbAdapter = Zend_Db_Table::getDefaultAdapter();
+        $authAdapter = new Zend_Auth_Adapter_DbTable($dbAdapter);
+
+        $authAdapter->setTableName('users')
+            ->setIdentityColumn('username')
+            ->setCredentialColumn('password')
+            ->setCredentialTreatment('SHA1(CONCAT(?,salt))');
+
+        return $authAdapter;
+    }
+
+    public function loginAction() {
+        //this is really hacky, but time is short and this will brute force it
+
+    }
 
     public function logoutAction() {
         $this->auth->clearIdentity();
@@ -112,6 +144,7 @@ class UserController extends AbstractActionController
 
         $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
         $user = $userMapper->findOneById($this->auth->getIdentity());
+        $user->setPassword(null);
 
         $countryMapper = new \Townspot\Country\Mapper($this->getServiceLocator());
         $countries = $countryMapper->findAll();
@@ -181,12 +214,62 @@ class UserController extends AbstractActionController
 
     public function registerAction() {
         $countryMapper = new \Townspot\Country\Mapper($this->getServiceLocator());
-        $countries = $countryMapper->findAll();
+        $country = $countryMapper->find(99);
 
         $provinceMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
         $provinces = $provinceMapper->findByCountry(99);
 
-        $form = new \Application\Forms\User\Register('user',$countries,$provinces);
+        $cityMapper = new \Townspot\City\Mapper($this->getServiceLocator());
+        if($this->getRequest()->isPost()) {
+            $user = new \Townspot\User\Entity();
+            $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+
+            $data = $this->params()->fromPost();
+
+            if(empty($data['displayName'])) {
+                if(!empty($data['artistName'])) {
+                    $data['displayName'] = $data['artistName'];
+                } else {
+                    $data['displayName'] = $data['username'];
+                }
+            }
+            $regData = array(
+                'username' => $data['username'],
+                'password' => $data['password'],
+                'passwordVerify' => $data['password2'],
+                'email' => $data['email'],
+                'display_name' => $data['displayName']
+            );
+            $userService =  $this->getServiceLocator()->get('zfcuseruserservice');
+            $user = $userService->register($regData);
+
+            $province = $provinceMapper->find($data['province_id']);
+            $city = $cityMapper->find($data['city_id']);
+
+            $user = $userMapper->find($user->getId());
+            $user->setArtistName($data['artistName'])
+                ->setFirstName($data['firstName'])
+                ->setLastName($data['lastName'])
+                ->setCountry($country)
+                ->setProvince($province)
+                ->setCity($city)
+                ->setWebsite($data['website'])
+                ->setImageUrl($data['image_url'])
+                ->setAboutMe($data['aboutMe'])
+                ->setInterests($data['interests'])
+                ->setDescriptions($data['description'])
+                ->setAllowContact($data['allow_contact'])
+                ->setTermsAgreement($data['terms_agreement'])
+                ->setEmailNotification($data['email_notifications']);
+
+            $userMapper->setEntity($user)->save();
+
+            $this->flashMessenger()->addMessage('Please check your email for activation instructions');
+            $this->redirect()->toRoute('login');
+
+        }
+
+        $form = new \Application\Forms\User\Register('user',array(),$provinces);
         $this->_view->setVariable('form',$form);
 
         $this->getServiceLocator()
@@ -237,5 +320,86 @@ class UserController extends AbstractActionController
 
     public function sendEmail() {
 
+    }
+
+    public function forgotPasswordAction() {
+        $form = new \Application\Forms\User\ForgotPassword();
+        $this->_view->setVariable('form',$form);
+        return $this->_view;
+    }
+
+    public function resetSentAction() {
+        $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+
+        if($this->getRequest()->isPost()) {
+            $username = $this->params()->fromPost('username');
+            $user = $userMapper->findByUsernameOrEmail($username);
+
+            if($user instanceof \Townspot\User\Entity) {
+                $key = uniqid();
+                $sMessage  = "Please follow the link below to verify your account and reset your password\n\n";
+                $sMessage .= "http://townspot.tv/verify/" . $key . "\n";
+                $mail = new Mail\Message();
+                $mail->setBody($sMessage);
+                $mail->setFrom('webmaster@townspot.tv', 'Townspot.tv');
+                $mail->addTo($user->getEmail(), $user->getFirstName().' '.$user->getLastName());
+                $mail->addBcc('emailcopy@townspot.tv');
+                $mail->setSubject('Forgot Password');
+
+                $transport = new Mail\Transport\Sendmail();
+                $transport->send($mail);
+
+                $user->setSecurityKey($key);
+                $userMapper->setEntity($user)->save();
+            }
+        }
+        return $this->_view;
+    }
+
+    public function verifyAction() {
+        $key = $this->params()->fromRoute('key');
+
+        if(!$key) {
+            $this->flashMessenger()->addMessage('No Security Key Provided');
+            $this->redirect()->toUrl('/user/login');
+        }
+
+        $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+        $user = $userMapper->findOneBy(array('_security_key'=>$key));
+
+        if($user instanceof \Townspot\User\Entity) {
+            $form = new \Application\Forms\User\ChangePassword();
+            $form->get('user_id')->setValue($user->getId());
+            $this->_view->setVariable('form',$form);
+
+            return $this->_view;
+        }
+
+        $this->flashMessenger()->addMessage('No user found or the security token is expired/invalid');
+        $this->redirect()->toUrl('/user/login');
+
+
+    }
+
+    public function changePasswordAction() {
+        if($this->getRequest()->isPost()) {
+            $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+            $user = $userMapper->find($this->params()->fromPost('user_id'));
+            $pw = $this->params()->fromPost('password');
+            $pw2 = $this->params()->fromPost('password2');
+
+            if(!empty($pw) && !empty($pw2) && $pw == $pw2 && preg_match('/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,15}$/',$pw)) {
+                $user->setPassword($pw)
+                    ->setSecurityKey(null);
+                $userMapper->setEntity($user)->save();
+                $this->flashMessenger()->addMessage('Password Changed, you may now login');
+                $this->redirect()->toUrl('/user/login');
+            } else {
+                $this->flashMessenger()->addMessage('Please enter a valid password');
+                $this->redirect()->toUrl('/verify/'.$user->getSecurityKey());
+                return;
+            }
+        }
+        $this->redirect()->toUrl('/user/login');
     }
 }

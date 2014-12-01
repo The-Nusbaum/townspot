@@ -149,8 +149,7 @@
 		"snapshotpl/zf-snap-google-adsense": "dev-master",		
 		"thepixeldeveloper/sitemap": "dev-master",
 		"zf-commons/zfc-base": "0.1.2",
-		"zf-commons/zfc-user": "2.0.*@dev",	
-		"zf-commons/zfc-admin": "dev-master",
+        "zf-commons/zfc-user": "1.2.1",
 		"ocramius/proxy-manager": "0.5.1",
 		"twig/twig": "1.16.*@dev",
 		"ptachoire/cssembed": "dev-master",
@@ -181,7 +180,8 @@
 		"minddust/bootstrap-progressbar": "0.6.0",
 		"silviomoreto/bootstrap-select": "1.2.0",
 		"jquery.form": "*",
-		"francois2metz/html5-formdata": "1.0.0"
+		"francois2metz/html5-formdata": "1.0.0",
+        "zf-commons/zfc-user-doctrine-orm": "1.0.0"
     },
     "autoload": {
         "classmap": [

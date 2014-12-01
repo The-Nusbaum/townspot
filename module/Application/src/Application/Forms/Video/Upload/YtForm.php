@@ -21,7 +21,7 @@ class YtForm extends Form {
             'attributes' => array(
                 'type'  => 'text',
                 'label' => false,
-                'placeholder' => 'Enter YouTube Url',
+                'placeholder' => 'Enter YouTube URL',
                 'errorId' => 'noyoutube',
                 'errorMessage' => 'You must enter a Youtube Video'
             ),

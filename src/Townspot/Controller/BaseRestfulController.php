@@ -102,7 +102,7 @@ class BaseRestfulController extends AbstractRestfulController
     public function updateAction()
     {   // Action used for PUT requests
         $id = $this->params()->fromRoute('id');
-        $data = $this->params()->fromPost('data');
+        $data = $this->params()->fromPost();
         $this->setEntity($this->getMapper()->findOneById($id));
 
         if($this->getEntity()) {
@@ -151,13 +151,13 @@ class BaseRestfulController extends AbstractRestfulController
             $this->getMapper()->setEntity($this->getEntity());
             $this->getMapper()->delete();
             $this->getResponse()
+                ->setSuccess(true)
                 ->setMessage($this->getModel()." record was deleted");
         } else {
             $this->getResponse()->setCode(404)
                 ->setSuccess(false)
                 ->setMessage($this->getModel()." record was not found");
         }
-
 
         return new JsonModel($this->getResponse()->build());
     }

@@ -11,7 +11,8 @@ namespace Townspot\Form;
 class Form extends \Zend\Form\Form {
     public function __toString() {
         $html = '';
-        $html .= "<form role='form' action='{$this->getAttribute('action')}' method='{$this->getAttribute('method')}'";
+        $class = $this->getAttribute('class')?$this->getAttribute('class'):'';
+        $html .= "<form role='form' action='{$this->getAttribute('action')}' method='{$this->getAttribute('method')}' class='$class'";
         $id = $this->getAttribute('id');
         if($id) $html .= " id='$id'";
         $html .= ">";
@@ -143,7 +144,7 @@ class Form extends \Zend\Form\Form {
                 $html .= "<button id='plupload-video' class='form-control' style='position: relative; z-index: 1;'>";
                 $html .= "$label";
                 $html .= "</button>";
-                $html .= "<div class='progress'>";
+                $html .= "<div class='progress hidden'>";
                 $html .= "<div class='progress-bar' role='progressbar' aria-valuenow='0' aria-valuemin='0' aria-valuemax='100' style='width: 0%;'>";
                 $html .= "</div>";
                 $html .= "</div>";
@@ -164,10 +165,12 @@ class Form extends \Zend\Form\Form {
                 break;
             case 'custom-block':
                 if($label) $html .= "<h3>$label</h3>";
+                if($class) $html .= "<div class='$class'>";
                 $html .= $e->getAttribute('inner-html');
+                if($class) $html .= "</div>";
                 break;
             case 'tree-selections':
-                if($label) $html .= "<h3>$label</h3>";
+                if($label) $html .= "<h3>$label:</h3>";
                 $selClass = $e->getAttribute('selClass')? $e->getAttribute('selClass'):'';
                 $html .= "<span class='$name'>";
                 $html .= $this->iterate_tree_selections($value,$selClass);
@@ -180,10 +183,10 @@ class Form extends \Zend\Form\Form {
                     $subColWidth = floor(12 / count($subColumns));
                     foreach ($subColumns as $colName => $options) {
                         $html .= "<div class='col-md-$subColWidth'>";
-                        $html .= "<h3>$colName</h3>";
+                        $html .= "<h3>$colName:</h3>";
                         $colClass = '';
                         if(!empty($options['class'])) $colClass = " ".$options['class'];
-                        $html .= "<ul class='list-group$colClass'>";
+                        $html .= "<ul class='tree list-group$colClass'>";
                         if(!empty($v['parents']) && $v['parents']) $parent = 'parent ';
                         else $parent = '';
                         if(!empty($v['item-class'])) $itemClass= " ".$v['item-class'];

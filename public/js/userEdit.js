@@ -17,7 +17,7 @@ var userEdit = {
                 });
             }
         });
-        //userEdit.picInit();
+        plupInit.image();
 
         $("#userEdit input, #userEdit select, #userEdit textarea").change(function(e){
             $this = $(this);
@@ -26,6 +26,33 @@ var userEdit = {
         $('#link_twitter').click(function(e){
             e.preventDefault();
             window.location = "/custom/login/twitter";
+        });
+
+        $('#province_id').change(function(){
+            pId = $(this).val();
+            $target = $('#city_id');
+            $target.children().remove();
+            $target.append("<option>loading...</option>");
+            $.get(
+                '/api/city/getList/'+pId,
+                function(data){
+                    $target = $('#city_id');
+                    if(data.success) {
+                        $target.children().remove();
+                        $target.append("<option>Please select a City</option>");
+                        var cities = data.data;
+                        $(cities).each(function(){
+                            $target.append('<option value="'+this.id+'">'+this.name+'</option>');
+                        })
+                    }
+                }
+            );
+        });
+        $('#username').blur(function(){
+            userEdit.checkUsername();
+        });
+        $('#email').blur(function(){
+            userEdit.checkEmail();
         });
 
         $('#link_facebook').click(function(e){
@@ -46,6 +73,8 @@ var userEdit = {
             e.preventDefault();
             var editors = tinyMCE.editors;
 
+            if(!userEdit.validate()) return false;
+
             $.ajax({
                 method: "POST",
                 url: "/api/user/update/" + parseInt($("#userEdit #user_id").val()),
@@ -59,57 +88,92 @@ var userEdit = {
         });
 
     },
-    picInit: function(){
-        var uploader = new plupload.Uploader({
-            runtimes : 'html5,flash',
-            browse_button : 'picPrevfiew',
-            max_file_size : '10mb',
-            url : '/user/process-profile-pic',
-            flash_swf_url : '/plupload/js/plupload.flash.swf',
-            silverlight_xap_url : '/plupload/js/plupload.silverlight.xap',
-            filters : [
-                {title : "Image files", extensions : "jpg,gif,png"}
-            ],
-            resize : {width : 700, height : 400, quality : 90},
-            multi_selection : false,
-            unique_names : true
-        });
+    validate: function() {
+        $('.alert').hide();
+        var error = false;
+        if($('#username').val() == ''){
+            error = true;
+            $('.nousername').show();
+        }
 
-        uploader.bind('Init', function(up, params) {
-        });
+        if($('#email').val() == ''){
+            error = true;
+            $('.noemail').show();
+        }
 
-        $('#uploadfiles').click(function(e) {
-            uploader.start();
-            e.preventDefault();
-        });
+        if($('#firstName').val() == ''){
+            error = true;
+            $('.nofirstname').show();
+        }
 
-        uploader.init();
+        if($('#lastName').val() == ''){
+            error = true;
+            $('.nolastname').show();
+        }
 
-        uploader.bind('FilesAdded', function(up, files) {
-            $.each(files, function(i, file) {
-                uploader.start();
-            });
-
-            up.refresh(); // Reposition Flash/Silverlight
-        });
-
-        uploader.bind('Error', function(up, err) {
-            up.refresh(); // Reposition Flash/Silverlight
-        });
-
-        uploader.bind('FileUploaded', function(up, file, r) {
-            var url = r.response;
-            if (url != 'error') {
-                $('.picPreview').attr('src','/'+url);
-                $('#plupPicVal').val("/" + url).change();
-            } else {
-                $('#plupPic').html('There was an error uploading your profile picture');
-                $('#plupPicVal').val("");
+        if($('#password').val() != ''){
+             if($('#password').val() != $('#password2').val()){
+                error = true;
+                $('.noconfirmpass').show();
             }
-        });
+
+            if(!$('#password').val().match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,15}$/)) {
+                error = true;
+                $('.invalidpass').show();
+            }
+        }
+
+        if($('#email').val() == ''){
+            error = true;
+            $('.noemail').show();
+        }
+
+        if($('#province_id').val() == ''){
+            error = true;
+            $('.nostate').show();
+        }
+
+        if($('#city_id').val() == ''){
+            error = true;
+            $('.nocity').show();
+        }
+
+        if($('#email').val() == ''){
+            error = true;
+            $('.noemail').show();
+        }
+
+        if($('#plupPicVal').val() == "http://images.townspot.tv/resizer.php?id=none&type=profile") {
+            error = true;
+            $('.noimage').show();
+        }
+        return !error;
+    },
+    checkUsername: function(){
+        $.get(
+                '/api/User/checkUsername/'+$('#username').val(),
+            function(data){
+                console.log(data.success);
+                if(!data.success) {
+                    html = "<div class='alert alert-warning userexists' style='display:block'>"+data.message+"</div>"
+                    $(html).insertAfter('.nousername');
+                }
+            }
+
+        )
+    },
+    checkEmail: function() {
+        $.get(
+                '/api/User/checkEmail/'+$('#email').val(),
+            function(data){
+                if(!data.success) {
+                    html = "<div class='alert alert-warning emailexists' style='display:block'>"+data.message+"</div>"
+                    $(html).insertAfter('.noemail');
+                }
+            }
+
+        )
     }
 }
 
-$(document).ready(function(){
-    userEdit.init();
-});
+

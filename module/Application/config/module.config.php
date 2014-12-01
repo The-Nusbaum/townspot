@@ -73,6 +73,7 @@ return array(
                     'plupload/moxie.min.js',
                     'plupload/plupload.min.js',
                     'tinymce/tinymce/tinymce.js',
+                    'plupload.js',
                     'general_init.js'
 
                 ),
@@ -144,6 +145,42 @@ return array(
                         'action'        => 'link'
                     )
                 )
+            ),
+            /*'zfcuser' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route' => '', // the route is void isntead of default 'user'
+                ),
+            ),*/
+            'zfcuser-login' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route' => '/login',
+                    'defaults' => array(
+                        'controller' => 'zfcuser',
+                        'action' => 'login',
+                    ),
+                ),
+            ),
+            'zfcuser-authenticate' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route' => '/authenticate',
+                    'defaults' => array(
+                        'controller' => 'zfcuser',
+                        'action' => 'authenticate',
+                    ),
+                ),
+            ),
+            'zfcuser-logout' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route' => '/logout',
+                    'defaults' => array(
+                        'controller' => 'zfcuser',
+                        'action'     => 'logout',
+                    ),
+                ),
             ),
             'custom_lfjopauth_callback' => array(
                 'type'    => 'Segment',
@@ -554,6 +591,47 @@ return array(
 					),
 				),
 			),
+            'forgotPass' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/forgot-password',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\User',
+                        'action'     => 'forgotPassword',
+                    ),
+                ),
+            ),
+            'resetSent' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/reset-sent',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\User',
+                        'action'     => 'resetSent',
+                    ),
+                ),
+            ),
+            'verify' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/verify[/:key]',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\User',
+                        'action'     => 'verify',
+                    ),
+                ),
+            ),
+            'changePass' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/change-password',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\User',
+                        'action'     => 'changePassword',
+                    ),
+                ),
+            ),
+			/*
 			'login' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(
@@ -573,7 +651,7 @@ return array(
                         'action'     => 'logout',
                     ),
                 ),
-            ),
+            ),*/
 			'series_player' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(

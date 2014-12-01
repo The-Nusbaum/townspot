@@ -9,7 +9,7 @@ class Edit extends Form
     protected $_provinces;
     protected $_cities;
 
-    public function __construct($name = null,$user, $colCountries = null, $colProvinces = null, $colCities = null)
+    public function __construct($name = null, $colCountries = null, $colProvinces = null, $colCities = null)
     {
         // we want to ignore the name passed
         parent::__construct('user');
@@ -42,6 +42,8 @@ class Edit extends Form
                 'type'  => 'text',
                 'label' => 'Username',
                 'length' => '50',
+                'errorId' => 'nousername',
+                'errorMessage' => 'You must enter a username'
             ),
         ));
         $this->add(array(
@@ -58,6 +60,8 @@ class Edit extends Form
                 'type'  => 'email',
                 'label' => 'Email',
                 'length' => '50',
+                'errorId' => 'noemail',
+                'errorMessage' => 'You must enter an email'
             ),
         ));
         $this->add(array(
@@ -67,6 +71,8 @@ class Edit extends Form
                 'label' => 'First Name',
                 'length' => '50',
                 'width' => 6,
+                'errorId' => 'nofirstname',
+                'errorMessage' => 'You must enter a first name'
             ),
         ));
         $this->add(array(
@@ -76,6 +82,8 @@ class Edit extends Form
                 'label' => 'Last Name',
                 'length' => '50',
                 'width' => 6,
+                'errorId' => 'nolastname',
+                'errorMessage' => 'You must enter a last name'
             ),
         ));
         $this->add(array(
@@ -101,6 +109,8 @@ class Edit extends Form
                 'label' => 'Password',
                 'length' => '50',
                 'width' => 6,
+                'errorId' => 'nopassword',
+                'errorMessage' => 'You must enter a password'
             ),
         ));
         $this->add(array(
@@ -110,6 +120,8 @@ class Edit extends Form
                 'label' => 'Confirm Password',
                 'length' => '50',
                 'width' => 6,
+                'errorId' => 'noconfirmpass',
+                'errorMessage' => 'Passwords must match'
             ),
         ));
         $this->add(array(
@@ -120,7 +132,7 @@ class Edit extends Form
                 'length' => '50',
             ),
         ));
-        $this->add(array(
+        /*$this->add(array(
             'type' => 'Zend\Form\Element\Select',
             'name' => 'country_id',
             'attributes' => array(
@@ -130,6 +142,14 @@ class Edit extends Form
             ),
             'options' => array(
                 'value_options' => $countries
+            ),
+        ));*/
+
+        $this->add(array(
+            'name' => 'country_id',
+            'attributes' => array(
+                'type'  => 'hidden',
+                'value' => '99',
             ),
         ));
 
@@ -141,6 +161,8 @@ class Edit extends Form
                 'label' => 'State',
                 'placeholder' => 'Please select a State',
                 'width' => 6,
+                'errorId' => 'nostate',
+                'errorMessage' => 'You must select a state'
             ),
             'options' => array(
                 'value_options' => $provinces
@@ -154,18 +176,20 @@ class Edit extends Form
                 'label' => 'City',
                 'placeholder' => 'Please select a City',
                 'width' => 6,
+                'errorId' => 'nocity',
+                'errorMessage' => 'You must select a city'
             ),
             'options' => array(
                 'value_options' => $cities
             ),
         ));
-        $this->add(array(
+        /*$this->add(array(
             'name' => 'neighborhood',
             'attributes' => array(
                 'type'  => 'text',
                 'label' => 'neighborhood'
             ),
-        ));
+        ));*/
         $this->add(array(
             'name' => 'aboutMe',
             'attributes' => array(
@@ -200,37 +224,19 @@ class Edit extends Form
             ),
         ));
         $this->add(array(
-            'name' => 'imageUrl',
+            'name' => 'image_url',
             'attributes' => array(
                 'type'  => 'plupload-image',
                 'column' => 2,
                 'label' => 'Please choose a profile Picture',
                 'class' => 'profilePic',
-            ),
-        ));
-
-        $this->add(array(
-            'name' => 'link_twitter',
-            'attributes' => array(
-                'type'  => 'button',
-                'column' => 2,
-                'width' => 6,
-                'label' => 'Link Twitter',
-                'button-class' => 'primary',
+                'value' => 'http://images.townspot.tv/resizer.php?id=none&type=profile',
+                'errorId' => 'noimage',
+                'errorMessage' => 'You must upload an image'
             ),
         ));
         $this->add(array(
-            'name' => 'link_facebook',
-            'attributes' => array(
-                'type'  => 'button',
-                'column' => 2,
-                'width' => 6,
-                'label' => 'Link Facebook',
-                'button-class' => 'primary',
-            ),
-        ));
-        $this->add(array(
-            'name' => 'allowContact',
+            'name' => 'allow_contact',
             'attributes' => array(
                 'type'  => 'checkbox',
                 'label' => 'Allow other users to contact me',
@@ -240,7 +246,7 @@ class Edit extends Form
         ));
 
         $this->add(array(
-            'name' => 'emailNotification',
+            'name' => 'email_notifications',
             'attributes' => array(
                 'type'  => 'checkbox',
                 'label' => 'Receive Email Notifications',

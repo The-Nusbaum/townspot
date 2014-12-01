@@ -9,6 +9,7 @@ class Db extends \ZfcUser\Authentication\Adapter\Db
 {
     public function authenticate(AuthenticationEvent $event)
     {
+        if($event->getCode() == 1) return;
         if ($this->isSatisfied()) {
             $storage = $this->getStorage()->read();
             $event->setIdentity($storage['identity'])
@@ -52,7 +53,7 @@ class Db extends \ZfcUser\Authentication\Adapter\Db
             }
         }
 
-        $cryptoService = $this->getHydrator()->getCryptoService();
+        //$cryptoService = $this->getHydrator()->getCryptoService();
 		//Password MD5 Encrypted
 		if ($userObject->getPassword() != md5($credential)) {
             $event->setCode(AuthenticationResult::FAILURE_CREDENTIAL_INVALID)

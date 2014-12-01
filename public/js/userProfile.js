@@ -35,6 +35,9 @@
                 $('#Comments .prev').click(function(e){
                     methods.prevComments(e);
                 });
+                $('#Comments').on('click','.fa-times',function(e){
+                    methods.delComment(e);
+                });
                 $('#Comments #comment').click(function(e){
                     methods.leaveComment();
                 });
@@ -148,12 +151,31 @@
                         var comment = data.data;
                         html = '<div class="row col-xs-12 comment">' +
                             '<a class="col-xs-2" href="/u/'+comment.user_id+'"><img class="img-responsive" src="http://images.townspot.tv/resizer.php?id='+comment.user_id+'&type=profile&w=100&h=100" alt="a"/></a>' +
-                            '<p class="col-xs-9 offset-xs-1">'+comment.comment+'<br><a href="/u/'+comment.user_id+'">'+options.username+'</a> - <abbr class="timeago" title="'+new Date().toISOString()+'">'+jQuery.timeago(new Date().toISOString())+'</abbr></p>'+
+                            '<p class="col-xs-9 offset-xs-1">'+comment.comment+'<br><a href="/u/'+comment.user_id+'">'+options.username+'</a> - <abbr class="timeago" title="'+new Date().toISOString()+'">'+jQuery.timeago(new Date().toISOString())+'</abbr> <i class="fa fa-times"></i></p>'+
                             '</div>';
                         $('#Comments .list').prepend(html);
                     }
                 );
 
+            },
+            delComment: function(e){
+                var $target = $(e.target);
+                console.log($target.parents('.comment'));
+                var id = $target.parents('.comment').attr('data-id');
+                bootbox.confirm("Are you sure?", function(result) {
+                    if(result){
+                        $.ajax({
+                                type: 'get',
+                                url: '/api/artistComment/delete/'+id
+                            }
+
+                        ).done(function(data){
+                                if(data.success) {
+                                    $target.parents('.comment').remove();
+                                }
+                            });
+                    }
+                });
             },
             nextVideos : function(e){
                 $target = $(e.target).parents('#videos,#favorites').find('.list').children('div:nth-child(-n+2)');

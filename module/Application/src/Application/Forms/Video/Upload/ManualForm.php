@@ -15,6 +15,7 @@ class ManualForm extends Form {
     {
         parent::__construct('ManualForm');
         $this->setAttribute('method', 'post');
+        $this->setAttribute('class', 'well');
         $this->setAttribute('columns',2);
 
         $categories = array();
@@ -62,7 +63,7 @@ class ManualForm extends Form {
             'name' => 'selections',
             'attributes' => array(
                 'type'  => 'custom-block',
-                'label' => 'Selections (required)',
+                'label' => 'Selections (required):',
                 'inner-html' => '<span class="selectedCategories"></span>',
                 'column' => 'span',
                 'errorId' => 'nocategories',

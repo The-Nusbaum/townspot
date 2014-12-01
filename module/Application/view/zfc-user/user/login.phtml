@@ -9,9 +9,6 @@ $form->setAttribute('method', 'post');
         <h1 class="col-sm-12">Login</h1>
     </div>
     <div class="row">
-        <?= $this->flashMessenger()->render('default', array('alert', 'alert-warning', 'show', 'list-unstyled'));?>
-    </div>
-    <div class="row">
         <hr class="col-sm-12"/>
     </div>
     <div class="row">
@@ -26,8 +23,9 @@ $form->setAttribute('method', 'post');
             <?php endif ?>
 
             <?php echo $this->formButton($form->get('submit')) ?>
+            <p></p>
             <div class="sign-up">Need an account? <a href="/sign-up">Sign Up!</a></div>
-
+            <div class="sign-up">Forgot your password? <a href="/forgot-password">Reset It</a></div>
             <?php echo $this->form()->closeTag() ?>
         </div>
         <div class="col-sm-5 oauth">

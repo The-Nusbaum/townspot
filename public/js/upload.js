@@ -16,8 +16,8 @@ var upload = {
                 });
             }
         });
-        upload.pluploadImage();
-        upload.pluploadVideo();
+        plupInit.image();
+        plupInit.video();
         upload.populateCategories();
         upload.clearData();
         $('body').on('click','.category, .category > span',function(e){
@@ -35,69 +35,6 @@ var upload = {
         $('#submitForm').submit(function(e){
             upload.submit(e);
         });
-    },
-    pluploadImage: function() {
-        var photo_uploader = new plupload.Uploader({
-            runtimes : 'html5',
-            browse_button : 'plupload-image', // you can pass in id...
-            url : "/file/upload",
-            unique_names: true,
-            filters : {
-                max_file_size : '10mb',
-                mime_types: [
-                    {title : "Image files", extensions : "jpg,gif,png"},
-                ]
-            },
-            init: {
-                FileUploaded: function(up, files) {
-                    $('#previewImage').attr('src',"/files/"+files.target_name);
-                    $('#plupPicVal').val("/files/"+files.target_name);
-                    $('#plupPicVal').change();
-                },
-
-                FilesAdded: function(up, files) {
-                    $.each(files, function(i, file) {
-                        photo_uploader.start();
-                    });
-                }
-            }
-        });
-
-        photo_uploader.init();
-    },
-    pluploadVideo: function() {
-        var video_uploader = new plupload.Uploader({
-            runtimes : 'html5',
-            browse_button : 'plupload-video', // you can pass in id...
-            url : "/file/upload",
-            unique_names: true,
-            filters : {
-                max_file_size : '100gb',
-                mime_types: [
-                    {title : "Video files", extensions : "mp4,mov,qt,flv,f4v,wmv,asf,mpg,vob,m2v,mp2,m4v,avi,webm,ogv,ogg,mxf,mts,mkv,r3d,rm,ram,flac,mj2,mpeg,3gp"},
-                ]
-            },
-            multi_selection : false,
-            init: {
-                FileUploaded: function(up, files) {
-                    $('#videofile').val("/files/"+files.target_name);
-                    $('#videofile').change();
-                },
-
-                FilesAdded: function(up, files) {
-                    $.each(files, function(i, file) {
-                        video_uploader.start();
-                    });
-                },
-
-                UploadProgress: function (up, file) {
-                    $('.progress .progress-bar').attr('style','width:'+up.total.percent+'%;');
-                    $('.progress .progress-bar').attr('aria-valuenow',up.total.percent)
-                }
-            }
-        });
-
-        video_uploader.init();
     },
     clearData: function(){
         $('#submitForm').children('input').remove();
@@ -183,7 +120,7 @@ var upload = {
     addCategory: function(e){
         $target = $(e.target);
         if($target.is('span')) $target = $target.parent();
-        $newParent = $target.parents('div').next().find('ul');
+        $newParent = $target.parents('div').next().find('ul.tree');
         $parent = $target.parent();
 
         var isParent = $target.is('.parent');
@@ -227,7 +164,7 @@ var upload = {
             if ($newContainer.length) {
                 $selectedContainer = $newContainer;
             } else {
-                var html = '<span class="selCat" data-id="' + id + '">' + $current.text() + '<i class="fa fa-times"></i> </span>';
+                var html = '<span class="selCat" data-id="' + id + '">' + $current.text() + ' <i class="fa fa-times"></i> </span>';
                 $selectedContainer.append(html);
             }
         })

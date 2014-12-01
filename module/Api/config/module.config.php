@@ -6,6 +6,7 @@ return array(
             'Api\Controller\SeriesController' => 'Api\Controller\SeriesController',
             'Api\Controller\CategoryController' => 'Api\Controller\CategoryController',
             'Api\Controller\UserController' => 'Api\Controller\UserController',
+            'Api\Controller\CityController' => 'Api\Controller\CityController',
             'model' => 'Api\Controller\ModelController',
         ),
     ),

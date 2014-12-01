@@ -1,6 +1,8 @@
 <?php
 namespace Townspot\User;
 
+use Zend\Crypt\Password\Bcrypt;
+
 class Entity extends \Townspot\Entity
 {
 	protected $_id;
@@ -90,6 +92,8 @@ class Entity extends \Townspot\Entity
 	protected $_comments_about;
 	
 	protected $_media_comments;
+
+    protected $_serviceLocator;
 	
 	public function __construct()
 	{
@@ -117,6 +121,12 @@ class Entity extends \Townspot\Entity
 
 	public function setPassword($value)
 	{
+        if(!empty($value)) {
+            $bcrypt = new Bcrypt();
+            $bcrypt->setCost(14);
+            $value = $bcrypt->create($value);
+        }
+
 		$this->_password = $value;
 		return $this;
 	}
@@ -193,7 +203,7 @@ class Entity extends \Townspot\Entity
 
 	public function setWebsite($value)
 	{
-		$uri = Zend\Uri\UriFactory::factory($value);
+		$uri = \Zend\Uri\UriFactory::factory($value);
 		if ($uri->isValid()) {
 			$this->_website = $value;
 		}
@@ -202,7 +212,7 @@ class Entity extends \Townspot\Entity
 
 	public function setImageUrl($value)
 	{
-		$uri = Zend\Uri\UriFactory::factory($value);
+		$uri = \Zend\Uri\UriFactory::factory($value);
 		if ($uri->isValid()) {
 			$this->_image_url = $value;
 		}
@@ -211,7 +221,7 @@ class Entity extends \Townspot\Entity
 
 	public function setUploadUrl($value)
 	{
-		$uri = Zend\Uri\UriFactory::factory($value);
+		$uri = \Zend\Uri\UriFactory::factory($value);
 		if ($uri->isValid()) {
 			$this->_upload_url = $value;
 		}
@@ -708,4 +718,5 @@ class Entity extends \Townspot\Entity
         $this->_series = $value;
         return $this;
     }
+
 }

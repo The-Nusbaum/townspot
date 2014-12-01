@@ -42,7 +42,7 @@ class ModelController extends \Townspot\Controller\BaseRestfulController
             $this->setEntity(new $entityClass);
             $this->setResponse(new \Townspot\Rest\Response());
             $action = "{$method}Action";
-            die(json_encode($this->$action()));
+            die(json_encode($this->$action()->getVariables()));
         }, 100);
 
     }

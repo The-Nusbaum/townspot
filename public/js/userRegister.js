@@ -16,7 +16,7 @@ var userRegister = {
                 });
             }
         });
-        userRegister.pluploadImage();
+        plupInit.image();
 
         $('#username').blur(function(){
             userRegister.checkUsername();
@@ -39,9 +39,8 @@ var userRegister = {
             userRegister.data[$this.attr('name')] = $this.val();
         });
         $("#register").submit(function(e){
-            e.preventDefault();
-            if(userRegister.validate()) {
-                $(this).submit();
+            if(!userRegister.validate()) {
+                return false;
             }
         });
 
@@ -142,38 +141,7 @@ var userRegister = {
             error = true;
         }
         return !error;
-    },
-    pluploadImage: function() {
-        var photo_uploader = new plupload.Uploader({
-            runtimes : 'html5',
-            browse_button : 'plupload-image', // you can pass in id...
-            url : "/file/upload",
-            unique_names: true,
-            filters : {
-                max_file_size : '10mb',
-                mime_types: [
-                    {title : "Image files", extensions : "jpg,gif,png"},
-                ]
-            },
-            init: {
-                FileUploaded: function(up, files) {
-                    $('#image_url').attr('src',"/files/"+files.target_name);
-                    $('#plupPicVal').val("/files/"+files.target_name);
-                    $('#plupPicVal').change();
-                },
-
-                FilesAdded: function(up, files) {
-                    $.each(files, function(i, file) {
-                        photo_uploader.start();
-                    });
-                }
-            }
-        });
-
-        photo_uploader.init();
     }
 }
 
-$(document).ready(function(){
-    userRegister.init();
-});
+

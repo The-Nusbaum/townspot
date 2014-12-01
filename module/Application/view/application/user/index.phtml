@@ -61,7 +61,6 @@
                         <?php endif; ?>
                     </div>
                 <?php endif; ?>
-                C:\xampp\htdocs\tspot-zf2\module\Application\view\application\user\index.phtml
             </div>
             <div class="col-xs-12 col-sm-6">
                 <h3>Location</h3>
@@ -167,10 +166,11 @@
         <div class="row list">
             <?php $comments = array_reverse($user->getCommentsAbout()->toArray()); ?>
             <?php foreach($comments as $comment): ?>
-                <div class="row col-xs-12 comment">
+                <div class="row col-xs-12 comment" data-id="<?=$comment->getId()?>">
                     <a class="col-xs-2" href="/u/<?=$comment->getUser()->getId()?>">
                         <img class="img-responsive" src="<?= $this->img('user',$comment->getUser()->getId(),100,100)?>" alt="a"/></a>
-                    <p class="col-xs-9 offset-xs-1"><?=$comment->getComment()?><br><a href="/u/<?=$comment->getUser()->getId()?>"><?=$comment->getUser()->getUsername()?></a> - <abbr class="timeago" title="<?= $comment->getCreated()->format('Y-m-d H:i:s') ?>"></abbr></p>
+                    <p class="col-xs-9 offset-xs-1"><?=$comment->getComment()?><br><a href="/u/<?=$comment->getUser()->getId()?>"><?=$comment->getUser()->getUsername()?></a> - <abbr class="timeago" title="<?= $comment->getCreated()->format('Y-m-d H:i:s') ?>"></abbr> <i class="fa fa-times"></i></p>
+
                 </div>
             <?php endforeach; ?>
         </div>
