@@ -428,13 +428,15 @@ class Entity extends \Townspot\Entity
 		return $this->_views;
 	}
 
-	public function getDuration($formatted = false)
+	public function getDuration($formatted = false,$fromSource = true))
 	{
 		$duration = $this->_duration;
-		if ($this->getSource() == 'youtube') {
-			$ytId = $this->getYtVideoId();
-			$videoEntry = $this->_getYtVideo($ytId);
-			$duration = $videoEntry->getMediaGroup()->getDuration()->getSeconds();
+		if ($fromSource) {
+			if ($this->getSource() == 'youtube') {
+				$ytId = $this->getYtVideoId();
+				$videoEntry = $this->_getYtVideo($ytId);
+				$duration = $videoEntry->getMediaGroup()->getDuration()->getSeconds();
+			}
 		}
 		if ($formatted) {
 			$d1 = new \DateTime(); 	

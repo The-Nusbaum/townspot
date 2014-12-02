@@ -47,4 +47,18 @@ class MediaController extends AbstractActionController
 		$this->isAuthenticated();
     }
 	
+    public function showAction()
+    {
+		$this->isAuthenticated();
+		$id = $this->params()->fromRoute('id');
+		$referrer = $this->params()->fromQuery('referrer');
+		$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
+		
+		return new ViewModel( 
+			array(
+				'media'		=> $mediaMapper->find($id),
+				'referrer'	=> $referrer,
+			)
+		);
+    }
 }
