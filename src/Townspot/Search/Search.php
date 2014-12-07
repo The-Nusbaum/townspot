@@ -25,249 +25,202 @@ class Search implements ServiceLocatorAwareInterface
 		$cache->clearExpired();
         $results 		= $cache->getItem($searchId);
 		if (!$results) {
-			$_cities 	= array();
-			$_artists 	= array();
-			$_series 	= array();
-			$_media 	= array();
-			$cityData 	= array();
-			$artistData	= array();
-			$seriesData	= array();
-			$mediaData	= array();
+			$cityData		= array();
+			$artistData		= array();
+			$seriesData		= array();
+			$mediaData		= array();
+			$keywords = preg_split('/[\s,]/',$keyword);
+			$matches = array();
+			
+			foreach ($keywords as $word) {
+				$wordMatches = $this->wordSearch($word);
+				foreach ($wordMatches as $type => $matchCount) {
+					foreach ($matchCount as $id => $scores) {
+						$score = array_sum($scores) / count($scores);
+						if (isset($matches[$type][$id])) {
+							$matches[$type][$id][] = $score;
+						} else {
+							$matches[$type][$id] = array($score);
+						}
+					}
+				}
+			}
 
+			foreach ($matches as $type => $matchCount) {
+				foreach ($matchCount as $id => $scores) {
+					if (count($scores) == count($keywords)) {
+						$score = array_sum($scores) / count($scores);
+						$matches[$type][$id] = $score;
+					} else {
+						unset($matches[$type][$id]);
+					}
+				}
+			}
+			
 			$cityMapper 	= new \Townspot\City\Mapper($this->getServiceLocator());
 			$seriesMapper 	= new \Townspot\Series\Mapper($this->getServiceLocator());
 			$userMapper 	= new \Townspot\User\Mapper($this->getServiceLocator());
 			$mediaMapper 	= new \Townspot\Media\Mapper($this->getServiceLocator());
-			$locationIndex = new LocationIndex($this->getServiceLocator());
-			$artistIndex   = new ArtistIndex($this->getServiceLocator());
-			$mediaIndex    = new VideoIndex($this->getServiceLocator());
-			$seriesIndex   = new SeriesIndex($this->getServiceLocator());
 		
-			\ZendSearch\Lucene\Analysis\Analyzer\Analyzer::setDefault(
-				new \ZendSearch\Lucene\Analysis\Analyzer\Common\TextNum\CaseInsensitive()
-			);
-
-			//City Search
-			$query         = new Fuzzy(new Term($keyword, 'city'),0.8);
-			$matches       = $locationIndex->find($query,'city',SORT_STRING,$sortOrder);
-			foreach ($matches as $hit) {
-				$_cities[$hit->objectid] = $hit->score;
-			}
-			$query         = new Fuzzy(new Term($keyword, 'province'),0.8);
-			$matches       = $locationIndex->find($query,'city',SORT_STRING,$sortOrder);
-			foreach ($matches as $hit) {
-				$_cities[$hit->objectid] = $hit->score;
-			}
-			foreach ($_cities as $id => $score) {
-				$city = $cityMapper->find($id);
-				$media = $city->getRandomMedia();
-				if ($sortField == 'relevance') {
-					$sortBy = $score;
-				} else {
-					$sortBy = $city->getFullName();
-				}
-				$sortBy = strtolower($sortBy);	
-				$sortBy = preg_replace('/[^a-z0-9 -]+/', '', $sortBy);		
-				$cityData[$sortBy][] = array(
-					'id'				=> $city->getId(),
-					'type'				=> 'city',
-					'link'				=> $city->getDiscoverLink(),
-					'image'				=> $media->getResizerCdnLink(),
-					'escaped_title'		=> $city->getFullName(),
-					'title'				=> $city->getFullName(),
-					'location'			=> $city->getFullName(),
-					'escaped_location'	=> $city->getFullName(),
-					'image_source'		=> $media->getSource(),
-					'score'				=> $score,
-				);
-			}
-
-			//Artist Search
-			$query         = new Fuzzy(new Term($keyword, 'username'),0.8);
-			$matches       = $artistIndex->find($query,'username',SORT_STRING,$sortOrder);
-			foreach ($matches as $hit) {
-				$_artists[$hit->objectid] = $hit->score;
-			}
-			$query         = new Fuzzy(new Term($keyword, 'artist_name'),0.8);
-			$matches       = $artistIndex->find($query,'username',SORT_STRING,$sortOrder);
-			foreach ($matches as $hit) {
-				$_artists[$hit->objectid] = $hit->score;
-			}
-			
-			foreach ($_artists as $id => $score) {
-				$user = $userMapper->find($id);
-				if ($media = $user->getRandomMedia()) {
+			if (isset($matches['cities'])) {
+				foreach ($matches['cities'] as $id => $score) {
+					$city = $cityMapper->find($id);
+					$media = $city->getRandomMedia();
 					if ($sortField == 'relevance') {
 						$sortBy = $score;
-					} elseif ($sortField == 'created') {
-						$sortBy = $user->getCreated()->getTimestamp();
 					} else {
-						$sortBy = $user->getUsername();
+						$sortBy = $city->getFullName();
 					}
 					$sortBy = strtolower($sortBy);	
 					$sortBy = preg_replace('/[^a-z0-9 -]+/', '', $sortBy);		
-					$artistData[$sortBy][] = array(
-						'id'				=> $user->getId(),
-						'type'				=> 'user',
-						'link'				=> $user->getProfileLink(),
+					$cityData[$sortBy][] = array(
+						'id'				=> $city->getId(),
+						'type'				=> 'city',
+						'link'				=> $city->getDiscoverLink(),
 						'image'				=> $media->getResizerCdnLink(),
-						'escaped_title'		=> $user->getUsername(true),
-						'title'				=> $user->getUsername(),
-						'user'				=> $user->getUsername(),
-						'user_profile'		=> $user->getProfileLink(),
-						'location'			=> $media->getLocation(),
-						'escaped_location'	=> $media->getLocation(false,true),
+						'escaped_title'		=> $city->getFullName(),
+						'title'				=> $city->getFullName(),
+						'location'			=> $city->getFullName(),
+						'escaped_location'	=> $city->getFullName(),
 						'image_source'		=> $media->getSource(),
 						'score'				=> $score,
 					);
 				}
 			}
-			//Series Search
-			$query         = new Fuzzy(new Term($keyword, 'name'),0.8);
-			$matches       = $seriesIndex->find($query,'name',SORT_STRING,$sortOrder);
-			foreach ($matches as $hit) {
-				$_series[$hit->objectid] = $hit->score;
-			}
-			$query         = new Fuzzy(new Term($keyword, 'description'),0.8);
-			$matches       = $seriesIndex->find($query,'name',SORT_STRING,$sortOrder);
-			foreach ($matches as $hit) {
-				$_series[$hit->objectid] = $hit->score;
-			}
-/*
-			$query         = new Fuzzy(new Term($keyword, 'media_titles'));
-			$matches       = $seriesIndex->find($query,'name',SORT_STRING,$sortOrder);
-			foreach ($matches as $hit) {
-				$_series[] = $hit->objectid;
-			}
-			$query         = new Fuzzy(new Term($keyword, 'media_descriptions'));
-			$matches       = $seriesIndex->find($query,'name',SORT_STRING,$sortOrder);
-			foreach ($matches as $hit) {
-				$_series[] = $hit->objectid;
-			}
-			$query         = new Fuzzy(new Term($keyword, 'media_loglines'));
-			$matches       = $seriesIndex->find($query,'name',SORT_STRING,$sortOrder);
-			foreach ($matches as $hit) {
-				$_series[] = $hit->objectid;
-			}
-			foreach ($_series as $id => $score) {
-				$series = $seriesMapper->find($id);
-				$media = $series->getRandomMedia();
-				if ($sortField == 'relevance') {
-					$sortBy = $score;
-				} elseif ($sortField == 'created') {
-					$sortBy = $series->getCreated()->getTimestamp();
-				} else {
-					$sortBy = $series->getName();
-				}
-				$sortBy = strtolower($sortBy);	
-				$sortBy = preg_replace('/[^a-z0-9 -]+/', '', $sortBy);		
-				$seriesData[$sortBy][] = array(
-					'id'				=> $series->getId(),
-					'type'				=> 'series',
-					'link'				=> $series->getSeriesLink(),
-					'image'				=> $media->getResizerCdnLink(),
-					'escaped_title'		=> $series->getName(),
-					'title'				=> $series->getName(),
-					'user'				=> $series->getUser()->getUsername(),
-					'user_profile'		=> $series->getUser()->getProfileLink(),
-					'location'			=> $media->getLocation(),
-					'escaped_location'	=> $media->getLocation(false,true),
-					'series_name'		=> $series->getName(),
-					'series_link'		=> $series->getSeriesLink(),
-					'image_source'		=> $media->getSource(),
-					'score'				=> $score,
-				);
-			}
-*/
-			
-			//Media Search
-			$query         = new Fuzzy(new Term($keyword, 'title'),0.8);
-			$matches       = $mediaIndex->find($query,'title',SORT_STRING,$sortOrder);
-			foreach ($matches as $hit) {
-				$_media[$hit->objectid] = $hit->score;
-			}
-			$query         = new Fuzzy(new Term($keyword, 'logline'),0.8);
-			$matches       = $mediaIndex->find($query,'logline',SORT_STRING,$sortOrder);
-			foreach ($matches as $hit) {
-				$_media[$hit->objectid] = $hit->score;
-			}
-			$query         = new Fuzzy(new Term($keyword, 'description'),0.8);
-			$matches       = $mediaIndex->find($query,'description',SORT_STRING,$sortOrder);
-			foreach ($matches as $hit) {
-				$_media[$hit->objectid] = $hit->score;
-			}
-			$query         = new Fuzzy(new Term($keyword, 'series_name'),0.8);
-			$matches       = $mediaIndex->find($query,'series_name',SORT_STRING,$sortOrder);
-			foreach ($matches as $hit) {
-				$_media[$hit->objectid] = $hit->score;
-			}
-			foreach ($_media as $id => $score) {
-				$media = $mediaMapper->find($id);
-				if ($sortField == 'relevance') {
-					$sortBy = $score;
-				} elseif ($sortField == 'created') {
-					$sortBy = $media->getCreated()->getTimestamp();
-				} elseif ($sortField == 'views') {
-					$sortBy = $media->getViews();
-				} else {
-					$sortBy = $media->getTitle();
-				}
-				$sortBy = strtolower($sortBy);	
-				$sortBy = preg_replace('/[^a-z0-9 -]+/', '', $sortBy);	
-				$added = false;
-				if ($episodes = $media->getEpisode()) {
-					if ($episode = $episodes[0]) {
-						if ($series = $episode->getSeries()) {
-							$mediaData[$sortBy][] = array(
-								'id'				=> $media->getId(),
-								'type'				=> 'media',
-								'link'				=> $media->getMediaLink(),
-								'image'				=> $media->getResizerCdnLink(),
-								'escaped_title'		=> $media->getTitle(false,true),
-								'title'				=> $media->getTitle(),
-								'logline'			=> $media->getLogline(),
-								'escaped_logline'	=> $media->getLogline(true),
-								'user'				=> $media->getUser()->getUsername(),
-								'user_profile'		=> $media->getUser()->getProfileLink(),
-								'duration'			=> $media->getDuration(true),
-								'comment_count'		=> count($media->getCommentsAbout()),
-								'views'				=> $media->getViews(),
-								'location'			=> $media->getLocation(),
-								'escaped_location'	=> $media->getLocation(false,true),
-								'rate_up'			=> count($media->getRatings(true)),
-								'rate_down'			=> count($media->getRatings(false)),
-								'series_name'		=> $series->getName(),
-								'series_link'		=> $series->getSeriesLink(),
-								'image_source'		=> $media->getSource(),
-								'score'				=> $score,
-							);
-							$added = true;
+			if (isset($matches['artists'])) {
+				foreach ($matches['artists'] as $id => $score) {
+					$user = $userMapper->find($id);
+					if ($media = $user->getRandomMedia()) {
+						if ($sortField == 'relevance') {
+							$sortBy = $score;
+						} elseif ($sortField == 'created') {
+							$sortBy = $user->getCreated()->getTimestamp();
+						} else {
+							$sortBy = $user->getUsername();
 						}
+						$sortBy = strtolower($sortBy);	
+						$sortBy = preg_replace('/[^a-z0-9 -]+/', '', $sortBy);		
+						$artistData[$sortBy][] = array(
+							'id'				=> $user->getId(),
+							'type'				=> 'user',
+							'link'				=> $user->getProfileLink(),
+							'image'				=> $media->getResizerCdnLink(),
+							'escaped_title'		=> $user->getUsername(true),
+							'title'				=> $user->getUsername(),
+							'user'				=> $user->getUsername(),
+							'user_profile'		=> $user->getProfileLink(),
+							'location'			=> $media->getLocation(),
+							'escaped_location'	=> $media->getLocation(false,true),
+							'image_source'		=> $media->getSource(),
+							'score'				=> $score,
+						);
 					}
 				}
-				if (!$added) {	
-					$mediaData[$sortBy][] = array(
-						'id'				=> $media->getId(),
-						'type'				=> 'media',
-						'link'				=> $media->getMediaLink(),
+			}
+			if (isset($matches['series'])) {
+				foreach ($matches['series'] as $id => $score) {
+					$series = $seriesMapper->find($id);
+					$media = $series->getRandomMedia();
+					if ($sortField == 'relevance') {
+						$sortBy = $score;
+					} elseif ($sortField == 'created') {
+						$sortBy = $series->getCreated()->getTimestamp();
+					} else {
+						$sortBy = $series->getName();
+					}
+					$sortBy = strtolower($sortBy);	
+					$sortBy = preg_replace('/[^a-z0-9 -]+/', '', $sortBy);		
+					$seriesData[$sortBy][] = array(
+						'id'				=> $series->getId(),
+						'type'				=> 'series',
+						'link'				=> $series->getSeriesLink(),
 						'image'				=> $media->getResizerCdnLink(),
-						'escaped_title'		=> $media->getTitle(false,true),
-						'title'				=> $media->getTitle(),
-						'logline'			=> $media->getLogline(),
-						'escaped_logline'	=> $media->getLogline(true),
-						'user'				=> $media->getUser()->getUsername(),
-						'user_profile'		=> $media->getUser()->getProfileLink(),
-						'duration'			=> $media->getDuration(true),
-						'comment_count'		=> count($media->getCommentsAbout()),
-						'views'				=> $media->getViews(),
+						'escaped_title'		=> $series->getName(),
+						'title'				=> $series->getName(),
+						'user'				=> $series->getUser()->getUsername(),
+						'user_profile'		=> $series->getUser()->getProfileLink(),
 						'location'			=> $media->getLocation(),
 						'escaped_location'	=> $media->getLocation(false,true),
-						'rate_up'			=> count($media->getRatings(true)),
-						'rate_down'			=> count($media->getRatings(false)),
+						'series_name'		=> $series->getName(),
+						'series_link'		=> $series->getSeriesLink(),
 						'image_source'		=> $media->getSource(),
+						'score'				=> $score,
 					);
 				}
 			}
+
+			if (isset($matches['media'])) {
+				foreach ($matches['media'] as $id => $score) {
+					$media = $mediaMapper->find($id);
+					if ($sortField == 'relevance') {
+						$sortBy = $score;
+					} elseif ($sortField == 'created') {
+						$sortBy = $media->getCreated()->getTimestamp();
+					} elseif ($sortField == 'views') {
+						$sortBy = $media->getViews();
+					} else {
+						$sortBy = $media->getTitle();
+					}
+					$sortBy = strtolower($sortBy);	
+					$sortBy = preg_replace('/[^a-z0-9 -]+/', '', $sortBy);	
+					$added = false;
+					if ($episodes = $media->getEpisode()) {
+						if ($episode = $episodes[0]) {
+							if ($series = $episode->getSeries()) {
+								$mediaData[$sortBy][] = array(
+									'id'				=> $media->getId(),
+									'type'				=> 'media',
+									'link'				=> $media->getMediaLink(),
+									'image'				=> $media->getResizerCdnLink(),
+									'escaped_title'		=> $media->getTitle(false,true),
+									'title'				=> $media->getTitle(),
+									'logline'			=> $media->getLogline(),
+									'escaped_logline'	=> $media->getLogline(true),
+									'user'				=> $media->getUser()->getUsername(),
+									'user_profile'		=> $media->getUser()->getProfileLink(),
+									'duration'			=> $media->getDuration(true),
+									'comment_count'		=> count($media->getCommentsAbout()),
+									'views'				=> $media->getViews(),
+									'location'			=> $media->getLocation(),
+									'escaped_location'	=> $media->getLocation(false,true),
+									'rate_up'			=> count($media->getRatings(true)),
+									'rate_down'			=> count($media->getRatings(false)),
+									'series_name'		=> $series->getName(),
+									'series_link'		=> $series->getSeriesLink(),
+									'image_source'		=> $media->getSource(),
+									'score'				=> $score,
+								);
+								$added = true;
+							}
+						}
+					}
+					if (!$added) {	
+						$mediaData[$sortBy][] = array(
+							'id'				=> $media->getId(),
+							'type'				=> 'media',
+							'link'				=> $media->getMediaLink(),
+							'image'				=> $media->getResizerCdnLink(),
+							'escaped_title'		=> $media->getTitle(false,true),
+							'title'				=> $media->getTitle(),
+							'logline'			=> $media->getLogline(),
+							'escaped_logline'	=> $media->getLogline(true),
+							'user'				=> $media->getUser()->getUsername(),
+							'user_profile'		=> $media->getUser()->getProfileLink(),
+							'duration'			=> $media->getDuration(true),
+							'comment_count'		=> count($media->getCommentsAbout()),
+							'views'				=> $media->getViews(),
+							'location'			=> $media->getLocation(),
+							'escaped_location'	=> $media->getLocation(false,true),
+							'rate_up'			=> count($media->getRatings(true)),
+							'rate_down'			=> count($media->getRatings(false)),
+							'image_source'		=> $media->getSource(),
+						);
+					}
+				}
+			}
+			// Temporary Disable Series Matches
+			$seriesData = array();
+			
 			if ($sortOrder == SORT_DESC) {
 				krsort($cityData);
 				krsort($artistData);
@@ -297,7 +250,7 @@ class Search implements ServiceLocatorAwareInterface
 				'matchesFound' 	=> count($data),
 				'data'			=> $data
 			);
-			$cache->setItem($searchId, $results);
+			//$cache->setItem($searchId, $results);
 		}
 		$startRange = ($page - 1) * 11;
 		$results['data'] = array_slice($results['data'],$startRange,11);
@@ -487,5 +440,140 @@ class Search implements ServiceLocatorAwareInterface
 	public function getServiceLocator()
 	{
 		return $this->_serviceLocator;
+	}
+	
+    protected function wordSearch($keyword,$threshold = 0.8)
+    {
+		$results 	= array();
+
+		$locationIndex = new LocationIndex($this->getServiceLocator());
+		$artistIndex   = new ArtistIndex($this->getServiceLocator());
+		$mediaIndex    = new VideoIndex($this->getServiceLocator());
+		$seriesIndex   = new SeriesIndex($this->getServiceLocator());
+		
+		\ZendSearch\Lucene\Analysis\Analyzer\Analyzer::setDefault(
+			new \ZendSearch\Lucene\Analysis\Analyzer\Common\TextNum\CaseInsensitive()
+		);
+
+		//City Search
+		$query         = new Fuzzy(new Term($keyword, 'city'),$threshold);
+		$matches       = $locationIndex->find($query,'city');
+		foreach ($matches as $hit) {
+			if (isset($results['cities'][$hit->objectid])) {
+				$results['cities'][$hit->objectid][] = $hit->score;
+			} else {
+				$results['cities'][$hit->objectid] = array($hit->score);
+			}
+		}
+		
+		$query         = new Fuzzy(new Term($keyword, 'province'),$threshold);
+		$matches       = $locationIndex->find($query,'province');
+		foreach ($matches as $hit) {
+			if (isset($results['cities'][$hit->objectid])) {
+				$results['cities'][$hit->objectid][] = $hit->score;
+			} else {
+				$results['cities'][$hit->objectid] = array($hit->score);
+			}
+		}
+
+		//Artist Search
+		$query         = new Fuzzy(new Term($keyword, 'username'),$threshold);
+		$matches       = $artistIndex->find($query,'username');
+		foreach ($matches as $hit) {
+			if (isset($results['artists'][$hit->objectid])) {
+				$results['artists'][$hit->objectid][] = $hit->score;
+			} else {
+				$results['artists'][$hit->objectid] = array($hit->score);
+			}
+		}
+		$query         = new Fuzzy(new Term($keyword, 'artist_name'),$threshold);
+		$matches       = $artistIndex->find($query,'artist_name');
+		foreach ($matches as $hit) {
+			if (isset($results['artists'][$hit->objectid])) {
+				$results['artists'][$hit->objectid][] = $hit->score;
+			} else {
+				$results['artists'][$hit->objectid] = array($hit->score);
+			}
+		}
+			
+		//Series Search
+		$query         = new Fuzzy(new Term($keyword, 'name'),$threshold);
+		$matches       = $seriesIndex->find($query,'name');
+		foreach ($matches as $hit) {
+			if (isset($results['series'][$hit->objectid])) {
+				$results['series'][$hit->objectid][] = $hit->score;
+			} else {
+				$results['series'][$hit->objectid] = array($hit->score);
+			}
+		}
+		$query         = new Fuzzy(new Term($keyword, 'description'),$threshold);
+		$matches       = $seriesIndex->find($query,'description');
+		foreach ($matches as $hit) {
+			if (isset($results['series'][$hit->objectid])) {
+				$results['series'][$hit->objectid][] = $hit->score;
+			} else {
+				$results['series'][$hit->objectid] = array($hit->score);
+			}
+		}
+		
+		$query         = new Fuzzy(new Term($keyword, 'media_titles'),$threshold);
+		$matches       = $seriesIndex->find($query,'media_titles');
+		foreach ($matches as $hit) {
+			if (isset($results['series'][$hit->objectid])) {
+				$results['series'][$hit->objectid][] = $hit->score;
+			} else {
+				$results['series'][$hit->objectid] = array($hit->score);
+			}
+		}
+
+		$query         = new Fuzzy(new Term($keyword, 'media_descriptions'),$threshold);
+		$matches       = $seriesIndex->find($query,'media_descriptions');
+		foreach ($matches as $hit) {
+			if (isset($results['series'][$hit->objectid])) {
+				$results['series'][$hit->objectid][] = $hit->score;
+			} else {
+				$results['series'][$hit->objectid] = array($hit->score);
+			}
+		}
+
+		$query         = new Fuzzy(new Term($keyword, 'title'),$threshold);
+		$matches       = $mediaIndex->find($query,'title');
+		foreach ($matches as $hit) {
+			if (isset($results['media'][$hit->objectid])) {
+				$results['media'][$hit->objectid][] = $hit->score;
+			} else {
+				$results['media'][$hit->objectid] = array($hit->score);
+			}
+		}
+		
+		$query         = new Fuzzy(new Term($keyword, 'logline'),$threshold);
+		$matches       = $mediaIndex->find($query,'logline');
+		foreach ($matches as $hit) {
+			if (isset($results['media'][$hit->objectid])) {
+				$results['media'][$hit->objectid][] = $hit->score;
+			} else {
+				$results['media'][$hit->objectid] = array($hit->score);
+			}
+		}
+		
+		$query         = new Fuzzy(new Term($keyword, 'description'),$threshold);
+		$matches       = $mediaIndex->find($query,'description');
+		foreach ($matches as $hit) {
+			if (isset($results['media'][$hit->objectid])) {
+				$results['media'][$hit->objectid][] = $hit->score;
+			} else {
+				$results['media'][$hit->objectid] = array($hit->score);
+			}
+		}
+		$query         = new Fuzzy(new Term($keyword, 'series_name'),$threshold);
+		$matches       = $mediaIndex->find($query,'series_name');
+		foreach ($matches as $hit) {
+			if (isset($results['media'][$hit->objectid])) {
+				$results['media'][$hit->objectid][] = $hit->score;
+			} else {
+				$results['media'][$hit->objectid] = array($hit->score);
+			}
+		}
+		return $results;
 	}
 }
