@@ -428,7 +428,7 @@ class Entity extends \Townspot\Entity
 		return $this->_views;
 	}
 
-	public function getDuration($formatted = false,$fromSource = false))
+	public function getDuration($formatted = false,$fromSource = false)
 	{
 		$duration = $this->_duration;
 		if ($fromSource) {
