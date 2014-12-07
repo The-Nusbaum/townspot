@@ -67,7 +67,7 @@ class BaseRestfulController extends AbstractRestfulController
         return new JsonModel($this->getResponse()->build());
     }
 
-    public function createAction($data)
+    public function createAction()
     {   // Action used for POST requests
         $this->getMapper()->setEntity($this->getEntity());
         foreach($this->params()->fromPost() as $field => $value) {

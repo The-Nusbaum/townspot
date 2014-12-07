@@ -154,6 +154,9 @@
                             '<p class="col-xs-9 offset-xs-1">'+comment.comment+'<br><a href="/u/'+comment.user_id+'">'+options.username+'</a> - <abbr class="timeago" title="'+new Date().toISOString()+'">'+jQuery.timeago(new Date().toISOString())+'</abbr> <i class="fa fa-times"></i></p>'+
                             '</div>';
                         $('#Comments .list').prepend(html);
+                        if($('#Comments .list').children().length > 5) {
+                            $('.comment-ctrl').show();
+                        }
                     }
                 );
 
@@ -172,6 +175,9 @@
                         ).done(function(data){
                                 if(data.success) {
                                     $target.parents('.comment').remove();
+                                    if($('#Comments .list').children().length < 5) {
+                                        $('.comment-ctrl').hide();
+                                    }
                                 }
                             });
                     }

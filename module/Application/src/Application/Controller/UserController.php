@@ -60,7 +60,7 @@ class UserController extends AbstractActionController
 
     public function profileAction()
     {
-        $this->_view->setTemplate('Application/user/index');
+        $this->_view->setTemplate('application/user/index');
         $username = $this->params()->fromRoute('username');
         $id = $this->params()->fromRoute('id');
         $this->getServiceLocator()

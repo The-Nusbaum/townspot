@@ -13,6 +13,9 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Stdlib\RequestInterface;
 use Zend\Stdlib\ResponseInterface;
 
+use PhpAmqpLib\Connection\AMQPStreamConnection;
+use PhpAmqpLib\Message\AMQPMessage;
+
 class ConsoleController extends AbstractActionController
 {
     /**
@@ -31,6 +34,8 @@ class ConsoleController extends AbstractActionController
      * @var DatabaseConfig
      */
     protected $config;
+
+    protected $_amqp;
 
     /**
      * @param Console $console
@@ -147,24 +152,99 @@ class ConsoleController extends AbstractActionController
 		}
 	}
 
-    public function buildCachesAction() {
-        $stateMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
-        $states = $stateMapper->findBy(array('country'=>99));
+    public function getAmqp() {
+        if(empty($this->_amqp)) {
+            $amqp = $this->getServiceLocator()->get('Config')['amqp'];
 
-        $catMapper = new \Townspot\Categories\Mapper($this->getServiceLocator());
-        $cats = $stateMapper->findAll();
+            $queue  = 'cache.ping';
+            $exchange =  'cache';
 
-        $ip = $_SERVER['SERVER_ADDR'];
+            $conn = new AMQPStreamConnection(
+                $amqp['host'],
+                $amqp['port'],
+                $amqp['user'],
+                $amqp['pass'],
+                $amqp['vhost']
+            );
+            $ch = $conn->channel();
+            $ch->queue_declare($queue, false, true, false, false);
+            $ch->exchange_declare($exchange, 'direct', false, true, false);
+            $ch->queue_bind($queue, $exchange);
 
-        foreach($cats as $cat) {
-            $ch = curl_init();
-            curl_setopt($ch,CURLOPT_URL,"http://$ip/videos/discover");
-            curl_setopt($ch,CURLOPT_POST,true);
-            curl_setopt($ch,CURLOPT_POSTFIELDS,array(
-                "sort" => "created:desc",
-
-            ));
+            $this->_amqp = $ch;
         }
-        foreach()
+        return $this->_amqp;
+    }
+
+    public function buildCacheAction() {
+        ini_set('memory_limit','2000M');
+        set_time_limit(1000);
+
+        $start = time();
+
+        $mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
+        $media = $mediaMapper->findBy(array(
+            '_approved' => 1,
+        ));
+
+        fputs(STDOUT,sprintf("processing %s records\n",count($media)));
+        $urls = array();
+        foreach($media as $m) {
+            fputs(STDOUT,'X');
+            $urls = array_merge($urls,$this->_makeUrls($m));
+            $urls = array_unique($urls);
+        }
+
+        foreach($urls as $u){
+            $this->_output($u);
+        }
+
+        $time = time() - $start;
+        $mins = floor($time/60);
+        $secs = $time - $mins * 60;
+        fputs(STDOUT,sprintf("\ntook %s minutes and %s seconds to process %s records for %s urls",$mins,$secs,count($media), count($urls)));
+    }
+
+    protected function _processParents(\Townspot\Category\Entity $cat,$base = '') {
+        $url = '';
+        if($cat->getParent() instanceof \Townspot\Category\Entity) {
+            $url = $this->_processParents($cat->getParent());
+        }
+        $url .= '/'.$cat->getName();
+
+        $url = sprintf('%s%s',$base,$url);
+        return $url;
+    }
+
+    protected function _makeUrls(\Townspot\Media\Entity $media,$base = '/discover') {
+        fputs(STDOUT,'.');
+        $urls = array();
+        $stateBase = sprintf('%s/%s',$base,$media->getProvince()->getName());
+        $urls[] = $stateBase;
+        $cityBase = sprintf("%s/%s/%s",$base,$media->getProvince()->getName(),$media->getCity()->getName());
+        $urls[] = $cityBase;
+        foreach($media->getCategories() as $cat) {
+            $urls[] = $this->_processParents($cat,$base);
+            $urls[] = $this->_processParents($cat,$stateBase);
+            $urls[] = $this->_processParents($cat,$cityBase);
+        }
+        return $urls;
+    }
+
+    protected function _output($url,$server = true) {
+        if($server) {
+            $msg_body = json_encode(compact('url'));
+            $msg = new AMQPMessage($msg_body, array('content_type' => 'text/plain', 'delivery_mode' => 2));
+            $this->getAmqp()->basic_publish($msg, 'cache');
+        } else {
+            fputs(STDOUT,"$url\n");
+        }
+    }
+
+    public function refreshYoutubeAction() {
+        $mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
+        $ytMedia = $mediaMapper->findBy(array('_source' => 'youtube'));
+
+        var_dump(count($ytMedia));
     }
 }
