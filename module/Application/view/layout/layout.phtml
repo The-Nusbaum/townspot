@@ -35,6 +35,22 @@
 							   ->appendFile($this->basePath() . '/js/townspot.js');
 		?>
 		<script src="https://apis.google.com/js/platform.js" async defer></script>
+<?php if ($this->facebookInfo) { ?>
+		<meta property="og:title" content="<?= $this->facebookInfo['title']; ?> - townspot.tv" />
+		<meta property="og:description" content="<?= $this->facebookInfo['description']; ?>" />
+		<meta property="og:site_name" content="townspot.tv" />
+		<meta property="og:url" content="<?= $this->facebookInfo['url']; ?>" />
+		<meta property="og:image" content="<?= $this->facebookInfo['image']; ?>" />
+		<meta property="og:image:width" content="<?= $this->facebookInfo['width']; ?>" />
+		<meta property="og:type" content="video.movie" /> 
+<?php } ?>
+<?php if ($this->twitterInfo) { ?>
+		<meta name="twitter:card" content="summary" />
+		<meta property="twitter:title" content="<?= $this->twitterInfo['title']; ?> - townspot.tv" />
+		<meta property="twitter:description" content="<?= $this->twitterInfo['description']; ?>" />
+		<meta property="twitter:image" content="<?= $this->twitterInfo['image']; ?>" />
+		<meta property="twitter:image:width" content="<?= $this->twitterInfo['width']; ?>" />
+<?php } ?>
     </head>
     <body id="townspot">
 		<nav role="navigation" class="navbar navbar-inverse">

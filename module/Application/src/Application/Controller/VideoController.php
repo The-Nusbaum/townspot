@@ -34,9 +34,7 @@ class VideoController extends AbstractActionController
 		$this->getServiceLocator()
 			 ->get('ViewHelperManager')
 			 ->get('HeadTitle')
-			 ->set($title)
-			 ->set('TownSpot &bull; Your Town. Your Talent. Spotlighted');
-
+			 ->set($title . ' - townspot.tv');
 	}
 	
     public function playerAction()
@@ -45,6 +43,21 @@ class VideoController extends AbstractActionController
 		$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
 		if ($media = $mediaMapper->find($videoId)) {
 			$url = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+			$facebookInfo = array(
+				'title'			=> $media->getTitle(),
+				'description'	=> str_replace('"',"'",strip_tags($media->getDescription())),
+				'url'			=> $url,
+                'image'			=> $media->getResizerCdnLink(700,535),
+                'width'			=> 700
+			);
+			$twitterInfo = array(
+				'title'			=> $media->getTitle(),
+				'description'	=> str_replace('"',"'",strip_tags($media->getDescription())),
+				'url'			=> $url,
+                'image'			=> $media->getResizerCdnLink(435,326),
+                'width'			=> 435
+			);
+
 			$this->getServiceLocator()
 				->get('ViewHelperManager')
 				->get('HeadScript')
@@ -52,24 +65,14 @@ class VideoController extends AbstractActionController
 			$this->getServiceLocator()
 				->get('ViewHelperManager')
 				->get('HeadMeta')
-				->appendName('description', strip_tags($media->getDescription()))
-				->appendProperty('og:title', $media->getTitle() . ' - townspot.tv')
-				->appendProperty('og:description', strip_tags($media->getDescription()))
-                ->appendProperty('og:site_name', 'townspot.tv')
-                ->appendProperty('og:url', $url)
-                ->appendProperty('og:image', $media->getResizerCdnLink(700,535))
-                ->appendProperty('og:image:width', 700)
-                ->appendName('twitter:card', 'summary')
-				->appendName('twitter:title', $media->getTitle() . ' - townspot.tv')
-				->appendName('twitter:description', strip_tags($media->getDescription()))
-       		    ->appendName('twitter:image', $media->getResizerCdnLink(435,326))
-				->appendName('twitter:image:width', 435);
-				
+				->appendName('description', strip_tags($media->getDescription()));
 			$this->init($media->getTitle());
 			$relatedMedia  = $mediaMapper->getMediaLike($media);
+			$this->layout()->facebookInfo = $facebookInfo;
+			$this->layout()->twitterInfo = $twitterInfo;
 			$results = array(
-				'media'    => $media,
-				'related'  => $relatedMedia
+				'media'    		=> $media,
+				'related'  		=> $relatedMedia,
 			);
 		} else {
 			$this->getResponse()->setStatusCode(404);

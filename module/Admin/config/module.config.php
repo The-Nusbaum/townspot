@@ -99,6 +99,20 @@ return array(
 					),
 				),
             ),
+            'admin-video-show' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+				'options' => array(
+					'route'    => '/admin/video/show/:id',
+					'constraints' => array(
+						'id' => '\d+',
+						'title' => '[0-9]+',
+					),
+					'defaults' => array(
+						'controller' => 'Admin\Controller\Media',
+						'action'     => 'show',
+					),
+				),
+            ),
             'admin-admins' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
