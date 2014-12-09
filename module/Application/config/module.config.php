@@ -992,7 +992,7 @@ return array(
                 ),
                 'build-cache' => array(
                     'options' => array(
-                        'route'    => 'build cache',
+                        'route'    => 'cache build',
                         'defaults' => array(
                             'controller' => 'Application\Controller\Console',
                             'action'     => 'buildCache',
@@ -1002,4 +1002,12 @@ return array(
             )
         )
     ),
+    'sortOptions' => array(
+        'title:asc',
+        'title:desc',
+        'created:desc',
+        'created:asc',
+        'views:desc',
+        'views:asc',
+    )
 );

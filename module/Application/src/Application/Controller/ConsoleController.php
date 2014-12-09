@@ -176,33 +176,50 @@ class ConsoleController extends AbstractActionController
         return $this->_amqp;
     }
 
+    public function _getTime($start) {
+        $time = time() - $start;
+        $mins = floor($time/60);
+        $secs = $time - $mins * 60;
+
+        return compact('mins','secs');
+    }
+
     public function buildCacheAction() {
         ini_set('memory_limit','2000M');
-        set_time_limit(1000);
-
+        set_time_limit(10000);
+        $config = $this->getServiceLocator()->get('Config');
+        $server = $config['amqp']['host'];
+        $sortOptions = $config['sortOptions'];
         $start = time();
 
+        $assets = array_keys($config['asset_manager']['resolver_configs']['collections']);
+        fputs(STDOUT,sprintf("processing asset manager\n"));
+        foreach($assets as $asset) {
+            $this->_output("/".$asset,$server);
+        }
+        $time = $this->_getTime($start);
+        fputs(STDOUT,sprintf("\ntook %s minutes and %s seconds to process %s records\n",$time['mins'],$time['secs'],count($assets)));
+
+        fputs(STDOUT,sprintf("processing discover\n"));
+        $start = time();
         $mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
         $media = $mediaMapper->findBy(array(
             '_approved' => 1,
         ));
 
-        fputs(STDOUT,sprintf("processing %s records\n",count($media)));
+        fputs(STDOUT,sprintf("%s records\n",count($media)));
         $urls = array();
         foreach($media as $m) {
-            fputs(STDOUT,'X');
             $urls = array_merge($urls,$this->_makeUrls($m));
             $urls = array_unique($urls);
         }
 
         foreach($urls as $u){
-            $this->_output($u);
+            $this->_output($u,$server,$sortOptions);
         }
 
-        $time = time() - $start;
-        $mins = floor($time/60);
-        $secs = $time - $mins * 60;
-        fputs(STDOUT,sprintf("\ntook %s minutes and %s seconds to process %s records for %s urls",$mins,$secs,count($media), count($urls)));
+        $time = $this->_getTime($start);
+        fputs(STDOUT,sprintf("\ntook %s minutes and %s seconds to process %s records for %s urls\n",$time['mins'],$time['secs'],count($media), count($urls)));
     }
 
     protected function _processParents(\Townspot\Category\Entity $cat,$base = '') {
@@ -217,7 +234,6 @@ class ConsoleController extends AbstractActionController
     }
 
     protected function _makeUrls(\Townspot\Media\Entity $media,$base = '/discover') {
-        fputs(STDOUT,'.');
         $urls = array();
         $stateBase = sprintf('%s/%s',$base,$media->getProvince()->getName());
         $urls[] = $stateBase;
@@ -231,11 +247,19 @@ class ConsoleController extends AbstractActionController
         return $urls;
     }
 
-    protected function _output($url,$server = true) {
+    protected function _output($url,$server = false,$sortOptions = false) {
         if($server) {
+            fputs(STDOUT,sprintf("."));
+            //$url = "$url?sort=created:desc";
             $msg_body = json_encode(compact('url'));
             $msg = new AMQPMessage($msg_body, array('content_type' => 'text/plain', 'delivery_mode' => 2));
+            usleep(500);
             $this->getAmqp()->basic_publish($msg, 'cache');
+            if($sortOptions) {
+                foreach($sortOptions as $opt) {
+                    $this->_output("$url?sort=$opt",$server);
+                }
+            }
         } else {
             fputs(STDOUT,"$url\n");
         }
