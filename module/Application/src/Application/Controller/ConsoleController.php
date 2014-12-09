@@ -193,7 +193,15 @@ class ConsoleController extends AbstractActionController
         $start = time();
 
         $delay = $this->getRequest()->getParam('delay');
-        if(!$delay) $delay = 2000000;
+        if(!$delay) $delay = 250000;
+
+        $pages = array_keys($config['buildCache']);
+        fputs(STDOUT,sprintf("processing pages\n"));
+        foreach($pages as $page) {
+            $this->_output("/".$page,$server,$delay);
+        }
+        $time = $this->_getTime($start);
+        fputs(STDOUT,sprintf("\ntook %s minutes and %s seconds to process %s records\n",$time['mins'],$time['secs'],count($pages)));
 
         $assets = array_keys($config['asset_manager']['resolver_configs']['collections']);
         fputs(STDOUT,sprintf("processing asset manager\n"));

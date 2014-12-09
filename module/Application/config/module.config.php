@@ -1001,5 +1001,8 @@ return array(
                 ),
             )
         )
+    ),
+    'buildCache' => array(
+        '', //home page
     )
 );
