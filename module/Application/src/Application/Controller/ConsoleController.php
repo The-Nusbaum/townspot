@@ -249,13 +249,13 @@ class ConsoleController extends AbstractActionController
         return $urls;
     }
 
-    protected function _output($url,$server = false) {
+    protected function _output($url,$server = false,$delay = 2000) {
         if($server) {
             fputs(STDOUT,sprintf("."));
             //$url = "$url?sort=created:desc";
             $msg_body = json_encode(compact('url'));
             $msg = new AMQPMessage($msg_body, array('content_type' => 'text/plain', 'delivery_mode' => 2));
-            usleep(500);
+            usleep($delay);
             $this->getAmqp()->basic_publish($msg, 'cache');
         } else {
             fputs(STDOUT,"$url\n");
