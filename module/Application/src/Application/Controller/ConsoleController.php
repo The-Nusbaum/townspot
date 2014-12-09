@@ -192,11 +192,12 @@ class ConsoleController extends AbstractActionController
         $start = time();
 
         $delay = $this->getRequest()->getParam('delay');
+        if(!$delay) $delay = 2000;
 
         $assets = array_keys($config['asset_manager']['resolver_configs']['collections']);
         fputs(STDOUT,sprintf("processing asset manager\n"));
         foreach($assets as $asset) {
-            $this->_output("/".$asset,$server);
+            $this->_output("/".$asset,$server,$delay);
         }
         $time = $this->_getTime($start);
         fputs(STDOUT,sprintf("\ntook %s minutes and %s seconds to process %s records\n",$time['mins'],$time['secs'],count($assets)));
@@ -216,7 +217,7 @@ class ConsoleController extends AbstractActionController
         }
 
         foreach($urls as $u){
-            $this->_output($u,$server);
+            $this->_output($u,$server, $delay);
         }
 
         $time = $this->_getTime($start);
