@@ -145,7 +145,8 @@ class ConsoleController extends AbstractActionController
 		foreach ($files as $file) {
 			if (is_dir($file)) {
 				$this->deleteDirectoryContents($file);
-				rmdir($file);
+				//for the LOVE OF GOD SSHTAHP DELETING THE DIRECTORIES
+                //rmdir($file);
 			} else {
 				unlink($file);
 			}
