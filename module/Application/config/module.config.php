@@ -992,7 +992,7 @@ return array(
                 ),
                 'build-cache' => array(
                     'options' => array(
-                        'route'    => 'cache build',
+                        'route'    => 'cache build [<delay>]',
                         'defaults' => array(
                             'controller' => 'Application\Controller\Console',
                             'action'     => 'buildCache',

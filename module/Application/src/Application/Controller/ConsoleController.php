@@ -191,6 +191,8 @@ class ConsoleController extends AbstractActionController
         $server = $config['amqp']['host'];
         $start = time();
 
+        $delay = $this->getRequest()->getParam('delay');
+
         $assets = array_keys($config['asset_manager']['resolver_configs']['collections']);
         fputs(STDOUT,sprintf("processing asset manager\n"));
         foreach($assets as $asset) {
