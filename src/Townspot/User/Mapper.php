@@ -1,5 +1,7 @@
 <?php
 namespace Townspot\User;
+use PhpAmqpLib\Connection\AMQPStreamConnection;
+use PhpAmqpLib\Message\AMQPMessage;
 use Townspot\Doctrine\Mapper\AbstractEntityMapper;
 
 class Mapper extends AbstractEntityMapper
@@ -223,4 +225,39 @@ class Mapper extends AbstractEntityMapper
 		$stmt->execute();
 		
 	}
+
+    public function save() {
+        parent::save();
+        $amqp = $this->getServiceLocator()->get('Config')['amqp'];
+        $encoding = $this->getServiceLocator()->get('Config')['encoding'];
+
+        $queue  = 'user.updated';
+        $exchange =  'user';
+
+        $conn = new AMQPStreamConnection(
+            $amqp['host'],
+            $amqp['port'],
+            $amqp['user'],
+            $amqp['pass'],
+            $amqp['vhost']
+        );
+        $ch = $conn->channel();
+        $ch->queue_declare($queue, false, true, false, false);
+        $ch->exchange_declare($exchange, 'direct', false, true, false);
+        $ch->queue_bind($queue, $exchange);
+
+        $user = $this->getEntity();
+
+        $fileParts = explode('.',$user->getImageUrl());
+        $ext = array_pop($fileParts);
+        $msg_body = json_encode(array(
+            'id' => $user->getId(),
+            'image_url' => $user->getImageUrl(),
+            'host' => $encoding['sshHost'],
+            'webroot' => APPLICATION_PATH,
+            'fileName' => $user->getId().".$ext"
+        ));
+        $msg = new AMQPMessage($msg_body, array('content_type' => 'text/plain', 'delivery_mode' => 2));
+        $ch->basic_publish($msg, $exchange);
+    }
 }

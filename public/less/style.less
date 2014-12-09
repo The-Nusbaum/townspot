@@ -1524,6 +1524,12 @@ div {
 				display: block;
 			}
 		}
+      .comment-ctrl {
+        border: none;
+        &:hover {
+          border: none;
+        }
+      }
 	}
 	#fans {
 		.control-container {
@@ -1716,11 +1722,13 @@ div {
 		}
 	}
 	.btn:not(#comment) {
-		.interaction-button;
 		color: white;
 		width: 100%;
 		border-color: white;
         background-color: #428bca;
+        &:hover {
+          background-color: #12497A;
+        }
 	}
 }
 

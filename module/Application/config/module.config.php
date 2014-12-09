@@ -981,7 +981,28 @@ return array(
                         )
                     )
                 ),
+                'refresh-youtube' => array(
+                    'options' => array(
+                        'route'    => 'refresh youtube',
+                        'defaults' => array(
+                            'controller' => 'Application\Controller\Console',
+                            'action'     => 'refreshYoutube',
+                        )
+                    )
+                ),
+                'build-cache' => array(
+                    'options' => array(
+                        'route'    => 'cache build [<delay>]',
+                        'defaults' => array(
+                            'controller' => 'Application\Controller\Console',
+                            'action'     => 'buildCache',
+                        )
+                    )
+                ),
             )
         )
     ),
+    'buildCache' => array(
+        '', //home page
+    )
 );

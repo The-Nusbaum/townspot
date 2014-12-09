@@ -160,7 +160,8 @@
         <?php endif; ?>
         <div class="row">
             <div class="col-xs-12 control-container">
-                <?= (count($user->getCommentsAbout()) > 5)?'<button class="prev btn btn-default col-xs-12"><i class="fa fa-chevron-up"></i></button>':'' ?>
+                <?php $class = (count($user->getCommentsAbout()->toArray()) < 5)? ' hidden':'' ?>
+                <button class="comment-ctrl prev btn btn-default col-xs-12<?= $class ?>"><i class="fa fa-chevron-up"></i></button>
             </div>
         </div>
         <div class="row list">
@@ -176,7 +177,7 @@
         </div>
         <div class="row">
             <div class="col-xs-12 control-container">
-                <?= (count($user->getCommentsAbout()) > 5)?'<button class="next btn btn-default col-xs-12"><i class="fa fa-chevron-down"></i></button>':'' ?>
+                <button class="next btn btn-default col-xs-12<?= $class ?>"><i class="fa fa-chevron-down"></i></button>
             </div>
         </div>
     </div>

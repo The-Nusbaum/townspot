@@ -9,21 +9,24 @@ class Register extends Form
     protected $_provinces;
     protected $_cities;
 
-    public function __construct($name = null,$colCountries = null, $colProvinces = null, $colCities = null)
+    public function __construct($name = null,$colCountries = array(), $colProvinces = array(), $colCities = array())
     {
         // we want to ignore the name passed
         parent::__construct('register');
 
         $this->setAttribute('id','register');
 
+        $countries = array();
         foreach($colCountries as $c) {
             $countries[$c->getId()] = $c->getName();
         }
 
+        $provinces = array();
         foreach($colProvinces as $p) {
             $provinces[$p->getId()] = $p->getName();
         }
 
+        $cities = array();
         foreach($colCities as $c) {
             $cities[$c->getId()] = $c->getName();
         }

@@ -7,8 +7,24 @@ $db = array(
 		'dbname'   => 'tsz',
 );
 
+$amqp = array(
+    'host' => 'localhost',
+    'port' => '5672',
+    'user' => 'guest',
+    'pass' => 'guest',
+    'vhost' => '/'
+);
+
+$encoding = array(
+    'pass' => 'McXHT8g3ieiqPoJTFCNt',
+    'host' => 'iamian.mine.nu',
+    'sshHost' => '100.4.105.212'
+);
+
 return array(
     'db' => array_merge(array( 'driver'    => 'PdoMysql'),$db),
+    'amqp' => $amqp,
+    'encoding' => $encoding,
     'doctrine' => array(
         'connection' => array(
 			'orm_default' => array(

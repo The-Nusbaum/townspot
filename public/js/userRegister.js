@@ -34,6 +34,27 @@ var userRegister = {
             $('.emailexists').remove();
         });
 
+        $('#province_id').change(function(){
+            pId = $(this).val();
+            $target = $('#city_id');
+            $target.children().remove();
+            $target.append("<option>loading...</option>");
+            $.get(
+                    '/api/city/getList/'+pId,
+                function(data){
+                    $target = $('#city_id');
+                    if(data.success) {
+                        $target.children().remove();
+                        $target.append("<option>Please select a City</option>");
+                        var cities = data.data;
+                        $(cities).each(function(){
+                            $target.append('<option value="'+this.id+'">'+this.name+'</option>');
+                        })
+                    }
+                }
+            );
+        });
+
         $("#register input, #register select, #register textarea").change(function(e){
             $this = $(this);
             userRegister.data[$this.attr('name')] = $this.val();

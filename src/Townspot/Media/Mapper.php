@@ -2,6 +2,8 @@
 namespace Townspot\Media;
 use Townspot\Doctrine\Mapper\AbstractEntityMapper;
 use \Doctrine\ORM\Query\ResultSetMapping;
+use PhpAmqpLib\Connection\AMQPStreamConnection;
+use PhpAmqpLib\Message\AMQPMessage;
 
 class Mapper extends AbstractEntityMapper
 {
@@ -373,5 +375,43 @@ class Mapper extends AbstractEntityMapper
 		$stmt->execute();
 		return $stmt->fetchAll();
 	}
-	
+
+    public function save() {
+        parent::save();
+        $amqp = $this->getServiceLocator()->get('Config')['amqp'];
+        $encoding = $this->getServiceLocator()->get('Config')['encoding'];
+
+        $queue  = 'video.updated';
+        $exchange =  'video';
+
+        $conn = new AMQPStreamConnection(
+            $amqp['host'],
+            $amqp['port'],
+            $amqp['user'],
+            $amqp['pass'],
+            $amqp['vhost']
+        );
+        $ch = $conn->channel();
+        $ch->queue_declare($queue, false, true, false, false);
+        $ch->exchange_declare($exchange, 'direct', false, true, false);
+        $ch->queue_bind($queue, $exchange);
+
+        $media = $this->getEntity();
+
+        $fileParts = explode('.',$media->getPreviewImage());
+        $imageExt = array_pop($fileParts);
+        $fileParts = explode('.',$media->getUrl());
+        $videoExt = array_pop($fileParts);
+        $msg_body = json_encode(array(
+            'id' => $user->getId(),
+            'preview_url' => $media->getPreviewImage(),
+            'video_url' => $media->getUrl(),
+            'host' => $encoding['sshHost'],
+            'webroot' => APPLICATION_PATH,
+            'imageFileName' => $media->getId().".$imageExt",
+            'videoFileName' => $media->getId().".$videoExt"
+        ));
+        $msg = new AMQPMessage($msg_body, array('content_type' => 'text/plain', 'delivery_mode' => 2));
+        $ch->basic_publish($msg, $exchange);
+    }
 }
