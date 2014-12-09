@@ -268,7 +268,7 @@ class Search implements ServiceLocatorAwareInterface
 
     public function discoverSearch($terms,$sortTerm, $page = 1)
     {
-        $searchId       = md5(serialize(array($terms,$sortTerm)));
+        $searchId       = md5(serialize(array($terms)));
         $cache			= $this->getServiceLocator()->get('cache-general');        
 		$cache->clearExpired();
         $results 		= $cache->getItem($searchId);
@@ -332,9 +332,9 @@ class Search implements ServiceLocatorAwareInterface
 			if ($activeCategory) {
 				$data = array();
 				if ($activeCategory < 0) {
-					$matches = $mediaMapper->getDiscoverMedia($provinceId,$cityId,null,$sortTerm);
+					$matches = $mediaMapper->getDiscoverMedia($provinceId,$cityId,null);
 				} else {
-					$matches = $mediaMapper->getDiscoverMedia($provinceId,$cityId,$activeCategory,$sortTerm);
+					$matches = $mediaMapper->getDiscoverMedia($provinceId,$cityId,$activeCategory);
 				}
 				foreach ($matches as $match) {    
 					$media = $mediaMapper->find($match['id']);
@@ -357,6 +357,7 @@ class Search implements ServiceLocatorAwareInterface
 						'rate_up'			=> count($media->getRatings(true)),
 						'rate_down'			=> count($media->getRatings(false)),
 						'image_source'		=> $media->getSource(),
+						'created'			=> $media->getCreated()->getTimestamp(),
 					);
 					if ($match['series_id']) {
 						$series = $seriesMapper->find($match['series_id']);
@@ -375,6 +376,7 @@ class Search implements ServiceLocatorAwareInterface
 					'escaped_title'		=> 'All Videos',
 					'title'				=> 'All Videos',
 					'image_source'		=> $media->getSource(),
+					'created'			=> $media->getCreated()->getTimestamp(),
 				);
 				$categoryMapper 	= new \Townspot\Category\Mapper($this->getServiceLocator());
 				$matches = $categoryMapper->getDiscoverCategories($provinceId,$cityId);
@@ -405,6 +407,31 @@ class Search implements ServiceLocatorAwareInterface
 				'data'				=> $data
 			);
 			$cache->setItem($searchId, $results);
+		}
+		if (!$sortTerm) {
+			$sortTerm = 'created:desc';
+		}
+        list($sortField,$sortOrder) = explode(':',$sortTerm);
+		
+		$_sortedData = array();
+		foreach ($results['data'] as $media) {
+			if ($media['type'] == 'media') {
+				$matchstring = strtolower(trim($media[$sortField]));
+				$matchstring = preg_replace("/^[^0-9a-z]+/","",$matchstring);
+				$_sortedData[$matchstring][$media['id']] = $media;
+			}
+		}
+		if ($_sortedData) {
+			if ($sortOrder == 'desc') {
+				krsort($_sortedData);
+			} else {
+				ksort($_sortedData);
+			}
+			$sortedData = array();
+			foreach ($_sortedData as $key => $media) {
+				$sortedData = array_merge($sortedData,$media);
+			}
+			$results['data'] = $sortedData;
 		}
 		$startRange = ($page - 1) * 11;
 		$results['data'] = array_slice($results['data'],$startRange,11);

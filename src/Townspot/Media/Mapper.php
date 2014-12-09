@@ -172,7 +172,7 @@ class Mapper extends AbstractEntityMapper
 		return $results;
 	}
 	
-	public function getDiscoverMedia($province_id = null,$city_id=null,$category_id = null,$sort = 'created:desc') 
+	public function getDiscoverMedia($province_id = null,$city_id=null,$category_id = null) 
 	{
 		$results = array();
 		$sql  = "SELECT ";
@@ -195,15 +195,6 @@ class Mapper extends AbstractEntityMapper
 		if ($where) {
 			$sql .= " WHERE " . implode(' AND ',$where);
 		}
-        list($sortField,$sortOrder) = explode(':',$sort);
-        if ($sortField == 'title') {
-			$sql .= " ORDER BY media.title";
-		} elseif ($sortField == 'views') {
-			$sql .= " ORDER BY media.views";
-        } else {
-			$sql .= " ORDER BY media.created";
-        }
-		$sql .= ($sortOrder == 'asc') ? ' ASC' : ' DESC';
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
 		$stmt->execute();
 		return $stmt->fetchAll();
