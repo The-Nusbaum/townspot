@@ -1001,13 +1001,5 @@ return array(
                 ),
             )
         )
-    ),
-    'sortOptions' => array(
-        'title:asc',
-        'title:desc',
-        'created:desc',
-        'created:asc',
-        'views:desc',
-        'views:asc',
     )
 );

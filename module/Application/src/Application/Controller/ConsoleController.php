@@ -189,7 +189,6 @@ class ConsoleController extends AbstractActionController
         set_time_limit(10000);
         $config = $this->getServiceLocator()->get('Config');
         $server = $config['amqp']['host'];
-        $sortOptions = $config['sortOptions'];
         $start = time();
 
         $assets = array_keys($config['asset_manager']['resolver_configs']['collections']);
@@ -215,7 +214,7 @@ class ConsoleController extends AbstractActionController
         }
 
         foreach($urls as $u){
-            $this->_output($u,$server,$sortOptions);
+            $this->_output($u,$server);
         }
 
         $time = $this->_getTime($start);
@@ -247,7 +246,7 @@ class ConsoleController extends AbstractActionController
         return $urls;
     }
 
-    protected function _output($url,$server = false,$sortOptions = false) {
+    protected function _output($url,$server = false) {
         if($server) {
             fputs(STDOUT,sprintf("."));
             //$url = "$url?sort=created:desc";
@@ -255,11 +254,6 @@ class ConsoleController extends AbstractActionController
             $msg = new AMQPMessage($msg_body, array('content_type' => 'text/plain', 'delivery_mode' => 2));
             usleep(500);
             $this->getAmqp()->basic_publish($msg, 'cache');
-            if($sortOptions) {
-                foreach($sortOptions as $opt) {
-                    $this->_output("$url?sort=$opt",$server);
-                }
-            }
         } else {
             fputs(STDOUT,"$url\n");
         }
