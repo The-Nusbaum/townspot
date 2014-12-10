@@ -5,7 +5,7 @@
 			page: 1,
 			recordcount: 0,
 			sort_field: 'id',
-			sort_order: 'ASC',
+			sort_order: 'DESC',
 		};
         var methods = 
         {
