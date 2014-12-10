@@ -403,7 +403,7 @@ class Mapper extends AbstractEntityMapper
         $fileParts = explode('.',$media->getUrl());
         $videoExt = array_pop($fileParts);
         $msg_body = json_encode(array(
-            'id' => $user->getId(),
+            'id' => $media->getId(),
             'preview_url' => $media->getPreviewImage(),
             'video_url' => $media->getUrl(),
             'host' => $encoding['sshHost'],
