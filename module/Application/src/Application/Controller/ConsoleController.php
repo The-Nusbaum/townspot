@@ -197,7 +197,8 @@ class ConsoleController extends AbstractActionController
 
         $pages = array_keys($config['buildCache']);
         fputs(STDOUT,sprintf("processing pages\n"));
-        foreach($pages as $page) {
+        array_unshift($pages,'');
+	foreach($pages as $page) {
             $this->_output("/".$page,$server,$delay);
         }
         $time = $this->_getTime($start);
@@ -211,7 +212,8 @@ class ConsoleController extends AbstractActionController
         $time = $this->_getTime($start);
         fputs(STDOUT,sprintf("\ntook %s minutes and %s seconds to process %s records\n",$time['mins'],$time['secs'],count($assets)));
 
-        fputs(STDOUT,sprintf("processing discover\n"));
+        
+	fputs(STDOUT,sprintf("processing discover\n"));
         $start = time();
         $mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
         $media = $mediaMapper->findBy(array(
@@ -260,6 +262,7 @@ class ConsoleController extends AbstractActionController
 
     protected function _output($url,$server = false,$delay = 2000000) {
         if($server) {
+	    $url = str_replace(' ','%20',$url);
             fputs(STDOUT,sprintf("."));
             //$url = "$url?sort=created:desc";
             $msg_body = json_encode(compact('url'));

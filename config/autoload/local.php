@@ -1,24 +1,24 @@
 <?php
 $db = array(
-		'host'     => 'localhost',
-		'port'     => '3306',
-		'user'     => 'root',
-		'password' => '',
-		'dbname'   => 'tsz',
+'host'     => '216.157.108.165',
+                'port'     => '3306',
+                'user'     => 'tsz_user',
+                'password' => 'sh@Fnrt1ps0',
+                'dbname'   => 'tsz',
 );
 
 $amqp = array(
-    'host' => 'localhost',
+    'host' => '216.157.108.165',
     'port' => '5672',
-    'user' => 'guest',
-    'pass' => 'guest',
+    'user' => 'amqpUser',
+    'pass' => 'ermahgerd!',
     'vhost' => '/'
 );
 
 $encoding = array(
     'pass' => 'McXHT8g3ieiqPoJTFCNt',
-    'host' => 'iamian.mine.nu',
-    'sshHost' => '100.4.105.212'
+    'host' => '216.157.108.165',
+    'sshHost' => getHostByName(getHostName()) 
 );
 
 return array(
