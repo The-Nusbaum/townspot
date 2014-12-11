@@ -210,8 +210,9 @@ class ConsoleController extends AbstractActionController
         }
         $time = $this->_getTime($start);
         fputs(STDOUT,sprintf("\ntook %s minutes and %s seconds to process %s records\n",$time['mins'],$time['secs'],count($assets)));
+/*
+        fputs(STDOUT,sprintf("processing videos and discover\n"));
 
-        fputs(STDOUT,sprintf("processing discover\n"));
         $start = time();
         $mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
         $media = $mediaMapper->findBy(array(
@@ -221,6 +222,7 @@ class ConsoleController extends AbstractActionController
         fputs(STDOUT,sprintf("%s records\n",count($media)));
         $urls = array();
         foreach($media as $m) {
+            $this->_output($m->getUrl());
             $urls = array_merge($urls,$this->_makeUrls($m));
             $urls = array_unique($urls);
         }
@@ -231,6 +233,19 @@ class ConsoleController extends AbstractActionController
 
         $time = $this->_getTime($start);
         fputs(STDOUT,sprintf("\ntook %s minutes and %s seconds to process %s records for %s urls\n",$time['mins'],$time['secs'],count($media), count($urls)));
+*/
+        fputs(STDOUT,"Processing users\n");
+        $start = time();
+        $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+        $users = $userMapper->findAll();
+
+        fputs(STDOUT,sprintf("%s records\n",count($users)));
+        foreach($users as $u) {
+            $this->_output($u->getProfileLink(),$delay);
+        }
+
+        $time = $this->_getTime($start);
+        fputs(STDOUT,sprintf("\ntook %s minutes and %s seconds to process %s records\n",$time['mins'],$time['secs'],count($users)));
     }
 
     protected function _processParents(\Townspot\Category\Entity $cat,$base = '') {

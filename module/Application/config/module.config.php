@@ -1003,6 +1003,7 @@ return array(
         )
     ),
     'buildCache' => array(
-        '', //home page
+        null, //home page
+        
     )
 );

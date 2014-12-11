@@ -274,8 +274,8 @@ class VideoPlayer extends AbstractHelper implements ServiceLocatorAwareInterface
     protected function _getYtSubscribe()
 	{
 		if ($channelId = $this->media->getYtSubscriberChannelId()) {
-			return '<div class="g-ytsubscribe" data-channel="' . trim($channelId) . '" data-layout="default" data-count="default"></div>';
-		} 
+			return '<script src="https://apis.google.com/js/platform.js"></script><div class="g-ytsubscribe" data-channel="' . trim($channelId) . '" data-layout="default" data-count="default"></div>';
+		}
 		return null;
 	}
 

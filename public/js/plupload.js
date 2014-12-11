@@ -61,6 +61,9 @@ var plupInit = {
                 UploadProgress: function (up, file) {
                     $('.progress .progress-bar').attr('style','width:'+up.total.percent+'%;');
                     $('.progress .progress-bar').attr('aria-valuenow',up.total.percent)
+                    if(up.total.percent == 100) {
+                        $('.progress-bar').attr('style','width: 100%; background-image: none; background-color: green');
+                    }
                 }
             }
         });
