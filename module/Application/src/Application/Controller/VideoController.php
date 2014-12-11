@@ -557,10 +557,10 @@ class VideoController extends AbstractActionController
 
         $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
         $user = $userMapper->find($data->get('user_id'));
-
+/*
         $countryMapper = new \Townspot\Country\Mapper($this->getServiceLocator());
         $country = $countryMapper->find($data->get('country_id'));
-
+*/
         $provinceMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
         $province = $provinceMapper->find($data->get('province_id'));
 
@@ -603,7 +603,7 @@ class VideoController extends AbstractActionController
                     ->set('description',$ytVideo->getVideoDescription())
                     ->set('duration',$ytVideo->getVideoDuration())
                     ->set('on_media_server',1)
-                    ->set('preview_url',$ytVideo->getVideoThumbnails()[3]['url'])
+                    ->set('previewImage',$ytVideo->getVideoThumbnails()[3]['url'])
                     ->set('source','youtube')
                     ->set('video_url',$data->get('youtube_url'));
 

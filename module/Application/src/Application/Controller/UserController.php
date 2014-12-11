@@ -83,7 +83,7 @@ class UserController extends AbstractActionController
         $sql = "select * from user_social_media where source = 'twitter' and user_id = :uid";
         $query = $userMapper->getEntityManager()->getConnection()->prepare($sql);
         $query->execute(array(':uid' => $user->getId()));
-        $this->_view->setVariable('twitter', $query->fetchAll()[0]);
+        $this->_view->setVariable('twitter', $query->rowCount()?$query->fetchAll()[0]:array());
 
         if($this->auth->getIdentity()) {
             $authdUser = $userMapper->find($this->auth->getIdentity());
