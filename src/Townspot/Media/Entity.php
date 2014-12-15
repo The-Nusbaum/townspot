@@ -685,6 +685,19 @@ class Entity extends \Townspot\Entity
 			}
 		}
 	}
+
+    public function getYtAuthor()
+    {
+        if ($this->getSource() == 'youtube') {
+            $ytId = $this->getYtVideoId();
+            $videoEntry = $this->_getYtVideo($ytId);
+            $authors = $videoEntry->getAuthor();
+            $author = array_shift($authors);
+            var_dump($authors);die();
+            return $author;
+        }
+        return null;
+    }
 	
 	public function getYtSubscriberChannelId()
 	{
@@ -696,6 +709,7 @@ class Entity extends \Townspot\Entity
 			$uri = $author->getUri()->getText();
 			$parts = explode('/',$uri);
 			$user = array_pop($parts);
+            return $user;
 			$links = $this->_getYtApi()->getUserProfile($user)->getLink();
 			foreach ($links as $link) {
 				if (preg_match('/\/channel\//',$link->getHref())) {

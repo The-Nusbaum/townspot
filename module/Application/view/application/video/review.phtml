@@ -9,7 +9,7 @@
     </div>
     <div class="row">
         <div class="col-md-4 col-md-push-8">
-            <img class="img-responsive" src="<?= $data->get('preview_url') ?>" alt="preview image"/>
+            <img class="img-responsive" src="<?= $data->get('previewImage') ?>" alt="preview image"/>
         </div>
         <div class="col-md-8 col-md-pull-4">
             <dl class="dl-horizontal">
@@ -57,7 +57,7 @@
                 <input type="hidden" name="on_media_server" value="<?= $data->get('on_media_server');?>"/>
                 <input type="hidden" name="source" value="<?= $data->get('source');?>"/>
                 <input type="hidden" name="duration" value="<?= $data->get('duration');?>"/>
-                <?php foreach($data->get('selCat') as $i => $vc) : ?>
+                <?php if($data->get('selCat') != null) foreach($data->get('selCat') as $i => $vc) : ?>
                     <input type="hidden" name="selCat[<?= $i ?>]" value="<?= $vc ?>"/>
                 <?php endforeach; ?>
                 <input type="hidden" name="review_ok" value="1">
