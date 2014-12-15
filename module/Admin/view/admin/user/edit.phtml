@@ -3,14 +3,14 @@
 	<div class="col-sm-12">
 		<ol class="breadcrumb">
 			<li><a href="#">Home</a></li>
-			<li><a href="/admin/<?= strtolower($this->type); ?>s"><?= $this->type; ?>s</a></li>
-			<li class="active">Add</li>
+			<li><a href="/admin/users">Users</a></li>
+			<li class="active">Edit</li>
 		</ol>	
 	</div>
 </div>
 <br/>
 <?php
-$form->setAttribute('action', $this->url('admin-user-add'));
+$form->setAttribute('action', '/admin/user/edit/' . $this->id);
 $form->prepare();
 ?>
 
@@ -18,6 +18,6 @@ $form->prepare();
 
 <script>
     $(document).ready(function(){
-        userRegister.init();
+        userEdit.init();
     });
 </script>			

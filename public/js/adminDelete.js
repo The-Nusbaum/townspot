@@ -15,6 +15,5 @@
 		}).done(function ( data ) {
 			$('#row-' + id).remove();
 		});
-console.log(this);	
 	});	
 })(jQuery);

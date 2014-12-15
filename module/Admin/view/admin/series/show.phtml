@@ -1,0 +1,65 @@
+<div class="row breadcrumb-wrapper">
+	<div class="col-sm-12">
+		<ol class="breadcrumb">
+			<li><a href="/admin">Home</a></li>
+			<li><a href="/admin/series">Series</a></li>
+			<li class="active">View Series</li>
+		</ol>	
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12">
+		<h1>View Series - <?= $this->series->getName(); ?> (<?= $this->series->getId(); ?>)</h1>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12">
+		<div class="pull-right">
+			<a id="delete-series" href="#" data-target="/admin/series" class="btn btn-default navbar-btn pull-right" data-ref="<?= $this->series->getId(); ?>" data-func="delete" data-type="Series"><i class="fa fa-times"></i> Delete Series</a>
+			<a href="/admin/series/edit/<?= $this->series->getId(); ?>" class="btn btn-default navbar-btn pull-right"><i class="fa fa-edit"></i> Edit Series</a>
+<?php if ($this->referrer) { ?>		
+			<a href="<?= $this->referrer; ?>" class="btn btn-default navbar-btn pull-right">Return to Previous Page</a>
+<?php } ?>			
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12">
+		<table width="100%" cellspacing="0" cellpadding="0" border="0" id="user-series-table" class="display dataTable" aria-describedby="user_events_datatable" style="width: 100%;">
+			<thead>
+				<tr role="row">
+					<th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="user-series-table" rowspan="1" colspan="1" style="width: 5%;">ID</th>
+					<th class="sorting" role="columnheader" tabindex="0" aria-controls="user-series-table" rowspan="1" colspan="1" style="width: 75%;">Title</th>
+					<th class="sorting" role="columnheader" tabindex="0" aria-controls="user-series-table" rowspan="1" colspan="1" style="width: 10%;">Episode</th>
+					<th class="" role="columnheader" tabindex="0" aria-controls="user-series-table" rowspan="1" colspan="1" style="width: 10%;"></th>
+				</tr>
+			</thead>
+			<tbody aria-live="polite" aria-relevant="all">
+<?php if ($objectList = $this->series->getEpisodes()) { ?>
+<?php 	foreach ($objectList as $object) { ?>
+				<tr id="Episode-<?= $object->getId(); ?>" title="<?= $object->getMedia()->getTitle(); ?>">
+					<td class="sorting_1"><?= $object->getId(); ?></td>
+					<td class="sorting_1"><?= $object->getMedia()->getTitle(); ?></td>
+					<td class="sorting_1"><?= $object->getEpisodeNumber(); ?></td>
+					<td>
+						<i class="fa fa-search view-request" data-func="view" data-type="Media" data-ref="<?= $object->getMedia()->getId(); ?>"></i>
+						<i class="fa fa-pencil-square-o edit-request" data-func="edit" data-ref="<?= $object->getMedia()->getId(); ?>" data-type="Media"></i>
+						<i class="fa fa-times delete-request" data-func="delete" data-ref="<?= $object->getId(); ?>" data-type="Episode"></i>
+					</td>
+				</tr>
+<?php }} ?>
+			</tbody>
+		</table>
+	</div>
+</div>
+<script>
+$(document).ready(function() {
+    $('#user-series-table').dataTable();
+} );
+</script>
+<script src="/js/seriesShow.js" type="text/javascript"></script>
+<script>
+$().seriesShow({
+	id:	'<?= $this->series->getId(); ?>'
+});
+</script>

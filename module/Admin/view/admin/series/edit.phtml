@@ -1,0 +1,208 @@
+<style>
+.video-list thead tr th:nth-child(1),
+#dashboard-selected-video-list-data tr td:nth-child(1),
+#dashboard-available-video-list-data tr td:nth-child(1) {
+	vertical-align: top;
+	text-align: left;
+    min-width: 65px;
+    max-width: 65px;
+    width: 65px;
+}
+.video-list thead tr th:nth-child(2),
+#dashboard-selected-video-list-data tr td:nth-child(2),
+#dashboard-available-video-list-data tr td:nth-child(2) {
+	vertical-align: top;
+	text-align: left;
+    min-width: 240px;
+    max-width: 240px;
+    width: 240px;
+}
+
+#dashboard-selected-video-list-data tr:nth-child(2n),
+#dashboard-available-video-list-data tr:nth-child(2n) {
+	background-color: #cccccc;
+}
+
+#dashboard-selected-video-list-data .row_selected,
+#dashboard-available-video-list-data .row_selected {
+    background-color: #006DCC;
+    background-image: linear-gradient(to bottom, #08C, #04C);
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    color: #FFF;
+}
+</style>
+<h1>Series Management</h1>
+<div class="row breadcrumb-wrapper">
+	<div class="col-sm-8">
+		<ol class="breadcrumb">
+			<li><a href="#">Home</a></li>
+			<li class="active">Series</li>
+			<li class="active">Add Series</li>
+		</ol>	
+	</div>
+	<div class="col-sm-4">
+		<a class="btn btn-default admin-btn pull-right" href="<?= $this->url('admin-add-series'); ?>">Add Series</a>
+	</div>
+</div>
+<br/>
+<div class="row" id="admin-search">
+	<div class="col-sm-12">
+		<?= $form ?>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-5">
+		<h4>Selected Videos</h4>
+ 		<table class="video-list">
+			<thead>
+				<tr style="border-bottom: 1px solid #000000; font-weight: bold; padding: 3px 18px 3px 10px;">
+					<th>ID</th>
+					<th>Title</th>
+				</tr>
+			</thead>
+		</table>	
+		<div id="dashboard-selected-video-list-wrapper" style="max-height: 500px; overflow: auto;">
+			<table id="dashboard-selected-video-list-data">
+<?php foreach ($this->displayedEpisodes as $episode) { ?>
+				<tr data-ref="<?= $episode->getId(); ?>">
+					<td><?= $episode->getId(); ?></td>
+					<td><?= $episode->getTitle(); ?></td>
+				</tr>
+<?php } ?>
+			</table>	
+		</div>
+	</div>
+	<div class="col-sm-2 move-buttons">
+		<button class="btn btn-primary" id="MoveUp"><i class="fa fa-arrow-circle-up"></i></button>
+		<br>
+		<button class="btn btn-primary" id="MoveRight">&gt;&gt;</button>
+		<br>
+		<button class="btn btn-primary" id="MoveLeft">&lt;&lt;</button>
+		<br>
+		<button class="btn btn-primary" id="MoveDown"><i class="fa fa-arrow-circle-down"></i></button>
+	</div>
+	<div class="col-sm-5">
+		<h3>Available Videos</h3>
+ 		<table class="video-list">
+			<thead>
+				<tr style="border-bottom: 1px solid #000000; font-weight: bold; padding: 3px 18px 3px 10px;">
+					<th id="sort-id">ID</th>
+					<th id="sort-title">Title</th>
+				</tr>
+			</thead>
+		</table>	
+		<div id="dashboard-available-video-list-wrapper" style="max-height: 500px; overflow: auto;">
+			<table id="dashboard-available-video-list-data">
+<?php foreach ($this->availableEpisodes as $episode) { ?>
+				<tr data-ref="<?= $episode->getId(); ?>">
+					<td><?= $episode->getId(); ?></td>
+					<td><?= $episode->getTitle(); ?></td>
+				</tr>
+<?php } ?>
+			</table>	
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-12">
+		<button class="btn btn-primary form-control" id="submit" type="submit">Save Changes</button>
+	</div>
+</div>
+<script>
+(function($){
+    $.fn.seriesMedia = function( options ) 
+    {
+        var defaults = {};
+
+        var methods = 
+        {
+            moveRight : function()              
+            {
+				var selectedvideos = $("#dashboard-selected-video-list-data").find("tr.row_selected");
+				$.each(selectedvideos, function() {
+					$(this).remove();
+				});
+				methods._updateSection();
+			},
+            moveLeft : function()              
+            {
+				var selectedvideos = $("#dashboard-available-video-list-data").find("tr.row_selected");
+				$.each(selectedvideos, function() {
+					$(this).removeClass('row_selected');
+					$(this).clone().appendTo( "#dashboard-selected-video-list-data" );
+				});
+				methods._updateSection();
+			},
+            moveUp : function()              
+            {
+				var selectedvideos = $("#dashboard-selected-video-list-data").find("tr.row_selected");
+				$.each(selectedvideos, function() {
+					$(this).prev().before($(this));
+				});
+				methods._updateSection();
+			},
+            moveDown : function()              
+            {
+				var selectedvideos = $("#dashboard-selected-video-list-data").find("tr.row_selected");
+				$.each(selectedvideos, function() {
+					$(this).next().after($(this));
+				});
+				methods._updateSection();
+			},
+            _updateSection : function()              
+            {
+				var videos = [];
+				var selectedvideos = $("#dashboard-selected-video-list-data").find("tr");
+				$.each(selectedvideos, function() {
+					videos.push($(this).data('ref'));
+				});
+				$('#selected_media').val(videos.join(','));
+			},
+            _getData : function()   
+            {	
+				$.ajax({
+					url: "/admin/availablemedia",
+					type: "POST",
+					data: { 
+						user_id: $('#user_id').val(),
+					}
+				}).done(function ( data ) {
+					$.each(data, function() {
+						var html = '<tr data-ref="' + this.id + '">';
+						html = html + '<td>' + this.id + '</td>';					
+						html = html + '<td>' + this.title + '</td>';					
+						html = html + '</tr>';
+						$('#dashboard-available-video-list-data').append(html);
+					});
+				});
+			}
+		};
+        var options = $.extend(defaults, options);
+		
+		$(document).on("click", '#dashboard-selected-video-list-data tr', function(event)			{ 	
+			if ($(this).hasClass('row_selected')) {
+				$(this).removeClass('row_selected');
+			} else {
+				$(this).addClass('row_selected');
+			}	
+		});		
+		$(document).on("click", '#dashboard-available-video-list-data tr', function(event)			{ 	
+			if ($(this).hasClass('row_selected')) {
+				$(this).removeClass('row_selected');
+			} else {
+				$(this).addClass('row_selected');
+			}	
+		});		
+		$(document).on("click", '#submit', function(event)			{ 	$('#series_edit').submit();  	});	
+		$(document).on("change", '#user_id', function(event)		{ 	methods._getData();  			});	
+		$(document).on("click", '#MoveUp', function(event)			{ 	methods.moveUp();	 			});
+		$(document).on("click", '#MoveDown', function(event)		{ 	methods.moveDown(); 			});
+		$(document).on("click", '#MoveLeft', function(event)		{ 	methods.moveLeft(); 			});
+		$(document).on("click", '#MoveRight', function(event)		{ 	methods.moveRight(); 			});
+		methods.getResults(); 
+	};	
+})(jQuery);
+
+$().seriesMedia({});
+</script>
+

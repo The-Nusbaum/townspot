@@ -213,18 +213,29 @@ class Mapper extends AbstractEntityMapper
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
 		$stmt->execute();
 		$seriesMapper = new \Townspot\Series\Mapper($this->getServiceLocator());
-		foreach ($entity->getSeries as $series) {
-			$seriesMapper->setEntity($series)->delete();
+		if ($entity->getSeries()) {
+			foreach ($entity->getSeries() as $series) {
+				$seriesMapper->setEntity($series)->delete();
+			}
 		}
 		$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
-		foreach ($entity->getMedia as $media) {
-			$mediaMapper->setEntity($media)->delete();
+		if ($entity->getMedia()) {
+			foreach ($entity->getMedia() as $media) {
+				$mediaMapper->setEntity($media)->delete();
+			}
 		}
 		$sql  = "DELETE from user where user.user_id=" . $entity->getId();
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
 		$stmt->execute();
-		
 	}
+	
+	public function deleteFavorite($userId,$media) 
+	{
+		$sql  = "DELETE from user_favorite where user_favorite.user_id=" . $userId . " AND user_favorite.user_id=" . $media;
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+	}
+	
 
     public function save() {
         parent::save();

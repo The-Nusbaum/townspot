@@ -3,22 +3,595 @@
 		<ol class="breadcrumb">
 			<li><a href="#">Home</a></li>
 			<li><a href="/admin/users">Users</a></li>
-			<li class="active">View User</li>
+			<li class="active">View <?= $this->type; ?></li>
 		</ol>	
 	</div>
 </div>
 <div class="row">
 	<div class="col-sm-12">
-		<h1>View {role} - {username} ({user_id})</h1>
+		<h1>View <?= $this->type; ?> - <?= $this->user->getUsername(); ?> (<?= $this->user->getId(); ?>)</h1>
 	</div>
 </div>
 <div class="row">
-	<div class="span12">
+	<div class="col-sm-12">
 		<div class="pull-right">
-			<a class="btn btn-default navbar-btn pull-right load-modal" href="#ContactUser" data-toggle="modal" data-source="emailUserModal"><i class="fa fa-envelope"></i> Send Message to {role}</a>
-			<a href="#" data-target="/admin/<?= strtolower($action); ?>" class="btn btn-default navbar-btn pull-right delete-request" data-ref="{user_id}" data-func="delete" data-type="User"><i class="fa fa-times"></i> Delete {role}</a>
-			<a href="/admin/user/edit/{user_id}" class="btn btn-default navbar-btn pull-right"><i class="fa fa-edit"></i> Edit {role}</a>
+			<a id="contact-user" class="btn btn-default navbar-btn pull-right load-modal" href="#ContactUser" data-toggle="modal" data-source="emailUserModal"><i class="fa fa-envelope"></i> Send Message to <?= $this->type; ?></a>
+			<a id="delete-user" href="#" data-target="/admin/<?= strtolower($action); ?>" class="btn btn-default navbar-btn pull-right" data-ref="<?= $this->user->getId(); ?>" data-func="delete" data-type="User"><i class="fa fa-times"></i> Delete <?= $this->type; ?></a>
+			<a href="/admin/user/edit/<?= $this->user->getId(); ?>" class="btn btn-default navbar-btn pull-right"><i class="fa fa-edit"></i> Edit <?= $this->type; ?></a>
+<?php if ($this->referrer) { ?>		
+			<a href="<?= $this->referrer; ?>" class="btn btn-default navbar-btn pull-right">Return to Previous Page</a>
+<?php } ?>			
 		</div>
 	</div>
 </div>
-<br/>
+<div class="row">
+	<div class="col-sm-12" role="tablist">
+		<ul class="nav nav-tabs" id="admin-tabs">
+			<li role="presentation" class="active"><a href="#user-profile" id="user-tab-profile" role="tab" data-toggle="tab" >Profile</a></li>
+		<?php if ($this->artist) { ?>
+			<li role="presentation" class=""><a href="#user-events" id="user-tab-events" role="tab" data-toggle="tab" >Events</a></li>
+			<li role="presentation" class=""><a href="#user-series" id="user-tab-series" role="tab" data-toggle="tab" >Series</a></li>
+			<li role="presentation" class=""><a href="#user-videos" id="user-tab-videos" role="tab" data-toggle="tab" >Videos</a></li>
+			<li role="presentation" class=""><a href="#user-fans" id="user-tab-followers" role="tab" data-toggle="tab" >Fans</a></li>
+		<?php } ?>
+			<li role="presentation" class=""><a href="#media-comments" id="user-tab-media-comments" role="tab" data-toggle="tab" >Media Comments</a></li>
+			<li role="presentation" class=""><a href="#artist-comments" id="user-tab-artist-comments" role="tab" data-toggle="tab" >Artist Comments</a></li>
+			<li role="presentation" class=""><a href="#user-creators" id="user-tab-creators" role="tab" data-toggle="tab" >Fan Of</a></li>
+			<li role="presentation" class=""><a href="#user-favorites" id="user-tab-favorites" role="tab" data-toggle="tab" >Favorites</a></li>
+		</ul>
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane fade active in" id="user-profile">
+				<div class="row">
+					<div class="col-sm-9">
+						<div class="row">
+							<div class="col-sm-3 header">Username</div>
+							<div class="col-sm-9"><?= $this->user->getUsername(); ?></div>
+						</div>
+<?php if ($this->artist) { ?>
+						<div class="row">
+							<div class="col-sm-3 header">Artist Name</div>
+							<div class="col-sm-9"><?= $this->user->getArtistName(); ?></div>
+						</div>
+<?php } ?>
+						<div class="row">
+							<div class="col-sm-3 header">Name</div>
+							<div class="col-sm-9"><?= $this->user->getFirstName(); ?> <?= $this->user->getLastName(); ?></div>
+						</div>
+						<div class="row">
+							<div class="col-sm-3 header">E-mail</div>
+							<div class="col-sm-9">
+								<?php if($email = $this->user->getEmail()) { ?>
+									<a href="mailto:<?= $email; ?>" target="_blank"><?= $email; ?></a>
+								<?php } ?>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-3 header">Website</div>
+							<div class="col-sm-9">
+								<?php if($website = $this->user->getWebsite()) { ?>
+									<a href="<?= $website; ?>" target="_blank"><?= $website; ?></a>
+								<?php } ?>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-3 header">Twitter</div>
+							<div class="col-sm-9">
+<?php 
+$twitterLink = null;
+foreach ($this->user->getUserSocial() as $socialMedia) { 
+    if ($socialMedia->getSource() == 'twitter') {
+		$twitterLink = $socialMedia->getLink();
+	}
+}
+?>
+<?php if ($twitterLink) { ?>
+								<a href="http://twitter.com/<?= $twitterLink; ?>" target="_blank">@<?= $twitterLink; ?></a>
+<?php } ?>	  
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-3 header">Facebook Linked</div>
+							<div class="col-sm-9">
+<?php
+$facebookLink = false;
+foreach ($this->user->getUserOauth() as $oauth) {
+    if ($oauth->getSource() == 'facebook') {
+		$facebookLink = true;
+	}
+}
+?>
+<?php if ($facebookLink) { ?>
+								<i class="fa fa-check-square-o"></i>
+<?php } else { ?>
+								<i class="fa fa-square-o"></i>
+<?php } ?>	  
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-3 header">Location</div>
+							<div class="col-sm-9"><?= $this->user->getLocationName(); ?></div>
+						</div>
+						<div class="row">
+							<div class="col-sm-3 header">Terms & Agreements</div>
+							<div class="col-sm-9">
+<?php if ($this->user->getTermsAgreement()) { ?>
+								<i class="fa fa-check-square-o"></i>
+<?php } else { ?>
+								<i class="fa fa-square-o"></i>
+<?php } ?>	  
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-3 header">Contact Settings</div>
+							<div class="col-sm-9">
+								<div class="row">
+									<div class="col-sm-10 header">Allow contact by users:</div>
+									<div class="col-sm-2">
+<?php if ($this->user->getAllowContact()) { ?>
+										<i class="fa fa-check-square-o"></i>
+<?php } else { ?>
+										<i class="fa fa-square-o"></i>
+<?php } ?>	  
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-sm-10 header">Receive email notifications:</div>
+									<div class="col-sm-2">
+<?php if ($this->user->getEmailNotification()) { ?>
+										<i class="fa fa-check-square-o"></i>
+<?php } else { ?>
+										<i class="fa fa-square-o"></i>
+<?php } ?>	  
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-3">
+						<img class="profileImage img-responsive" src="<?= $this->user->getResizerCdnLink(225,300); ?>">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-2 header">About</div>
+					<div class="col-sm-10"><?= $this->user->getAboutMe(); ?></div>
+				</div>
+				<div class="row">
+					<div class="col-sm-2 header">Interests</div>
+					<div class="col-sm-10"><?= $this->user->getInterests(); ?></div>
+				</div>
+			</div>
+		<?php if ($this->artist) { ?>
+			<div role="tabpanel" class="tab-pane fade" id="user-events" >
+				<div class="row">
+					<div class="col-sm-12">
+						<table width="100%" cellspacing="0" cellpadding="0" border="0" id="user-events-table" class="display dataTable" aria-describedby="user_events_datatable" style="width: 100%;">
+							<thead>
+								<tr role="row">
+									<th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="user-events-table" rowspan="1" colspan="1" style="width: 5%;">ID</th>
+									<th class="sorting" role="columnheader" tabindex="0" aria-controls="user-events-table" rowspan="1" colspan="1" style="width: 15%;">Start</th>
+									<th class="sorting" role="columnheader" tabindex="0" aria-controls="user-events-table" rowspan="1" colspan="1" style="width: 75%;">Title</th>
+									<th class="" role="columnheader" tabindex="0" aria-controls="user-events-table" rowspan="1" colspan="1" style="width: 5%;"></th>
+								</tr>
+							</thead>
+							<tbody aria-live="polite" aria-relevant="all">
+<?php if ($objectList = $this->user->getUserEvents()) { ?>
+<?php 	foreach ($objectList as $object) { ?>
+								<tr id="UserEvent-<?= $object->getId(); ?>" title="<?= $object->getDescription(); ?>">
+									<td class="sorting_1"><?= $object->getId(); ?></td>
+									<td class="sorting_1"><?= $object->getStart()->format('m/d/Y h:i A'); ?></td>
+									<td class="sorting_1"><?= $object->getTitle(); ?></td>
+									<td>
+										<i class="fa fa-search view-request" data-func="view" data-type="UserEvent" data-ref="<?= $object->getId(); ?>"></i>
+										<i class="fa fa-pencil-square-o edit-request" data-func="edit" data-ref="<?= $object->getId(); ?>" data-type="UserEvent"></i>
+										<i class="fa fa-times delete-request" data-func="delete" data-ref="<?= $object->getId(); ?>" data-type="UserEvent"></i>
+									</td>
+								</tr>
+<?php }} ?>
+							</tbody>
+						</table>
+					</div>
+				</div>
+<script>
+$(document).ready(function() {
+    $('#user-events-table').dataTable();
+} );
+</script>
+			</div>
+			<div role="tabpanel" class="tab-pane fade" id="user-series" >
+				<div class="row">
+					<div class="col-sm-12">
+						<table width="100%" cellspacing="0" cellpadding="0" border="0" id="user-series-table" class="display dataTable" aria-describedby="user_events_datatable" style="width: 100%;">
+							<thead>
+								<tr role="row">
+									<th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="user-series-table" rowspan="1" colspan="1" style="width: 5%;">ID</th>
+									<th class="sorting" role="columnheader" tabindex="0" aria-controls="user-series-table" rowspan="1" colspan="1" style="width: 15%;">Series Name</th>
+									<th class="sorting" role="columnheader" tabindex="0" aria-controls="user-series-table" rowspan="1" colspan="1" style="width: 75%;">Number of Episodes</th>
+									<th class="" role="columnheader" tabindex="0" aria-controls="user-series-table" rowspan="1" colspan="1" style="width: 5%;"></th>
+								</tr>
+							</thead>
+							<tbody aria-live="polite" aria-relevant="all">
+<?php if ($objectList = $this->user->getSeries()) { ?>
+<?php 	foreach ($objectList as $object) { ?>
+								<tr id="Series-<?= $object->getId(); ?>" title="<?= $object->getName(); ?>">
+									<td class="sorting_1"><?= $object->getId(); ?></td>
+									<td class="sorting_1"><?= $object->getName(); ?></td>
+									<td class="sorting_1"><?= count($object->getEpisodes()); ?></td>
+									<td>
+										<i class="fa fa-search view-request" data-func="view" data-type="Series" data-ref="<?= $object->getId(); ?>"></i>
+										<i class="fa fa-pencil-square-o edit-request" data-func="edit" data-ref="<?= $object->getId(); ?>" data-type="Series"></i>
+										<i class="fa fa-times delete-request" data-func="delete" data-ref="<?= $object->getId(); ?>" data-type="Series"></i>
+									</td>
+								</tr>
+<?php }} ?>
+							</tbody>
+						</table>
+					</div>
+				</div>
+<script>
+$(document).ready(function() {
+    $('#user-series-table').dataTable();
+} );
+</script>
+			</div>
+			<div role="tabpanel" class="tab-pane fade" id="user-videos" >
+				<div class="row">
+					<div class="col-sm-12">
+						<table width="100%" cellspacing="0" cellpadding="0" border="0" id="user-videos-table" class="display dataTable" aria-describedby="user_events_datatable" style="width: 100%;">
+							<thead>
+								<tr role="row">
+									<th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="user-videos-table" rowspan="1" colspan="1" style="width: 5%;">ID</th>
+									<th class="sorting" role="columnheader" tabindex="0" aria-controls="user-videos-table" rowspan="1" colspan="1" style="width: 15%;">Location</th>
+									<th class="sorting" role="columnheader" tabindex="0" aria-controls="user-videos-table" rowspan="1" colspan="1" style="width: 70%;">Title</th>
+									<th class="" role="columnheader" tabindex="0" aria-controls="user-videos-table" rowspan="1" colspan="1" style="width: 10%;"></th>
+								</tr>
+							</thead>
+							<tbody aria-live="polite" aria-relevant="all">
+<?php if ($objectList = $this->user->getMedia()) { ?>
+<?php 	foreach ($objectList as $object) { ?>
+								<tr id="Media-<?= $object->getId(); ?>" title="<?= $object->getTitle(); ?>">
+									<td class="sorting_1"><?= $object->getId(); ?></td>
+									<td class="sorting_1"><?= $object->getCity()->getFullname(); ?></td>
+									<td class="sorting_1"><?= $object->getTitle(); ?></td>
+									<td>
+										<i class="fa fa-search view-request" data-func="view" data-type="Media" data-ref="<?= $object->getId(); ?>"></i>
+										<i class="fa fa-pencil-square-o edit-request" data-func="edit" data-ref="<?= $object->getId(); ?>" data-type="Media"></i>
+										<i class="fa fa-times delete-request" data-func="delete" data-ref="<?= $object->getId(); ?>" data-type="Media"></i>
+									</td>
+								</tr>
+<?php }} ?>
+							</tbody>
+						</table>
+					</div>
+				</div>
+<script>
+$(document).ready(function() {
+    $('#user-videos-table').dataTable();
+} );
+</script>
+			</div>
+			<div role="tabpanel" class="tab-pane fade" id="user-fans" >
+				<div class="row">
+					<div class="col-sm-12">
+						<table width="100%" cellspacing="0" cellpadding="0" border="0" id="user-fans-table" class="display dataTable" aria-describedby="user_events_datatable" style="width: 100%;">
+							<thead>
+								<tr role="row">
+									<th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="user-fans-table" rowspan="1" colspan="1" style="width: 5%;">ID</th>
+									<th class="sorting" role="columnheader" tabindex="0" aria-controls="user-fans-table" rowspan="1" colspan="1" style="width: 85%;">Username</th>
+									<th class="" role="columnheader" tabindex="0" aria-controls="user-fans-table" rowspan="1" colspan="1" style="width: 10%;"></th>
+								</tr>
+							</thead>
+							<tbody aria-live="polite" aria-relevant="all">
+<?php if ($objectList = $this->user->getFollowedBy()) { ?>
+<?php 	foreach ($objectList as $object) { ?>
+								<tr id="Follower-<?= $object->getId(); ?>" title="<?= $object->getUser()->getUsername(); ?>">
+									<td class="sorting_1"><?= $object->getId(); ?></td>
+									<td class="sorting_1"><?= $object->getUser()->getUsername(); ?></td>
+									<td>
+										<i class="fa fa-times delete-request" data-func="delete" data-ref="<?= $object->getId(); ?>" data-type="Follower"></i>
+									</td>
+								</tr>
+<?php }} ?>
+							</tbody>
+						</table>
+					</div>
+				</div>
+<script>
+$(document).ready(function() {
+    $('#user-fans-table').dataTable();
+} );
+</script>
+			</div>
+		<?php } ?>
+			<div role="tabpanel" class="tab-pane fade" id="media-comments" >
+				<div class="row">
+					<div class="col-sm-12">
+						<table width="100%" cellspacing="0" cellpadding="0" border="0" id="user-comments-table" class="display dataTable" aria-describedby="user_events_datatable" style="width: 100%;">
+							<thead>
+								<tr role="row">
+									<th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="user-comments-table" rowspan="1" colspan="1" style="width: 5%;">ID</th>
+									<th class="sorting" role="columnheader" tabindex="0" aria-controls="user-comments-table" rowspan="1" colspan="1" style="width: 15%;">Media</th>
+									<th class="sorting" role="columnheader" tabindex="0" aria-controls="user-comments-table" rowspan="1" colspan="1" style="width: 15%;">Date</th>
+									<th role="columnheader" tabindex="0" aria-controls="user-comments-table" rowspan="1" colspan="1" style="width: 70%;">Comment</th>
+									<th class="" role="columnheader" tabindex="0" aria-controls="user-comments-table" rowspan="1" colspan="1" style="width: 5%;"></th>
+								</tr>
+							</thead>
+							<tbody aria-live="polite" aria-relevant="all">
+<?php if ($objectList = $this->user->getMediaComments()) { ?>
+<?php 	foreach ($objectList as $object) { ?>
+								<tr id="MediaComment-<?= $object->getId(); ?>">
+									<td class="sorting_1"><?= $object->getId(); ?></td>
+									<td class="sorting_1"><?= $object->getTarget()->getTitle(); ?></td>
+									<td class="sorting_1"><?= $object->getCreated()->format('m/d/Y h:i A'); ?></td>
+									<td class="sorting_1"><?= $object->getComment(); ?></td>
+									<td>
+										<i class="fa fa-times delete-request" data-func="delete" data-type="MediaComment" data-ref="<?= $object->getId(); ?>"></i>
+									</td>
+								</tr>
+<?php }} ?>
+							</tbody>
+						</table>
+					</div>
+				</div>
+<script>
+$(document).ready(function() {
+    $('#user-comments-table').dataTable();
+} );
+</script>
+			</div>
+			<div role="tabpanel" class="tab-pane fade" id="artist-comments" >
+				<div class="row">
+					<div class="col-sm-12">
+						<table width="100%" cellspacing="0" cellpadding="0" border="0" id="user-media-comments-table" class="display dataTable" aria-describedby="user_events_datatable" style="width: 100%;">
+							<thead>
+								<tr role="row">
+									<th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="user-media-comments-table" rowspan="1" colspan="1" style="width: 5%;">ID</th>
+									<th class="sorting" role="columnheader" tabindex="0" aria-controls="user-media-comments-table" rowspan="1" colspan="1" style="width: 15%;">Artist</th>
+									<th class="sorting" role="columnheader" tabindex="0" aria-controls="user-media-comments-table" rowspan="1" colspan="1" style="width: 15%;">Date</th>
+									<th role="columnheader" tabindex="0" aria-controls="user-media-comments-table" rowspan="1" colspan="1" style="width: 70%;">Comment</th>
+									<th class="" role="columnheader" tabindex="0" aria-controls="user-media-comments-table" rowspan="1" colspan="1" style="width: 5%;"></th>
+								</tr>
+							</thead>
+							<tbody aria-live="polite" aria-relevant="all">
+<?php if ($objectList = $this->user->getComments()) { ?>
+<?php 	foreach ($objectList as $object) { ?>
+								<tr id="ArtistComment-<?= $object->getId(); ?>">
+									<td class="sorting_1"><?= $object->getId(); ?></td>
+									<td class="sorting_1"><?= $object->getTarget()->getUsername(); ?></td>
+									<td class="sorting_1"><?= $object->getCreated()->format('m/d/Y h:i A'); ?></td>
+									<td class="sorting_1"><?= $object->getComment(); ?></td>
+									<td>
+										<i class="fa fa-times delete-request" data-func="delete" data-type="ArtistComment" data-ref="<?= $object->getId(); ?>"></i>
+									</td>
+								</tr>
+<?php }} ?>
+							</tbody>
+						</table>
+					</div>
+				</div>
+<script>
+$(document).ready(function() {
+    $('#user-media-comments-table').dataTable();
+} );
+</script>
+			</div>
+			<div role="tabpanel" class="tab-pane fade" id="user-creators" aria-labelledby="profile-tab">
+				<div class="row">
+					<div class="col-sm-12">
+						<table width="100%" cellspacing="0" cellpadding="0" border="0" id="user-following-table" class="display dataTable" aria-describedby="user_events_datatable" style="width: 100%;">
+							<thead>
+								<tr role="row">
+									<th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="user-following-table" rowspan="1" colspan="1" style="width: 5%;">ID</th>
+									<th class="sorting" role="columnheader" tabindex="0" aria-controls="user-following-table" rowspan="1" colspan="1" style="width: 85%;">Username</th>
+									<th class="" role="columnheader" tabindex="0" aria-controls="user-following-table" rowspan="1" colspan="1" style="width: 10%;"></th>
+								</tr>
+							</thead>
+							<tbody aria-live="polite" aria-relevant="all">
+<?php if ($objectList = $this->user->getFollowing()) { ?>
+<?php 	foreach ($objectList as $object) { ?>
+								<tr id="Follower-<?= $object->getId(); ?>" title="<?= $object->getFollower()->getUsername(); ?>">
+									<td class="sorting_1"><?= $object->getId(); ?></td>
+									<td class="sorting_1"><?= $object->getFollower()->getUsername(); ?></td>
+									<td>
+										<i class="fa fa-times delete-request" data-func="delete" data-ref="<?= $object->getId(); ?>" data-type="Follower"></i>
+									</td>
+								</tr>
+<?php }} ?>
+							</tbody>
+						</table>
+					</div>
+				</div>
+<script>
+$(document).ready(function() {
+    $('#user-following-table').dataTable();
+} );
+</script>
+			</div>
+			<div role="tabpanel" class="tab-pane fade" id="user-favorites" aria-labelledby="dropdown1-tab">
+				<div class="row">
+					<div class="col-sm-12">
+						<table width="100%" cellspacing="0" cellpadding="0" border="0" id="user-favorite-table" class="display dataTable" aria-describedby="user_events_datatable" style="width: 100%;">
+							<thead>
+								<tr role="row">
+									<th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="user-favorite-table" rowspan="1" colspan="1" style="width: 5%;">ID</th>
+									<th class="sorting" role="columnheader" tabindex="0" aria-controls="user-favorite-table" rowspan="1" colspan="1" style="width: 20%;">Location</th>
+									<th class="sorting" role="columnheader" tabindex="0" aria-controls="user-favorite-table" rowspan="1" colspan="1" style="width: 20%;">Artist</th>
+									<th class="sorting" role="columnheader" tabindex="0" aria-controls="user-favorite-table" rowspan="1" colspan="1" style="width: 45%;">Title</th>
+									<th class="" role="columnheader" tabindex="0" aria-controls="user-favorite-table" rowspan="1" colspan="1" style="width: 10%;"></th>
+								</tr>
+							</thead>
+							<tbody aria-live="polite" aria-relevant="all">
+<?php if ($objectList = $this->user->getFavorites()) { ?>
+<?php 	foreach ($objectList as $object) { ?>
+								<tr id="Favorite-<?= $object->getId(); ?>" title="<?= $object->getTitle(); ?>">
+									<td class="sorting_1"><?= $object->getId(); ?></td>
+									<td class="sorting_1"><?= $object->getCity()->getFullname(); ?></td>
+									<td class="sorting_1"><?= $object->getUser()->getUsername(); ?></td>
+									<td class="sorting_1"><?= $object->getTitle(); ?></td>
+									<td>
+										<i class="fa fa-search view-request" data-func="view" data-type="Media" data-ref="<?= $object->getId(); ?>"></i>
+										<i class="fa fa-times delete-request" data-func="delete" data-ref="<?= $object->getId(); ?>" data-type="Favorite"></i>
+									</td>
+								</tr>
+<?php }} ?>
+							</tbody>
+						</table>
+					</div>
+				</div>
+<script>
+$(document).ready(function() {
+    $('#user-following-table').dataTable();
+} );
+</script>
+			</div>
+		</div>
+  	</div>
+</div>
+<div id="event-view" class="modal fade in" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">x</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title">View Artist Event</h4>
+			</div>
+			<div class="modal-body">
+				<table>
+					<tbody>
+						<tr>
+							<th>Artist Name</th>
+							<td><?= $this->user->getUsername(); ?></td>
+						</tr>
+						<tr>
+							<th>Title</th>
+							<td id="event-title"></td>
+						</tr>
+						<tr>
+							<th>Url</th>
+							<td id="event-url"></td>
+						</tr>
+						<tr>
+							<th>Start</th>
+							<td id="event-start"></td>
+						</tr>
+						<tr>
+							<th>Description</th>
+							<td id="event-description"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+    </div>
+</div>
+<div id="event-edit" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+    <div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">x</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title">Add/Update Artist Event</h4>
+			</div>
+			<div class="modal-body">
+				<input id="input-event-id" value="" type="hidden" />
+				<table>
+					<tbody>
+						<tr>
+							<th>Artist Name</th>
+							<td><?= $this->user->getUsername(); ?></td>
+						</tr>
+						<tr>
+							<th>Title</th>
+							<td>
+								<input id="input-event-title" maxlength="100" required="required" value="" type="text">
+							</td>
+						</tr>
+						<tr>
+							<th>Url</th>
+							<td>
+								<input id="input-event-url" maxlength="255" value="" type="text">
+							</td>
+						</tr>
+						<tr>
+							<th>Start</th>
+							<td>
+								<input id="input-event-start-date" class="datefield" maxlength="255" value="" type="text">
+								<input id="input-event-start-time" maxlength="255" value="" type="text">
+							</td>
+						</tr>
+						<tr>
+							<th>Description</th>
+							<td>
+								<textarea id="input-event-description" cols="60" rows="10"></textarea>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button id="input-event-save" type="button" class="btn btn-default">Save</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+    </div>
+</div>
+<script>
+//Bind Date Picker
+$( ".datefield" ).datepicker({
+	showOn: "button",
+	buttonImage: "/img/calendar.gif",
+	buttonImageOnly: true
+});
+$('#input-event-start-time').timepicker({ 'timeFormat': 'HH:mm','step': 15 });
+</script>
+<div id="send-message" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="false">
+    <div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">x</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title">Email User</h4>
+			</div>
+			<div class="modal-body">
+				<input id="input-event-id" value="" type="hidden" />
+				<table>
+					<tbody>
+						<tr>
+							<th>Email To</th>
+							<td><?= $this->user->getEmail(); ?></td>
+						</tr>
+						<tr>
+							<th>Subject</th>
+							<td>
+								<input id="input-email-subject" maxlength="100" value="" required="required" type="text">
+							</td>
+						</tr>
+						<tr>
+							<th>Send Password Reset Link</th>
+							<td>
+								<input id="input-email-password-reset" type="checkbox" />
+							</td>
+						</tr>
+						<tr>
+							<th>Body</th>
+							<td>
+								<textarea id="input-email-body" cols="60" rows="10"></textarea>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button id="input-event-save" type="button" class="btn btn-default">Save</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<script src="/js/userShow.js" type="text/javascript"></script>
+<script>
+$().userShow({
+	id:	'<?= $this->user->getId(); ?>'
+});
+</script>

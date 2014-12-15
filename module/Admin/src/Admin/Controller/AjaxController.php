@@ -48,6 +48,93 @@ class AjaxController extends AbstractActionController
         return $json;
     }
 
+    public function lookupeventAction()
+    {
+		$response = array();
+		$this->isAuthenticated();
+		$response = array();
+		$request = $this->getRequest();
+        if ($request->isPost()) {
+			$objectMapper = new \Townspot\UserEvent\Mapper($this->getServiceLocator());
+			$id = $request->getPost()->get('id');
+			$userEvent = $objectMapper->find($id);
+			$response = array(
+				'title'			=> $userEvent->getTitle(),
+				'url'			=> $userEvent->getUrl(),
+				'started'		=> $userEvent->getStart()->format('m/d/Y h:i a'),
+				'start_date'	=> $userEvent->getStart()->format('m/d/Y'),
+				'start_time'	=> $userEvent->getStart()->format('h:i a'),
+				'description'	=> $userEvent->getDescription(),
+			);
+		}
+		$json = new JsonModel($response);
+        return $json;
+    }
+	
+    public function saveeventAction()
+    {
+		$response = array();
+		$this->isAuthenticated();
+		$response = array();
+		$request = $this->getRequest();
+        if ($request->isPost()) {
+			$id = $request->getPost()->get('id');
+			$objectMapper = new \Townspot\UserEvent\Mapper($this->getServiceLocator());
+			$userEvent = $objectMapper->find($id);
+			$userEvent->setTitle($request->getPost()->get('title'));
+			$userEvent->setUrl($request->getPost()->get('url'));
+			$userEvent->setDescription($request->getPost()->get('description'));
+			$start = $request->getPost()->get('start_date') . ' ' . $request->getPost()->get('start_time');
+			$start_time = strtotime($start);
+			$datetime = new \DateTime();
+			$datetime->setTimestamp($start_time);
+			$userEvent->setStart($datetime);
+			$objectMapper->setEntity($userEvent)->save();
+		}
+		$json = new JsonModel();
+        return $json;
+    }
+	
+    public function sendmessageAction()
+    {
+		$response = array();
+		$this->isAuthenticated();
+		$response = array();
+		$request = $this->getRequest();
+        if ($request->isPost()) {
+            $key = uniqid();
+			$id = $request->getPost()->get('user');
+			$subject = $request->getPost()->get('subject');
+			$body = $request->getPost()->get('body');
+			$password = $request->getPost()->get('password');
+			$objectMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+			$user = $objectMapper->find($id);
+            $mail = new Mail\Message();
+            $mail->setBody($body);
+            $mail->setFrom('webmaster@townspot.tv', 'Townspot.tv');
+            $mail->addTo($user->getEmail(), $user->getFirstName().' '.$user->getLastName());
+            $mail->addBcc('emailcopy@townspot.tv');
+            $mail->setSubject($subject);
+            $transport = new Mail\Transport\Sendmail();
+            $transport->send($mail);
+			
+			if ($password) {
+                $sMessage  = "Please follow the link below to verify your account and reset your password\n\n";
+                $sMessage .= "http://townspot.tv/verify/" . $key . "\n";
+                $mail = new Mail\Message();
+                $mail->setBody($sMessage);
+                $mail->setFrom('webmaster@townspot.tv', 'Townspot.tv');
+                $mail->addTo($user->getEmail(), $user->getFirstName().' '.$user->getLastName());
+                $mail->addBcc('emailcopy@townspot.tv');
+                $mail->setSubject('Forgot Password');
+                $user->setSecurityKey($key);
+                $userMapper->setEntity($user)->save();
+			}
+		}
+		$json = new JsonModel();
+        return $json;
+	}
+
     public function userlistAction()
     {
 		$results = array();
@@ -127,7 +214,7 @@ class AjaxController extends AbstractActionController
 			$seriesMapper = new \Townspot\Series\Mapper($this->getServiceLocator());
 			$series = $seriesMapper->getAdminList($options);
 			
-			$results = $medias;
+			$results = $series;
 		}
 		$json = new JsonModel($results);
         return $json;
@@ -145,6 +232,8 @@ class AjaxController extends AbstractActionController
         if ($request->isPost()) {
 			$type = $request->getPost()->get('type');
 			$id = $request->getPost()->get('id');
+			$ref = $request->getPost()->get('ref');
+			$json = new JsonModel();
 			switch ($type) {
 				case 'Series':
 					$objectMapper = new \Townspot\Series\Mapper($this->getServiceLocator());
@@ -155,12 +244,31 @@ class AjaxController extends AbstractActionController
 				case 'Media':
 					$objectMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
 					break;
+				case 'UserEvent':
+					$objectMapper = new \Townspot\UserEvent\Mapper($this->getServiceLocator());
+					break;
+				case 'MediaComment':
+					$objectMapper = new \Townspot\MediaComment\Mapper($this->getServiceLocator());
+					break;
+				case 'ArtistComment':
+					$objectMapper = new \Townspot\ArtistComment\Mapper($this->getServiceLocator());
+					break;
+				case 'Follower':
+					$objectMapper = new \Townspot\UserFollowing\Mapper($this->getServiceLocator());
+					break;
+				case 'Episode':
+					$objectMapper = new \Townspot\SeriesEpisode\Mapper($this->getServiceLocator());
+					break;
+				case 'Favorite':
+					$objectMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+					$objectMapper->deleteFavorite($id,$ref);
+			        return $json;
+					break;
 			}
 			$object = $objectMapper->find($id);
 			$objectMapper->setEntity($object)->delete();
+			return $json;
 		}
-		$json = new JsonModel();
-        return $json;
 	}
 	
     public function mediasearchAction()
@@ -172,6 +280,7 @@ class AjaxController extends AbstractActionController
 			$options = array(
 				'title'			=> $request->getPost()->get('title'),
 				'username'		=> $request->getPost()->get('username'),
+				'user_id'		=> $request->getPost()->get('user_id'),
 				'category'		=> $request->getPost()->get('category'),
 				'sort'			=> $request->getPost()->get('sort_field'),
 				'sort_order'	=> $request->getPost()->get('sort_order')

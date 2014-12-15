@@ -33,6 +33,36 @@ return array(
                     ),
                 ),
             ),
+            'event-lookup' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/lookupevent',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Ajax',
+                        'action'     => 'lookupevent',
+                    ),
+                ),
+            ),
+            'event-save' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/saveevent',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Ajax',
+                        'action'     => 'saveevent',
+                    ),
+                ),
+            ),
+            'send-message' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/saveevent',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Ajax',
+                        'action'     => 'saveevent',
+                    ),
+                ),
+            ),
             'admin-record-delete' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -76,9 +106,12 @@ return array(
                 ),
             ),
             'admin-user-edit' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/admin/user/edit',
+                    'route'    => '/admin/user/edit/:id',
+					'constraints' => array(
+						'id' => '\d+',
+					),
                     'defaults' => array(
                         'controller' => 'Admin\Controller\User',
                         'action'     => 'edit',
@@ -91,10 +124,23 @@ return array(
 					'route'    => '/admin/user/show/:id',
 					'constraints' => array(
 						'id' => '\d+',
-						'title' => '[0-9]+',
 					),
 					'defaults' => array(
 						'controller' => 'Admin\Controller\User',
+						'action'     => 'show',
+					),
+				),
+            ),
+            'admin-series-show' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+				'options' => array(
+					'route'    => '/admin/series/show/:id',
+					'constraints' => array(
+						'id' => '\d+',
+						'title' => '[0-9]+',
+					),
+					'defaults' => array(
+						'controller' => 'Admin\Controller\Series',
 						'action'     => 'show',
 					),
 				),
@@ -256,9 +302,12 @@ return array(
                 ),
             ),
             'admin-series-edit' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route'    => '/admin/series/edit',
+                    'route'    => '/admin/series/edit/:id',
+                    'constraints' => array(
+                        'id'  => '[0-9]*'
+                    ),
                     'defaults' => array(
                         'controller' => 'Admin\Controller\Series',
                         'action'     => 'edit',
@@ -275,18 +324,29 @@ return array(
                     ),
                 ),
             ),
-            'admin-video-edit' => array(
+            'admin-review-video' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
-                    'route'    => '/admin/video/edit',
+                    'route'    => '/admin/video/review',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Media',
+                        'action'     => 'review',
+                    ),
+                ),
+            ),
+            'admin-video-edit' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/admin/video/edit/:id',
+                    'constraints' => array(
+                        'id'  => '[0-9]*'
+                    ),
                     'defaults' => array(
                         'controller' => 'Admin\Controller\Media',
                         'action'     => 'edit',
                     ),
                 ),
             ),
-			
-			
             'admin-videocategories' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(

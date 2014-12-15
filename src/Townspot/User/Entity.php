@@ -105,6 +105,8 @@ class Entity extends \Townspot\Entity
 		$this->_following = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->_followed_by = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->_user_events = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->_media = new \Doctrine\Common\Collections\ArrayCollection();
+		$this->_series = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->_ratings = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->_activity = new \Doctrine\Common\Collections\ArrayCollection();
 		$this->_activities_against = new \Doctrine\Common\Collections\ArrayCollection();
@@ -309,6 +311,16 @@ class Entity extends \Townspot\Entity
 	public function removeRole($key)
 	{
 		$this->_roles->remove($key);
+		return $this;
+	}
+	
+	public function removeRoles()
+	{
+		if ($this->getRoles()) {
+			foreach ($this->getRoles() as $index => $key) {
+				$this->_roles->remove($index);
+			}
+		}
 		return $this;
 	}
 	
@@ -628,6 +640,16 @@ class Entity extends \Townspot\Entity
 		return $this->_roles;
 	}
 	
+	public function hasRole($role)
+	{
+		foreach ($this->getRoles() as $_role) {
+			if ($_role->getId()) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public function getUserOauth()
 	{
 		return $this->_user_oauth;
@@ -701,6 +723,16 @@ class Entity extends \Townspot\Entity
 			$height);
 	}
 	
+	public function getResizerCdnLink($width = 100,$height = 100)
+	{
+		$imageServer = "http://images" . rand(0,9) . ".townspot.tv";
+		$link = $this->getProfileImage($width,$height);
+		if (preg_match('/^http/',$link)) {
+			return $link;
+		}
+		return $imageServer . $link;
+	}
+	
 	public function getRandomMedia()
 	{
 		if ($media = $this->getMedia()) {
@@ -718,5 +750,15 @@ class Entity extends \Townspot\Entity
         $this->_series = $value;
         return $this;
     }
+	
+	public function getLocationName()
+	{
+		$location = $this->getCity()->getFullName();
+		if ($neighborhood = $this->getNeighborhood()) {
+			$location .= " (" . $neighborhood . ")";
+		}
+		return $location;
+	}
+	
 
 }

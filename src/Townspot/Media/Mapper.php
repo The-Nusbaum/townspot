@@ -296,7 +296,7 @@ class Mapper extends AbstractEntityMapper
 		$sql  = "DELETE from media_category_linker where media_category_linker.media_id=" . $entity->getId();
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
 		$stmt->execute();
-		$sql  = "DELETE from media_comment where media_comment.media_id=" . $entity->getId();
+		$sql  = "DELETE from media_comment where media_comment.target_id=" . $entity->getId();
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
 		$stmt->execute();
 		$sql  = "DELETE from media_schedule where media_schedule.media_id=" . $entity->getId();
@@ -344,6 +344,9 @@ class Mapper extends AbstractEntityMapper
 						break;
 					case 'username':
 						$where[] = "user.username LIKE '" . $value . "%'";
+						break;
+					case 'user_id':
+						$where[] = "media.user_id LIKE '" . $value . "'";
 						break;
 					case 'category':
 						$where[] = "media_category_linker.category_id = " . $value;

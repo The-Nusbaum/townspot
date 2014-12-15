@@ -22,5 +22,13 @@ class Mapper extends AbstractEntityMapper
 		}
 		return $results;
 	}
+
+	public function delete() 
+	{
+        $entity = $this->getEntity();
+		$sql  = "DELETE from media_comment where media_comment.id=" . $entity->getId();
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+	}
 	
 }

@@ -18,8 +18,8 @@
 <div class="row">
 	<div class="col-sm-12">
 		<div class="btn-group pull-right" role="group">
-			<a href="/admin/video/edit/<?= $record['Video']['id']; ?>" class="btn btn-default"><i class="fa fa-pencil-square-o"></i> Edit Video</a>
-			<a id="delete" href="#" class="btn btn-default" data-ref="<?= $this->media->getId(); ?>">x Delete Video</a>
+			<a href="/admin/video/edit/<?= $this->media->getId(); ?>" class="btn btn-default"><i class="fa fa-pencil-square-o"></i> Edit Video</a>
+			<a id="delete-media" href="#" class="btn btn-default" data-ref="<?= $this->media->getId(); ?>">x Delete Video</a>
 <?php if ($this->media->getApproved()) { ?>
 			<a id="unapprove" href="#" class="btn btn-default" data-ref="<?= $this->media->getId(); ?>"><i class="fa fa-film"></i> UnApprove Video</a>
 <?php } else { ?>
@@ -39,7 +39,6 @@
 			<ul id="videoTab" class="nav nav-tabs" role="tablist">
 				<li role="presentation" class="active"><a href="#video-profile" id="video-tab-profile" role="tab" data-toggle="tab">Video Info</a></li>
 				<li role="presentation"><a href="#video-comments" role="tab" id="video-tab-comments" data-toggle="tab">Comments</a></li>
-				<li role="presentation"><a href="#video-fans" role="tab" id="video-tab-fans" data-toggle="tab">Fans</a></li>
 			</ul>
 			<div id="videoTabContent" class="tab-content">
 				<div role="tabpanel" class="tab-pane fade in active" id="video-profile">
@@ -135,33 +134,15 @@
 							</tr>
 						</thead>
 						<tbody aria-live="polite" aria-relevant="all">
-<?php foreach ($this->media->getComments() as $comment) { ?>
-							<tr id="Comment-<?= $e['id']; ?>" class="<?= ($i % 2) ? 'odd' : 'even'; ?>"">
-								<td class="sorting_1"><?= $e['id']; ?></td>
-								<td class="sorting_1"><?= $e['User']['username']; ?></td>
-								<td class="sorting_1"><?= date('m/d/Y H:i',strtotime($e['created'])); ?></td>
-								<td class="sorting_1"><?= $e['comment']; ?></td>
-								<td><i class="icon-remove delete-request" data-ref="<?= $e['id']; ?>" data-func="delete" data-type="Comment"></i></td>
-							</tr>
-<?php } ?>
-						</tbody>
-					</table>
-				</div>
-				<div role="tabpanel" class="tab-pane fade" id="video-fans">
-					<table width="100%" cellspacing="0" cellpadding="0" border="0" id="video-fans-table" class="display dataTable" aria-describedby="user_events_datatable" style="width: 100%;">
-						<thead>
-							<tr role="row">
-								<th class="sorting_asc" role="columnheader" tabindex="0" aria-controls="video-fans-table" rowspan="1" colspan="1" style="width: 5%;">ID</th>
-								<th class="sorting" role="columnheader" tabindex="0" aria-controls="video-fans-table" rowspan="1" colspan="1" style="width: 80%;">Username</th>
-								<th class="" role="columnheader" tabindex="0" aria-controls="video-fans-table" rowspan="1" colspan="1" style="width: 15%;"></th>
-							</tr>
-						</thead>
-						<tbody aria-live="polite" aria-relevant="all">
-<?php foreach ($record['UserFavorite'] as $i => $e) { ?>
-							<tr id="Comment-<?= $e['id']; ?>" class="<?= ($i % 2) ? 'odd' : 'even'; ?>"">
-								<td class="sorting_1"><?= $e['id']; ?></td>
-								<td class="sorting_1"><?= $e['User']['username']; ?></td>
-								<td><i class="icon-remove delete-request" data-ref="<?= $e['id']; ?>" data-func="delete" data-type="UserFavorite"></i></td>
+<?php foreach ($this->media->getCommentsAbout() as $comment) { ?>
+							<tr id="Comment-<?= $comment->getId(); ?>" >
+								<td class="sorting_1"><?= $comment->getId(); ?></td>
+								<td class="sorting_1"><?= $comment->getUser()->getUsername(); ?></td>
+								<td class="sorting_1"><?= $comment->getCreated()->format('m/d/Y H:i'); ?></td>
+								<td class="sorting_1"><?= $comment->getComment(); ?></td>
+								<td>
+									<i class="fa fa-times delete-request" data-func="delete" data-ref="<?= $comment->getId(); ?>" data-type="MediaComment"></i>
+								</td>
 							</tr>
 <?php } ?>
 						</tbody>
@@ -171,3 +152,10 @@
 		</div>
 	</div>
 </div>
+
+<script src="/js/mediaShow.js" type="text/javascript"></script>
+<script>
+$().mediaShow({
+	id:	'<?= $this->media->getId(); ?>'
+});
+</script>

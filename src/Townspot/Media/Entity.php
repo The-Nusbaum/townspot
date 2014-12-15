@@ -255,7 +255,7 @@ class Entity extends \Townspot\Entity
 		return $this;
 	}
 
-	public function addFan(\Townspot\Category\Entity $value)
+	public function addFan(\Townspot\User\Entity $value)
 	{
 		$this->_fans->add($value);
 		return $this;
