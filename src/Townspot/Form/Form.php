@@ -218,11 +218,13 @@ class Form extends \Zend\Form\Form {
 
     protected function iterate_tree_selections($data,$selClass) {
         $html = '';
-        foreach($data as $sel) {
-            $html .= " <span class='$selClass' data-id='{$sel['id']}'>{$sel['name']} <i class='fa fa-times'></i>";
-            if($sel['children']) $html .= $this->iterate_tree_selections($sel['children'],$selClass);
-            $html .= "</span>";
-        }
+		if ($data) {
+			foreach($data as $sel) {
+				$html .= " <span class='$selClass' data-id='{$sel['id']}'>{$sel['name']} <i class='fa fa-times'></i>";
+				if($sel['children']) $html .= $this->iterate_tree_selections($sel['children'],$selClass);
+				$html .= "</span>";
+			}
+		}
         return $html;
     }
 

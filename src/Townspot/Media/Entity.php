@@ -693,7 +693,6 @@ class Entity extends \Townspot\Entity
             $videoEntry = $this->_getYtVideo($ytId);
             $authors = $videoEntry->getAuthor();
             $author = array_shift($authors);
-            var_dump($authors);die();
             return $author;
         }
         return null;
