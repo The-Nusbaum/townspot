@@ -116,7 +116,11 @@
 							<div class="row">
 								<div class="col-sm-3 heading"><label for="VideoCategories" class="control-label">Categories</label></div>
 								<div class="col-sm-9">
-									<div id="categories-tree"></div>
+									<ul>
+<?php foreach ($this->media->getCategories() as $category) { ?>
+										<li><?= $category->getName(); ?></li>
+<?php } ?>										
+									</div>
 								</div>
 							</div>
 						</div>
