@@ -22,7 +22,7 @@ $form->setAttribute('method', 'post');
                 <input type="hidden" name="redirect" value="<?php echo $this->escapeHtml($this->redirect) ?>" />
             <?php endif ?>
 
-            <?php echo $this->formButton($form->get('submit')) ?>
+            <button type="submit" name="submit" class="form-control btn btn-primary" value="">Sign In</button>
             <p></p>
             <div class="sign-up">Need an account? <a href="/sign-up">Sign Up!</a></div>
             <div class="sign-up">Forgot your password? <a href="/forgot-password">Reset It</a></div>
