@@ -390,6 +390,16 @@ return array(
                     ),
                 ),
             ),
+            'encoding-finished' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/encoding/finished',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Ajax',
+                        'action'     => 'encodingFinished',
+                    ),
+                ),
+            ),
 		)
 	),
     'service_manager' => array(

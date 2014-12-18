@@ -319,6 +319,8 @@ class AjaxController extends AbstractActionController
 			$user = $userMapper->find($this->zfcUserAuthentication()->getIdentity()->getId());
 			if ($type == 'approve') {
 				$media->setApproved(true);
+                $encoding = new \Townspot\Encoding($this->getServiceLocator());
+                $encoding->addToQueue($videoId);
 			} else {
 				$media->setApproved(false);
 			}
@@ -328,4 +330,9 @@ class AjaxController extends AbstractActionController
 		$json = new JsonModel();
         return $json;
 	}
+
+    public function encodingFinishedAction() {
+        $encoding = new \Townspot\Encoding();
+        die($encoding->finished());
+    }
 }

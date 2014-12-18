@@ -627,7 +627,7 @@ class VideoController extends AbstractActionController
                     ->setDuration($data->get('duration'));
 
                 $categoryMapper = new \Townspot\Category\Mapper($this->getServiceLocator());
-                foreach($data->get('selCat') as $vc) {
+                if(is_array($data->get('selCat'))) foreach($data->get('selCat') as $vc) {
                     $cat = $categoryMapper->find($vc);
                     $mediaEntity->addCategory($cat);
                 }
