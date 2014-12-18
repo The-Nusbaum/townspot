@@ -63,14 +63,16 @@
                 <?php endif; ?>
             </div>
             <div class="col-xs-12 col-sm-6">
-                <h3>Location</h3>
-                <div><?= $user->getCity()->getName().', '.$user->getCity()->getProvince()->getAbbrev() ?></div>
-                <div id="map-canvas"
-                     data-lat = "<?=$user->getlatitude() ?>"
-                     data-long = "<?=$user->getlongitude() ?>"
-                     data-title = "<?=$user->getCity()->getName() ?>"
+                <div class="hidden-xs hidden-sm">
+                    <h3>Location</h3>
+                    <div><?= $user->getCity()->getName().', '.$user->getCity()->getProvince()->getAbbrev() ?></div>
+                    <div id="map-canvas"
+                         data-lat = "<?=$user->getlatitude() ?>"
+                         data-long = "<?=$user->getlongitude() ?>"
+                         data-title = "<?=$user->getCity()->getName() ?>"
 
-                    ></div>
+                        ></div>
+                </div>
                 <?php if($user->getWebsite()): ?>
                     <h3>Website</h3>
                     <div><a href='<?= $user->getWebsite() ?>' target="_blank"><?= $user->getWebsite() ?></a></div>
@@ -79,6 +81,7 @@
                     <h3>Twitter</h3>
                     <div><a href="http://twitter.com/<?= $twitter['link'] ?>" target="_blank">@<?= $twitter['link'] ?></a></div>
                 <?php endif; ?>
+
             </div>
         </div>
 
