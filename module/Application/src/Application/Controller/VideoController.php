@@ -13,6 +13,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
 use Zend\Mail\Message;
+use Zend\Mvc\Controller\Plugin\FlashMessenger;
 
 class VideoController extends AbstractActionController
 {
@@ -627,16 +628,16 @@ class VideoController extends AbstractActionController
                     ->setDuration($data->get('duration'));
 
                 $categoryMapper = new \Townspot\Category\Mapper($this->getServiceLocator());
-                foreach($data->get('selCat') as $vc) {
+                if (is_array($data->get('selCat'))) foreach($data->get('selCat') as $vc) {
                     $cat = $categoryMapper->find($vc);
                     $mediaEntity->addCategory($cat);
                 }
 
                 $mediaMapper->setEntity($mediaEntity);
                 $mediaMapper->save();
-
-                $this->flashMessenger()->addMessage('Your video upload was successful. It will be reviewed by our staff for content and quality.');
-
+		$_SESSION['flash'] = array();
+		$_SESSION['flash'][] = 'Your video upload was successful. It will be reviewed by our staff for content and quality.';
+                //$this->flashMessenger()->addMessage('Your video upload was successful. It will be reviewed by our staff for content and quality.');
                 return $this->redirect()->toRoute('upload');
             }
         }
