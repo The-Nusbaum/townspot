@@ -613,7 +613,7 @@ class VideoController extends AbstractActionController
                 $mediaEntity = new \Townspot\Media\Entity();
                 $mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
                 $mediaEntity->setUser($user)
-                    ->setCountry($country)
+                    //->setCountry($country)
                     ->setProvince($province)
                     ->setCity($city)
                     ->setTitle($data->get('title'))
