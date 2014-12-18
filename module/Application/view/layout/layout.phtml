@@ -75,6 +75,13 @@
         <div class="container main-content">
             <div class="row">
                 <?= $this->flashMessenger()->render('default', array('alert', 'alert-warning', 'show', 'list-unstyled'));?>
+		<?php
+			if(!empty($_SESSION['flash'])) foreach($_SESSION['flash'] as $flash): ?>
+			<div class='alert alert-success text-center' style="display:block"><?= $flash ?></div>
+				
+		<?php	endforeach;
+			$_SESSION['flash'] = array();
+		?>
             </div>
             <?php echo $this->content; ?>
         </div> 

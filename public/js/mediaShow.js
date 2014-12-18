@@ -65,6 +65,8 @@
 		
 		$(document).on("click", '#delete-media', function(event)			{ 	methods.deleteMedia(this); 			});	
 		$(document).on("click", '.delete-request', function(event)			{ 	methods.deleteRequest(this); 			});	
+		$(document).on("click", '#approve', function(event)					{ 	methods.approveMedia(this); 			});	
+		$(document).on("click", '#unapprove', function(event)				{ 	methods.unapproveMedia(this); 			});	
 	};	
 })(jQuery);
 
