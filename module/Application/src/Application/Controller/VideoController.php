@@ -271,6 +271,9 @@ class VideoController extends AbstractActionController
 	
     public function uploadAction()
     {
+        if (!$this->isAllowed('artist')) {
+            return $this->redirect()->toRoute('zfcuser-login');
+        }
         $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
         $user = $userMapper->findOneById($this->auth->getIdentity());
 
