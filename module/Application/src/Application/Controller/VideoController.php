@@ -580,6 +580,7 @@ class VideoController extends AbstractActionController
 
         if($this->getRequest()->isPost()){
             if($data->get('youtube_url') && !$data->get('review_ok')) {
+                $url = $data->get('youtube_url');
                 $client = new \Zend\Http\Client('https://example.org', array(
                     'adapter' => 'Zend\Http\Client\Adapter\Curl'
                 ));
@@ -592,11 +593,19 @@ class VideoController extends AbstractActionController
 
                 );
 
-                preg_match('/v=([^&]*)/i',$data->get('youtube_url'),$idMatches);
-                if(!empty($idMatches[1])) {
-                    $id = $idMatches[1];
+                if(preg_match('/youtube\.com/',$url)) {
+                    preg_match('/v=([^&]*)/i', $data->get('youtube_url'), $idMatches);
+                    if (!empty($idMatches[1])) {
+                        $id = $idMatches[1];
+                    } else {
+                        //no id
+                    }
+                } elseif(preg_match('/youtu.be/',$url)) {
+                    $id = preg_replace('/https?:\/\/youtu.be\/(.*)/','$1',$url);
                 } else {
-                    //no id
+                    $_SESSION['flash'] = array();
+                    $_SESSION['flash'][] = 'Invalid url provided';
+                    return $this->redirect()->toRoute('upload');
                 }
 
                 $ytVideo = $yt->getVideoEntry($id);
