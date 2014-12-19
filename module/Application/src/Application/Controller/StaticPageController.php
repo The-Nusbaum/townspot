@@ -31,11 +31,11 @@ class StaticPageController extends AbstractActionController
 			 ->appendProperty('og:description', 'TownSpot.tv is the Local Video Network spotlighting local talent across the country through a curated video directory.')
 			 ->appendProperty('og:site_name', 'townspot.tv')
 			 ->appendProperty('og:url', 'http://www.townspot.tv/')
-			 ->appendProperty('og:image', 'http://www.townspot.tv/img/townspotwhat.png')
+			 ->appendProperty('og:image', 'http://www.townspot.tv/img/townspotwhat.jpg')
 			 ->appendProperty('twitter:card', 'summary')
 			 ->appendProperty('twitter:title','Townspot.tv')
 			 ->appendProperty('twitter:description', 'TownSpot.tv is the Local Video Network spotlighting local talent across the country through a curated video directory.')
-			 ->appendProperty('twitter:image', 'http://www.townspot.tv/img/townspotwhat.png');
+			 ->appendProperty('twitter:image', 'http://www.townspot.tv/img/townspotwhat.jpg');
 	}
 
     public function privacyAction()
