@@ -309,7 +309,7 @@
             }
             ?>
             <div class="col-sm-6 video">
-                <a href="/videos/<?=$v->getId()?>/<?= urlencode($v->getTitle())?>" class="thumbnail">
+                <a href="<?= $v->getMediaLink() ?>" class="thumbnail">
                     <?php if(preg_match('/(?:ytimg)|(?:files)/',$v->getPreviewImage())): ?>
                         <img class="img-responsive" src="<?= $v->getPreviewImage() ?>" alt="<?=$v->getTitle()?>">
                     <?php else: ?>
@@ -337,7 +337,7 @@
                             <i class="fa fa-info-circle"></i>
                         </div>
                     </div>
-                    <h4><a href="/videos/<?=$v->getId()?>/<?= urlencode($v->getTitle())?>"><?=$v->getTitle()?></a></h4>
+                    <h4><a href="<?= $v->getMediaLink() ?>"><?=$v->getTitle()?></a></h4>
                     <?php $time = $v->getDebutTime()->getTimeStamp() + $TZoffset; ?>
                     <?php $time = date('F jS, Y', $time); ?>
                     <h4>Premiered on <?= $time; ?></h4>
