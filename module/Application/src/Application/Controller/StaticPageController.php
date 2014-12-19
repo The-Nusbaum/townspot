@@ -24,6 +24,18 @@ class StaticPageController extends AbstractActionController
 			 ->get('ViewHelperManager')
 			 ->get('HeadTitle')
 			 ->set('TownSpot &bull; Your Town. Your Talent. Spotlighted');
+		$this->getServiceLocator()
+			 ->get('ViewHelperManager')
+			 ->get('HeadMeta')
+			 ->appendName('og:title', 'Townspot.tv')
+			 ->appendName('og:description', 'TownSpot.tv is the Local Video Network spotlighting local talent across the country through a curated video directory.')
+			 ->appendName('og:site_name', 'townspot.tv')
+			 ->appendName('og:url', 'http://www.townspot.tv/')
+			 ->appendName('og:image', 'http://www.townspot.tv/img/townspotwhat.png')
+			 ->appendName('twitter:card', 'summary')
+			 ->appendName('twitter:title','Townspot.tv')
+			 ->appendName('twitter:description', 'TownSpot.tv is the Local Video Network spotlighting local talent across the country through a curated video directory.')
+			 ->appendName('twitter:image', 'http://www.townspot.tv/img/townspotwhat.png');
 	}
 
     public function privacyAction()
