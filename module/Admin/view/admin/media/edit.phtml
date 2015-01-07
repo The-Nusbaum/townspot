@@ -1,29 +1,24 @@
 <div class="container" id="videoUpload">
     <div class="row col-md-10 col-md-offset-1">
-
+        <form id="submitForm" action="/admin/video/edit/<?= $data['id'] ?>" method="POST">
         <div class="col-sm-12">
             <h2>Edit a Video</h2>
             <?= $headForm ?>
         </div>
-
-
         <div class="col-md-8">
             <?= $mainForm ?>
         </div>
         <div class="col-md-4">
             <?= $videoMediaForm ?>
         </div>
-
-
         <div class="row">
             <div class="row">
                 <div class="col-md-10 col-md-offset-1 form-group">
-                    <form id="submitForm" action="/admin/video/edit/<?= $data['id'] ?>" method="POST">
-                        <button id="submit" class="form-control btn btn-primary" type="submit">Submit Video</button>
-                    </form>
+					<button id="submit" class="form-control btn btn-primary" type="submit">Submit Video</button>
                 </div>
             </div>
         </div>
+		</form>
     </div>
     <script>
         upload.init();

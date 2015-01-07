@@ -212,16 +212,19 @@ class MediaController extends AbstractActionController
                 $categories = $categoryMapper->findByParent(0);
 				
 				$headForm = new \Admin\Forms\Video\Upload\HeadForm('uploadHeader', $users, $countries, $provinces, $cities);
-
+				$headForm->setSubForm(true);
+				
                 $data = $media->toArray();
                 $data['selectedCategories'] = $this->_tierCats($media->getCategories());
                 if ($data['source'] == 'youtube') $data['youtube_url'] = $data['url'];
                 $headForm->setData($data);
 
                 $mainForm = new \Application\Forms\Video\EditForm('manualForm');
+				$mainForm->setSubForm(true);
                 $mainForm->setData($data);
 
                 $videoMediaForm = new \Application\Forms\Video\Upload\VideoMediaForm('videoMediaForm');
+				$videoMediaForm->setSubForm(true);
                 $videoMediaForm->setData($data);
 
                 $this->getServiceLocator()
@@ -245,7 +248,6 @@ class MediaController extends AbstractActionController
                         $media->$method($value);
                     }
                 }
-				
 				$province = $provinceMapper->find($data['province_id']);
 				$media->setProvince($province);
 				$city = $cityMapper->find($data['city_id']);
@@ -262,11 +264,10 @@ class MediaController extends AbstractActionController
                     $cat = $categoryMapper->find($cat_id);
                     $media->addCategory($cat);
                 }
-
                 $mediaMapper->setEntity($media)->save();
                 $this->flashMessenger()->addMessage('The video has been edited.');
 
-                return $this->redirect()->toRoute('admin-video');
+				return $this->redirect()->toRoute('admin-video');
             }
         } else {
             //throw exception and 404

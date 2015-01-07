@@ -9,13 +9,21 @@
 namespace Townspot\Form;
 
 class Form extends \Zend\Form\Form {
+	protected $_subForm = false;
+	
+	public function setSubForm($value) {
+		$this->_subForm = $value;
+	}
+
     public function __toString() {
         $html = '';
         $class = $this->getAttribute('class')?$this->getAttribute('class'):'';
-        $html .= "<form role='form' action='{$this->getAttribute('action')}' method='{$this->getAttribute('method')}' class='$class'";
-        $id = $this->getAttribute('id');
-        if($id) $html .= " id='$id'";
-        $html .= ">";
+		if (!$this->_subForm) {
+			$html .= "<form role='form' action='{$this->getAttribute('action')}' method='{$this->getAttribute('method')}' class='$class'";
+			$id = $this->getAttribute('id');
+			if($id) $html .= " id='$id'";
+			$html .= ">";
+		}
         $columns = $this->getAttribute('columns');
         if(!$columns) $columns = 1;
 
@@ -50,7 +58,9 @@ class Form extends \Zend\Form\Form {
 
         $html .= "</div>";
 
-        $html .= "</form>";
+		if (!$this->_subForm) {
+			$html .= "</form>";
+		}
         return $html;
     }
 
