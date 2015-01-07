@@ -68,9 +68,11 @@
                 <input type="hidden" name="on_media_server" value="<?= $data->get('on_media_server');?>"/>
                 <input type="hidden" name="source" value="<?= $data->get('source');?>"/>
                 <input type="hidden" name="duration" value="<?= $data->get('duration');?>"/>
+				<?php if ($data->get('selCat')) { ?>
                 <?php foreach($data->get('selCat') as $i => $vc) : ?>
                     <input type="hidden" name="selCat[<?= $i ?>]" value="<?= $vc ?>"/>
                 <?php endforeach; ?>
+				<?php } ?>
                 <input type="hidden" name="review_ok" value="1">
 				<button class="btn btn-primary form-control" type="submit">Looks Good!</button>
             </form>

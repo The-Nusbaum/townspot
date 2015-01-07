@@ -36,16 +36,15 @@ class MediaController extends AbstractActionController
     {
         $request = $this->getRequest();
         $data = $request->getPost();
-        $this->_view->setVariable('data',$data);
 
         $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
         $user = $userMapper->find($data->get('user_id'));
 
         $countryMapper = new \Townspot\Country\Mapper($this->getServiceLocator());
-        $country = $countryMapper->find($data->get('country_id'));
 
         $provinceMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
         $province = $provinceMapper->find($data->get('province_id'));
+        $country = $province->getCountry();
 
         $cityMapper = new \Townspot\City\Mapper($this->getServiceLocator());
         $city = $cityMapper->find($data->get('city_id'));
@@ -55,10 +54,6 @@ class MediaController extends AbstractActionController
         foreach($categories as $c) {
             $allCategories[$c->getId()] = $c->getName();
         }
-
-        $this->_view->setVariable('state',$province->getName());
-        $this->_view->setVariable('city',$city->getName());
-        $this->_view->setVariable('allCategories',$allCategories);
 
         if($this->getRequest()->isPost()){
             if($data->get('youtube_url') && !$data->get('review_ok')) {
@@ -127,7 +122,15 @@ class MediaController extends AbstractActionController
                 return $this->redirect()->toRoute('admin-video');
             }
         }
-        return $this->_view;
+		
+		return new ViewModel( 
+			array(
+				'data'			=> $data,
+				'state'			=> $province->getName(),
+				'city'			=> $city->getName(),
+				'allCategories'	=> $allCategories
+			)
+		);
 	}
 	
     public function addAction()
