@@ -61,6 +61,7 @@ class Encoding {
         )
     );
 
+    protected $serviceLocator;
     const ACCOUNT_ID = '14867';
     const ACCOUNT_KEY = '122a235703a96cb63ff08689398f5d5f';
     const API_URL = 'http://manage.encoding.com/';
