@@ -320,7 +320,7 @@ class AjaxController extends AbstractActionController
 			if ($type == 'approve') {
 				$media->setApproved(true);
                 $encoding = new \Townspot\Encoding($this->getServiceLocator());
-                //$encoding->addToQueue($videoId);
+                $encoding->addToQueue($videoId);
 			} else {
 				$media->setApproved(false);
 			}
