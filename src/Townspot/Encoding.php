@@ -67,7 +67,7 @@ class Encoding {
     const API_URL = 'http://manage.encoding.com/';
 
 
-    public function __constructor($serviceLocator) {
+    public function __construct($serviceLocator) {
         die('foo');
         ini_set('display_errors', true);
         error_reporting(E_ALL);
