@@ -24,11 +24,12 @@ class HeadForm extends Form {
         foreach($colCountries as $c) {
             $countries[$c->getId()] = $c->getName();
         }
-
+echo '<pre>';
         foreach($colProvinces as $p) {
+            var_dump($p->getName());
             $provinces[$p->getId()] = $p->getName();
         }
-
+die;
 		$cities = array();
 
         foreach($colCities as $c) {
