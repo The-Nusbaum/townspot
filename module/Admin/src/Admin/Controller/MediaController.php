@@ -208,7 +208,8 @@ class MediaController extends AbstractActionController
 				}
                 $user = $userMapper->findOneById($media->getUser()->getId());
                 $countries = $countryMapper->findAll();
-                $provinces = $provinceMapper->findByCountry($media->getCountry());
+                $provinces = $provinceMapper->findByCountry(99);
+                var_dump($provinces);
                 $cities = $cityMapper->findByProvince($media->getProvince());
 				
                 $categoryMapper = new \Townspot\Category\Mapper($this->getServiceLocator());
