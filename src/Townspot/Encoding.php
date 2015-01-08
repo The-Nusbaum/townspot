@@ -70,7 +70,7 @@ class Encoding {
     public function __construct($serviceLocator) {
         ini_set('display_errors', true);
         error_reporting(E_ALL);
-var_dump($serviceLocator);
+
         $this->config = $serviceLocator->get('Config')['encoding'];
         $this->amqp = $serviceLocator->get('Config')['amqp'];
         $this->serviceLocator = $serviceLocator;
