@@ -24,9 +24,8 @@ class HeadForm extends Form {
         foreach($colCountries as $c) {
             $countries[$c->getId()] = $c->getName();
         }
-        
+
         foreach($colProvinces as $p) {
-            var_dump($p->getName());
             $provinces[$p->getId()] = $p->getName();
         }
 		$cities = array();
