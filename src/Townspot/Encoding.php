@@ -147,6 +147,7 @@ class Encoding {
 
             $formatNode->addChild('destination', "sftp://undead:".$this->config['pass']."@".$this->config['host']."/home/undead/in/".$video_id.'_'.$name.'.mp4');
         }
+        var_dump($req->asXML());
 
         // Sending API request
         $res = $this->send($req->asXML());
