@@ -120,7 +120,7 @@ class Encoding {
          *
          */
 
-        $req = new SimpleXMLElement('<?xml version="1.0"?><query></query>');
+        $req = new \SimpleXMLElement('<?xml version="1.0"?><query></query>');
         $req->addChild('userid', self::ACCOUNT_ID);
         $req->addChild('userkey', self::ACCOUNT_KEY);
         $req->addChild('action', 'AddMedia');
