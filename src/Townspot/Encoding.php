@@ -68,6 +68,7 @@ class Encoding {
 
 
     public function __constructor($serviceLocator) {
+        die('foo');
         ini_set('display_errors', true);
         error_reporting(E_ALL);
 var_dump($serviceLocator);
