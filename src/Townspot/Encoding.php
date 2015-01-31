@@ -18,7 +18,7 @@ class Encoding {
             'video_codec'=>'libx264',
             'audio_codec'=>'dolby_heaac',
             'logo'=>array(
-                'logo_source'=>'sftp://undead:FKvHA10VCT0gsei3EHq1@54.235.220.99/home/undead/watermark.png',
+                'logo_source'=>'sftp://undead:McXHT8g3ieiqPoJTFCNt@216.157.108.165/home/undead/watermark.png',
                 'logo_x'=>5,
                 'logo_y'=>5,
                 'logo_mode'=>1
@@ -35,7 +35,7 @@ class Encoding {
             'video_codec'=>'libx264',
             'audio_codec'=>'dolby_aac',
             'logo'=>array(
-                'logo_source'=>'sftp://undead:FKvHA10VCT0gsei3EHq1@54.235.220.99/home/undead/watermark.png',
+                'logo_source'=>"sftp://undead:McXHT8g3ieiqPoJTFCNt@216.157.108.165/home/undead/watermark.png",
                 'logo_x'=>529,
                 'logo_y'=>334,
                 'logo_mode'=>1
@@ -53,7 +53,7 @@ class Encoding {
             'video_codec'=>'libx264',
             'audio_codec'=>'dolby_aac',
             'logo'=>array(
-                'logo_source'=>'sftp://undead:FKvHA10VCT0gsei3EHq1@54.235.220.99/home/undead/watermark.png',
+                'logo_source'=>'sftp://undead:McXHT8g3ieiqPoJTFCNt@216.157.108.165/home/undead/watermark.png',
                 'logo_x'=>743,
                 'logo_y'=>454,
                 'logo_mode'=>1
@@ -148,7 +148,6 @@ class Encoding {
 
             $formatNode->addChild('destination', "sftp://undead:".$this->config['pass']."@".$this->config['host']."/home/undead/in/".$video_id.'_'.$name.'.mp4');
         }
-        var_dump($req->asXML());
 
         // Sending API request
         $res = $this->send($req->asXML());
