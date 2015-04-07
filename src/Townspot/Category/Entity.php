@@ -121,12 +121,12 @@ class Entity extends \Townspot\Entity
 		return $this->_media;
 	}
 
-	public function getDiscoverLink($location = null)
+	public function getDiscoverLink($location = null, $useSession = true)
 	{
 		if (($location instanceof \Townspot\Province\Entity)||
 			($location instanceof \Townspot\Province\Entity)) {
 				$link = $location->getDiscoverLink();
-		} elseif (isset($_SESSION['DiscoverLocation'])) {
+		} elseif (isset($_SESSION['DiscoverLocation']) && $useSession) {
 			$link = $_SESSION['DiscoverLocation']->getDiscoverLink();
 		} else {
 			$link = '/discover';

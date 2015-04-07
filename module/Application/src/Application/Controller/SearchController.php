@@ -130,4 +130,94 @@ class SearchController extends AbstractActionController
 			)
 		);
     }
+
+    protected function _getChildren($cats) {
+        $categories = array();
+        foreach($cats as $c) {
+            $categories[$c->getId()] = array(
+                'name' => $c->getName(),
+            );
+            if($c->getCategories()) {
+                $subCats = $c->getCategories();
+                foreach($subCats as $sc){
+                    $categories[$c->getId()]['children'] = $this->_getChildren(array());
+                }
+            }
+        }
+        return $categories;
+    }
+
+    public function channelsurfAction() {
+        $this->init();
+
+        $categoryMapper = new \Townspot\Category\Mapper($this->getServiceLocator());
+        $countryMapper = new \Townspot\Country\Mapper($this->getServiceLocator());
+        $provinceMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
+        $cityMapper = new \Townspot\City\Mapper($this->getServiceLocator());
+
+        $country = $countryMapper->find(99);
+        $_state = $this->params()->fromRoute('state');
+        $_state = preg_replace('/[_]/',' ',$_state);
+        $_city = $this->params()->fromRoute('city');
+        $_city = preg_replace('/[_]/',' ',$_city);
+        $cat1 = $this->params()->fromRoute('cat1');
+        $cat2 = $this->params()->fromRoute('cat2');
+        $cat3 = $this->params()->fromRoute('cat3');
+        $cat4 = $this->params()->fromRoute('cat4');
+        $cat5 = $this->params()->fromRoute('cat5');
+
+        if($_state != 'all-states') {
+            $state = $provinceMapper->findOneBy(array(
+                    '_name' => $_state,
+                    '_country' => $country
+            ))->getId();
+        } else {
+            $state = null;
+        }
+
+        if($_city != 'all-cities') {
+            $city = $cityMapper->findOneBy(array(
+                '_name' => $_city,
+                '_province' => $state
+            ))->getId();
+        } else {
+            $city = null;
+        }
+
+        $category = null;
+        for($i = 1; $i <= 5; $i++) {
+            $var = "cat$i";
+            if($$var == null) break;
+            $$var = preg_replace('/[_]/',' ',$$var);
+            if($i == 1) $params = array('_name' => $$var);
+            else $params = array(
+                '_name' => ucwords($$var),
+                '_parent' => $category
+            );
+            $category = $categoryMapper->findOneBy($params)->getId();
+        }
+
+        $this->getServiceLocator()
+            ->get('ViewHelperManager')
+            ->get('HeadScript')
+            ->appendFile('/js/videointeractions.js','text/javascript');
+
+        $states = $provinceMapper->getProvincesHavingMedia();
+        $cities = array();
+        foreach($states as $s){
+            $cities[$s['id']] = $cityMapper->getCitiesHavingMedia($s['id']);
+        }
+        $categories = $categoryMapper->getTreeBranches();
+
+        return new ViewModel(
+            array(
+                'states'        => $states,
+                'cities'        => $cities,
+                'categories'    => $categories,
+                'state'  		=> $state,
+                'city'          => $city,
+                'category'      => $category
+            )
+        );
+    }
 }

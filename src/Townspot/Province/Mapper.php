@@ -14,6 +14,7 @@ class Mapper extends AbstractEntityMapper
 		$sql = "SELECT DISTINCT media.province_id, province.name, count(media.id) as media_count FROM media ";
 		$sql .= "JOIN province on media.province_id = province.id ";
 		$sql .= "WHERE media.country_id = " . $country->getId();
+        $sql .= " AND media.approved = 1";
 		$sql .= " GROUP BY media.province_id ORDER BY province.name";
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
 		$stmt->execute();
@@ -28,5 +29,13 @@ class Mapper extends AbstractEntityMapper
 		}
 		return $results;
 	}
+
+    public function getList($country_id = 99) {
+        $sql = 'select id,name from province ';
+        $sql .= "where country_id = $country_id";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
 	
 }

@@ -140,12 +140,12 @@ class VideoPlayer extends AbstractHelper implements ServiceLocatorAwareInterface
 			$html .= "                                <h1><i class='fa fa-star-o fa-toggle-o' id='favorite-link'></i></h1>\n";
 			$html .= "                            </td>\n";
 			$html .= "                            <td>\n";
-			$html .= "                                <h1>%s</h1>\n";
+			$html .= "                                <h1 class='videoTitle'>%s</h1>\n";
 			$html .= "                            </td>\n";
 			$html .= "                        </tr>\n";
 			$html .= "                        <tr>\n";
 			$html .= "                            <td id='video-author'>\n";
-			$html .= "                                <h2><a href='%s'>%s</a></h2>\n";
+			$html .= "                                <h2 class='videoAuthor'><a href='%s'>%s</a></h2>\n";
 			$html .= "                            </td>\n";
 			$html .= "                        </tr>\n";
 			$html .= "                    </table>\n";
@@ -171,7 +171,7 @@ class VideoPlayer extends AbstractHelper implements ServiceLocatorAwareInterface
 			$html .= "                " . $this->_getYtSubscribe();
 			$html .= "            </div>\n";
 			$html .= "            <div class='col-xs-6 video-views'>\n";
-			$html .= "                <div class='pull-right'>\n";
+			$html .= "                <div class='pull-right videoViews'>\n";
 			$html .= "                    View Count: %d\n";							
 			$html .= "                </div>\n";
 			$html .= "            </div>\n";

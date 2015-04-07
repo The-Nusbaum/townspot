@@ -12,6 +12,7 @@ class Mapper extends AbstractEntityMapper
 		$sql = "SELECT DISTINCT media.city_id, city.name, count(media.id) as media_count FROM media ";
 		$sql .= "JOIN city on media.city_id = city.id ";
 		$sql .= "WHERE media.province_id = " . $province_id;
+		$sql .= " AND media.approved = 1";
 		$sql .= " GROUP BY media.city_id ORDER BY city.name";
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
 		$stmt->execute();

@@ -174,7 +174,7 @@ class Mapper extends AbstractEntityMapper
 		return $results;
 	}
 	
-	public function getDiscoverMedia($province_id = null,$city_id=null,$category_id = null) 
+	public function getDiscoverMedia($province_id = null,$city_id=null,$category_id = null)
 	{
 		$results = array();
 		$sql  = "SELECT ";
@@ -201,6 +201,35 @@ class Mapper extends AbstractEntityMapper
 		$stmt->execute();
 		return $stmt->fetchAll();
 	}
+
+    public function getChannelsurfMedia($state = null,$city = null,$category = null,$limit = null,$notThese = null,$sort = null)
+    {
+        $results = array();
+        $sql  = "SELECT ";
+        $sql .= " DISTINCT media.id, series.id as series_id ";
+        $sql .= "FROM  ";
+        $sql .= " media ";
+        $sql .= "JOIN media_category_linker on media_category_linker.media_id = media.id ";
+        $sql .= "LEFT JOIN series_episodes on series_episodes.media_id = media.id ";
+        $sql .= "LEFT JOIN series on series_episodes.series_id = series.id ";
+        $sql .= 'WHERE media.approved = 1';
+        if($state) $sql .= " AND media.province_id = $state";
+        if($city) $sql .= " AND media.city_id = $city";
+        if($category) $sql .= " AND media_category_linker.category_id = $category";
+        if($notThese) {
+            $notThese = implode(',',$notThese);
+            $sql .= " AND media.id NOT IN($notThese)";
+        }
+        if($sort) {
+            $sql .= " ORDER BY $sort";
+        } else {
+            $sql .= ' ORDER BY RAND()';
+        }
+        if ($limit) $sql .= " LIMIT $limit";
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
 	
 	public function getStats() 
 	{

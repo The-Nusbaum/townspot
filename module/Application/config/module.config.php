@@ -486,7 +486,19 @@ return array(
 						'action' => 'discover'
 					)
 				),			
-			),			
+			),
+            'channelsurf' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/channelsurf[/:state][/:city][/:cat1][/:cat2][/:cat3][/:cat4][/:cat5]',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Search',
+                        'action' => 'channelsurf',
+                        'state' => 'all-states',
+                        'city' => 'all-cities',
+                    )
+                ),
+            ),
             'stage' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(

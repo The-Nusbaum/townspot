@@ -1,0 +1,322 @@
+<?php
+function renderCat($cat,$level = 0,$current = null) {
+    $pattern = "<option value='%s'%s>%s%s</option>\n";
+    $pad = '';
+    for($i = 0; $i < $level; $i++) {
+        $pad .= '- ';
+    }
+    $selected = ($cat['id'] == $current)? ' selected="selected"':'';
+    $html = '';
+    $html .= sprintf($pattern,$cat['id'],$selected,$pad,$cat['label']);
+    if(!empty($cat['children'])) {
+        $level++;
+        foreach($cat['children'] as $child) {
+            $html .= renderCat($child,$level,$current);
+        }
+    }
+    return $html;
+}
+?>
+<div class="row" id="channelsurf">
+    <div class="col-md-2 sidebar">
+        <div class="stateSelector">
+            <label>State:</label>
+            <select class="form-control">
+                <option value="0">All States</option>
+            <?php foreach($states as $s): ?>
+                <option value="<?= $s['id'] ?>" <?= ($s['id'] == $state)? 'selected="1"':'' ?>><?=$s['name']?> (<?= $s['media_count'] ?>)</option>
+            <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="citySelector">
+            <label>City:</label>
+            <select class="form-control">
+                <option value="0">All Cities</option>
+                <?php if($state): ?>
+                <?php foreach($cities[$state] as $c): ?>
+                    <option value="<?= $c['id'] ?>" <?= ($c['id'] == $city)? 'selected="1"':'' ?>><?=$c['name']?> (<?= $c['media_count'] ?>)</option>
+                <?php endforeach; ?>
+                <?php else: ?>
+                    <option value="">Please Select a State</option>
+                <?php endif; ?>
+            </select>
+        </div>
+        <div class="categorySelector">
+            <label>Category</label>
+            <select class="form-control">
+                <option value="0">All Categories</option>
+            <?php foreach($categories as $c): ?>
+                <?= renderCat($c,0,$category); ?>
+            <?php endforeach; ?>
+            </select>
+        </div>
+        <div class="sortSelector">
+            <label>Sort:</label>
+            <select class="form-control">
+                <option value="RAND()">Random</option>
+                <option value="media.views DESC">Popularity</option>
+            </select>
+        </div>
+        <br/>
+        <button id="applyFilters" class="btn-primary form-control">Apply Filters</button>
+
+    </div>
+    <div class="col-md-8 mainchannel">
+        <div class="row" id="video">
+            <div class="col-xs-12">
+                <div class="media">
+                    <?= $this->VideoPlayer(
+                        1952,
+                        array(
+                            'width' => '100%',
+                            'preview_width' => 800,
+                            'preview_height' => 450,
+                            'include_sharing' => true,
+                            'include_info' => true,
+                            'include_buttons' => true,
+                        )
+                    ); ?>
+                </div>
+            </div>
+        </div>
+        <div class="row video-info">
+            <div class="col-sm-12">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <h3>Description:</h3>
+                        <div class="expandable description">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xxs-5 col-xs-4 col-sm-3">
+                        <h3>Location:</h3>
+                    </div>
+                    <div class="col-xxs-7 col-xs-8 col-sm-9">
+                        <ul class="boxed-list">
+                            <li class="city"><a href="#"></a></li>
+                            <li class="state"><a href="#"></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xxs-5 col-xs-4 col-sm-3">
+                        <h3>Genres:</h3>
+                    </div>
+                    <div class="col-xxs-7 col-xs-8 col-sm-9">
+                        <ul class="boxed-list genres">
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="row">
+            <h3>Up Next</h3>
+        </div>
+        <div class="row" id="videos">
+
+        </div>
+    </div>
+</div>
+
+<script>
+
+    var stateId = <?= $state?$state:0 ?>;
+    var cityId = <?= $city?$city:0 ?>;
+    var categoryId = <?= $category?$category:0 ?>;
+    var notThese = 0;
+    var sort = 0;
+    var limit = 5;
+    var mediaList = [];
+    var mediaIndex = 0;
+    var categories = <?= json_encode($categories) ?>;
+    var cities = <?= json_encode($cities) ?>
+
+    $('.stateSelector select').change(function(){
+        var $state = $(this);
+        stateId = $state.val();
+        cityId = 0;
+        var $city = $('.citySelector select');
+
+        $city.children().remove();
+        $city.append('<option value="0">All Cities</option>');
+        $(cities[$state.val()]).each(function(){
+            $city.append('<option value="'+ this.id +'">'+ this.name +' ('+ this.media_count +')</option>');
+        });
+        $('.categorySelector select').val(0);
+        $('.categorySelector select').change();
+    });
+
+    $('.citySelector select').change(function(){
+        var $city = $(this);
+        cityId = $city.val();
+        $('.categorySelector select').val(0);
+        $('.categorySelector select').change();
+    });
+
+    $('.categorySelector select').change(function(){
+        var $cat = $(this);
+        categoryId = $cat.val();
+    });
+
+    $('.sortSelector select').change(function(){
+        var $sort = $(this);
+        sort = $sort.val();
+    });
+
+    $('#applyFilters').click(function(){
+        getInit();
+    });
+
+    function renderMedia(media) {
+        var html = '';
+        html += '<div class="col-xs-12" data-id="'+media.id+'">';
+        html += '		<div class="video-preview">';
+        html += '			<a href="'+ media.link +'">';
+        html += '				<img class="img-responsive preview-img img-youtube" alt="'+ media.title +'" src="'+ media.image +'">';
+        html += '			</a>';
+        html += '			<div class="carousel-caption small">';
+        html += '				<div class="video-title">';
+        html += '					<h3 title="'+ media.title +'" class="dot-text">';
+        html += '						<a href="'+ media.link +'">';
+        html += '							<div class="dot-text">'+ media.title +'</div>';
+        html += '						</a>';
+        html += '					</h3>';
+        html += '	';
+        html += '					<h3 class="dot-text">';
+        html += '                        <a href="'+ media.user_profile +'">';
+        html += '							<div class="dot-text">'+ media.user +'</div>';
+        html += '						</a>';
+        html += '					</h3>';
+        html += '		';
+        html += '					<h3 title="'+ media.location +'" class="dot-text">'+ media.location +'</h3>';
+        html += '				</div>';
+        html += '				<div class="info-button first" title="" data-original-title="<a href=\''+ media.link +'\'>'+ htmlEncode(media.escaped_title) +'</a> by <a href=\''+ media.user_profile +'\'>'+ media.user +'</a>" data-content="'+ media.location +'<br/>'+ htmlEncode(media.description);
+        html += '					<footer>';
+        html += '					<span class=\'video-duration\'><i class=\'fa fa-clock-o\'></i> '+ media.duration +'</span>';
+        html += '					<span class=\'video-plays\'><i class=\'fa fa-play\'></i> '+ media.views +'</span> ';
+        html += '					<span class=\'video-thumbs-up\'><i class=\'fa fa-thumbs-up\'></i> '+ media.rate_up +'</span> ';
+        html += '					<span class=\'video-thumbs-down\'><i class=\'fa fa-thumbs-down\'></i> '+ media.rate_down +'</span>';
+        html += '					<span class=\'video-comments\'><i class=\'fa fa-comments\'></i> '+ media.comment_count +'</span>';
+        html += '					</footer>" data-toggle="popover">';
+        html += '					<i class="fa fa-info-circle"></i>';
+        html += '				</div>';
+        html += '			</div>';
+        html += '		</div>';
+        html += '	</div>';
+
+        return html;
+    }
+
+    function htmlEncode(value){
+        //create a in-memory div, set it's inner text(which jQuery automatically encodes)
+        //then grab the encoded contents back out.  The div never exists on the page.
+        return $('<div/>').text(value).html();
+    }
+
+    function htmlDecode(value){
+        return $('<div/>').html(value).text();
+    }
+
+    function playMedia(media) {
+        $('#videos div[data-id='+media.id+']').remove();
+        var playlist = [{
+            image: media.image,
+            sources: [{
+                file: media.url
+            }]
+        }];
+        jwplayer('media-player').load(playlist);
+
+
+        $('.description').html(media.logline);
+        $('.state a').text(media.state);
+        $('.state a').attr('href','/discover/' + encodeURIComponent(media.state));
+        $('.city a').text(media.city);
+        $('.city a').attr('href','/discover/' + encodeURIComponent(media.city) + '/' + encodeURIComponent(media.state));
+        $('.videoTitle').text(media.title);
+        $('.videoAuthor a').attr('href',media.user_profile);
+        $('.videoAuthor a').text(media.user);
+        $('#up-ratings').text(media.rate_up);
+        $('#down-ratings').text(media.rate_down);
+        $('.videoViews').text(media.views);
+
+        for(x in media.categories) {
+            $('.genres').append('<li><a href="'+ media.categories[x].url +'">'+ media.categories[x].name +'</a></li>');
+        }
+
+        $().Interactions({
+            userid: <?= ($this->zfcUserIdentity()) ? $this->zfcUserIdentity()->getId() : 0; ?>,
+            videoid: media.id,
+            creator: media.user,
+            favorite: false,
+            following: false
+        });
+
+        jwplayer('media-player').play(true);
+    }
+
+    function getNext() {
+        mediaIndex++;
+        media = mediaList[mediaIndex];
+        playMedia(media);
+        $.post('/api/media/channelsurf',
+            {
+                state: stateId,
+                city: cityId,
+                category: categoryId,
+                sort: sort,
+                notThese: notThese,
+                limit: 1
+            }, function(response){
+                if(response.success) {
+                    var newMedia = response.data.media[0];
+                    mediaList.push(newMedia);
+                    notThese.push(newMedia.id);
+                    $('#videos').append(renderMedia(newMedia));
+                    setInfoButtons();
+                }
+            }
+        );
+    }
+
+    function getInit() {
+        $.post('/api/media/channelsurf',
+            {
+                state: stateId,
+                city: cityId,
+                category: categoryId,
+                sort: sort,
+                notThese: notThese,
+                limit: 5
+            }, function(response){
+                if(response.success) {
+                    $('#videos').children().remove();
+                    data = response.data.media;
+                    mediaList = data;
+                    if(notThese == 0) notThese = [];
+                    for (x in data) {
+                        media = data[x];
+                        notThese.push(media.id);
+                        if(x == 0) {
+                            playMedia(media);
+                        } else {
+                            $('#videos').append(renderMedia(media));
+                        }
+                    }
+                    setInfoButtons();
+                    jwplayer('media-player').play(true);
+                }
+            }
+        );
+    }
+
+    getInit();
+
+    jwplayer('media-player').onPlaylistComplete(function(){
+        getNext();
+    })
+</script>

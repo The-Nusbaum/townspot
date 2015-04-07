@@ -446,6 +446,58 @@ class Search implements ServiceLocatorAwareInterface
 		}
 		return $results;
 	}
+
+    public function channelsurfSearch()
+    {
+        $countryMapper  = new \Townspot\Country\Mapper($this->getServiceLocator());
+        $provinceMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
+        $cityMapper 	= new \Townspot\City\Mapper($this->getServiceLocator());
+        $categoryMapper = new \Townspot\Category\Mapper($this->getServiceLocator());
+        $country  		= $countryMapper->findOneByName('United States');
+
+        $mediaMapper 	= new \Townspot\Media\Mapper($this->getServiceLocator());
+        $seriesMapper 	= new \Townspot\Series\Mapper($this->getServiceLocator());
+        $matches = $mediaMapper->getChannelsurfMedia();
+        foreach($matches as $match) {
+            $media = $mediaMapper->find($match['id']);
+            $video = array(
+                'id' => $media->getId(),
+                'type' => 'media',
+                'link' => $media->getMediaLink(),
+                'image' => $media->getResizerCdnLink(),
+                'escaped_title' => $media->getTitle(false, true),
+                'title' => $media->getTitle(),
+                'logline' => $media->getLogline(),
+                'escaped_logline' => $media->getLogline(true),
+                'user' => $media->getUser()->getUsername(),
+                'user_profile' => $media->getUser()->getProfileLink(),
+                'duration' => $media->getDuration(true),
+                'comment_count' => count($media->getCommentsAbout()),
+                'views' => $media->getViews(false),
+                'location' => $media->getLocation(),
+                'escaped_location' => $media->getLocation(false, true),
+                'rate_up' => count($media->getRatings(true)),
+                'rate_down' => count($media->getRatings(false)),
+                'image_source' => $media->getSource(),
+                'created' => $media->getCreated()->getTimestamp(),
+            );
+            if ($match['series_id']) {
+                $series = $seriesMapper->find($match['series_id']);
+                $video['series_name'] = $series->getName();
+                $video['series_link'] = $series->getSeriesLink();
+            }
+            $data[] = $video;
+        }
+
+        $results = array(
+            'data'				=> $data
+        );
+        //$cache->setItem($searchId, $results);
+
+
+
+        return $results;
+    }
 	
 	/**
 	 * Set Service Locator instance

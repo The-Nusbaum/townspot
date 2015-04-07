@@ -66,4 +66,78 @@ class MediaController extends \Townspot\Controller\BaseRestfulController
         }
         return new JsonModel($this->getResponse()->build());
     }
+
+    protected function _resolveCats($category) {
+        $_cat = array();
+        $_cat[] = $category->getName();
+        if($category->getParent()) {
+            $_cat = array_merge($_cat,$this->_resolveCats($category->getParent()));
+        }
+
+        return $_cat;
+    }
+
+    public function channelsurfAction() {
+        $seriesMapper 	= new \Townspot\Series\Mapper($this->getServiceLocator());
+
+        $state = $this->params()->fromPost('state');
+        $city = $this->params()->fromPost('city');
+        $category = $this->params()->fromPost('category');
+        $limit = $this->params()->fromPost('limit');
+        $notThese = $this->params()->fromPost('notThese');
+        $sort = $this->params()->fromPost('sort');
+
+        $matches = $this->getMapper()->getChannelsurfMedia($state,$city,$category,$limit,$notThese,$sort);
+        $data = array();
+        $data['media'] = array();
+        foreach($matches as $match) {
+            $media = $this->getMapper()->find($match['id']);
+            $categories = array();
+            $cats = $media->getCategories();
+            foreach($cats as $c) {
+                $categories[] = array(
+                    'name' => $c->getName(),
+                    'url' => $c->getDiscoverLink(null, false)
+                );
+            }
+            $video = array(
+                'id' => $media->getId(),
+                'type' => 'media',
+                'link' => $media->getMediaLink(),
+                'image' => $media->getResizerCdnLink(),
+                'escaped_title' => $media->getTitle(false, true),
+                'title' => $media->getTitle(),
+                'logline' => $media->getLogline(),
+                'escaped_logline' => $media->getLogline(true),
+                'user' => $media->getUser()->getUsername(),
+                'user_profile' => $media->getUser()->getProfileLink(),
+                'duration' => $media->getDuration(true),
+                'comment_count' => count($media->getCommentsAbout()),
+                'views' => $media->getViews(false),
+                'location' => $media->getLocation(),
+                'escaped_location' => $media->getLocation(false, true),
+                'rate_up' => count($media->getRatings(true)),
+                'rate_down' => count($media->getRatings(false)),
+                'image_source' => $media->getSource(),
+                'created' => $media->getCreated()->getTimestamp(),
+                'url' => $media->getUrl(),
+                'city' => $media->getCity()->getName(),
+                'state' => $media->getProvince()->getName(),
+                'categories' => $categories
+            );
+            if ($match['series_id']) {
+                $series = $seriesMapper->find($match['series_id']);
+                $video['series_name'] = $series->getName();
+                $video['series_link'] = $series->getSeriesLink();
+            }
+            $data['media'][] = $video;
+        }
+        $this->getResponse()
+            ->setCode(200)
+            ->setSuccess(true)
+            ->setData($data)
+            ->setCount(count($data['media']));
+        return new JsonModel($this->getResponse()->build());
+
+    }
 } 
