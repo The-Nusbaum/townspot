@@ -125,7 +125,7 @@
 					if (options.page == 1) {
 						$('#comment-list').html('');
 					}
-					$.each(data, function() {
+					$(data).each(function() {
 						_html = '<li id="comment-' + this.id + '" class="comment" data-id="'+this.id+'">';
 						if(this.candelete) _html += "<i class='icon-remove-sign deleteme'></i>"
 						_html = _html + '<img src="' + this.profileImage + '" class="img-responsive">';

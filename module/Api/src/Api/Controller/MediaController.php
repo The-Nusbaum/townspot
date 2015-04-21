@@ -22,6 +22,21 @@ class MediaController extends \Townspot\Controller\BaseRestfulController
 
     }
 
+    public function commentsAction(){
+        $id = $this->params()->fromRoute('id');
+        $media = $this->getMapper()->find($id);
+        $comments = $media->getComments();
+
+
+        $data = $comments;
+
+        $this->getResponse()
+            ->setCode(200)
+            ->setSuccess(true)
+            ->setData($data)
+            ->setCount(count($data['media']));
+    }
+
     public function getAvailableSeriesMediaAction() {
         $id = $this->params()->fromRoute('id');
         $page = $this->params()->fromQuery('page');

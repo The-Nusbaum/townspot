@@ -258,7 +258,7 @@ return array(
                     ),
                 ),
             ),
-			
+
 			'video_player' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(

@@ -7,6 +7,7 @@ return array(
             'Api\Controller\CategoryController' => 'Api\Controller\CategoryController',
             'Api\Controller\UserController' => 'Api\Controller\UserController',
             'Api\Controller\CityController' => 'Api\Controller\CityController',
+            'Api\Controller\MediaCommentController' => 'Api\Controller\MediaCommentController',
             'model' => 'Api\Controller\ModelController',
         ),
     ),

@@ -28,7 +28,13 @@ function renderCat($cat,$level = 0,$current = null) {
             <?php endforeach; ?>
             </select>
         </div>
-        <div class="citySelector">
+        <?php
+            $cityClass = ' hidden';
+            if($state) {
+                $cityClass = '';
+            }
+        ?>
+        <div class="citySelector<?= $cityClass ?>">
             <label>City:</label>
             <select class="form-control">
                 <option value="0">All Cities</option>
@@ -42,7 +48,7 @@ function renderCat($cat,$level = 0,$current = null) {
             </select>
         </div>
         <div class="categorySelector">
-            <label>Category</label>
+            <label>Category:</label>
             <select class="form-control">
                 <option value="0">All Categories</option>
             <?php foreach($categories as $c): ?>
@@ -71,7 +77,7 @@ function renderCat($cat,$level = 0,$current = null) {
                             'width' => '100%',
                             'preview_width' => 800,
                             'preview_height' => 450,
-                            'include_sharing' => true,
+                            //'include_sharing' => true,
                             'include_info' => true,
                             'include_buttons' => true,
                         )
@@ -111,10 +117,45 @@ function renderCat($cat,$level = 0,$current = null) {
                 </div>
             </div>
         </div>
+        <div class="row comments-row">
+            <div class="col-xs-12">
+                <div class="col-xxs-5 col-xs-4 col-sm-3 comments-header">
+                    <h3>Comments:</h3>
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-xs-9 nopadding-right full-320">
+                    <input type="text" class="col-sm-8 form-control" placeholder="Leave a Comment" id="comment-field">
+                </div>
+                <div class="col-xs-3 nopadding-left full-320">
+                    <button class="form-control btn interaction-button" id="comment-submit">Comment</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="alert alert-block alert-error" id="comment-error">
+                        <button type="button" class="close" data-dismiss="alert">X</button>
+                        <h4 class="alert-heading"></h4>
+                        <p class="alert-body"></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12" id="comments">
+                    <ul id="comment-list">
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div id="comment-navigation-down" style="display: none;"><button class="btn btn-default next col-xs-12"><i class="fa fa-chevron-down"></i></button></div>
+                </div>
+            </div>
+        </div>
     </div>
     <div class="col-md-2">
         <div class="row">
-            <h3>Up Next</h3>
+            <h3>&nbsp;&nbsp;Up Next</h3>
         </div>
         <div class="row" id="videos">
 
@@ -138,6 +179,11 @@ function renderCat($cat,$level = 0,$current = null) {
     $('.stateSelector select').change(function(){
         var $state = $(this);
         stateId = $state.val();
+        if(stateId != 0) {
+            $('.citySelector').removeClass('hidden');
+        } else {
+            $('.citySelector').addClass('hidden');
+        }
         cityId = 0;
         var $city = $('.citySelector select');
 
@@ -171,27 +217,35 @@ function renderCat($cat,$level = 0,$current = null) {
         getInit();
     });
 
-    function renderMedia(media) {
+    $('#videos').on('click','.nextVideo a.playMe',function(e){
+        e.preventDefault();
+        playThis($(this).parents('.nextVideo').attr('data-index'));
+        fetchNext();
+    });
+
+    function playThis(index) {
+        var media = mediaList[index];
+        playMedia(media);
+    }
+
+    function renderMedia(media, index) {
+        if(typeof index == 'undefined') {
+            index = 0;
+        }
         var html = '';
-        html += '<div class="col-xs-12" data-id="'+media.id+'">';
+        html += '<div class="col-xs-12 nextVideo" data-id="'+media.id+'" data-index="'+index+'">';
         html += '		<div class="video-preview">';
-        html += '			<a href="'+ media.link +'">';
+        html += '			<a href="'+ media.id +'" class="playMe">';
         html += '				<img class="img-responsive preview-img img-youtube" alt="'+ media.title +'" src="'+ media.image +'">';
         html += '			</a>';
         html += '			<div class="carousel-caption small">';
         html += '				<div class="video-title">';
         html += '					<h3 title="'+ media.title +'" class="dot-text">';
-        html += '						<a href="'+ media.link +'">';
+        html += '						<a href="'+ media.id +'" class="playMe">';
         html += '							<div class="dot-text">'+ media.title +'</div>';
         html += '						</a>';
         html += '					</h3>';
         html += '	';
-        html += '					<h3 class="dot-text">';
-        html += '                        <a href="'+ media.user_profile +'">';
-        html += '							<div class="dot-text">'+ media.user +'</div>';
-        html += '						</a>';
-        html += '					</h3>';
-        html += '		';
         html += '					<h3 title="'+ media.location +'" class="dot-text">'+ media.location +'</h3>';
         html += '				</div>';
         html += '				<div class="info-button first" title="" data-original-title="<a href=\''+ media.link +'\'>'+ htmlEncode(media.escaped_title) +'</a> by <a href=\''+ media.user_profile +'\'>'+ media.user +'</a>" data-content="'+ media.location +'<br/>'+ htmlEncode(media.description);
@@ -211,6 +265,12 @@ function renderCat($cat,$level = 0,$current = null) {
         return html;
     }
 
+    function getSurfLink() {
+        var state = $('.stateSelector option[selected]').text();
+        var city = $('.citySelector option[selected]').text();
+        var
+    }
+
     function htmlEncode(value){
         //create a in-memory div, set it's inner text(which jQuery automatically encodes)
         //then grab the encoded contents back out.  The div never exists on the page.
@@ -221,13 +281,24 @@ function renderCat($cat,$level = 0,$current = null) {
         return $('<div/>').html(value).text();
     }
 
+    function getComments(id){
+        $.get('api/comments/' + id,
+            function(response){
+                console.log(response);
+            }
+        );
+    }
+
     function playMedia(media) {
         $('#videos div[data-id='+media.id+']').remove();
         var playlist = [{
             image: media.image,
-            sources: [{
-                file: media.url
-            }]
+            file: media.url,
+            sharing: {
+                code: encodeURI("<iframe src='/embed/"+ media.id +"/"+media.escaped_title+"' width='640' height='426' frameborder='0' allowfullscreen></iframe>"),
+                link: media.link
+            }
+
         }];
         jwplayer('media-player').load(playlist);
 
@@ -242,7 +313,7 @@ function renderCat($cat,$level = 0,$current = null) {
         $('.videoAuthor a').text(media.user);
         $('#up-ratings').text(media.rate_up);
         $('#down-ratings').text(media.rate_down);
-        $('.videoViews').text(media.views);
+        $('.videoViews').text("View Count: " + media.views);
 
         for(x in media.categories) {
             $('.genres').append('<li><a href="'+ media.categories[x].url +'">'+ media.categories[x].name +'</a></li>');
@@ -260,9 +331,16 @@ function renderCat($cat,$level = 0,$current = null) {
     }
 
     function getNext() {
-        mediaIndex++;
+        mediaIndex = $('.nextVideo:first').attr('data-index');
         media = mediaList[mediaIndex];
         playMedia(media);
+        fetchNext();
+    }
+
+    function fetchNext(number) {
+        if(typeof number == 'undefined') {
+            number = 1;
+        }
         $.post('/api/media/channelsurf',
             {
                 state: stateId,
@@ -270,13 +348,15 @@ function renderCat($cat,$level = 0,$current = null) {
                 category: categoryId,
                 sort: sort,
                 notThese: notThese,
-                limit: 1
+                limit: number
             }, function(response){
                 if(response.success) {
-                    var newMedia = response.data.media[0];
-                    mediaList.push(newMedia);
-                    notThese.push(newMedia.id);
-                    $('#videos').append(renderMedia(newMedia));
+                    for(x in response.data.media) {
+                        var newMedia = response.data.media[x];
+                        mediaList.push(newMedia);
+                        notThese.push(newMedia.id);
+                        $('#videos').append(renderMedia(newMedia, mediaList.length - 1));
+                    }
                     setInfoButtons();
                 }
             }
@@ -304,7 +384,8 @@ function renderCat($cat,$level = 0,$current = null) {
                         if(x == 0) {
                             playMedia(media);
                         } else {
-                            $('#videos').append(renderMedia(media));
+                            console.log('x is' + x);
+                            $('#videos').append(renderMedia(media,x));
                         }
                     }
                     setInfoButtons();
