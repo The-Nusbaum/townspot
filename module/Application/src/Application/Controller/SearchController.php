@@ -200,6 +200,7 @@ class SearchController extends AbstractActionController
             }
         }
         //var_dump($category);
+        if(empty($category))
 
         $this->getServiceLocator()
             ->get('ViewHelperManager')
@@ -224,7 +225,7 @@ class SearchController extends AbstractActionController
                 'categories'    => $categories,
                 'state'  		=> $state,
                 'city'          => $city,
-                'category'      => $category->getId(),
+                'category'      => $category,
                 'flatCats'      => $flatCats
             )
         );

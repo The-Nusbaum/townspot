@@ -56,6 +56,12 @@ function renderCat($cat,$level = 0,$current = null,$parents = '') {
             <select class="form-control">
                 <option value="0">All Categories</option>
             <?php foreach($categories as $c): ?>
+                <?php if(is_object($category)) {
+                    $category = $category->getId();
+                } else {
+                    $category = 0;
+                }
+                ?>
                 <?= renderCat($c,0,$category); ?>
             <?php endforeach; ?>
             </select>
