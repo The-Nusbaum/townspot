@@ -104,9 +104,9 @@ class Mapper extends AbstractEntityMapper
 	public function getTreeBranches($id = null,$array = false) 
 	{
 		if ($id) {
-			$sql  = "SELECT id,name as label FROM category WHERE parent_id = " . $id;
+			$sql  = "SELECT id,name as label,parent_id FROM category WHERE parent_id = " . $id;
 		} else {
-			$sql  = "SELECT id,name as label FROM category WHERE parent_id IS NULL";
+			$sql  = "SELECT id,name as label, parent_id FROM category WHERE parent_id IS NULL";
 		}
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
 		$stmt->execute();
@@ -126,7 +126,7 @@ class Mapper extends AbstractEntityMapper
     protected function _prepCategory($Category) {
         $data = array(
             'name' => $Category->getName(),
-            'id' => $Category->getId()
+            'id' => $Category->getId(),
         );
         $children = $this->_getChildren($Category->getId());
         if(count($children)) {

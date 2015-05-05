@@ -1,17 +1,21 @@
 <?php
-function renderCat($cat,$level = 0,$current = null) {
-    $pattern = "<option value='%s'%s>%s%s</option>\n";
+function renderCat($cat,$level = 0,$current = null,$parents = '') {
+    $pattern = "<option data-parents='%s' value='%s'%s>%s%s</option>\n";
     $pad = '';
     for($i = 0; $i < $level; $i++) {
         $pad .= '- ';
     }
+    if(!empty($cat['parent_id'])) {
+        if(!empty($parents)) $parents .= ',';
+        $parents .= $cat['parent_id'];
+    }
     $selected = ($cat['id'] == $current)? ' selected="selected"':'';
     $html = '';
-    $html .= sprintf($pattern,$cat['id'],$selected,$pad,$cat['label']);
+    $html .= sprintf($pattern,$parents,$cat['id'],$selected,$pad,$cat['label']);
     if(!empty($cat['children'])) {
         $level++;
         foreach($cat['children'] as $child) {
-            $html .= renderCat($child,$level,$current);
+            $html .= renderCat($child,$level,$current,$parents);
         }
     }
     return $html;
@@ -65,7 +69,10 @@ function renderCat($cat,$level = 0,$current = null) {
         </div>
         <br/>
         <button id="applyFilters" class="btn-primary form-control">Apply Filters</button>
-
+        <div class="currentlyWatching">
+            <h3>Currently Watching:</h3>
+            <a href="/channelsurf">All Videos</a>
+        </div>
     </div>
     <div class="col-md-8 mainchannel">
         <div class="row" id="video">
@@ -157,8 +164,14 @@ function renderCat($cat,$level = 0,$current = null) {
         <div class="row">
             <h3>&nbsp;&nbsp;Up Next</h3>
         </div>
+        <div class="controls up hidden">
+            <button class="form-control"><i class="fa fa-chevron-up"></i></button>
+        </div>
         <div class="row" id="videos">
 
+        </div>
+        <div class="controls down">
+            <button class="form-control"><i class="fa fa-chevron-down"></i></button>
         </div>
     </div>
 </div>
@@ -174,6 +187,7 @@ function renderCat($cat,$level = 0,$current = null) {
     var mediaList = [];
     var mediaIndex = 0;
     var categories = <?= json_encode($categories) ?>;
+    var flatCats = <?= json_encode($flatCats) ?>;
     var cities = <?= json_encode($cities) ?>
 
     $('.stateSelector select').change(function(){
@@ -220,7 +234,7 @@ function renderCat($cat,$level = 0,$current = null) {
     $('#videos').on('click','.nextVideo a.playMe',function(e){
         e.preventDefault();
         playThis($(this).parents('.nextVideo').attr('data-index'));
-        fetchNext();
+        //fetchNext();
     });
 
     function playThis(index) {
@@ -266,8 +280,32 @@ function renderCat($cat,$level = 0,$current = null) {
     }
 
     function getSurfLink() {
-        var state = $('.stateSelector option[selected]').text();
-        var city = $('.citySelector option[selected]').text();
+        var state = $('.stateSelector option:selected').text().replace(/ \([0-9]*\)/,'');
+        var newText = state + ', ';
+        if(state == 'All States') state = 'all-states';
+        var city = $('.citySelector option:selected').text().replace(/ \([0-9]*\)/,'');
+        newText += city + '<br>';
+        if(city == 'All Cities') city = 'all-cities';
+        var cats = '';
+        if(typeof $('.categorySelector option:selected').attr('data-parents') != 'undefined') {
+            var parents = $('.categorySelector option:selected').attr('data-parents');
+            parents = parents.split(',');
+            console.log(parents);
+            for(x in parents) {
+                if(parents[x] != '') {
+                    newText += flatCats[parents[x]] + '/';
+                    cats += flatCats[parents[x]].replace(/\//, '+') + '/'
+                }
+            }
+
+            cats += $('.categorySelector option:selected').text().replace(/^[ -]*/,'');
+            newText += $('.categorySelector option:selected').text().replace(/^[ -]*/,'');;
+        }
+        var url = state + '/' + city + '/' + cats;
+        url = '/channelsurf/' + url.toLowerCase().replace(/ /g,'_');
+        $('.currentlyWatching a').attr('href',url);
+        $('.currentlyWatching a').html(newText);
+        console.log(url);
     }
 
     function htmlEncode(value){
@@ -280,16 +318,11 @@ function renderCat($cat,$level = 0,$current = null) {
         return $('<div/>').html(value).text();
     }
 
-    function getComments(id){
-        $.get('api/comments/' + id,
-            function(response){
-                console.log(response);
-            }
-        );
-    }
-
     function playMedia(media) {
-        $('#videos div[data-id='+media.id+']').remove();
+        //$('#videos div[data-id='+media.id+']').remove();
+        //console.log($('#videos div[data-id='+media.id+']'));
+        $('.nextVideo').removeClass('nowPLaying');
+        $('.nextVideo[data-id='+media.id+']').addClass('nowPLaying');
         var playlist = [{
             image: media.image,
             file: media.url,
@@ -313,6 +346,7 @@ function renderCat($cat,$level = 0,$current = null) {
         $('#up-ratings').text(media.rate_up);
         $('#down-ratings').text(media.rate_down);
         $('.videoViews').text("View Count: " + media.views);
+        $('#videos div[data-id='+media.id+'] .video-preview').addClass('nowPlaying');
 
         for(x in media.categories) {
             $('.genres').append('<li><a href="'+ media.categories[x].url +'">'+ media.categories[x].name +'</a></li>');
@@ -333,7 +367,31 @@ function renderCat($cat,$level = 0,$current = null) {
         mediaIndex = $('.nextVideo:first').attr('data-index');
         media = mediaList[mediaIndex];
         playMedia(media);
+    }
+
+    $('.controls.up button').click(function(e){
+        e.preventDefault();
+        prevVids();
+    });
+
+    $('.controls.down button').click(function(e){
+        e.preventDefault();
+        nextVids();
+    });
+
+    function nextVids() {
+        $('.nextVideo:visible:first').hide();
+        $('.nextVideo[hidden]:first').removeAttr('hidden');
         fetchNext();
+        $('.controls.up').removeClass('hidden');
+    }
+
+    function prevVids() {
+        $('.nextVideo:visible:first').prev().show();
+        $('.nextVideo:visible:last').hide();
+        if($('.nextVideo:visible:first').attr('data-id') == mediaList[0].id) {
+            $('.controls.up').addClass('hidden');
+        }
     }
 
     function fetchNext(number) {
@@ -355,6 +413,7 @@ function renderCat($cat,$level = 0,$current = null) {
                         mediaList.push(newMedia);
                         notThese.push(newMedia.id);
                         $('#videos').append(renderMedia(newMedia, mediaList.length - 1));
+                        $('.nextVideo:visible:last').attr('hidden',1);
                     }
                     setInfoButtons();
                 }
@@ -370,7 +429,7 @@ function renderCat($cat,$level = 0,$current = null) {
                 category: categoryId,
                 sort: sort,
                 notThese: notThese,
-                limit: 5
+                limit: 8
             }, function(response){
                 if(response.success) {
                     $('#videos').children().remove();
@@ -380,21 +439,25 @@ function renderCat($cat,$level = 0,$current = null) {
                     for (x in data) {
                         media = data[x];
                         notThese.push(media.id);
+                        $('#videos').append(renderMedia(media,x));
                         if(x == 0) {
-                            playMedia(media);
-                        } else {
-                            console.log('x is' + x);
-                            $('#videos').append(renderMedia(media,x));
+                            playMedia(media,true);
                         }
+
+
                     }
+                    $('.nextVideo:visible:nth-child(n+5)').attr('hidden',1);
                     setInfoButtons();
                     jwplayer('media-player').play(true);
                 }
             }
         );
+        getSurfLink();
     }
 
     getInit();
+
+
 
     jwplayer('media-player').onPlaylistComplete(function(){
         getNext();

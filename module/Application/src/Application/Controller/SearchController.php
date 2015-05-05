@@ -168,7 +168,7 @@ class SearchController extends AbstractActionController
 
         if($_state != 'all-states') {
             $state = $provinceMapper->findOneBy(array(
-                    '_name' => $_state,
+                    '_name' => str_replace('_',' ',$_state),
                     '_country' => $country
             ))->getId();
         } else {
@@ -177,7 +177,7 @@ class SearchController extends AbstractActionController
 
         if($_city != 'all-cities') {
             $city = $cityMapper->findOneBy(array(
-                '_name' => $_city,
+                '_name' => str_replace('_',' ',$_city),
                 '_province' => $state
             ))->getId();
         } else {
@@ -186,16 +186,20 @@ class SearchController extends AbstractActionController
 
         $category = null;
         for($i = 1; $i <= 5; $i++) {
+            $query = $categoryMapper;
             $var = "cat$i";
-            if($$var == null) break;
-            $$var = preg_replace('/[_]/',' ',$$var);
-            if($i == 1) $params = array('_name' => $$var);
-            else $params = array(
-                '_name' => ucwords($$var),
-                '_parent' => $category
-            );
-            $category = $categoryMapper->findOneBy($params)->getId();
+            if($$var != null) {
+                $$var = preg_replace('/[_]/', ' ', $$var);
+                $$var = preg_replace('/[+]/', '/', $$var);
+                if ($i == 1) $params = array('_name' => $$var);
+                else $params = array(
+                    '_parent' => $category,
+                    '_name' => ucwords($$var),
+                );
+                $category = $categoryMapper->findOneBy($params);
+            }
         }
+        //var_dump($category);
 
         $this->getServiceLocator()
             ->get('ViewHelperManager')
@@ -208,6 +212,10 @@ class SearchController extends AbstractActionController
             $cities[$s['id']] = $cityMapper->getCitiesHavingMedia($s['id']);
         }
         $categories = $categoryMapper->getTreeBranches();
+        $flatCats = array();
+        foreach($categoryMapper->findAll() as $cat) {
+            $flatCats[$cat->getId()] = $cat->getName();
+        }
 
         return new ViewModel(
             array(
@@ -216,7 +224,8 @@ class SearchController extends AbstractActionController
                 'categories'    => $categories,
                 'state'  		=> $state,
                 'city'          => $city,
-                'category'      => $category
+                'category'      => $category->getId(),
+                'flatCats'      => $flatCats
             )
         );
     }
