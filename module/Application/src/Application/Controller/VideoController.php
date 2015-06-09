@@ -9,6 +9,8 @@
 
 namespace Application\Controller;
 
+require_once APPLICATION_PATH . "/google/apiclient/src/Google/autoload.php";
+
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
@@ -17,6 +19,13 @@ use Zend\Mvc\Controller\Plugin\FlashMessenger;
 
 class VideoController extends AbstractActionController
 {
+
+    protected $_api_info = array(
+        'applicationId' => 'Townspot',
+        'clientId' => "872367745273-sbsiuc81kh9o70ok3macc15d2ebpl440.apps.googleusercontent.com",
+        'developerId' => "AIzaSyCa1RYJsf-C94cTQo34GC59DkiijUq_54s",
+    );
+
 	public function __construct() 
 	{
         $this->_view = new ViewModel();
@@ -584,6 +593,7 @@ class VideoController extends AbstractActionController
         if($this->getRequest()->isPost()){
             if($data->get('youtube_url') && !$data->get('review_ok')) {
                 $url = $data->get('youtube_url');
+                /*
                 $client = new \Zend\Http\Client('https://example.org', array(
                     'adapter' => 'Zend\Http\Client\Adapter\Curl'
                 ));
@@ -595,6 +605,7 @@ class VideoController extends AbstractActionController
                     "AI39si7sp4rb57_29xMFWO2AoT8DDc0dKYklw7_IsUYpEhsxSL-DNK60f3eIF7OK_Iy0_xYm1eAxX2skGO57B6oHd6qJHHiPZA"
 
                 );
+                */
 
                 if(preg_match('/youtube\.com/',$url)) {
                     preg_match('/v=([^&]*)/i', $data->get('youtube_url'), $idMatches);
@@ -611,12 +622,32 @@ class VideoController extends AbstractActionController
                     return $this->redirect()->toRoute('upload');
                 }
 
-                $ytVideo = $yt->getVideoEntry($id);
-                $data->set('title',$ytVideo->getTitle())
-                    ->set('description',$ytVideo->getVideoDescription())
-                    ->set('duration',$ytVideo->getVideoDuration())
+                $client = new \Google_Client();
+                $client->setApplicationName($this->_api_info['applicationId']);
+                $client->setDeveloperKey($this->_api_info['developerId']);
+                $yt = new \Google_Service_YouTube($client);
+                $ytVideo = $yt->videos->listVideos("snippet,contentDetails,statistics",
+                    array('id' => $id))->getItems()[0];
+                //$ytVideo = $yt->getVideoEntry($id);
+
+                $duration = $ytVideo->getContentDetails()->getDuration();
+                preg_match('/([0-9]*)H/',$duration,$hours);
+                preg_match('/([0-9]*)M/',$duration,$minutes);
+                preg_match('/([0-9]*)S/',$duration,$seconds);
+
+                $durationInSecs = 0;
+                if(!empty($hours[1])) $durationInSecs += $hours[1] * 60 * 60;
+                if(!empty($minutes[1])) $durationInSecs += $minutes[1] * 60;
+                if(!empty($seconds[1])) $durationInSecs += $seconds[1];
+
+                $duration = $durationInSecs;
+
+                $data->set('title',$ytVideo->getSnippet()->getTitle())
+                    ->set('description',$ytVideo->getSnippet()->getDescription())
+                    ->set('duration',$duration)
                     ->set('on_media_server',1)
-                    ->set('previewImage',$ytVideo->getVideoThumbnails()[3]['url'])
+                    ->set('preview_url',$ytVideo->getSnippet()->getThumbnails()->getHigh()->getUrl())
+                    ->set('previewImage',$ytVideo->getSnippet()->getThumbnails()->getHigh()->getUrl())
                     ->set('source','youtube')
                     ->set('video_url',$data->get('youtube_url'));
 

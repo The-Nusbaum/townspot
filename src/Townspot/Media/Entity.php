@@ -1,6 +1,8 @@
 <?php
 namespace Townspot\Media;
 
+require_once APPLICATION_PATH . "/google/apiclient/src/Google/autoload.php";
+
 class Entity extends \Townspot\Entity
 {
 	protected $_id;
@@ -76,6 +78,14 @@ class Entity extends \Townspot\Entity
 	protected $_section_media;
 	
 	protected $_episode;
+
+    protected $_api_info = array(
+        'applicationId' => 'Townspot',
+        'clientId' => "872367745273-sbsiuc81kh9o70ok3macc15d2ebpl440.apps.googleusercontent.com",
+        'developerId' => "AIzaSyCa1RYJsf-C94cTQo34GC59DkiijUq_54s",
+        //'developerId' => "KkR-tZy_lJmcHHzlKtFWDAdD",
+        //'developerId' => "AI39si7sp4rb57_29xMFWO2AoT8DDc0dKYklw7_IsUYpEhsxSL-DNK60f3eIF7OK_Iy0_xYm1eAxX2skGO57B6oHd6qJHHiPZA"
+    );
 	
 	public function __construct()
 	{
@@ -422,7 +432,7 @@ class Entity extends \Townspot\Entity
 			if ($this->getSource() == 'youtube') {
 				$ytId = $this->getYtVideoId();
 				$videoEntry = $this->_getYtVideo($ytId);
-				return $videoEntry->getStatistics()->getViewCount();
+                return $videoEntry->getStatistics()->getViewCount();
 			}
 		}
 		return $this->_views;
@@ -435,7 +445,17 @@ class Entity extends \Townspot\Entity
 			if ($this->getSource() == 'youtube') {
 				$ytId = $this->getYtVideoId();
 				$videoEntry = $this->_getYtVideo($ytId);
-				$duration = $videoEntry->getMediaGroup()->getDuration()->getSeconds();
+				$duration = $videoEntry->getContentDetails()->getDuration();
+                preg_match('/([0-9]*)H/',$hours);
+                preg_match('/([0-9]*)M/',$minutes);
+                preg_match('/([0-9]*)S/',$seconds);
+
+                $durationInSecs = 0;
+                if(!empty($hours[1])) $durationInSecs += $hours[1] * 60 * 60;
+                if(!empty($minutes[1])) $durationInSecs += $minutes[1] * 60;
+                if(!empty($seconds[1])) $durationInSecs += $seconds[1];
+
+                $duration = $durationInSecs;
 			}
 		}
 		if ($formatted) {
@@ -691,8 +711,7 @@ class Entity extends \Townspot\Entity
         if ($this->getSource() == 'youtube') {
             $ytId = $this->getYtVideoId();
             $videoEntry = $this->_getYtVideo($ytId);
-            $authors = $videoEntry->getAuthor();
-            $author = array_shift($authors);
+            $author = $videoEntry->getSnippet()->getChannelTitle();
             return $author;
         }
         return null;
@@ -703,33 +722,35 @@ class Entity extends \Townspot\Entity
 		if ($this->getSource() == 'youtube') {
 			$ytId = $this->getYtVideoId();
 			$videoEntry = $this->_getYtVideo($ytId);
-			$authors = $videoEntry->getAuthor();
-			$author = array_shift($authors);
-			$uri = $author->getUri()->getText();
-			$parts = explode('/',$uri);
-			$user = array_pop($parts);
-            return $user;
-			$links = $this->_getYtApi()->getUserProfile($user)->getLink();
-			foreach ($links as $link) {
-				if (preg_match('/\/channel\//',$link->getHref())) {
-					$parts = explode('/',$link->getHref());
-					return array_pop($parts);
-				}
-			}
+            $author = $videoEntry->getSnippet()->getChannelId();
+            return $author;
 		}
 		return null;
 	}
 
+/*
 	protected function _getYtApi()
 	{
 		$yt = new \ZendGData\YouTube();			
 		$yt->getHttpClient()->setOptions(array('sslverifypeer' => false));
 		return $yt;
 	}
-	
+*/
+
+    protected function _getYtApi()
+    {
+        $client = new \Google_Client();
+        $client->setApplicationName($this->_api_info['applicationId']);
+        $client->setDeveloperKey($this->_api_info['developerId']);
+        $api = new \Google_Service_YouTube($client);
+        return $api->videos;
+    }
+
 	protected function _getYtVideo($id)
 	{
-		return $this->_getYtApi()->getVideoEntry($id);
+		$video = $this->_getYtApi()->listVideos("snippet,contentDetails,statistics",
+            array('id' => $id));
+        return $video->getItems()[0];
 	}
 	
 }
