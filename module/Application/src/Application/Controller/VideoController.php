@@ -649,7 +649,8 @@ class VideoController extends AbstractActionController
                     ->set('preview_url',$ytVideo->getSnippet()->getThumbnails()->getHigh()->getUrl())
                     ->set('previewImage',$ytVideo->getSnippet()->getThumbnails()->getHigh()->getUrl())
                     ->set('source','youtube')
-                    ->set('video_url',$data->get('youtube_url'));
+                    ->set('video_url',$data->get('youtube_url'))
+                    ->set('url',$data->get('youtube_url'));
 
             } elseif(!$data->get('review_ok')) {
                 //do nothing?
