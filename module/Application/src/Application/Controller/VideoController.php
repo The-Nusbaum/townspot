@@ -655,9 +655,11 @@ class VideoController extends AbstractActionController
                 //do nothing?
             } else {
                 if($data->get('source') == 'youtube') {
-                    $url = $data->get('youtube_url')
+                    $url = $data->get('youtube_url');
+                } else {
+                    $url = $data->get('video_url');
                 }
-                $url =
+
                 $mediaEntity = new \Townspot\Media\Entity();
                 $mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
                 $mediaEntity->setUser($user)
@@ -667,7 +669,7 @@ class VideoController extends AbstractActionController
                     ->setTitle($data->get('title'))
                     ->setLogline($data->get('logline'))
                     ->setDescription($data->get('description'))
-                    ->setUrl($data->get('video_url'))
+                    ->setUrl($url)
                     ->setPreviewImage($data->get('preview_url'))
                     ->setAuthorised($data->get('authorised'))
                     ->setAllowContact($data->get('allow_contact'))
