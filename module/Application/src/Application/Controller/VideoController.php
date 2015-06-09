@@ -654,6 +654,10 @@ class VideoController extends AbstractActionController
             } elseif(!$data->get('review_ok')) {
                 //do nothing?
             } else {
+                if($data->get('source') == 'youtube') {
+                    $url = $data->get('youtube_url')
+                }
+                $url =
                 $mediaEntity = new \Townspot\Media\Entity();
                 $mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
                 $mediaEntity->setUser($user)
