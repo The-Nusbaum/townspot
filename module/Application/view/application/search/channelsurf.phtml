@@ -75,6 +75,7 @@ function renderCat($cat,$level = 0,$current = null,$parents = '') {
         </div>
         <br/>
         <button id="applyFilters" class="btn-primary form-control">Apply Filters</button>
+        <br/>
         <div class="currentlyWatching">
             <h3>Currently Watching:</h3>
             <a href="/channelsurf">All Videos</a>
@@ -170,7 +171,7 @@ function renderCat($cat,$level = 0,$current = null,$parents = '') {
         <div class="row">
             <h3>&nbsp;&nbsp;Up Next</h3>
         </div>
-        <div class="controls up hidden">
+        <div class="controls up">
             <button class="form-control"><i class="fa fa-chevron-up"></i></button>
         </div>
         <div class="row" id="videos">
@@ -194,7 +195,8 @@ function renderCat($cat,$level = 0,$current = null,$parents = '') {
     var mediaIndex = 0;
     var categories = <?= json_encode($categories) ?>;
     var flatCats = <?= json_encode($flatCats) ?>;
-    var cities = <?= json_encode($cities) ?>
+    var cities = <?= json_encode($cities) ?>;
+    var locked = false;
 
     $('.stateSelector select').change(function(){
         var $state = $(this);
@@ -296,7 +298,6 @@ function renderCat($cat,$level = 0,$current = null,$parents = '') {
         if(typeof $('.categorySelector option:selected').attr('data-parents') != 'undefined') {
             var parents = $('.categorySelector option:selected').attr('data-parents');
             parents = parents.split(',');
-            console.log(parents);
             for(x in parents) {
                 if(parents[x] != '') {
                     newText += flatCats[parents[x]] + '/';
@@ -309,6 +310,7 @@ function renderCat($cat,$level = 0,$current = null,$parents = '') {
         }
         var url = state + '/' + city + '/' + cats;
         url = '/channelsurf/' + url.toLowerCase().replace(/ /g,'_');
+        url = url.replace(/\/$/,'');
         $('.currentlyWatching a').attr('href',url);
         $('.currentlyWatching a').html(newText);
         console.log(url);
@@ -385,18 +387,31 @@ function renderCat($cat,$level = 0,$current = null,$parents = '') {
         nextVids();
     });
 
+    function toggleControls() {
+        if($('.controls button[disabled]').length){
+            $('.controls button[disabled]').removeAttr('disabled');
+        } else {
+            $('.controls button:not([disabled])').attr('disabled','disabled');
+        }
+        if ($('.nextVideo:visible:first').attr('data-id') == mediaList[0].id) $('.controls button.up').attr('disabled','disabled');
+        locked = !locked;
+    }
+
     function nextVids() {
-        $('.nextVideo:visible:first').hide();
-        $('.nextVideo[hidden]:first').removeAttr('hidden');
-        fetchNext();
-        $('.controls.up').removeClass('hidden');
+        if(!locked) {
+            toggleControls();
+            $('.nextVideo:visible:first').hide();
+            $('.nextVideo[hidden]:first').removeAttr('hidden');
+            fetchNext();
+        }
     }
 
     function prevVids() {
-        $('.nextVideo:visible:first').prev().show();
-        $('.nextVideo:visible:last').hide();
-        if($('.nextVideo:visible:first').attr('data-id') == mediaList[0].id) {
-            $('.controls.up').addClass('hidden');
+        if(!locked) {
+            toggleControls();
+            $('.nextVideo:visible:first').prev().show();
+            $('.nextVideo:visible:last').hide();
+            toggleControls();
         }
     }
 
@@ -422,12 +437,14 @@ function renderCat($cat,$level = 0,$current = null,$parents = '') {
                         $('.nextVideo:visible:last').attr('hidden',1);
                     }
                     setInfoButtons();
+                    toggleControls();
                 }
             }
         );
     }
 
     function getInit() {
+        notThese = 0;
         $.post('/api/media/channelsurf',
             {
                 state: stateId,
