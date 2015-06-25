@@ -703,7 +703,22 @@ return array(
 						'action'     => 'index',
 					),
 				),
-			),	
+			),
+            'series_page' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/series/:id[/:name]',
+                    'constraints' => array(
+                        'name' => '[a-zA-Z0-9_-]+',
+                        'season' => '\d+',
+                        'episode' => '\d+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Video',
+                        'action'     => 'series',
+                    ),
+                ),
+            ),
 			'what_is_townspot' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
 				'options' => array(

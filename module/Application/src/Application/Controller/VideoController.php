@@ -696,6 +696,55 @@ class VideoController extends AbstractActionController
         return $this->_view;
     }
 	
-	
+	public function seriesAction() {
+        $id = $this->params()->fromRoute('id');
+        $seriesMapper = new \Townspot\Series\Mapper($this->getServiceLocator());
+        $series = $seriesMapper->find($id);
+        $mediaList = $series->getEpisodes();
+        $index = array();
+        foreach($mediaList as $episode) {
+            $media = $episode->getMedia();
+            $categories = array();
+            $cats = $media->getCategories();
+            foreach($cats as $c) {
+                $categories[] = array(
+                    'name' => $c->getName(),
+                    'url' => $c->getDiscoverLink(null, false)
+                );
+            }
+            $video = array(
+                'id' => $media->getId(),
+                'type' => 'media',
+                'link' => $media->getMediaLink(),
+                'image' => $media->getResizerCdnLink(),
+                'escaped_title' => $media->getTitle(false, true),
+                'title' => $media->getTitle(),
+                'logline' => $media->getLogline(),
+                'escaped_logline' => $media->getLogline(true),
+                'user' => $media->getUser()->getUsername(),
+                'user_profile' => $media->getUser()->getProfileLink(),
+                'duration' => $media->getDuration(true),
+                'comment_count' => count($media->getCommentsAbout()),
+                'views' => $media->getViews(false),
+                'location' => $media->getLocation(),
+                'escaped_location' => $media->getLocation(false, true),
+                'rate_up' => count($media->getRatings(true)),
+                'rate_down' => count($media->getRatings(false)),
+                'image_source' => $media->getSource(),
+                'created' => $media->getCreated()->getTimestamp(),
+                'url' => $media->getUrl(),
+                'city' => $media->getCity()->getName(),
+                'state' => $media->getProvince()->getName(),
+                'categories' => $categories
+            );
+
+            $index[$media->getId()] = $video;
+        }
+        $this->getServiceLocator()
+            ->get('ViewHelperManager')
+            ->get('HeadScript')
+            ->appendFile('/js/videointeractions.js','text/javascript');
+        return new ViewModel(compact('seasonsList','mediaList','index'));
+    }
 	
 }
