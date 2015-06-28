@@ -1,0 +1,247 @@
+<?php
+function renderCat($cat,$level = 0,$current = null,$parents = '') {
+    $pattern = "<option data-parents='%s' value='%s'%s>%s%s</option>\n";
+    $pad = '';
+    for($i = 0; $i < $level; $i++) {
+        $pad .= '- ';
+    }
+    if(!empty($cat['parent_id'])) {
+        if(!empty($parents)) $parents .= ',';
+        $parents .= $cat['parent_id'];
+    }
+    $selected = ($cat['id'] == $current)? ' selected="selected"':'';
+    $html = '';
+    $html .= sprintf($pattern,$parents,$cat['id'],$selected,$pad,$cat['label']);
+    if(!empty($cat['children'])) {
+        $level++;
+        foreach($cat['children'] as $child) {
+            $html .= renderCat($child,$level,$current,$parents);
+        }
+    }
+    return $html;
+}
+
+$first = $mediaList[0]->getMedia();
+?>
+<script>
+    var index = <?= json_encode($index); ?>
+</script>
+<div class="row" id="series">
+    <div class="col-md-12 navbar">
+
+    </div>
+    <div class="col-md-12 player">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row" id="video">
+                    <div class="col-xs-12">
+                        <div class="media">
+                            <?= $this->VideoPlayer(
+                                $first->getId(),
+                                array(
+                                    'width' => '100%',
+                                    'preview_width' => 800,
+                                    'preview_height' => 450,
+                                    //'include_sharing' => true,
+                                    'include_info' => true,
+                                    'include_buttons' => true,
+                                )
+                            ); ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row video-info">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h3>Description:</h3>
+                                <div class="expandable description">
+                                    <?= $first->getDescription() ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xxs-5 col-xs-4 col-sm-3">
+                                <h3>Location:</h3>
+                            </div>
+                            <div class="col-xxs-7 col-xs-8 col-sm-9">
+                                <ul class="boxed-list">
+                                    <li class="city"><a href="<?= $first->getCity()->getDiscoverLink() ?>"><?= $first->getCity()->getName() ?></a></li>
+                                    <li class="state"><a href="<?= $first->getProvince()->getDiscoverLink() ?>"><?= $first->getProvince()->getName() ?></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xxs-5 col-xs-4 col-sm-3">
+                                <h3>Genres:</h3>
+                            </div>
+                            <div class="col-xxs-7 col-xs-8 col-sm-9">
+                                <ul class="boxed-list genres">
+                                <?php foreach($first->getCategories() as $cat): ?>
+                                    <li><a href="<?= $cat->getDiscoverLink() ?>"><?= $cat->getName() ?></a></li>
+                                <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="row comments-row">
+                    <div class="col-xs-12">
+                        <div class="col-xxs-5 col-xs-4 col-sm-3 comments-header">
+                            <h3>Comments:</h3>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-xs-9 nopadding-right full-320">
+                            <input type="text" class="col-sm-8 form-control" placeholder="Leave a Comment" id="comment-field">
+                        </div>
+                        <div class="col-xs-3 nopadding-left full-320">
+                            <button class="form-control btn interaction-button" id="comment-submit">Comment</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="alert alert-block alert-error" id="comment-error">
+                                <button type="button" class="close" data-dismiss="alert">X</button>
+                                <h4 class="alert-heading"></h4>
+                                <p class="alert-body"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12" id="comments">
+                            <ul id="comment-list">
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div id="comment-navigation-down" style="display: none;"><button class="btn btn-default next col-xs-12"><i class="fa fa-chevron-down"></i></button></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 list">
+    <?php foreach($mediaList as $episode): ?>
+        <?php $media = $episode->getMedia() ?>
+        <div class="col-md-4 episode" data-id="<?= $media->getId() ?>">
+            <div class="video-preview">
+                <a href="<?= $media->getId() ?>">
+                    <img class="img-responsive preview-img img-youtube" alt="<?= $media->getTitle() ?>" src="<?= $media->getPreviewImage() ?>">
+                </a>
+                <div class="carousel-caption small">
+                    <div class="video-title">
+                        <h3 title="<?= $media->getTitle() ?>" class="dot-text">
+                            <a href="<?= $media->getId() ?>" class="playMe">
+                                <div class="dot-text"><?= $media->getTitle() ?></div>
+                            </a>
+                        </h3>
+                        <h3 title="<?= $media->getCity()->getName() ?>,<?= $media->getProvince()->getAbbrev() ?>" class="dot-text"><?= $media->getCity()->getName() ?>,<?= $media->getProvince()->getAbbrev() ?></h3>
+                    </div>
+                    <div class="info-button first" title="" data-original-title="<a href='<?= $media->getMediaLink() ?>'><?= $media->getTitle() ?></a> by <a href='<?= $media->getUser()->getProfileLink() ?>'><?= $media->getUser()->getUserName() ?></a>" data-content="<?= $media->getCity()->getName() ?>,<?= $media->getProvince()->getName() ?><br/>					<footer>					<span class='video-duration'><i class='fa fa-clock-o'></i> <?= $media->getDuration(true) ?></span>					<span class='video-plays'><i class='fa fa-play'></i> <?= $media->getViews() ?></span> 					<span class='video-thumbs-up'><i class='fa fa-thumbs-up'></i> <?= count($media->getRatings(true)) ?></span> 					<span class='video-thumbs-down'><i class='fa fa-thumbs-down'></i> <?= count($media->getRatings(false)) ?></span>					<span class='video-comments'><i class='fa fa-comments'></i> <?= count($media->getCommentsAbout()) ?></span>					</footer>" data-toggle="popover">
+                        <i class="fa fa-info-circle"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php endforeach; ?>
+    </div>
+</div>
+
+<script>
+    $('.episode a').click(function(e){
+        e.preventDefault();
+        playThis($(this).attr('href'));
+    });
+
+    function playThis(id) {
+        $('.episode.nowPlaying').removeClass('nowPlaying');
+        $('.episode[data-id='+ id +']').addClass('nowPlaying');
+        $('.episode[data-id='+ id +']').next().addClass('nextVid');
+        $('.episode[data-id='+ id +']').prev().addClass('prevVid');
+        playMedia(id);
+    }
+
+    function htmlEncode(value){
+        //create a in-memory div, set it's inner text(which jQuery automatically encodes)
+        //then grab the encoded contents back out.  The div never exists on the page.
+        return $('<div/>').text(value).html();
+    }
+
+    function htmlDecode(value){
+        return $('<div/>').html(value).text();
+    }
+
+    function playMedia(id) {
+        var media = index[id];
+        var playlist = [{
+            image: media.image,
+            file: media.url,
+            sharing: {
+                code: encodeURI("<iframe src='/embed/"+ media.id +"/"+media.escaped_title+"' width='640' height='426' frameborder='0' allowfullscreen></iframe>"),
+                link: media.link
+            }
+
+        }];
+        jwplayer('media-player').load(playlist);
+
+
+        $('.description').html(media.logline);
+        $('.state a').text(media.state);
+        $('.state a').attr('href','/discover/' + encodeURIComponent(media.state));
+        $('.city a').text(media.city);
+        $('.city a').attr('href','/discover/' + encodeURIComponent(media.city) + '/' + encodeURIComponent(media.state));
+        $('.videoTitle').text(media.title);
+        $('.videoAuthor a').attr('href',media.user_profile);
+        $('.videoAuthor a').text(media.user);
+        $('#up-ratings').text(media.rate_up);
+        $('#down-ratings').text(media.rate_down);
+        $('.videoViews').text("View Count: " + media.views);
+        $('#videos div[data-id='+media.id+'] .video-preview').addClass('nowPlaying');
+        $('.genres li').remove();
+
+        for(x in media.categories) {
+            $('.genres').append('<li><a href="'+ media.categories[x].url +'">'+ media.categories[x].name +'</a></li>');
+        }
+
+        $().Interactions({
+            userid: <?= ($this->zfcUserIdentity()) ? $this->zfcUserIdentity()->getId() : 0; ?>,
+            videoid: media.id,
+            creator: media.user,
+            favorite: false,
+            following: false
+        });
+
+        jwplayer('media-player').play(true);
+    }
+
+    function getNext() {
+        var $next = $('.episode.nowPlaying').next();
+        $next.addClass('nowPlaying');
+        $next.next().addClass('nextVid');
+        $next.prev().addClass('prevVid');
+        playMedia($next.data('id'));
+    }
+
+    $('.episode:first').addClass('nowPlaying');
+    $('.episode:first').next().addClass('nextVid');
+    $('.episode:last').addClass('prevVid');
+
+    jwplayer('media-player').onPlaylistComplete(function(){
+        getNext();
+    });
+
+    $().Interactions({
+        userid: <?= ($this->zfcUserIdentity()) ? $this->zfcUserIdentity()->getId() : 0; ?>,
+        videoid: <?= $first->getId() ?>,
+        creator: <?= $first->getUser()->getId() ?>,
+        favorite: false,
+        following: false
+    });
+</script>
