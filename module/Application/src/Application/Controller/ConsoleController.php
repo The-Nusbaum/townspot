@@ -240,7 +240,7 @@ class ConsoleController extends AbstractActionController
 
         fputs(STDOUT,sprintf("%s records\n",count($users)));
         foreach($users as $u) {
-            $this->_output($u->getProfileLink(),$delay);
+            $this->_output($u->getProfileLink(),$server,$delay);
         }
 
         $time = $this->_getTime($start);

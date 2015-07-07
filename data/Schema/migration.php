@@ -1,7 +1,7 @@
 <?php
 //Data migration
-$sourceDb = new mysqli('localhost', 'root', '', 'townspot_dev');
-$targetDb = new mysqli('localhost', 'root', '', 'tsz');
+$sourceDb = new mysqli('216.157.108.165', 'tspot_prod_user', 'concertoisdead', 'townspot_dev');
+$targetDb = new mysqli('216.157.108.165', 'tsz_user', 'sh@Fnrt1ps0', 'tsz');
 
 $targetDb->query('truncate tsz.user');
 $targetDb->query('truncate tsz.user_social_media');
@@ -393,11 +393,11 @@ $targetDb->query("update media set province_id=null where province_id=0");
 $targetDb->query("update media set admin_id=null where admin_id=0");
 $targetDb->query("update category set parent_id=null where parent_id=0");
 $targetDb->query("update series_episodes set season_id=null where season_id=0");
-$targetDb->query("delete from series_eposides where series_id=0");
-$targetDb->query("delete from series_season where series_id=0");
-$targetDb->query("delete from series_category_linker where series_id=0");
-$targetDb->query("DELETE from series_episodes where series_episodes.series_id NOT IN (SELECT DISTINCT id from series)");
-$targetDb->query("DELETE from media where media.user_id NOT IN (SELECT DISTINCT user_id from user)");
+//$targetDb->query("delete from series_eposides where series_id=0");
+//$targetDb->query("delete from series_season where series_id=0");
+//$targetDb->query("delete from series_category_linker where series_id=0");
+//$targetDb->query("DELETE from series_episodes where series_episodes.series_id NOT IN (SELECT DISTINCT id from series)");
+//$targetDb->query("DELETE from media where media.user_id NOT IN (SELECT DISTINCT user_id from user)");
 
 function getCity($dbconnection,$cityId) 
 {
