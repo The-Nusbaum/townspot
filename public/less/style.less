@@ -1955,6 +1955,26 @@ div {
 }
 
 #series {
+  .episode {
+    height: 150px;
+    .wrapper {
+      height: 145px;
+      overflow: hidden;
+      border: 1px solid #ccc;
+      border-radius: 2px;
+      .video-preview {
+        height: 140px;
+        overflow: hidden;
+        border: none;
+        border-radius: 0;
+        .video-caption {
+          right: 3px;
+          left: 3px;
+          bottom: 0;
+        }
+      }
+    }
+  }
   .nowPlaying {
     .video-preview {
       border: solid 2px orange;

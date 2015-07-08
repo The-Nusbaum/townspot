@@ -728,6 +728,17 @@ class Entity extends \Townspot\Entity
 		return null;
 	}
 
+    public function getYtSubscriberChannelTitle()
+    {
+        if ($this->getSource() == 'youtube') {
+            $ytId = $this->getYtVideoId();
+            $videoEntry = $this->_getYtVideo($ytId);
+            $author = $videoEntry->getSnippet()->getChannelTitle();
+            return $author;
+        }
+        return null;
+    }
+
 /*
 	protected function _getYtApi()
 	{

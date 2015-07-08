@@ -150,7 +150,7 @@
 		"thepixeldeveloper/sitemap": "dev-master",
 		"zf-commons/zfc-base": "0.1.2",
         "zf-commons/zfc-user": "1.2.1",
-		"ocramius/proxy-manager": "0.5.1",
+		"ocramius/proxy-manager": "1.0.*",
 		"twig/twig": "1.16.*@dev",
 		"ptachoire/cssembed": "dev-master",
 		"bjyoungblood/bjy-profiler": "dev-master",

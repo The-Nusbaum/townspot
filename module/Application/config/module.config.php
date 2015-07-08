@@ -955,8 +955,8 @@ return array(
                 'route' 		=> 'add-video',
             ),
 			array(
-				'label' 		=> 'Backstage',
-                'uri' 			=> 'http://backstage.townspot.tv/',
+				'label' 		=> 'ChannelSurf',
+                'route' 		=> 'channelsurf',
 				'target'	 	=> '_blank',
             ),
 			array(

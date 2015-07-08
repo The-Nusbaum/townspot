@@ -131,21 +131,23 @@ $first = $mediaList[0]->getMedia();
     <?php foreach($mediaList as $episode): ?>
         <?php $media = $episode->getMedia() ?>
         <div class="col-md-4 episode" data-id="<?= $media->getId() ?>">
-            <div class="video-preview">
-                <a href="<?= $media->getId() ?>">
-                    <img class="img-responsive preview-img img-youtube" alt="<?= $media->getTitle() ?>" src="<?= $media->getPreviewImage() ?>">
-                </a>
-                <div class="carousel-caption small">
-                    <div class="video-title">
-                        <h3 title="<?= $media->getTitle() ?>" class="dot-text">
-                            <a href="<?= $media->getId() ?>" class="playMe">
-                                <div class="dot-text"><?= $media->getTitle() ?></div>
-                            </a>
-                        </h3>
-                        <h3 title="<?= $media->getCity()->getName() ?>,<?= $media->getProvince()->getAbbrev() ?>" class="dot-text"><?= $media->getCity()->getName() ?>,<?= $media->getProvince()->getAbbrev() ?></h3>
-                    </div>
-                    <div class="info-button first" title="" data-original-title="<a href='<?= $media->getMediaLink() ?>'><?= $media->getTitle() ?></a> by <a href='<?= $media->getUser()->getProfileLink() ?>'><?= $media->getUser()->getUserName() ?></a>" data-content="<?= $media->getCity()->getName() ?>,<?= $media->getProvince()->getName() ?><br/>					<footer>					<span class='video-duration'><i class='fa fa-clock-o'></i> <?= $media->getDuration(true) ?></span>					<span class='video-plays'><i class='fa fa-play'></i> <?= $media->getViews() ?></span> 					<span class='video-thumbs-up'><i class='fa fa-thumbs-up'></i> <?= count($media->getRatings(true)) ?></span> 					<span class='video-thumbs-down'><i class='fa fa-thumbs-down'></i> <?= count($media->getRatings(false)) ?></span>					<span class='video-comments'><i class='fa fa-comments'></i> <?= count($media->getCommentsAbout()) ?></span>					</footer>" data-toggle="popover">
-                        <i class="fa fa-info-circle"></i>
+            <div class="wrapper">
+                <div class="video-preview">
+                    <a href="<?= $media->getId() ?>">
+                        <img class="img-responsive preview-img img-youtube" alt="<?= $media->getTitle() ?>" src="http://images.townspot.tv/resizer.php?id=<?= $media->getId() ?>&h=141">
+                    </a>
+                    <div class="video-caption small">
+                        <div class="video-title">
+                            <h3 title="<?= $media->getTitle() ?>" class="dot-text">
+                                <a href="<?= $media->getId() ?>" class="playMe">
+                                    <div class="dot-text"><?= $media->getTitle() ?></div>
+                                </a>
+                            </h3>
+                            <h3 title="<?= $media->getCity()->getName() ?>,<?= $media->getProvince()->getAbbrev() ?>" class="dot-text"><?= $media->getCity()->getName() ?>,<?= $media->getProvince()->getAbbrev() ?></h3>
+                        </div>
+                        <div class="info-button first" title="" data-original-title="<a href='<?= $media->getMediaLink() ?>'><?= $media->getTitle() ?></a> by <a href='<?= $media->getUser()->getProfileLink() ?>'><?= $media->getUser()->getUserName() ?></a>" data-content="<?= $media->getCity()->getName() ?>,<?= $media->getProvince()->getName() ?><br/>					<footer>					<span class='video-duration'><i class='fa fa-clock-o'></i> <?= $media->getDuration(true) ?></span>					<span class='video-plays'><i class='fa fa-play'></i> <?= $media->getViews() ?></span> 					<span class='video-thumbs-up'><i class='fa fa-thumbs-up'></i> <?= count($media->getRatings(true)) ?></span> 					<span class='video-thumbs-down'><i class='fa fa-thumbs-down'></i> <?= count($media->getRatings(false)) ?></span>					<span class='video-comments'><i class='fa fa-comments'></i> <?= count($media->getCommentsAbout()) ?></span>					</footer>" data-toggle="popover">
+                            <i class="fa fa-info-circle"></i>
+                        </div>
                     </div>
                 </div>
             </div>

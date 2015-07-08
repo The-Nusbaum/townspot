@@ -27,7 +27,7 @@ return array(
             APPLICATION_PATH . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'autoload' . DIRECTORY_SEPARATOR . '{,*.}{global,local}.php',
             'config/autoload/{,*.}{global,local}.php',
         ),
-        'config_cache_enabled' => true,
+        'config_cache_enabled' => false,
         'config_cache_key' => 'townspot_config',
         'module_map_cache_enabled' => true,
         'module_map_cache_key' => 'townspot_module_map',
