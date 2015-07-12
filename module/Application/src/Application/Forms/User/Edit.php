@@ -46,14 +46,7 @@ class Edit extends Form
                 'errorMessage' => 'You must enter a username'
             ),
         ));
-        $this->add(array(
-            'name' => 'artistName',
-            'attributes' => array(
-                'type'  => 'text',
-                'label' => 'Artist Name',
-                'length' => '50',
-            ),
-        ));
+
         $this->add(array(
             'name' => 'email',
             'attributes' => array(
