@@ -93,10 +93,18 @@ var userRegister = {
     },
     validate: function() {
         $('.alert').hide();
+        if(window.location.pathname.match(/admin/)) {
+            return userRegister.adminValidate();
+        }
         var error = false;
         if($('#username').val() == ''){
             error = true;
             $('.nousername').show();
+        }
+
+        if($('#displayName').val() == ''){
+            error = true;
+            $('.nodisplayname').show();
         }
 
         if($('#email').val() == ''){
@@ -104,6 +112,7 @@ var userRegister = {
             $('.noemail').show();
         }
 
+        /*
         if($('#firstName').val() == ''){
             error = true;
             $('.nofirstname').show();
@@ -113,6 +122,7 @@ var userRegister = {
             error = true;
             $('.nolastname').show();
         }
+        */
 
         if($('#password').val() == ''){
             error = true;
@@ -144,22 +154,52 @@ var userRegister = {
             $('.nocity').show();
         }
 
-        if($('#email').val() == ''){
-            error = true;
-            $('.noemail').show();
-        }
-
         if(!$('#terms_agreement').is(':checked')){
             error = true;
             $('.noterms').show();
         }
 
+        /*
         if($('#plupPicVal').val() == "http://images.townspot.tv/resizer.php?id=none&type=profile") {
             error = true;
             $('.noimage').show();
         }
         if($('.userexists, .emailexists').length) {
             error = true;
+        }
+        */
+        return !error;
+    },
+    adminValidate: function() {
+        var error = false;
+        if($('#username').val() == ''){
+            error = true;
+            $('.nousername').show();
+        }
+
+        if($('#password').val() == ''){
+            error = true;
+            $('.nopassword').show();
+        }
+
+        if($('#password').val() != $('#password2').val()){
+            error = true;
+            $('.noconfirmpass').show();
+        }
+
+        if(!$('#password').val().match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,15}$/)) {
+            error = true;
+            $('.invalidpass').show();
+        }
+
+        if($('#province_id').val() == ''){
+            error = true;
+            $('.nostate').show();
+        }
+
+        if($('#city_id').val() == ''){
+            error = true;
+            $('.nocity').show();
         }
         return !error;
     }

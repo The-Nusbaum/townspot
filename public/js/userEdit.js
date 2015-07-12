@@ -96,11 +96,17 @@ var userEdit = {
             $('.nousername').show();
         }
 
+        if($('#display_name').val() == ''){
+            error = true;
+            $('.nodisplayname').show();
+        }
+
         if($('#email').val() == ''){
             error = true;
             $('.noemail').show();
         }
 
+        /*
         if($('#firstName').val() == ''){
             error = true;
             $('.nofirstname').show();
@@ -110,6 +116,7 @@ var userEdit = {
             error = true;
             $('.nolastname').show();
         }
+        */
 
         if($('#password').val() != ''){
              if($('#password').val() != $('#password2').val()){
@@ -138,15 +145,12 @@ var userEdit = {
             $('.nocity').show();
         }
 
-        if($('#email').val() == ''){
-            error = true;
-            $('.noemail').show();
-        }
-
+        /*
         if($('#plupPicVal').val() == "http://images.townspot.tv/resizer.php?id=none&type=profile") {
             error = true;
             $('.noimage').show();
         }
+        */
         return !error;
     },
     checkUsername: function(){

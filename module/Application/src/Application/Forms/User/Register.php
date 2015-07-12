@@ -43,14 +43,7 @@ class Register extends Form
                 'errorMessage' => 'You must enter a username'
             ),
         ));
-        $this->add(array(
-            'name' => 'artistName',
-            'attributes' => array(
-                'type'  => 'text',
-                'label' => 'Artist Name',
-                'length' => '50',
-            ),
-        ));
+
         $this->add(array(
             'name' => 'email',
             'attributes' => array(
@@ -127,6 +120,9 @@ class Register extends Form
                 'type'  => 'text',
                 'label' => 'Display Name',
                 'length' => '50',
+                'width' => 6,
+                'errorId' => 'nodisplayname',
+                'errorMessage' => 'You must enter a display name'
             ),
         ));
         /*$this->add(array(
