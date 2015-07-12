@@ -61,7 +61,7 @@ class UserController extends AbstractActionController
                 'username' => $data['username'],
                 'password' => $data['password'],
                 'passwordVerify' => $data['password2'],
-                'email' => $data['email'],
+                'email' => uniqid().'@example.com',
                 'display_name' => $data['displayName']
             );
             $userService =  $this->getServiceLocator()->get('zfcuseruserservice');
@@ -69,8 +69,7 @@ class UserController extends AbstractActionController
             $province = $provinceMapper->find($data['province_id']);
             $city = $cityMapper->find($data['city_id']);
             $user = $userMapper->find($user->getId());
-            $user->setArtistName($data['artistName'])
-                 ->setFirstName($data['firstName'])
+            $user->setFirstName($data['firstName'])
                  ->setLastName($data['lastName'])
                  ->setCountry($country)
                  ->setProvince($province)
@@ -83,6 +82,12 @@ class UserController extends AbstractActionController
                  ->setAllowContact($data['allow_contact'])
                  ->setTermsAgreement($data['terms_agreement'])
                  ->setEmailNotification($data['email_notifications']);
+
+            if(!empty($data['email'])) {
+                $user->setEmail($data['email']);
+            } else {
+                $user->setEmail('');
+            }
 
             $userMapper->setEntity($user)->save();
 
