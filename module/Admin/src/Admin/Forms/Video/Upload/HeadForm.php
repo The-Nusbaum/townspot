@@ -103,5 +103,15 @@ class HeadForm extends Form {
                 'value_options' => $cities
             ),
         ));
+
+        $this->add(array(
+            'type' => 'Zend\Form\Element\Textarea',
+            'name' => 'whyWeChose',
+            'attributes' => array(
+                'type'  => 'textarea',
+                'label' => 'Onscreen Today Text',
+                'width' => 12,
+            ),
+        ));
     }
 } 

@@ -4199,4 +4199,13 @@
 	<changeSet author="MikeH" id="09062014-07">
 		<sqlFile path="db.seed.locations.sql" />
 	</changeSet>
+    <changeSet author="IanN" id="07192015-01">
+        <sql>ALTER TABLE `media`
+        CHANGE COLUMN `description` `description` TEXT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ,
+        CHANGE COLUMN `why_we_chose` `why_we_chose` TEXT CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NULL DEFAULT NULL ;
+        </sql>
+    </changeSet>
+    <changeSet author="MikeH" id="09062014-07">
+        <sqlFile path="db.seed.locations.sql" />
+    </changeSet>
 </databaseChangeLog>

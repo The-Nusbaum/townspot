@@ -166,7 +166,9 @@ class VideoPlayer extends AbstractHelper implements ServiceLocatorAwareInterface
 			$html .= "        </div>\n";
 			$html .= "        <div class='row'>\n";
 			$html .= "            <div class='col-xs-6 interaction-buttons'>\n";
-			$html .= "                <button class='btn interaction-button' id='contact-interaction'>Contact</button>\n";
+            if($this->media->getUser()->getAllowContact()) {
+                $html .= "                <button class='btn interaction-button' id='contact-interaction'>Contact</button>\n";
+            }
 			$html .= "                <button class='btn interaction-button' id='follow-interaction'>Become a Fan</button>\n";
 			$html .= "                " . $this->_getYtSubscribe();
 			$html .= "            </div>\n";
