@@ -265,7 +265,7 @@ class Mapper extends AbstractEntityMapper
             'id' => $user->getId(),
             'image_url' => $user->getImageUrl(),
             'host' => $encoding['sshHost'],
-            'webroot' => APPLICATION_PATH,
+            'webroot' => APPLICATION_PATH . 'public/',
             'fileName' => $user->getId().".$ext"
         ));
         $msg = new AMQPMessage($msg_body, array('content_type' => 'text/plain', 'delivery_mode' => 2));

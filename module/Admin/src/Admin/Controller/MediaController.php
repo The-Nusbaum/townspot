@@ -84,6 +84,8 @@ class MediaController extends AbstractActionController
                 $client->setApplicationName($this->_api_info['applicationId']);
                 $client->setDeveloperKey($this->_api_info['developerId']);
                 $yt = new \Google_Service_YouTube($client);
+                preg_match('/\?v=([^&]*)/',$data['youtube_url'],$matches);
+                $id = $matches[1];
                 $ytVideo = $yt->videos->listVideos("snippet,contentDetails,statistics",
                     array('id' => $id))->getItems()[0];
                 //$ytVideo = $yt->getVideoEntry($id);
@@ -142,9 +144,11 @@ class MediaController extends AbstractActionController
 							->setDuration($data->get('duration'));
 
                 $categoryMapper = new \Townspot\Category\Mapper($this->getServiceLocator());
-                foreach($data->get('selCat') as $vc) {
-                    $cat = $categoryMapper->find($vc);
-                    $mediaEntity->addCategory($cat);
+                if(!empty($data->get('selCat'))) {
+                    foreach ($data->get('selCat') as $vc) {
+                        $cat = $categoryMapper->find($vc);
+                        $mediaEntity->addCategory($cat);
+                    }
                 }
 
                 $mediaMapper->setEntity($mediaEntity);
