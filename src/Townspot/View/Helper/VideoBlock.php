@@ -84,7 +84,7 @@ class VideoBlock extends AbstractHelper implements ServiceLocatorAwareInterface
 					$media->getUser()->getUsername(),
 					$media->getDuration(true),
 					$comment_count,
-					$media->getViews(),
+                    number_format($media->getViews()),
 					$escaped_logline,
 					$escaped_location,
 					$rate_up,

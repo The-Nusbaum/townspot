@@ -47,7 +47,7 @@
                 <input type="hidden" name="city_id" value="<?= $data->get('city_id');?>"/>
                 <input type="hidden" name="title" value="<?= $data->get('title');?>"/>
                 <input type="hidden" name="logline" value="<?= $data->get('logline');?>"/>
-                <input type="hidden" name="description" value="<?= $data->get('description');?>"/>
+                <input type="hidden" name="description" value="<?= htmlentities($data->get('description'));?>"/>
                 <input type="hidden" name="video_url" value="<?= $data->get('url');?>"/>
                 <input type="hidden" name="preview_url" value="<?= $data->get('preview_url');?>"/>
                 <input type="hidden" name="youtube_url" value="<?= $data->get('youtube_url');?>"/>
