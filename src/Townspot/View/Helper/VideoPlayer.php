@@ -174,7 +174,7 @@ class VideoPlayer extends AbstractHelper implements ServiceLocatorAwareInterface
 			$html .= "            </div>\n";
 			$html .= "            <div class='col-xs-6 video-views'>\n";
 			$html .= "                <div class='pull-right videoViews'>\n";
-			$html .= "                    View Count: %d\n";							
+			$html .= "                    View Count: %s\n";
 			$html .= "                </div>\n";
 			$html .= "            </div>\n";
 			$html .= "        </div>\n";
@@ -186,7 +186,7 @@ class VideoPlayer extends AbstractHelper implements ServiceLocatorAwareInterface
 				$this->media->getUser()->getUsername(),
 				count($this->media->getRatings(true)),
 				count($this->media->getRatings(false)),
-				$this->media->getViews()
+				number_format($this->media->getViews())
 			);
 		}
 		return $html;

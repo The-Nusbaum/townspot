@@ -1,7 +1,7 @@
 <div class="container" id="userProfile">
 <div class="row">
     <div class="col-sm-4 hidden-xs" id="username">
-        <?= $user->getUsername()?>
+        <?= $user->getDisplayName() ?>
     </div>
     <div class="col-sm-8">
         <ul class="nav nav-pills pull-right">
@@ -328,7 +328,7 @@
                              data-content="<div class='location'><?= $v->getCity()->getName() ?>, <?= $v->getProvince()->getName() ?></div><div class='text'><?= $v->getLogline()?></div>
                                     <footer>
                                     <span class='video-duration'><i class='fa fa-clock-o'></i> <?= $v->getDuration()?></span>
-                                    <span class='video-plays'><i class='fa fa-play'></i> <?=$v->getViews()?></span>
+                                    <span class='video-plays'><i class='fa fa-play'></i> <?=number_format($v->getViews())?></span>
                                     <span class='video-thumbs-up'><i class='fa fa-thumbs-up'></i> <?=$ups ?></span>
                                     <span class='video-thumbs-down'><i class='fa fa-thumbs-down'></i> <?= $downs ?></span>
                                     <span class='video-comments'><i class='fa fa-comments'></i> <?=count($v->getCommentsAbout()) ?></span>
@@ -349,7 +349,7 @@
                     <h4>Video Statistics</h4>
                     <dl class="dl-horizontal">
                         <dt>Views</dt>
-                        <dd><?=$v->getViews()?></dd>
+                        <dd><?=number_format($v->getViews())?></dd>
                         <dt>Likes</dt>
                         <dd><?=$ups?></dd>
                         <dt>Dislikes</dt>
@@ -398,7 +398,7 @@
                                  data-content="<div class='location'><?= $v->getCity()->getName() ?>, <?= $v->getProvince()->getName() ?></div><div class='text'><?= $v->getLogline()?></div>
                                     <footer>
                                     <span class='video-duration'><i class='fa fa-clock-o'></i> <?= $v->getDuration()?></span>
-                                    <span class='video-plays'><i class='fa fa-play'></i> <?=$v->getViews()?></span>
+                                    <span class='video-plays'><i class='fa fa-play'></i> <?=number_format($v->getViews());?></span>
                                     <span class='video-thumbs-up'><i class='fa fa-thumbs-up'></i> <?=$ups ?></span>
                                     <span class='video-thumbs-down'><i class='fa fa-thumbs-down'></i> <?= $downs ?></span>
                                     <span class='video-comments'><i class='fa fa-comments'></i> <?=count($v->getCommentsAbout()) ?></span>

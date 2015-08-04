@@ -92,7 +92,7 @@
 					}
 				});
             },
-			fan : function(toggle, follow)
+			fan : function(follow)
 			{
 				$.ajax({
 					url: "/videos/followartist/" + options.videoid,

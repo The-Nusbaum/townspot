@@ -155,9 +155,16 @@ class VideoController extends AbstractActionController
 					break;
 				}
 			}
+            $up = 0;
+            $down = 0;
+            $ratings = $ratingMapper->findByMedia($media);
+            foreach($ratings as $r){
+                if($r->getRating()) $up++;
+                else $down++;
+            }
 			$response = array(
-				'rate_up'	=> count($media->getRatings(true)),
-				'rate_down'	=> count($media->getRatings(false)),
+				'rate_up'	=> $up,
+				'rate_down'	=> $down,
 				'my_rating'	=> '',
 			);
 			if ($userRating) {
