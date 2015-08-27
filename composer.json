@@ -18,6 +18,18 @@
 		{
 			"type": "package",	
 			"package": {
+				"name": "lorenzoferrarajr/lfj-opauth",
+				"version": "1",
+				"source": {
+                    			"url": "https://ian_nusbaum@bitbucket.org/ian_nusbaum/lfj-opauth.git",
+					"type": "git",
+					"reference": "master"
+				}
+			}
+		},
+		{
+			"type": "package",	
+			"package": {
 				"name": "fredwu/endless-scroll",
 				"version": "1.8.0",
 				"source": {
@@ -136,8 +148,8 @@
 		"symfony/process": "2.*",
 		"symfony/yaml": "2.*",
 		"symfony/event-dispatcher": "2.*",
-		"components/underscore": "dev-master",
-		"components/backbone": "dev-master",		
+		"components/underscore": "1.5.2",
+		"components/backbone": "1.1.2",		
 		"components/handlebars.js": "dev-master",
 		"components/qunit": "dev-master",
 		"koala-framework/library-css3pie": "dev-master",
@@ -158,9 +170,10 @@
 		"ocramius/generated-hydrator": "1.0.*@dev",
 		"nitecon/zf2-db-session": "dev-master",
         "evandotpro/edp-module-layouts": "dev-master",
-        "lorenzoferrarajr/lfj-opauth": "dev-master",
-        "opauth/twitter": "dev-master",
-        "opauth/facebook": "dev-master",
+        "lorenzoferrarajr/lfj-opauth": "master",
+        "opauth/opauth": "0.4.4",
+        "opauth/twitter": "0.3.1",
+        "opauth/facebook": "0.2.1",
 		"kalenjordan/jquery-cookie": "dev-master",
 		"bootstrap-select/bootstrap-select": "dev-master",
 		"datatables/datatables": "dev-master",
