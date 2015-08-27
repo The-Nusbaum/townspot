@@ -955,7 +955,7 @@ return array(
                 'route' 		=> 'add-video',
             ),
 			array(
-				'label' 		=> 'ChannelSurf',
+				'label' 		=> 'Channel Surf',
                 'route' 		=> 'channelsurf',
 				'target'	 	=> '_blank',
             ),

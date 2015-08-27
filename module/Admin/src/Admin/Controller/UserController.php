@@ -69,6 +69,8 @@ class UserController extends AbstractActionController
             $province = $provinceMapper->find($data['province_id']);
             $city = $cityMapper->find($data['city_id']);
             $user = $userMapper->find($user->getId());
+		$roleMapper = new \Townspot\UserRole\Mapper($this->getServiceLocator());
+		$role = $roleMapper->find('Artist');
             $user->setFirstName($data['firstName'])
                  ->setLastName($data['lastName'])
                  ->setCountry($country)
@@ -81,6 +83,7 @@ class UserController extends AbstractActionController
                  ->setDescriptions($data['description'])
                  ->setAllowContact($data['allow_contact'])
                  ->setTermsAgreement($data['terms_agreement'])
+		 ->addRole($role)
                  ->setEmailNotification($data['email_notifications']);
 
             if(!empty($data['email'])) {

@@ -265,7 +265,7 @@ class UserController extends AbstractActionController
             $userMapper->setEntity($user)->save();
 
             $this->flashMessenger()->addMessage('Please check your email for activation instructions');
-            $this->redirect()->toRoute('login');
+            $this->redirect()->toRoute('zfcuser-login');
 
         }
 
