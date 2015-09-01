@@ -79,8 +79,6 @@ class Entity extends \Townspot\Entity
 	
 	protected $_episode;
 
-    protected $_embed_text;
-
     protected $_api_info = array(
         'applicationId' => 'Townspot',
         'clientId' => "872367745273-sbsiuc81kh9o70ok3macc15d2ebpl440.apps.googleusercontent.com",
@@ -252,12 +250,6 @@ class Entity extends \Townspot\Entity
     public function setCity(\Townspot\City\Entity $value)
     {
         $this->_city = $value;
-        return $this;
-    }
-
-    public function setEmbedText($value)
-    {
-        $this->_embed_text = $value;
         return $this;
     }
 
@@ -611,11 +603,6 @@ class Entity extends \Townspot\Entity
     public function getEpisode()
     {
         return $this->_episode;
-    }
-
-    public function getEmbedText()
-    {
-        return $this->_embed_text;
     }
 
 	public function getMediaUrl($resolution = 'HD')
