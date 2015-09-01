@@ -45,6 +45,15 @@
 				$('#contact-submit').unbind('click').bind('click', function() { methods.contact() });
 				methods.rate();
 				methods.comments();
+                methods.adjust_vimeo();
+
+
+            },
+            adjust_vimeo: function() {
+                var vimeoPlayer = $('iframe.vimeoPlayer');
+                var width = vimeoPlayer.width();
+                var height = width / 1.77;
+                vimeoPlayer.height(height);
             },
             rate : function(rating)              
             {

@@ -320,6 +320,9 @@ class VideoController extends AbstractActionController
         $ytForm = new \Application\Forms\Video\Upload\YtForm();
         $this->_view->setVariable('ytForm',$ytForm);
 
+        $vimeoForm = new \Application\Forms\Video\Upload\VimeoForm();
+        $this->_view->setVariable('vimeoForm',$vimeoForm);
+
         $manualForm = new \Application\Forms\Video\Upload\ManualForm('manualForm');
         $this->_view->setVariable('manualForm',$manualForm);
 
@@ -614,15 +617,15 @@ class VideoController extends AbstractActionController
                 );
                 */
 
-                if(preg_match('/youtube\.com/',$url)) {
+                if (preg_match('/youtube\.com/', $url)) {
                     preg_match('/v=([^&]*)/i', $data->get('youtube_url'), $idMatches);
                     if (!empty($idMatches[1])) {
                         $id = $idMatches[1];
                     } else {
                         //no id
                     }
-                } elseif(preg_match('/youtu.be/',$url)) {
-                    $id = preg_replace('/https?:\/\/youtu.be\/(.*)/','$1',$url);
+                } elseif (preg_match('/youtu.be/', $url)) {
+                    $id = preg_replace('/https?:\/\/youtu.be\/(.*)/', '$1', $url);
                 } else {
                     $_SESSION['flash'] = array();
                     $_SESSION['flash'][] = 'Invalid url provided';
@@ -638,27 +641,43 @@ class VideoController extends AbstractActionController
                 //$ytVideo = $yt->getVideoEntry($id);
 
                 $duration = $ytVideo->getContentDetails()->getDuration();
-                preg_match('/([0-9]*)H/',$duration,$hours);
-                preg_match('/([0-9]*)M/',$duration,$minutes);
-                preg_match('/([0-9]*)S/',$duration,$seconds);
+                preg_match('/([0-9]*)H/', $duration, $hours);
+                preg_match('/([0-9]*)M/', $duration, $minutes);
+                preg_match('/([0-9]*)S/', $duration, $seconds);
 
                 $durationInSecs = 0;
-                if(!empty($hours[1])) $durationInSecs += $hours[1] * 60 * 60;
-                if(!empty($minutes[1])) $durationInSecs += $minutes[1] * 60;
-                if(!empty($seconds[1])) $durationInSecs += $seconds[1];
+                if (!empty($hours[1])) $durationInSecs += $hours[1] * 60 * 60;
+                if (!empty($minutes[1])) $durationInSecs += $minutes[1] * 60;
+                if (!empty($seconds[1])) $durationInSecs += $seconds[1];
 
                 $duration = $durationInSecs;
 
-                $data->set('title',$ytVideo->getSnippet()->getTitle())
-                    ->set('description',$ytVideo->getSnippet()->getDescription())
-                    ->set('duration',$duration)
-                    ->set('on_media_server',1)
-                    ->set('preview_url',$ytVideo->getSnippet()->getThumbnails()->getHigh()->getUrl())
-                    ->set('previewImage',$ytVideo->getSnippet()->getThumbnails()->getHigh()->getUrl())
-                    ->set('source','youtube')
-                    ->set('video_url',$data->get('youtube_url'))
-                    ->set('url',$data->get('youtube_url'));
+                $data->set('title', $ytVideo->getSnippet()->getTitle())
+                    ->set('description', $ytVideo->getSnippet()->getDescription())
+                    ->set('duration', $duration)
+                    ->set('on_media_server', 1)
+                    ->set('preview_url', $ytVideo->getSnippet()->getThumbnails()->getHigh()->getUrl())
+                    ->set('previewImage', $ytVideo->getSnippet()->getThumbnails()->getHigh()->getUrl())
+                    ->set('source', 'youtube')
+                    ->set('video_url', $data->get('youtube_url'))
+                    ->set('url', $data->get('youtube_url'));
+            } elseif($data->get('vimeo_url') && !$data->get('review_ok')) {
+                $url = $data->get('vimeo_url');
+                $id = str_replace('https://vimeo.com/','',$data->get('vimeo_url'));
+                $vimeo = new \Vimeo\Vimeo('ac278d2d73248632ac83bf9fc43900876b9c12e0', '68c3d6ee56c6a66a2c4e6f05c06f0199f84b94c3');
+                $token = '45dd4e70cfd1a1b307c683c1b5deff2a';
+                $vimeo->setToken($token);
+                $response = $vimeo->request("/videos/$id");
 
+                $data->set('title', $response['body']['name'])
+                    ->set('description', $response['body']['description'])
+                    ->set('duration', $response['body']['duration'])
+                    ->set('on_media_server', 1)
+                    ->set('preview_url', $response['body']['pictures']['sizes'][5]['link'])
+                    ->set('previewImage', $response['body']['pictures']['sizes'][3]['link'])
+                    ->set('source', 'vimeo')
+                    ->set('video_url', $url)
+                    ->set('url', $url);
             } elseif(!$data->get('review_ok')) {
                 //do nothing?
             } else {

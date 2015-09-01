@@ -134,7 +134,7 @@
 		"phpunit/phpunit": "3.7.*",
 		"bjyoungblood/bjy-authorize": "1.2.*",
 		"bojaspus/zendsearch": "dev-master",
-        "doctrine/doctrine-orm-module": "0.7.*",
+        "doctrine/doctrine-orm-module": "0.9.1",
         "doctrine/annotations": "dev-master",
 		"doctrine/data-fixtures": "dev-master",
 		"doctrine/migrations": "dev-master",
@@ -195,7 +195,8 @@
 		"jquery.form": "*",
 		"francois2metz/html5-formdata": "1.0.0",
         "zf-commons/zfc-user-doctrine-orm": "1.0.0",
-        "google/apiclient": "1.1.4"
+        "google/apiclient": "1.1.4",
+        "vimeo/vimeo-api": "1.2.3"
     },
     "autoload": {
         "classmap": [

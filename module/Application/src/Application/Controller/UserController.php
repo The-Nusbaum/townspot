@@ -26,11 +26,20 @@ class UserController extends AbstractActionController
     {
         $this->_view = new ViewModel();
         $this->auth = new \Zend\Authentication\AuthenticationService();
+    }
+
+    protected  function auth() {
+        if(!empty($_SESSION['tmpData'])) {
+            $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+            $user = $userMapper->findOneById(base64_decode($_SESSION['tmpData']));
+            $this->auth->authenticate(new \Townspot\Authentication\Adapter\ForceLogin($user));
+        }
         $this->_view->setVariable('authdUser', $this->auth->getIdentity());
     }
 
     public function indexAction()
     {
+        $this->auth();
         $this->getServiceLocator()
             ->get('ViewHelperManager')
             ->get('HeadTitle')
@@ -60,6 +69,7 @@ class UserController extends AbstractActionController
 
     public function profileAction()
     {
+        $this->auth();
         $this->_view->setTemplate('application/user/index');
         $username = $this->params()->fromRoute('username');
         $id = $this->params()->fromRoute('id');
@@ -133,12 +143,15 @@ class UserController extends AbstractActionController
     }
 
     public function logoutAction() {
+
+        $this->auth();
         $this->auth->clearIdentity();
         $this->flashMessenger()->addMessage('You have been logged out');
         $this->redirect()->toRoute('login');
     }
 
     public function editAction() {
+        $this->auth();
         $request = $this->getRequest();
         $post = $request->getPost();
 
@@ -184,6 +197,7 @@ class UserController extends AbstractActionController
     }
 
     public function unlinkAction() {
+        $this->auth();
         $provider = $this->params()->fromRoute('provider');
         $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
         $user = $userMapper->findOneById($this->auth->getIdentity());
@@ -202,6 +216,7 @@ class UserController extends AbstractActionController
     }
 
     public function manageseriesAction() {
+        $this->auth();
         $this->getServiceLocator()
             ->get('viewhelpermanager')
             ->get('HeadScript')->appendFile('/js/manageseries.js');
@@ -213,6 +228,7 @@ class UserController extends AbstractActionController
     }
 
     public function registerAction() {
+        $this->auth();
         $countryMapper = new \Townspot\Country\Mapper($this->getServiceLocator());
         $country = $countryMapper->find(99);
 
@@ -280,6 +296,7 @@ class UserController extends AbstractActionController
     }
 
     public function linkAction() {
+        $this->auth();
         $provider = $this->params()->fromRoute('provider');
         $oauth_callback = $this->params()->fromRoute('oauth_callback');
         $opauth_service = $this->getServiceLocator()->get('opauth_service');
@@ -292,6 +309,7 @@ class UserController extends AbstractActionController
     }
 
     public function linkCallbackAction() {
+        $this->auth();
         $opauth = $_SESSION['opauth'];
 
         $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
@@ -323,12 +341,14 @@ class UserController extends AbstractActionController
     }
 
     public function forgotPasswordAction() {
+        $this->auth();
         $form = new \Application\Forms\User\ForgotPassword();
         $this->_view->setVariable('form',$form);
         return $this->_view;
     }
 
     public function resetSentAction() {
+        $this->auth();
         $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
 
         if($this->getRequest()->isPost()) {
@@ -357,6 +377,7 @@ class UserController extends AbstractActionController
     }
 
     public function verifyAction() {
+        $this->auth();
         $key = $this->params()->fromRoute('key');
 
         if(!$key) {
@@ -382,6 +403,7 @@ class UserController extends AbstractActionController
     }
 
     public function changePasswordAction() {
+        $this->auth();
         if($this->getRequest()->isPost()) {
             $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
             $user = $userMapper->find($this->params()->fromPost('user_id'));

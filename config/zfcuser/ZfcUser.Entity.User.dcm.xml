@@ -1,0 +1,12 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
+	<entity name="ZfcUser\Entity\User" table="user">
+		<id name="id" column="user_id" type="bigint">
+			<generator strategy="AUTO" />
+		</id>
+		<field name="username" column="username" nullable="false" type="string"/>
+		<field name="email" column="email" nullable="false" type="string"/>
+        <field name="displayName" column="display_name" type="string"/>
+        <field name="password" column="password" nullable="false" type="string"/>
+        <field name="state" column="state" type="integer"/>
+	</entity>
+</doctrine-mapping>

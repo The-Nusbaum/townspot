@@ -1,4 +1,5 @@
 <?php
+use \Townspot\User\Entity;
 $settings = array(
     'security_salt' => 'lajksdfhlkajsdflkasjdfhlkasjdfhlkasjdfh6547',
     'Strategy' => array(

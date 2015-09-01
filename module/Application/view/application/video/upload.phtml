@@ -12,6 +12,7 @@
                     <li id="youtab" class="active">
                         <a href="#youtube" data-toggle="tab">Submit Via <img class="youtubelogo" src='/img/youtube.png' alt="youtube"></a>
                     </li>
+                    <li id="vimtab"><a href="#vimeo" data-toggle="tab">Submit via Vimeo</a></li>
                     <li><a href="#upload" data-toggle="tab">Submit via Upload</a></li>
                 </ul>
             </div>
@@ -29,7 +30,12 @@
             <div class="tab-pane  active" id="youtube">
                 <h3 class="center-block" style="width:225px"><img class="youtubelogo" src="/img/youtube.png" alt="youtube"> Submission</h3>
                 <?= $ytForm ?>
-                <div class="help-block text-center">Just provide us with a <img class="youtubelogo" src="/img/youtube.png" alt="youtube"> URL and we'll take it from there!</span>
+                <div class="help-block text-center">Just provide us with a <img class="youtubelogo" src="/img/youtube.png" alt="youtube"> URL and we'll take it from there!</span></div>
+            </div>
+            <div class="tab-pane" id="vimeo">
+                <h3 class="center-block" style="width:225px">Vimeo Submission</h3>
+                <?= $vimeoForm ?>
+                <div class="help-block text-center">Just provide us with a URL and we'll take it from there!</span></div>
             </div>
         </div>
     </div>

@@ -21,7 +21,8 @@
 		<field name="_neighborhood" column="neighborhood" type="string"/>
 		<field name="_latitude" column="latitude" type="float"/>
 		<field name="_longitude" column="longitude" type="float"/>
-		<one-to-many field="_encodings" target-entity="Townspot\Encoding\Entity" mapped-by="_media" />		
+		<field name="_embed_text" column="embed_text" type="string"/>
+		<one-to-many field="_encodings" target-entity="Townspot\Encoding\Entity" mapped-by="_media" />
 		<one-to-many field="_ratings" target-entity="Townspot\Rating\Entity" mapped-by="_media" />		
 		<one-to-many field="_tags" target-entity="Townspot\MediaTag\Entity" mapped-by="_media" />
 		<one-to-many field="_activity" target-entity="Townspot\UserActivity\Entity" mapped-by="_media" />

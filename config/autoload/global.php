@@ -1,6 +1,24 @@
 <?php
 return array(
     'doctrine' => array(
+        'driver' => array(
+            'zfc_user' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\XmlDriver',
+                'cache' => 'array',
+                'paths' => array(APPLICATION_PATH . "/config/zfcuser")
+            ),
+            'townspot' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\XmlDriver',
+                'cache' => 'array',
+                'paths' => array(APPLICATION_PATH . "/config/xml")
+            ),
+            'orm_default' => array(
+                'drivers' => array(
+                    'ZfcUser\Entity' => 'zfc_user',
+                    'Townspot' => 'townspot'
+                ),
+            ),
+        ),
 		'entityConfigPath' => APPLICATION_PATH . "/config/xml",
 		'cacheClass'       => "\Doctrine\Common\Cache\ArrayCache",
 		'proxy'	=> array(
@@ -8,6 +26,14 @@ return array(
 			'namespace'				=> "Townspot_Doctrine_Proxies",
 			'enableAutoGenerate'	=> true,
 		),
+        'authentication' => array(
+            'orm_default' => array(
+                'object_manager' => 'Doctrine\ORM\EntityManager',
+                'identity_class' => 'Townspot\User\Entity',
+                'identity_property' => 'email',
+                'credential_property' => 'password',
+            ),
+        ),
 	),
     'lucene' => array(
 		'path' => APPLICATION_PATH . DIRECTORY_SEPARATOR . 'data' . DIRECTORY_SEPARATOR . 'lucene',

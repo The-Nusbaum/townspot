@@ -12,6 +12,7 @@ namespace Application;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use ZendGData\App\Exception;
+use ZfcUser\User;
 
 class Module
 {
@@ -90,7 +91,9 @@ class Module
             var_dump('$authenticationService->getIdentity()', $authenticationService->getIdentity());
             var_dump('$authenticationResult->getCode()', $authenticationResult->getCode());
             var_dump('$authenticationResult->getIdentity()', $authenticationResult->getIdentity());
+            print_r($authenticationResult->getIdentity());
             var_dump('$authenticationResult->getMessages()', $authenticationResult->getMessages());
+die();
 */
 
             if($authenticationResult->isValid() && $authenticationService->hasIdentity()) {
@@ -103,6 +106,7 @@ class Module
                         throw new Exception('No Linked Account Found');
                     }
                     $user = $userOauth->getUser();
+                    $_SESSION['tmpData'] = base64_encode($user->getId());
                     $loginResult = $authenticationService->authenticate(new \Townspot\Authentication\Adapter\ForceLogin($user));
                 } catch (Exception $ex) {
                     $flashMessenger = new \Zend\Mvc\Controller\Plugin\FlashMessenger();

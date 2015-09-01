@@ -2,6 +2,12 @@
 	<div class="row">
 		<div class="col-xs-12">
 			<div class="media">
+                <?php if($this->media->getSource() == 'vimeo') :
+                    preg_match("/\/([0-9]+)/",$this->media->getUrl(),$matches);
+                    $id = $matches[1];
+                ?>
+                    <iframe class="vimeoPlayer" src="https://player.vimeo.com/video/<?= $id ?>?api=1" frameborder="0"></iframe>
+                <?php else : ?>
 				<?= $this->VideoPlayer(
 					$this->media,
 					array(
@@ -14,6 +20,7 @@
 						'include_buttons' => true,
 					)
 				); ?>
+                <?php endif; ?>
 			</div>
 		</div>
 	</div>
