@@ -196,6 +196,7 @@ class MediaController extends AbstractActionController
 		
         $headForm = new \Admin\Forms\Video\Upload\HeadForm('uploadHeader', $users, $countries, $provinces, array());
         $ytForm = new \Application\Forms\Video\Upload\YtForm();
+        $vimeoForm = new \Application\Forms\Video\Upload\VimeoForm();
         $manualForm = new \Application\Forms\Video\Upload\ManualForm('manualForm');
         $footerForm = new \Application\Forms\Video\Upload\FooterForm('footerForm');
         $videoMediaForm = new \Application\Forms\Video\Upload\VideoMediaForm('videoMediaForm');
@@ -210,6 +211,7 @@ class MediaController extends AbstractActionController
 			array(
 				'headForm'			=> $headForm,
 				'ytForm'			=> $ytForm,
+				'vimeoForm'			=> $vimeoForm,
 				'manualForm'		=> $manualForm,
 				'footerForm'		=> $footerForm,
 				'videoMediaForm'	=> $videoMediaForm,
