@@ -95,6 +95,11 @@ var upload = {
                 error = true;
                 $('.noyoutube').show();
             }
+        } else if($('#vimtab').hasClass('active')) {
+            if($('#vimeo_url').val() == '' ) {
+                error = true;
+                $('.novimeo').show();
+            }
         } else {
             if($('#videofile').val() == '' ) {
                 error = true;
