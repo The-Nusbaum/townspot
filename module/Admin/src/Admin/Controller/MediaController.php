@@ -120,6 +120,23 @@ class MediaController extends AbstractActionController
                     ->set('video_url',$data->get('youtube_url'))
                     ->set('url',$data->get('youtube_url'));
 
+            } elseif($data->get('vimeo_url') && !$data->get('review_ok')) {
+                $url = $data->get('vimeo_url');
+                $id = str_replace('https://vimeo.com/','',$data->get('vimeo_url'));
+                $vimeo = new \Vimeo\Vimeo('ac278d2d73248632ac83bf9fc43900876b9c12e0', '68c3d6ee56c6a66a2c4e6f05c06f0199f84b94c3');
+                $token = '45dd4e70cfd1a1b307c683c1b5deff2a';
+                $vimeo->setToken($token);
+                $response = $vimeo->request("/videos/$id");
+
+                $data->set('title', $response['body']['name'])
+                    ->set('description', $response['body']['description'])
+                    ->set('duration', $response['body']['duration'])
+                    ->set('on_media_server', 1)
+                    ->set('preview_url', $response['body']['pictures']['sizes'][5]['link'])
+                    ->set('previewImage', $response['body']['pictures']['sizes'][3]['link'])
+                    ->set('source', 'vimeo')
+                    ->set('video_url', $url)
+                    ->set('url', $url);
             } elseif(!$data->get('review_ok')) {
                 //do nothing?
             } else {
