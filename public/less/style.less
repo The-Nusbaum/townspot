@@ -1788,6 +1788,21 @@ div {
 	}
 }
 
+#daily-hightlights-carousel,
+#staff-favorites-carousel {
+	.video-preview {
+		& > a{
+			background-color: black;
+			height: 244px;
+			display: block;
+			img {
+				display: inherit;
+				.vertical-center;
+			}
+		}
+	}
+}
+
 #profileEdit {
 	form,h1,hr {
 		padding: 0 40px;
@@ -1804,6 +1819,56 @@ div {
 
 .tablet-ad {
 	width: 100% !important;
+}
+
+iframe.vimeoPlayer {
+  width: 100%;
+}
+
+#channelsurf {
+  #video-info {
+    top: 0;
+    margin-top: -5px;
+  }
+  .nowPlaying {
+    border: solid 2px orange;
+  }
+  .video-preview {
+    .carousel-caption {
+      height: 35px;
+    }
+  }
+  #comment-submit {
+    width: auto;
+  }
+}
+
+#series {
+  .episode {
+    height: 150px;
+    .wrapper {
+      height: 145px;
+      overflow: hidden;
+      border: 1px solid #ccc;
+      border-radius: 2px;
+      .video-preview {
+        height: 140px;
+        overflow: hidden;
+        border: none;
+        border-radius: 0;
+        .video-caption {
+          right: 3px;
+          left: 3px;
+          bottom: 0;
+        }
+      }
+    }
+  }
+  .nowPlaying {
+    .video-preview {
+      border: solid 2px orange;
+    }
+  }
 }
 
 @media (min-width: 400px) {
@@ -1894,13 +1959,35 @@ div {
 		width: 80% !important;
 	}
 }
+
 @media (max-width: 991px) and (min-width: 768px){
 	#on-stage-carousel {
 		.video-preview {
 			height: 475px;
 		}
 	}
+
+	#daily-hightlights-carousel,
+	#staff-favorites-carousel {
+		.video-preview {
+			& > a{
+				height: 138px;
+			}
+		}
+	}
 }
+
+@media (max-width: 1199px) {
+	#daily-hightlights-carousel,
+	#staff-favorites-carousel {
+		.video-preview {
+			& > a{
+				height: 194px;
+			}
+		}
+	}
+}
+
 @media (max-width: 767px) {
 
   #userDetails {
@@ -1964,10 +2051,15 @@ div {
 			}
 		}
 	}
-}
 
-iframe.vimeoPlayer {
-  width: 100%;
+	#daily-hightlights-carousel,
+	#staff-favorites-carousel {
+		.video-preview {
+			& > a{
+				height: 252px;
+			}
+		}
+	}
 }
 
 @media (max-width: 575px) {
@@ -1983,51 +2075,17 @@ iframe.vimeoPlayer {
   #profile > .row > *:first-child {
     padding-left: 0px;
   }
+
+  #daily-hightlights-carousel,
+	#staff-favorites-carousel {
+		.video-preview {
+			& > a{
+				height: 388px;
+			}
+		}
+	}
 }
 
 
-#channelsurf {
-  #video-info {
-    top: 0;
-    margin-top: -5px;
-  }
-  .nowPlaying {
-    border: solid 2px orange;
-  }
-  .video-preview {
-    .carousel-caption {
-      height: 35px;
-    }
-  }
-  #comment-submit {
-    width: auto;
-  }
-}
 
-#series {
-  .episode {
-    height: 150px;
-    .wrapper {
-      height: 145px;
-      overflow: hidden;
-      border: 1px solid #ccc;
-      border-radius: 2px;
-      .video-preview {
-        height: 140px;
-        overflow: hidden;
-        border: none;
-        border-radius: 0;
-        .video-caption {
-          right: 3px;
-          left: 3px;
-          bottom: 0;
-        }
-      }
-    }
-  }
-  .nowPlaying {
-    .video-preview {
-      border: solid 2px orange;
-    }
-  }
-}
+
