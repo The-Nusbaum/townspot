@@ -60,7 +60,7 @@ return array(
                 ),
                 'js/townspot.js' => array(
                     'kalenjordan/jquery-cookie/jquery.cookie.js',
-					'jqgeeks/jquery-timeago/jquery.timeago.js',
+					'etdsolutions/jquery-timeago/jquery.timeago.js',
 					'underscore/underscore-min.js',
 					'backbone/backbone-min.js',
 					'fredwu/endless-scroll/js/jquery.endless-scroll.js',

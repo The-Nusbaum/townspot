@@ -182,7 +182,7 @@
 		"trentrichardson/jquery-timepicker-addon": "dev-master",
 		"newerton/fullcalendar": "dev-master",
 		"moxiecode/plupload": "2.1.2",
-		"jqgeeks/jquery-timeago": "dev-master",
+		"etdsolutions/jquery-timeago": "1.4.2",
 		"videlalvaro/php-amqplib": "2.4.*@dev",
 		"snapshotpl/zf-snap-geoip": "dev-master",
 		"tonytomov/jqGrid": "*",

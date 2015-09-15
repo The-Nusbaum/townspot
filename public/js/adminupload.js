@@ -139,7 +139,6 @@ var upload = {
             error = true;
             $('.noauth').show();
         }
-
         return !error;
     },
     addCategory: function(e){

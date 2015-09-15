@@ -43,10 +43,6 @@
 				$('#artist-contact-yes').unbind('click').bind('click', function() { methods.fan('true') });
 				$('#artist-contact-no').unbind('click').bind('click', function() { methods.fan('false') });
 				$('#contact-submit').unbind('click').bind('click', function() { methods.contact() });
-				$('#flagVideo .reason').unbind('change').bind('change',function(){ methods.flagDetails($(this).val())});
-				$('#flagVideo .details > input').unbind('keyup').bind('keyup',function(){ methods.flagCheckDetails()});
-				$('#flagVideo .btn-primary').unbind('click').bind('click',function(){ methods.reportVideo()});
-
 				methods.rate();
 				methods.comments();
                 methods.adjust_vimeo();
@@ -230,37 +226,8 @@
             {
 				window.location = "/login?redirect=" + encodeURIComponent(document.URL);
             },
-      flagDetails: function(value){
-        if(value.length) $('#flagVideo .details').show();
-		    else {
-		      $('#flagVideo .details').hide();
-		      $('#flagVideo .submitFlag').attr('disabled','disabled');
-		    }
-      },
-      flagCheckDetails: function(){
-      	if($('#flagVideo .detailsText').val().length && $('#flagVideo .email').val().length) {
-		      $('#flagVideo .btn-primary').removeAttr('disabled');
-		    } else {
-		      $('#flagVideo .btn-primary').removeAttr('disabled','disabled');
-		    }
-      },
-      reportVideo: function(){
-      	var data = {
-      		email: $('#flagVideo .email').val(),
-      		reason: $('#flagVideo .reason').val(),
-      		details: $('#flagVideo .details').val(),
-      	};
-      	$.post(
-      		'/videos/report/' + options.videoid,
-      		data,
-      		function(response){
-      			console.log(response);
-      		}
-      	);
-      }
 		}
         var options = $.extend(defaults, options);
 		methods.initialize();
     };
-
 })(jQuery);
