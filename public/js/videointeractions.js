@@ -50,9 +50,12 @@
 
             },
             adjust_vimeo: function() {
-                var vimeoPlayer = $('iframe.vimeoPlayer');
+                var vimeoPlayer = $('iframe.vimeoPlayer, iframe.dmPlayer');
                 var width = vimeoPlayer.width();
-                var height = width / 1.77;
+                if(typeof hRatio == 'undefined') {
+						    	hRatio = 1.77     
+						    }
+						    var height = width / hRatio;
                 vimeoPlayer.height(height);
             },
             rate : function(rating)              
@@ -226,6 +229,34 @@
             {
 				window.location = "/login?redirect=" + encodeURIComponent(document.URL);
             },
+      flagDetails: function(value){
+        if(value.length) $('#flagVideo .details').show();
+		    else {
+		      $('#flagVideo .details').hide();
+		      $('#flagVideo .submitFlag').attr('disabled','disabled');
+		    }
+      },
+      flagCheckDetails: function(){
+      	if($('#flagVideo .detailsText').val().length && $('#flagVideo .email').val().length) {
+		      $('#flagVideo .btn-primary').removeAttr('disabled');
+		    } else {
+		      $('#flagVideo .btn-primary').removeAttr('disabled','disabled');
+		    }
+      },
+      reportVideo: function(){
+      	var data = {
+      		email: $('#flagVideo .email').val(),
+      		reason: $('#flagVideo .reason').val(),
+      		details: $('#flagVideo .detailsText').val(),
+      	};
+      	$.post(
+      		'/videos/report/' + options.videoid,
+      		data,
+      		function(response){
+      			console.log(response);
+      		}
+      	);
+      }
 		}
         var options = $.extend(defaults, options);
 		methods.initialize();

@@ -327,19 +327,32 @@ return array(
                     ),
                 ),
             ),
-			'video_edit' => array(
-				'type' => 'Zend\Mvc\Router\Http\Segment',
-				'options' => array(
-					'route' => '/videos/edit/:id',
-					'constraints' => array(
-						'id' => '\d+',
-					),
-					'defaults' => array(
-						'controller' => 'Application\Controller\Video',
-						'action' => 'edit'
-					)
-				),			
-			),
+            'video_edit' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/videos/edit/:id',
+                    'constraints' => array(
+                        'id' => '\d+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Video',
+                        'action' => 'edit'
+                    )
+                ),          
+            ),
+            'video_report' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/videos/report/:id',
+                    'constraints' => array(
+                        'id' => '\d+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Video',
+                        'action' => 'report'
+                    )
+                ),          
+            ),
 			'video_delete' => array(
 				'type' => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(
