@@ -1725,6 +1725,20 @@ div {
     }
 }
 
+#video-upload {
+	.tab-pane {
+		h3 {
+			text-align: center;
+		}
+	}
+}
+
+#vimtab {
+	a {
+		padding: 4px;
+	}
+}
+
 .youtubelogo {
 	position: relative;
 	top: -2px;
@@ -1736,13 +1750,23 @@ div {
   top: -0.2em;
 }
 
-#vimtab .vimeologo {
-  top: 2px;
+.help-block .vimeologo {
+  top: -0.1em;
+}
+
+.dmlogo {
+  position: relative;
+  height: 1em;
+  top: -2px;
+}
+
+#dmtab .dmlogo {
+  top: 4px;
   margin-top: -10px;
 }
 
-.help-block .vimeologo {
-  top: -0.2em;
+.help-block .dmlogo {
+  top: -0.1px;
 }
 
 #profileEdit, #profileCreate {
@@ -1821,7 +1845,8 @@ div {
 	width: 100% !important;
 }
 
-iframe.vimeoPlayer {
+iframe.vimeoPlayer,
+iframe.dmPlayer {
   width: 100%;
 }
 

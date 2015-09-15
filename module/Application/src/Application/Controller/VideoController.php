@@ -323,6 +323,9 @@ class VideoController extends AbstractActionController
         $vimeoForm = new \Application\Forms\Video\Upload\VimeoForm();
         $this->_view->setVariable('vimeoForm',$vimeoForm);
 
+        $dmForm = new \Application\Forms\Video\Upload\DailymotionForm();
+        $this->_view->setVariable('dmForm',$dmForm);
+
         $manualForm = new \Application\Forms\Video\Upload\ManualForm('manualForm');
         $this->_view->setVariable('manualForm',$manualForm);
 
@@ -663,7 +666,7 @@ class VideoController extends AbstractActionController
                     ->set('url', $data->get('youtube_url'));
             } elseif($data->get('vimeo_url') && !$data->get('review_ok')) {
                 $url = $data->get('vimeo_url');
-                $id = str_replace('https://vimeo.com/','',$data->get('vimeo_url'));
+                $id = str_replace('https*://vimeo.com/','',$data->get('vimeo_url'));
                 $vimeo = new \Vimeo\Vimeo('ac278d2d73248632ac83bf9fc43900876b9c12e0', '68c3d6ee56c6a66a2c4e6f05c06f0199f84b94c3');
                 $token = '45dd4e70cfd1a1b307c683c1b5deff2a';
                 $vimeo->setToken($token);
@@ -676,6 +679,28 @@ class VideoController extends AbstractActionController
                     ->set('preview_url', $response['body']['pictures']['sizes'][5]['link'])
                     ->set('previewImage', $response['body']['pictures']['sizes'][3]['link'])
                     ->set('source', 'vimeo')
+                    ->set('video_url', $url)
+                    ->set('url', $url);
+            } elseif($data->get('dm_url') && !$data->get('review_ok')) {
+                $url = $data->get('dm_url');
+                //http://www.dailymotion.com/video/x36ujyx_guys-get-90s-boyband-makeovers_fun
+                preg_match('/\/(x.*?)_/',$data->get('dm_url'),$matches);
+                $id = $matches[1];
+
+                $api = new \Dailymotion();
+								$response = $api->get(
+								    "/video/$id",
+								    array('fields' => array('id', 'title', 'owner', 'allow_embed', 'embed_url', 'poster_url', 'thumbnail_url',
+								    	'views_total', 'description', 'duration'))
+								);
+
+                $data->set('title', $response['title'])
+                    ->set('description', $response['description'])
+                    ->set('duration', $response['duration'])
+                    ->set('on_media_server', 1)
+                    ->set('preview_url', $response['thumbnail_url'])
+                    ->set('previewImage', $response['thumbnail_url'])
+                    ->set('source', 'dailymotion')
                     ->set('video_url', $url)
                     ->set('url', $url);
             } elseif(!$data->get('review_ok')) {
@@ -702,6 +727,10 @@ class VideoController extends AbstractActionController
                     ->setAllowContact($data->get('allow_contact'))
                     ->setSource($data->get('source'))
                     ->setDuration($data->get('duration'));
+
+                if($data->get('on_media_server')) {
+                	$mediaEntity->setOnMediaServer($data->get('on_media_server'));
+                }
 
                 $categoryMapper = new \Townspot\Category\Mapper($this->getServiceLocator());
                 if (is_array($data->get('selCat'))) foreach($data->get('selCat') as $vc) {
@@ -773,4 +802,35 @@ class VideoController extends AbstractActionController
         return new ViewModel(compact('seasonsList','mediaList','index'));
     }
 	
+	public function reportAction() {
+		$id = $this->params()->fromRoute('id');
+		$emailAddy = $this->params()->fromPost('email');
+		$reason = $this->params()->fromPost('reason');
+		$details = $this->params()->fromPost('details');
+
+		$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
+		$media = $mediaMapper->find($id);
+
+$body = <<<EOT
+Video flagged for: - $reason
+Contact: - $emailAddy
+Details: $details
+
+Video: {$media->getId()} - {$media->getTitle()}
+EOT;
+
+		$email = new Message();
+		$email->addFrom($emailAddy);
+		$email->addTo("josh@townspot.tv");
+		$email->setSubject("$emailAddy - $reason - {$media->getTitle()}");
+		$email->setBody($this->params()->fromPost('message'));
+
+		if (APPLICATION_ENV == 'production') {
+			$transport = new Mail\Transport\Sendmail();
+			$transport->send($email);				
+		} else {
+			print_r($email);
+		}
+		die;
+	}
 }

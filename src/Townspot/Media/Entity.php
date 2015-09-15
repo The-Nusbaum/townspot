@@ -655,7 +655,7 @@ class Entity extends \Townspot\Entity
 	
 	public function getResizerLink($width = 332,$height = 249)
 	{
-		if (!(preg_match('/ytimg|vimeocdn/',$this->getPreviewImage()))) {
+		if (!(preg_match('/ytimg|vimeocdn|dmcdn/',$this->getPreviewImage()))) {
 			return sprintf('/resizer.php?id=%d&w=%d&h=%d',
 				$this->getId(),
 				$width,

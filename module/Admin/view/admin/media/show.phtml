@@ -94,15 +94,30 @@
 								<div class="col-sm-3 header"></div>
 								<div class="col-sm-9">
 									<div id='media-player'></div>
-<?php if ($video_url = $this->media->getMediaUrl()) {} 
-	   else {	$video_url = $this->media->getUrl();	 }
-?>
-                                    <?php if($this->media->getSource() == 'vimeo') :
-                                        preg_match("/\/([0-9]+)/",$video_url,$matches);
-                                        $id = $matches[1];
-                                        ?>
-                                        <iframe class="vimeoPlayer" src="https://player.vimeo.com/video/<?= $id ?>?api=1" frameborder="0"></iframe>
-                                    <?php else : ?>
+									<?php if ($video_url = $this->media->getMediaUrl()) {} 
+										   else {	$video_url = $this->media->getUrl();	 }
+									?>
+                  <?php if($this->media->getSource() == 'vimeo') :
+                      preg_match("/\/([0-9]+)/",$video_url,$matches);
+                      $id = $matches[1];
+                      ?>
+                      <iframe class="vimeoPlayer" src="https://player.vimeo.com/video/<?= $id ?>?api=1" frameborder="0"></iframe>
+                    <?php elseif($this->media->getSource() == 'dailymotion') :
+                      preg_match('/\/(x.*?)_/',$video_url,$matches);
+    									$id = $matches[1];
+
+    									$api = new \Dailymotion();
+											$response = $api->get(
+											    "/video/$id",
+											    array('fields' => array('id', 'title', 'owner', 'allow_embed', 'embed_url', 'poster_url', 'thumbnail_url',
+											    	'views_total', 'description', 'duration','aspect_ratio'))
+											);
+                      ?>
+                      <script>
+                      var hRatio = <?= $response['aspect_ratio'] ?>;
+                      </script>
+                      <iframe class="dmPlayer" src="http://www.dailymotion.com/embed/video/<?= $id ?>?api=1" frameborder="0"></iframe>
+                  <?php else : ?>
 									<script type="text/javascript">
 										var sPrimary = 'html5';
 										if (/Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor)) {
@@ -170,9 +185,11 @@ $().mediaShow({
 	id:	'<?= $this->media->getId(); ?>'
 });
 $(document).ready(function(){
-    var vimeoPlayer = $('iframe.vimeoPlayer');
-    var width = vimeoPlayer.width();
-    var height = width / 1.77;
-    vimeoPlayer.height(height);
+    var iFrame = $('iframe.vimeoPlayer, iframe.dmPlayer');
+    var width = iFrame.width();
+    if(typeof hRatio == 'undefined') {
+    	hRatio = 1.77     }
+    var height = width / hRatio;
+    iFrame.height(height);
 });
 </script>

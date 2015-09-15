@@ -100,6 +100,11 @@ var upload = {
                 error = true;
                 $('.novimeo').show();
             }
+        } else if($('#dmtab').hasClass('active')) {
+            if($('#dm_url').val() == '' ) {
+                error = true;
+                $('.nodm').show();
+            }
         } else {
             if($('#videofile').val() == '' ) {
                 error = true;

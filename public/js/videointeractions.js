@@ -54,9 +54,12 @@
 
             },
             adjust_vimeo: function() {
-                var vimeoPlayer = $('iframe.vimeoPlayer');
+                var vimeoPlayer = $('iframe.vimeoPlayer, iframe.dmPlayer');
                 var width = vimeoPlayer.width();
-                var height = width / 1.77;
+                if(typeof hRatio == 'undefined') {
+						    	hRatio = 1.77     
+						    }
+						    var height = width / hRatio;
                 vimeoPlayer.height(height);
             },
             rate : function(rating)              
@@ -248,7 +251,7 @@
       	var data = {
       		email: $('#flagVideo .email').val(),
       		reason: $('#flagVideo .reason').val(),
-      		details: $('#flagVideo .details').val(),
+      		details: $('#flagVideo .detailsText').val(),
       	};
       	$.post(
       		'/videos/report/' + options.videoid,

@@ -50,6 +50,30 @@ class VideoPlayer extends AbstractHelper implements ServiceLocatorAwareInterface
 		return $html;
 	}
 
+	public function dailymotion()
+	{
+    preg_match('/\/(x.*?)_/',$this->media->getUrl(),$matches);
+    $id = $matches[1];
+
+    $api = new \Dailymotion();
+		$response = $api->get(
+		    "/video/$id",
+		    array('fields' => array('id', 'title', 'owner', 'allow_embed', 'embed_url', 'poster_url', 'thumbnail_url',
+		    	'views_total', 'description', 'duration','aspect_ratio'))
+		);
+
+		$this->media->setViews($response['total_views']);
+    $helperPluginManager	= $this->getServiceLocator();
+    $serviceManager 		= $helperPluginManager->getServiceLocator();
+    $mediaMapper = new \Townspot\Media\Mapper($serviceManager);
+    $mediaMapper->setEntity($this->media)->save();
+
+		$html  = sprintf("<iframe class='dmPlayer' src='http://www.dailymotion.com/embed/video/%s' frameborder='0'></iframe>",$id);
+		$html .= sprintf("<script>var hRatio = %s</script>", $response['aspect_ratio']);
+		$html .= $this->_playerInfo();
+		return $html;	
+	}
+
 	public function vimeo()
 	{
 		preg_match("/\/([0-9]+)/",$this->media->getUrl(),$matches);
