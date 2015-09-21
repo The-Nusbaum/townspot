@@ -680,6 +680,7 @@ class VideoController extends AbstractActionController
                     ->set('previewImage', $response['body']['pictures']['sizes'][3]['link'])
                     ->set('source', 'vimeo')
                     ->set('video_url', $url)
+                    ->set('views', $response['body']['stats']['plays'])
                     ->set('url', $url);
             } elseif($data->get('dm_url') && !$data->get('review_ok')) {
                 $url = $data->get('dm_url');
@@ -702,6 +703,7 @@ class VideoController extends AbstractActionController
                     ->set('previewImage', $response['thumbnail_url'])
                     ->set('source', 'dailymotion')
                     ->set('video_url', $url)
+                    ->set('views', $response['views_total'])
                     ->set('url', $url);
             } elseif(!$data->get('review_ok')) {
                 //do nothing?

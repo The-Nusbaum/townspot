@@ -41,7 +41,7 @@
     <div class="row">
         <div class="col-sm-12">
             <form method="POST">
-                <input type="hidden" name="country_id" value="<?= $data->get('country_id');?>"/>
+                <input type="hidden" name="country_id" value="<?= $data->get('country_id')? $data->get('country_id'):99 ;?>"/>
                 <input type="hidden" name="province_id" value="<?= $data->get('province_id');?>"/>
                 <input type="hidden" name="user_id" value="<?= $data->get('user_id');?>"/>
                 <input type="hidden" name="city_id" value="<?= $data->get('city_id');?>"/>
@@ -58,7 +58,8 @@
                 <input type="hidden" name="debut_time" value="<?= $data->get('debut_time');?>"/>
                 <input type="hidden" name="on_media_server" value="<?= $data->get('on_media_server');?>"/>
                 <input type="hidden" name="source" value="<?= $data->get('source');?>"/>
-                <input type="hidden" name="duration" value="<?= $data->get('duration');?>"/>
+                <input type="hidden" name="source" value="<?= $data->get('source');?>"/>
+                <input type="hidden" name="views" value="<?= $data->get('views');?>"/>
                 <?php if($data->get('selCat') != null) foreach($data->get('selCat') as $i => $vc) : ?>
                     <input type="hidden" name="selCat[<?= $i ?>]" value="<?= $vc ?>"/>
                 <?php endforeach; ?>

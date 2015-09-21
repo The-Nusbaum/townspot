@@ -62,7 +62,7 @@ class VideoPlayer extends AbstractHelper implements ServiceLocatorAwareInterface
 		    	'views_total', 'description', 'duration','aspect_ratio'))
 		);
 
-		$this->media->setViews($response['total_views']);
+		$this->media->setViews($response['views_total']);
     $helperPluginManager	= $this->getServiceLocator();
     $serviceManager 		= $helperPluginManager->getServiceLocator();
     $mediaMapper = new \Townspot\Media\Mapper($serviceManager);
