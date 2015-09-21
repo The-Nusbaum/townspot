@@ -196,7 +196,7 @@
 		"francois2metz/html5-formdata": "1.0.0",
         "zf-commons/zfc-user-doctrine-orm": "1.0.0",
         "google/apiclient": "1.1.4",
-        "vimeo/vimeo-api": "1.2.3"
+        "vimeo/vimeo-api": "1.2.3",
 		    "dailymotion/sdk":"1.6.3"
     },
     "autoload": {

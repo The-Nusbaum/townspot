@@ -823,10 +823,10 @@ EOT;
 		$email->addFrom($emailAddy);
 		$email->addTo("josh@townspot.tv");
 		$email->setSubject("$emailAddy - $reason - {$media->getTitle()}");
-		$email->setBody($this->params()->fromPost('message'));
+		$email->setBody($body);
 
 		if (APPLICATION_ENV == 'production') {
-			$transport = new Mail\Transport\Sendmail();
+			$transport = new \Zend\Mail\Transport\Sendmail();
 			$transport->send($email);				
 		} else {
 			print_r($email);

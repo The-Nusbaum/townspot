@@ -43,6 +43,10 @@
 				$('#artist-contact-yes').unbind('click').bind('click', function() { methods.fan('true') });
 				$('#artist-contact-no').unbind('click').bind('click', function() { methods.fan('false') });
 				$('#contact-submit').unbind('click').bind('click', function() { methods.contact() });
+				$('#flagVideo .reason').unbind('change').bind('change',function(){ methods.flagDetails($(this).val())});
+				$('#flagVideo .details > input').unbind('keyup').bind('keyup',function(){ methods.flagCheckDetails()});
+				$('#flagVideo .btn-primary').unbind('click').bind('click',function(){ methods.reportVideo()});
+		
 				methods.rate();
 				methods.comments();
                 methods.adjust_vimeo();
