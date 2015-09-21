@@ -170,6 +170,7 @@ abstract class AbstractIndex implements ServiceLocatorAwareInterface
 	
 	public function find($query,$sortField = null,$sortType = null,$sortOrder = null)
 	{
+		var_dump($query);die;
 		\ZendSearch\Lucene\Analysis\Analyzer\Analyzer::setDefault(new \ZendSearch\Lucene\Analysis\Analyzer\Common\TextNum\CaseInsensitive());
 		$results = array();
 		if (($sortField)&&($sortType)&&($sortOrder)) {
