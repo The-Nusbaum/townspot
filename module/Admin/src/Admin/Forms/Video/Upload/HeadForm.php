@@ -18,8 +18,10 @@ class HeadForm extends Form {
         $this->setAttribute('id','headForm');
 
         foreach($colUsers as $u) {
-            $users[$u->getId()] = $u->getUsername();
+            $users[$u->getId()] = strtolower($u->getUsername());
         }
+
+        asort($users);
 
         foreach($colCountries as $c) {
             $countries[$c->getId()] = $c->getName();
