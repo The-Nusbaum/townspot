@@ -23,11 +23,26 @@ function renderCat($cat,$level = 0,$current = null,$parents = '') {
 ?>
 <div class="row" id="channelsurf">
     <div class="col-md-2 sidebar">
-        <div class="stateSelector">
+        <div class="countrySelector">
+            <label>Country:</label>
+            <select class="form-control">
+                <option value="0">All Countries</option>
+            <?php foreach($countries as $c): ?>
+                <option value="<?= $c['id'] ?>" <?= ($c['id'] == $country)? 'selected="1"':'' ?>><?=$c['name']?> (<?= $c['media_count'] ?>)</option>
+            <?php endforeach; ?>
+            </select>
+        </div>
+        <?php
+            $stateClass = ' hidden';
+            if($country) {
+                $stateClass = '';
+            }
+        ?>
+        <div class="stateSelector<?= $stateClass ?>">
             <label>State:</label>
             <select class="form-control">
                 <option value="0">All States</option>
-            <?php foreach($states as $s): ?>
+            <?php foreach($states as $countryId => $_states) foreach($_states as $s): ?>
                 <option value="<?= $s['id'] ?>" <?= ($s['id'] == $state)? 'selected="1"':'' ?>><?=$s['name']?> (<?= $s['media_count'] ?>)</option>
             <?php endforeach; ?>
             </select>
@@ -185,6 +200,7 @@ function renderCat($cat,$level = 0,$current = null,$parents = '') {
 
 <script>
 
+    var countryId = <?= $country?$country:0 ?>;
     var stateId = <?= $state?$state:0 ?>;
     var cityId = <?= $city?$city:0 ?>;
     var categoryId = <?= $category?$category:0 ?>;
@@ -195,8 +211,36 @@ function renderCat($cat,$level = 0,$current = null,$parents = '') {
     var mediaIndex = 0;
     var categories = <?= json_encode($categories) ?>;
     var flatCats = <?= json_encode($flatCats) ?>;
+    var states = <?= json_encode($states) ?>;
     var cities = <?= json_encode($cities) ?>;
     var locked = false;
+
+    $('.countrySelector select').change(function(){
+        var $country = $(this);
+        countryId = $country.val();
+        if(countryId != 0) {
+            $('.stateSelector').removeClass('hidden');
+        } else {
+            $('.citySelector').addClass('hidden');
+            $('.stateSelector').addClass('hidden');
+        }
+        stateId = 0;
+        cityId = 0;
+        var $state = $('.stateSelector select');
+        var $city = $('.citySelector select');
+
+        $state.children().remove();
+        $state.append('<option value="0">All States</option>');
+        $(states[$country.val()]).each(function(){
+            $state.append('<option value="'+ this.id +'">'+ this.name +' ('+ this.media_count +')</option>');
+        });
+
+        $city.children().remove();
+        $city.append('<option value="0">All Cities</option>');
+
+        $('.categorySelector select').val(0);
+        $('.categorySelector select').change();
+    });
 
     $('.stateSelector select').change(function(){
         var $state = $(this);
@@ -288,8 +332,11 @@ function renderCat($cat,$level = 0,$current = null,$parents = '') {
     }
 
     function getSurfLink() {
+        var country = $('.countrySelector option:selected').text().replace(/ \([0-9]*\)/,'');
+        var newText = country + ', ';
+        if(country == 'All Countries') country = 'all-countries';
         var state = $('.stateSelector option:selected').text().replace(/ \([0-9]*\)/,'');
-        var newText = state + ', ';
+        newText += state + ', ';
         if(state == 'All States') state = 'all-states';
         var city = $('.citySelector option:selected').text().replace(/ \([0-9]*\)/,'');
         newText += city + '<br>';
@@ -308,7 +355,7 @@ function renderCat($cat,$level = 0,$current = null,$parents = '') {
             cats += $('.categorySelector option:selected').text().replace(/^[ -]*/,'');
             newText += $('.categorySelector option:selected').text().replace(/^[ -]*/,'');;
         }
-        var url = state + '/' + city + '/' + cats;
+        var url = country + '/' + state + '/' + city + '/' + cats;
         url = '/channelsurf/' + url.toLowerCase().replace(/ /g,'_');
         url = url.replace(/\/$/,'');
         $('.currentlyWatching a').attr('href',url);

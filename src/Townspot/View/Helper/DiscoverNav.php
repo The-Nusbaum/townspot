@@ -12,20 +12,30 @@ class DiscoverNav extends AbstractHelper implements ServiceLocatorAwareInterface
 		$html = '';
 		$helperPluginManager	= $this->getServiceLocator();
 		$serviceManager 		= $helperPluginManager->getServiceLocator();  	
+		$countryMapper 		= new \Townspot\Country\Mapper($serviceManager);
 		$provinceMapper 		= new \Townspot\Province\Mapper($serviceManager);
-		$cityMapper 			= new \Townspot\City\Mapper($serviceManager);
-		$provinces 				= $provinceMapper->getProvincesHavingMedia();
-		$cities					= array();
-		$provinceId				= (isset($_SESSION['Discover_Province'])) ? $_SESSION['Discover_Province'] : null;
-		$cityId					= (isset($_SESSION['Discover_City'])) ? $_SESSION['Discover_City'] : null;
-		$categoriesSelected		= (isset($_SESSION['Discover_Categories'])) ? $_SESSION['Discover_Categories'] : null;
+		$cityMapper 				= new \Townspot\City\Mapper($serviceManager);
+		$countries 					= $countryMapper->getCountriesHavingMedia();
+		$cities							= array();
+		$countryId					= (isset($_SESSION['Discover_Country'])) ? intval($_SESSION['Discover_Country']) : 99;
+		$country = $countryMapper->find($countryId);
+		$provinceId					= (isset($_SESSION['Discover_Province'])) ? $_SESSION['Discover_Province'] : null;
+		$provinces 					= $provinceMapper->getProvincesHavingMedia($country->getName());
+		$cityId							= (isset($_SESSION['Discover_City'])) ? $_SESSION['Discover_City'] : null;
+		$categoriesSelected	= (isset($_SESSION['Discover_Categories'])) ? $_SESSION['Discover_Categories'] : null;
 		$subCategories			= (isset($_SESSION['Discover_Subcategories'])) ? $_SESSION['Discover_Subcategories'] : null;
-		$provinceSelected 		= null;
+		$provinceSelected 	= null;
 		$citySelected 			= null;
-		$media_count		 	= 0;
+		$media_count		 		= 0;
 		$city_media_count	 	= 0;
+		foreach ($countries as $country) {
+			$cMedia_count += $country['media_count'];
+			if ($country['id'] == $countryId) {
+				$countrySelected = $country['name'];
+			}
+		}
 		foreach ($provinces as $province) {
-			$media_count += $province['media_count'];
+			$pMedia_count += $province['media_count'];
 			if ($province['id'] == $provinceId) {
 				$provinceSelected = $province['name'];
 			}
@@ -43,6 +53,28 @@ class DiscoverNav extends AbstractHelper implements ServiceLocatorAwareInterface
 		$html .= '    <div class="container-fluid">';
 		$html .= '        <div id="townspot-nav">';
 		$html .= '			<ul class="nav navbar-nav navbar-left">';
+		//countries
+		$html .= '				<li class="dropdown">';
+		$html .= '					<a class="dropdown-toggle" data-toggle="dropdown" href="#">';
+		if ($countrySelected) { 
+			$html .= '                  	' . $countrySelected . ' <i class="fa fa-angle-down"></i>';
+		} else { 
+			$html .= '                  	Countries <i class="fa fa-angle-down"></i>';
+		}
+		$html .= '					</a>';
+		$html .= '					<ul class="dropdown-menu">';
+		$html .= '						<li data-id="0" class="country-selector">';
+		$html .= '						    <span class="country-name">All</span>'; 
+		$html .= '						    <span class="badge pull-right">' . $cMedia_count . '</span>';
+		$html .= '						</li>';
+		foreach ($countries as $country) {
+			$html .= '						<li data-id="' . htmlentities(strtolower($country['name'])) . '" class="country-selector">';
+			$html .= '							<span class="country-name">' . $country['name'] . '</span>';
+			$html .= '							<span class="badge pull-right">' . $country['media_count'] . '</span></li>';
+		}
+		$html .= '					</ul>';
+		$html .= '				</li>';
+		//provinces
 		$html .= '				<li class="dropdown">';
 		$html .= '					<a class="dropdown-toggle" data-toggle="dropdown" href="#">';
 		if ($provinceSelected) { 
@@ -54,7 +86,7 @@ class DiscoverNav extends AbstractHelper implements ServiceLocatorAwareInterface
 		$html .= '					<ul class="dropdown-menu">';
 		$html .= '						<li data-id="0" class="state-selector">';
 		$html .= '						    <span class="state-name">All</span>'; 
-		$html .= '						    <span class="badge pull-right">' . $media_count . '</span>';
+		$html .= '						    <span class="badge pull-right">' . $pMedia_count . '</span>';
 		$html .= '						</li>';
 		foreach ($provinces as $province) {
 			$html .= '						<li data-id="' . htmlentities(strtolower($province['name'])) . '" class="state-selector">';
@@ -63,6 +95,7 @@ class DiscoverNav extends AbstractHelper implements ServiceLocatorAwareInterface
 		}
 		$html .= '					</ul>';
 		$html .= '				</li>';
+		//cities
 		if ($cities) {
 			$html .= '				<li class="dropdown" id="cities-list">';
 			$html .= '					<a class="dropdown-toggle" data-toggle="dropdown" href="#">';
@@ -97,6 +130,9 @@ class DiscoverNav extends AbstractHelper implements ServiceLocatorAwareInterface
 		$html .= '        <div class="wrapper">';
 		$html .= '			<table>';
 		$html .= '				<tr>';
+		if ($countrySelected) {
+			$html .= '					<td class="nowrap"><h3>Country:</h3></td>';
+		}
 		if ($provinceSelected) {
 			$html .= '					<td class="nowrap"><h3>State:</h3></td>';
 		}
@@ -108,6 +144,10 @@ class DiscoverNav extends AbstractHelper implements ServiceLocatorAwareInterface
 		}
 		$html .= '				</tr>';
 		$html .= '				<tr>';
+		if ($countrySelected) {
+			$html .= '					<td class="nowrap">' . $countrySelected . '&nbsp;<img class="remove-state" data-id="' . $countryId . '" src="/img/delete.png">';
+			$html .= '					</td>';
+		}
 		if ($provinceSelected) {
 			$html .= '					<td class="nowrap">' . $provinceSelected . '&nbsp;<img class="remove-state" data-id="' . $provinceId . '" src="/img/delete.png">';
 			$html .= '					</td>';
@@ -147,6 +187,12 @@ class DiscoverNav extends AbstractHelper implements ServiceLocatorAwareInterface
 		$html .= '    <div class="container-fluid">';
 		$html .= '        <div class="wrapper">';
 		$html .= '			<table>';
+		if ($countrySelected) {
+			$html .= '				<tr>';
+			$html .= '					<td class="selected-category-heading">State:</td>';
+			$html .= '					<td class="nowrap">' . $countrySelected . '&nbsp;<img class="remove-state" data-id="' . $countryId . '" src="/img/delete.png">';
+			$html .= '				</tr>';
+		}
 		if ($provinceSelected) {
 			$html .= '				<tr>';
 			$html .= '					<td class="selected-category-heading">State:</td>';

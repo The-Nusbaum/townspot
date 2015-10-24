@@ -19,10 +19,18 @@ var userEdit = {
         });
         plupInit.image();
 
-        $("#userEdit input, #userEdit select, #userEdit textarea").change(function(e){
+        $("#userEdit input[type!=checkbox], #userEdit select, #userEdit textarea").change(function(e){
             $this = $(this);
-            userEdit.data[$this.attr('name')] = $this.val();
+            var val = $this.val();
+            userEdit.data[$this.attr('name')] = val;
         });
+
+        $("#userEdit input[type=checkbox]").click(function(){
+            $this = $(this);
+            var val = $this.is(':checked');
+            userEdit.data[$this.attr('name')] = val;
+        });
+
         $('#link_twitter').click(function(e){
             e.preventDefault();
             window.location = "/custom/login/twitter";

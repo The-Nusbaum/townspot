@@ -677,9 +677,11 @@ class Entity extends \Townspot\Entity
 	
 	public function getLocation($includeNeighborhood = false,$escaped = false)
 	{
-		$location = sprintf("%s, %s",
+		$location = sprintf("%s, %s, %s",
 			$this->getCity()->getName(),
-			$this->getProvince()->getAbbrev());
+			$this->getProvince()->getName(),
+			$this->getCountry()->getName()
+		);
 		if ($includeNeighborhood) {
 			if ($neighborhood = $this->getNeighborhood()) {
 				$location .= sprintf(" (%s)",$neighborhood);

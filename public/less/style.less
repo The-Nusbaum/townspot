@@ -1910,6 +1910,22 @@ iframe.dmPlayer {
   }
 }
 
+#HireArtistModal {
+	.modal-body {
+		fieldset {
+			display:none;
+			&:first-child{
+				display:block;
+			}
+		}
+	}
+}
+
+.required::after {
+	content: "*";
+	color: red; 
+}
+
 @media (min-width: 400px) {
 	.mobile-ad {
 		display: block;

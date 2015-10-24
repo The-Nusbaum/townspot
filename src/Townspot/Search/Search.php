@@ -266,13 +266,15 @@ class Search implements ServiceLocatorAwareInterface
 		return $results;
 	}
 
-    public function discoverSearch($terms,$sortTerm, $page = 1)
-    {
-        $searchId       = md5(serialize(array($terms)));
-        $cache			= $this->getServiceLocator()->get('cache-general');        
+  public function discoverSearch($terms,$sortTerm, $page = 1)
+  {
+    $searchId       = md5(serialize(array($terms)));
+    $cache			= $this->getServiceLocator()->get('cache-general');        
 		$cache->clearExpired();
-        $results 		= $cache->getItem($searchId);
+    $results 		= $cache->getItem($searchId);
+    $results = false;
 		if (!$results) {
+			$CountryId		= null;
 			$provinceId		= null;
 			$provinceName	= null;
 			$cityId			= null;
@@ -284,9 +286,22 @@ class Search implements ServiceLocatorAwareInterface
 			$provinceMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
 			$cityMapper 	= new \Townspot\City\Mapper($this->getServiceLocator());
 			$categoryMapper = new \Townspot\Category\Mapper($this->getServiceLocator());
-			$country  		= $countryMapper->findOneByName('United States');
+			//$country  		= $countryMapper->findOneByName('United States');
 			if ($terms) {
 				foreach ($terms as $index => $term) {
+				if ($countries = $countryMapper->findByName($term)) {
+						foreach ($countries as $country) {
+							if (strtolower($country->getName()) == strtolower($term)) {
+								$countryId 	= $country->getId();
+								$prefix 		= $country->getDiscoverLink();
+								$countryName 	= $term;
+								$location = $country;
+								unset($terms[$index]);
+							}
+						}
+					}
+				}
+				if ($countryId) foreach ($terms as $index => $term) {
 					if ($provinces = $provinceMapper->findByName($term)) {
 						foreach ($provinces as $province) {
 							if ($province->getCountry()->getId() == $country->getId()) {
@@ -294,6 +309,7 @@ class Search implements ServiceLocatorAwareInterface
 									$provinceId 	= $province->getId();
 									$prefix 		= $province->getDiscoverLink();
 									$provinceName 	= $term;
+									$location = $province;
 									unset($terms[$index]);
 								}
 							}
@@ -308,6 +324,7 @@ class Search implements ServiceLocatorAwareInterface
 									$cityId 	= $city->getId();
 									$cityName 	= $term;
 									$prefix 	= $city->getDiscoverLink();
+									$location = $city;
 									unset($terms[$index]);
 								}
 							}
@@ -379,13 +396,13 @@ class Search implements ServiceLocatorAwareInterface
 					'created'			=> $media->getCreated()->getTimestamp(),
 				);
 				$categoryMapper 	= new \Townspot\Category\Mapper($this->getServiceLocator());
-				$matches = $categoryMapper->getDiscoverCategories($provinceId,$cityId);
+				$matches = $categoryMapper->getDiscoverCategories($countryId,$provinceId,$cityId);
 				foreach ($matches as $category) {  
 					$media = $category->getRandomMedia();
 					$data[] = array(
 						'id'				=> $category->getId(),
 						'type'				=> 'category',
-						'link'				=> $category->getDiscoverLink(),
+						'link'				=> $category->getDiscoverLink($location),
 						'image'				=> $media->getResizerCdnLink(),
 						'escaped_title'		=> $category->getName(),
 						'title'				=> $category->getName(),
@@ -397,6 +414,8 @@ class Search implements ServiceLocatorAwareInterface
 				'searchId' 			=> $searchId,
 				'matchesFound' 		=> count($data),
 				'activeCategory'	=> $activeCategory,
+				'countryId'		=> $countryId,
+				'countryName'		=> $countryName,
 				'provinceId'		=> $provinceId,
 				'provinceName'		=> $provinceName,
 				'cityId'			=> $cityId,

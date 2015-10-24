@@ -125,7 +125,7 @@ class Edit extends Form
                 'length' => '50',
             ),
         ));
-        /*$this->add(array(
+        $this->add(array(
             'type' => 'Zend\Form\Element\Select',
             'name' => 'country_id',
             'attributes' => array(
@@ -135,14 +135,6 @@ class Edit extends Form
             ),
             'options' => array(
                 'value_options' => $countries
-            ),
-        ));*/
-
-        $this->add(array(
-            'name' => 'country_id',
-            'attributes' => array(
-                'type'  => 'hidden',
-                'value' => '99',
             ),
         ));
 
@@ -251,22 +243,32 @@ class Edit extends Form
         ));
 
         $this->add(array(
-            'name' => 'allow_contact',
+            'name' => 'allowContact',
             'attributes' => array(
                 'type'  => 'checkbox',
                 'label' => 'Allow other users to contact me',
                 'column' => 'span',
-                'width' => 6,
+                'width' => 4,
             ),
         ));
 
         $this->add(array(
-            'name' => 'email_notifications',
+            'name' => 'allowHire',
+            'attributes' => array(
+                'type'  => 'checkbox',
+                'label' => 'Allow users to hire me',
+                'column' => 'span',
+                'width' => 4,
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'emailNotifications',
             'attributes' => array(
                 'type'  => 'checkbox',
                 'label' => 'Receive Email Notifications',
                 'column' => 'span',
-                'width' => 6,
+                'width' => 4,
             ),
         ));
 

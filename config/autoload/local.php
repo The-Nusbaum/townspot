@@ -1,17 +1,17 @@
 <?php
 $db = array(
-'host'     => '216.157.108.165',
+'host'     => 'localhost',
                 'port'     => '3306',
-                'user'     => 'tsz_user',
-                'password' => 'sh@Fnrt1ps0',
+                'user'     => 'root',
+                'password' => '',
                 'dbname'   => 'tsz',
 );
 
 $amqp = array(
-    'host' => '216.157.108.165',
+    'host' => 'localhost',
     'port' => '5672',
-    'user' => 'amqpUser',
-    'pass' => 'ermahgerd!',
+    'user' => 'guest',
+    'pass' => 'guest',
     'vhost' => '/'
 );
 

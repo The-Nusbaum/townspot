@@ -186,4 +186,11 @@ class Entity extends \Townspot\Entity
 	{
 		return $this->_users;
 	}
+
+	public function getDiscoverLink()
+	{
+		return sprintf('/discover/%s',
+				htmlentities(strtolower($this->getName()))
+		);
+	}
 }

@@ -23,6 +23,7 @@
 		<field name="_latitude" column="latitude" type="float"/>
 		<field name="_longitude" column="longitude" type="float"/>
 		<field name="_allow_contact" column="allow_contact" type="boolean"/>
+		<field name="_allow_hire" column="allow_hire" type="boolean"/>
 		<field name="_terms_agreement" column="terms_agreement" type="boolean"/>
 		<field name="_email_notifications" column="email_notifications" type="boolean"/>
 		<field name="_created" column="created" nullable="false" type="datetime"/>

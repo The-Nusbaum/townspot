@@ -181,6 +181,7 @@ class MediaController extends AbstractActionController
 		return new ViewModel( 
 			array(
 				'data'			=> $data,
+                'country'         => $country->getName(),
 				'state'			=> $province->getName(),
 				'city'			=> $city->getName(),
 				'allCategories'	=> $allCategories
@@ -265,7 +266,7 @@ class MediaController extends AbstractActionController
 				}
                 $user = $userMapper->findOneById($media->getUser()->getId());
                 $countries = $countryMapper->findAll();
-                $provinces = $provinceMapper->findByCountry(99);
+                $provinces = $provinceMapper->findByCountry($media->getCountry());
                 $cities = $cityMapper->findByProvince($media->getProvince());
 				
                 $categoryMapper = new \Townspot\Category\Mapper($this->getServiceLocator());

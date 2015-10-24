@@ -55,6 +55,9 @@ var upload = {
                 }
             );
         });
+        $('#country_id').change(function(){
+            upload.getStates();
+        });
     },
     clearData: function(){
         $('#submitForm').children('input').remove();
@@ -217,4 +220,28 @@ var upload = {
             }
         )
     }
+}
+    },
+    getStates: function(){
+        $('#province_id option:not(:first)').remove();
+        $('#province_id option:first').text('loading...');
+        $('#city_id option:not(:first)').remove();
+        $('#city_id option:first').text('loading...');
+        $.get(
+            '/api/province/getList/' + $('#country_id').val(),
+            function(response){
+                var data = response.data;
+                if(data.length) {
+                    $('#province_id option:first').text('Please Select a State');
+                    $(data).each(function(){
+                        $('#province_id').append("<option value='"+ this.id +"'>"+ this.name +"</option>");
+                    });
+                    $('#city_id option:first').text('Please Select a State');
+                    $('#province_id, #city_id, [for=province_id], [for=city_id]').show();
+                } else {
+                    $('#province_id, #city_id, [for=province_id], [for=city_id]').hide();
+                }
+            }
+        );
+    },
 }

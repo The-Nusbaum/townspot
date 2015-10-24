@@ -208,8 +208,8 @@ class Entity extends \Townspot\Entity
 	
 	public function getDiscoverLink()
 	{
-		return sprintf('/discover/%s',
-				htmlentities(strtolower($this->getName()))
+		return sprintf('/discover/%s/%s',
+				htmlentities(strtolower($this->getCountry()->getName())),htmlentities(strtolower($this->getName()))
 		);
 	}
 	

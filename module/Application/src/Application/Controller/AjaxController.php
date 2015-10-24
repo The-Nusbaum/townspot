@@ -33,7 +33,7 @@ class AjaxController extends AbstractActionController
 		$request = $this->getRequest();
 		$lat = 0;
 		$long = 0;
-        if ($request->isPost()) {
+    if ($request->isPost()) {
 			if ($coords = $request->getPost()->get('coords')) {
 				list($lat,$long) = explode(',',$coords);
 			} else {
@@ -44,6 +44,7 @@ class AjaxController extends AbstractActionController
 			if (($lat)&&($long)) {
 				$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
 				$media = $mediaMapper->getClosest($lat,$long);
+				var_dump($media->toArray());die;
 				$response = array('FullName'	=> $media->getCity()->getFullName(),
 								  'Link'		=> $media->getCity()->getDiscoverLink()
 				);

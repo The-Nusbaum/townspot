@@ -19,6 +19,8 @@ class Mapper extends AbstractEntityMapper
 		$sql .= "ORDER BY distance ";
 		$sql .= "LIMIT 1;";
 		$sql = sprintf($sql,$lat,$long,$lat);
+
+		var_dump($sql);die;
 		
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
 		$stmt->execute();
@@ -265,14 +267,15 @@ class Mapper extends AbstractEntityMapper
 						media.title,
 						CONCAT(series.name, ' : ', series_episodes.episode_number) as `series`,
 						user.username as username,
-						CONCAT(city.name, ',', province.abbrev) as location,
+						CONCAT(city.name, ',', province.abbrev, ',', country.code2) as location,
 						media.views,
 						media.created as added,
 						media.approved as status
 						from media
 					JOIN user on user.user_id = media.user_id
-					LEFT JOIN city on user.city_id = city.id
-					LEFT JOIN province on user.province_id = province.id
+					LEFT JOIN country on media.country_id = country.id
+					LEFT JOIN city on media.city_id = city.id
+					LEFT JOIN province on media.province_id = province.id
 					LEFT JOIN series_episodes on series_episodes.media_id = media.id
 					LEFT JOIN series on series_episodes.series_id = series.id";
 		foreach ($options as $key => $value) {

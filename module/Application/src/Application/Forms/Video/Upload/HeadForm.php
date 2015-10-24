@@ -20,14 +20,17 @@ class HeadForm extends Form {
         foreach($colCountries as $c) {
             $countries[$c->getId()] = $c->getName();
         }
+        asort($countries);
 
         foreach($colProvinces as $p) {
             $provinces[$p->getId()] = $p->getName();
         }
+        asort($provinces);
 
         foreach($colCities as $c) {
             $cities[$c->getId()] = $c->getName();
         }
+        asort($cities);
 
         $this->add(array(
             'name' => 'user_id',
@@ -35,7 +38,7 @@ class HeadForm extends Form {
                 'type'  => 'hidden',
             ),
         ));
-/*
+
         $this->add(array(
             'type' => 'Zend\Form\Element\Select',
             'name' => 'country_id',
@@ -50,7 +53,7 @@ class HeadForm extends Form {
                 'value_options' => $countries
             ),
         ));
-*/
+
         $this->add(array(
             'type' => 'Zend\Form\Element\Select',
             'name' => 'province_id',

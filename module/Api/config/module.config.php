@@ -8,6 +8,7 @@ return array(
             'Api\Controller\UserController' => 'Api\Controller\UserController',
             'Api\Controller\CityController' => 'Api\Controller\CityController',
             'Api\Controller\MediaCommentController' => 'Api\Controller\MediaCommentController',
+            'Api\Controller\ProvinceController' => 'Api\Controller\ProvinceController',
             'model' => 'Api\Controller\ModelController',
         ),
     ),

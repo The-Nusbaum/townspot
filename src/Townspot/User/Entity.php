@@ -93,7 +93,9 @@ class Entity extends \Townspot\Entity
 	
 	protected $_media_comments;
 
-    protected $_serviceLocator;
+  protected $_serviceLocator;
+  
+  protected $_allow_hire;
 	
 	public function __construct()
 	{
@@ -299,6 +301,12 @@ class Entity extends \Townspot\Entity
 	public function setCity(\Townspot\City\Entity $value)
 	{
 		$this->_city = $value;
+		return $this;
+	}
+	
+	public function setAllowHire($value)
+	{
+		$this->_allow_hire = $value;
 		return $this;
 	}
 
@@ -598,6 +606,11 @@ class Entity extends \Townspot\Entity
 	public function getAllowContact()
 	{
 		return (bool)$this->_allow_contact;
+	}
+
+	public function getAllowHire()
+	{
+		return (bool)$this->_allow_hire;
 	}
 
 	public function getTermsAgreement()

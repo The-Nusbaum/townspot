@@ -583,10 +583,10 @@ class VideoController extends AbstractActionController
 
         $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
         $user = $userMapper->find($data->get('user_id'));
-/*
+
         $countryMapper = new \Townspot\Country\Mapper($this->getServiceLocator());
         $country = $countryMapper->find($data->get('country_id'));
-*/
+
         $provinceMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
         $province = $provinceMapper->find($data->get('province_id'));
 
@@ -600,6 +600,7 @@ class VideoController extends AbstractActionController
         }
 
         $this->_view->setVariable('state',$province->getName());
+        $this->_view->setVariable('country',$country->getName());
         $this->_view->setVariable('city',$city->getName());
         $this->_view->setVariable('allCategories',$allCategories);
 
@@ -834,5 +835,92 @@ EOT;
 			print_r($email);
 		}
 		die;
+	
+}
+
+	public function hireArtistAction(){
+		$id = $this->params()->fromRoute('id');
+		$post = $this->params()->fromPost();
+
+		$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
+		$media = $mediaMapper->find($id);
+
+		$user = $media->getUser();
+
+		$email = new Message();
+		$email->addFrom($post['email']);
+
+		if(!empty($post['bizname'])) $subject = $post['bizname'];
+		elseif(!empty($post['venueName'])) $subject = $post['venueName'];
+		else $subject = $post['name'];
+
+		$subject .= ' would like to hire you';
+
+		$email->setSubject($subject);
+
+		$body ="<dl>";
+
+		foreach($post as $field => $val) {
+			switch($field) {
+				case 'name':
+					$fieldName = "Contact Name:";
+					break;
+				case 'email':
+					$fieldName = "Contact Email:";
+					break;
+				case 'phone':
+					$fieldName = "Contact Phone:";
+					break;
+				case 'locations':
+					$fieldName = "Locations Served:";
+					break;
+				case 'experience':
+					$fieldName = "Previous Experience:";
+					break;
+				case 'venueName':
+					$fieldName = "Venue Name:";
+					break;
+				case 'bizname':
+					$fieldName = "Business Name:";
+					break;
+				case 'jobTitle':
+					$fieldName = "Job Title:";
+					break;
+				case 'desc':
+					$fieldName = "Description:";
+					break;
+				case 'dates':
+					$fieldName = "Dates in Question:";
+					break;
+				case 'website':
+					$fieldName = "Website:";
+					$val = "<a href='$val' target='_new'>$val</a>";
+					break;
+				case 'budget':
+					$fieldName = "Budget (optional):";
+					break;
+				case 'services':
+					$fieldName = "Services Offered:";
+					break;
+				case 'message':
+					$fieldName = "Message:";
+					break;
+			}
+			$body .= "<dt>$fieldName</dt><dd>$val</dd>";
+		}
+
+		$body .= "</dl>";
+
+		$email->addTo($user->getEmail());
+		
+		$email->setBody($body);
+
+		if (APPLICATION_ENV == 'production') {
+			$transport = new Mail\Transport\Sendmail();
+			$transport->send($email);				
+		} else {
+			print_r($email);
+		}
+		die;		
 	}
 }

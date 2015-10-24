@@ -117,10 +117,16 @@ class Edit extends Form
         ));
 
         $this->add(array(
+            'type' => 'Zend\Form\Element\Select',
             'name' => 'country_id',
             'attributes' => array(
-                'type'  => 'hidden',
-                'value' => '99',
+                'type'  => 'select',
+                'label' => 'Country',
+                'errorId' => 'nocountry',
+                'errorMessage' => 'You must choose a country'
+            ),
+            'options' => array(
+                'value_options' => $countries
             ),
         ));
 

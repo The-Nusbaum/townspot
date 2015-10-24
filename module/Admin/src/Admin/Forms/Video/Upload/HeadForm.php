@@ -59,7 +59,6 @@ class HeadForm extends Form {
                 'value_options' => $users
             ),
         ));
-/*
         $this->add(array(
             'type' => 'Zend\Form\Element\Select',
             'name' => 'country_id',
@@ -74,7 +73,6 @@ class HeadForm extends Form {
                 'value_options' => $countries
             ),
         ));
-*/
         $this->add(array(
             'type' => 'Zend\Form\Element\Select',
             'name' => 'province_id',

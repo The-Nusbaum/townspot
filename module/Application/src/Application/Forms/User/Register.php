@@ -125,7 +125,7 @@ class Register extends Form
                 'errorMessage' => 'You must enter a display name'
             ),
         ));
-        /*$this->add(array(
+        $this->add(array(
             'type' => 'Zend\Form\Element\Select',
             'name' => 'country_id',
             'attributes' => array(
@@ -135,14 +135,6 @@ class Register extends Form
             ),
             'options' => array(
                 'value_options' => $countries
-            ),
-        ));*/
-
-        $this->add(array(
-            'name' => 'country_id',
-            'attributes' => array(
-                'type'  => 'hidden',
-                'value' => '99',
             ),
         ));
 

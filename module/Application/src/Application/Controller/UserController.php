@@ -230,7 +230,7 @@ class UserController extends AbstractActionController
     public function registerAction() {
         $this->auth();
         $countryMapper = new \Townspot\Country\Mapper($this->getServiceLocator());
-        $country = $countryMapper->find(99);
+        $countries = $countryMapper->findAll();
 
         $provinceMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
         $provinces = $provinceMapper->findByCountry(99);
@@ -259,6 +259,7 @@ class UserController extends AbstractActionController
             $userService =  $this->getServiceLocator()->get('zfcuseruserservice');
             $user = $userService->register($regData);
 
+            $country = $countryMapper->find($data['country_id']);
             $province = $provinceMapper->find($data['province_id']);
             $city = $cityMapper->find($data['city_id']);
 
@@ -285,7 +286,7 @@ class UserController extends AbstractActionController
 
         }
 
-        $form = new \Application\Forms\User\Register('user',array(),$provinces);
+        $form = new \Application\Forms\User\Register('user',$countries);
         $this->_view->setVariable('form',$form);
 
         $this->getServiceLocator()

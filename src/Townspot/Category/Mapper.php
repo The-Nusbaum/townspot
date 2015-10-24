@@ -6,7 +6,7 @@ class Mapper extends AbstractEntityMapper
 {
 	protected $_repositoryName = "Townspot\Category\Entity";
 	
-	public function getDiscoverCategories($province_id = null,$city_id = null,$parent = null) 
+	public function getDiscoverCategories($country_id = null, $province_id = null,$city_id = null,$parent = null) 
 	{
 		$results 		= array();
 		$provinceMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
@@ -21,6 +21,9 @@ class Mapper extends AbstractEntityMapper
 		$sql .= " JOIN media on media_category_linker.media_id = media.id ";
 		$where = array('media.approved = 1');
 		$having = array();
+		if ($country_id) {
+			$where[] = 'media.country_id=' . $country_id;
+		}
 		if ($province_id) {
 			$where[] = 'media.province_id=' . $province_id;
 		}

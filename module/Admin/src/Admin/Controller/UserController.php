@@ -41,7 +41,7 @@ class UserController extends AbstractActionController
 		$type = $this->params()->fromRoute('type');
 		
         $countryMapper = new \Townspot\Country\Mapper($this->getServiceLocator());
-        $country = $countryMapper->find(99);
+        $countries = $countryMapper->findAll();
         $provinceMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
         $provinces = $provinceMapper->findByCountry(99);
         $cityMapper = new \Townspot\City\Mapper($this->getServiceLocator());
@@ -66,6 +66,7 @@ class UserController extends AbstractActionController
             );
             $userService =  $this->getServiceLocator()->get('zfcuseruserservice');
             $user = $userService->register($regData);
+            $country = $countryMapper->find($data['country_id']);
             $province = $provinceMapper->find($data['province_id']);
             $city = $cityMapper->find($data['city_id']);
             $user = $userMapper->find($user->getId());
@@ -97,7 +98,7 @@ class UserController extends AbstractActionController
             $this->redirect()->toRoute('admin-users');
         }
 	
-        $form = new \Application\Forms\User\Register('user',array(),$provinces);
+        $form = new \Application\Forms\User\Register('user',$countries,$provinces);
         $this->getServiceLocator()
             ->get('viewhelpermanager')
             ->get('HeadScript')->appendFile('/js/townspot.js')
@@ -137,7 +138,7 @@ class UserController extends AbstractActionController
 		
         if($this->getRequest()->isPost()) {
             $data = $this->params()->fromPost();
-            $country = $countryMapper->find(99);
+            $country = $countryMapper->find($data['country_id']);
             $province = $provinceMapper->find($data['province_id']);
             $city = $cityMapper->find($data['city_id']);
 			$userroleMapper = new \Townspot\UserRole\Mapper($this->getServiceLocator());
@@ -189,7 +190,7 @@ class UserController extends AbstractActionController
         $this->getServiceLocator()
             ->get('viewhelpermanager')
             ->get('HeadScript')->appendFile('/js/townspot.js')
-							   ->appendFile('/js/sdminUserEdit.js');
+							   ->appendFile('/js/adminUserEdit.js');
 
  	    return new ViewModel( 
 			array(

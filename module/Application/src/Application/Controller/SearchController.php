@@ -85,6 +85,7 @@ class SearchController extends AbstractActionController
 		
 		unset($_SESSION['DiscoverLocation']);
 		unset($_SESSION['DiscoverLink']);
+        unset($_SESSION['Discover_Country']);
 		unset($_SESSION['Discover_Province']);
 		unset($_SESSION['Discover_City']);
 		unset($_SESSION['Discover_Category']);
@@ -93,8 +94,13 @@ class SearchController extends AbstractActionController
 		
 		$search		= new \Townspot\Search\Search($this->getServiceLocator());
 		$results	= $search->discoverSearch($terms,$sortTerm,$page);
+        $countryMapper = new \Townspot\country\Mapper($this->getServiceLocator());
 		$provinceMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
 		$cityMapper 	= new \Townspot\City\Mapper($this->getServiceLocator());
+        if ($results['countryId']) {
+            $_SESSION['Discover_Country'] = $results['countryId'];
+            $_SESSION['DiscoverLocation'] = $countryMapper->find($results['countryId']);
+        }
 		if ($results['provinceId']) {
 			$_SESSION['Discover_Province'] = $results['provinceId'];
 			$_SESSION['DiscoverLocation'] = $provinceMapper->find($results['provinceId']);
@@ -116,10 +122,12 @@ class SearchController extends AbstractActionController
 			$_SESSION['Discover_Categories'] = $results['categories'];
 			$_SESSION['Discover_Subcategories'] = $results['subcategories'];
 		}
+        
 		return new ViewModel(
 			array(
 				'page'  	 	=> 1,
 				'searchId'  	=> $results['searchId'],
+                'country'      => $results['countryName'],
 				'province'  	=> $results['provinceName'],
 				'city'  		=> $results['cityName'],
 				'categoryId'  	=> $results['activeCategory'],
@@ -155,7 +163,8 @@ class SearchController extends AbstractActionController
         $provinceMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
         $cityMapper = new \Townspot\City\Mapper($this->getServiceLocator());
 
-        $country = $countryMapper->find(99);
+        $_country = $this->params()->fromRoute('country');
+        $_country = preg_replace('/[_]/',' ',$_country);
         $_state = $this->params()->fromRoute('state');
         $_state = preg_replace('/[_]/',' ',$_state);
         $_city = $this->params()->fromRoute('city');
@@ -165,6 +174,12 @@ class SearchController extends AbstractActionController
         $cat3 = $this->params()->fromRoute('cat3');
         $cat4 = $this->params()->fromRoute('cat4');
         $cat5 = $this->params()->fromRoute('cat5');
+
+        if($_country != 'all-countries') {
+            $country = $countryMapper->findOneByName($_country)->getId();
+        } else {
+            $country = null;
+        }
 
         if($_state != 'all-states') {
             $state = $provinceMapper->findOneBy(array(
@@ -207,9 +222,13 @@ class SearchController extends AbstractActionController
             ->get('HeadScript')
             ->appendFile('/js/videointeractions.js','text/javascript');
 
-        $states = $provinceMapper->getProvincesHavingMedia();
+        $countries = $countryMapper->getCountriesHavingMedia();
+        $states = array();
+        foreach($countries as $c){
+            $states[$c['id']] = $provinceMapper->getProvincesHavingMedia($c['name']);
+        }
         $cities = array();
-        foreach($states as $s){
+        foreach($states as $country_id => $_states) foreach($_states as $s){
             $cities[$s['id']] = $cityMapper->getCitiesHavingMedia($s['id']);
         }
         $categories = $categoryMapper->getTreeBranches();
@@ -220,9 +239,11 @@ class SearchController extends AbstractActionController
 
         return new ViewModel(
             array(
+                'countries'     => $countries,
                 'states'        => $states,
                 'cities'        => $cities,
                 'categories'    => $categories,
+                'country'       => $country,
                 'state'  		=> $state,
                 'city'          => $city,
                 'category'      => $category,

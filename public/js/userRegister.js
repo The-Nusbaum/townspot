@@ -34,25 +34,11 @@ var userRegister = {
             $('.emailexists').remove();
         });
 
+        $('#country_id').change(function(){
+            userRegister.getStates();
+        });
         $('#province_id').change(function(){
-            pId = $(this).val();
-            $target = $('#city_id');
-            $target.children().remove();
-            $target.append("<option>loading...</option>");
-            $.get(
-                    '/api/city/getList/'+pId,
-                function(data){
-                    $target = $('#city_id');
-                    if(data.success) {
-                        $target.children().remove();
-                        $target.append("<option>Please select a City</option>");
-                        var cities = data.data;
-                        $(cities).each(function(){
-                            $target.append('<option value="'+this.id+'">'+this.name+'</option>');
-                        })
-                    }
-                }
-            );
+            userRegister.getCities();
         });
 
         $("#register input, #register select, #register textarea").change(function(e){
@@ -202,6 +188,48 @@ var userRegister = {
             $('.nocity').show();
         }
         return !error;
+    },
+    getStates: function(){
+        $('#province_id option:not(:first)').remove();
+        $('#province_id option:first').text('loading...');
+        $('#city_id option:not(:first)').remove();
+        $('#city_id option:first').text('loading...');
+        $.get(
+            '/api/province/getList/' + $('#country_id').val(),
+            function(response){
+                var data = response.data;
+                if(data.length) {
+                    $('#province_id option:first').text('Please Select a State');
+                    $(data).each(function(){
+                        $('#province_id').append("<option value='"+ this.id +"'>"+ this.name +"</option>");
+                    });
+                    $('#city_id option:first').text('Please Select a State');
+                    $('#province_id, #city_id, [for=province_id], [for=city_id]').show();
+                } else {
+                    $('#province_id, #city_id, [for=province_id], [for=city_id]').hide();
+                }
+            }
+        );
+    },
+    getCities: function(){
+        $('#city_id option:not(:first)').remove();
+        $('#city_id option:first').text('loading...');
+        $.get(
+            '/api/city/getList/' + $('#province_id').val(),
+            function(response){
+                var data = response.data;
+                if(data.length) {
+                    $('#city_id option:first').text('Please Select a City');
+                    $(data).each(function(){
+                        $('#city_id').append("<option value='"+ this.id +"'>"+ this.name +"</option>");
+                    });
+                    $('#city_id option:first').text('Please Select a City');
+                    $('#province_id, #city_id').show();
+                } else {
+                    $('#city_id option:first').text('Not Applicable');
+                }
+            }
+        );
     }
 }
 

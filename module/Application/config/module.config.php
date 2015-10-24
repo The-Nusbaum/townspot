@@ -112,6 +112,8 @@ return array(
                     'searchTitle.js',
                     'adminDelete.js',
                     'tinymce/tinymce/tinymce.js',
+                    'adminUserEdit.js',
+                    'plupload.js',
 					
 //                    'twitter/typeahead.js/dist/typeahead.bundle.min.js',
 //                    'usernameTypeahead.js',
@@ -340,6 +342,19 @@ return array(
                     )
                 ),          
             ),
+            'hire_artist' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/videos/hire-artist/:id',
+                    'constraints' => array(
+                        'id' => '\d+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Video',
+                        'action' => 'hireArtist'
+                    )
+                ),          
+            ),
             'video_report' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -503,7 +518,7 @@ return array(
             'channelsurf' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
-                    'route' => '/channelsurf[/:state][/:city][/:cat1][/:cat2][/:cat3][/:cat4][/:cat5]',
+                    'route' => '/channelsurf[/:country][/:state][/:city][/:cat1][/:cat2][/:cat3][/:cat4][/:cat5]',
                     'defaults' => array(
                         'controller' => 'Application\Controller\Search',
                         'action' => 'channelsurf',

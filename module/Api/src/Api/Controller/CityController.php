@@ -25,8 +25,14 @@ class CityController extends \Townspot\Controller\BaseRestfulController
     public function getListAction() {
         $id = $this->params()->fromRoute('id');
         if($id){
-            foreach($this->getMapper()->findByProvince($id) as $city) {
-                $cities[] = $city->toArray();
+            $cities = array();
+            $provinceMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
+            $province = $provinceMapper->find($id);
+            foreach($province->getCities() as $city) {
+                $cities[] = array(
+                    'id'    => $city->getId(),
+                    'name'  => htmlentities($city->getName(),ENT_SUBSTITUTE)
+                );
             }
             $this->getResponse()->setData($cities);
         } else {

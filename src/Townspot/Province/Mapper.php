@@ -10,7 +10,7 @@ class Mapper extends AbstractEntityMapper
 	{
 		$results = array();
 		$countryMapper  = new \Townspot\Country\Mapper($this->getServiceLocator());
-		$country  	= $countryMapper->findOneByName('United States');
+		$country  	= $countryMapper->findOneByName($countryName);
 		$sql = "SELECT DISTINCT media.province_id, province.name, count(media.id) as media_count FROM media ";
 		$sql .= "JOIN province on media.province_id = province.id ";
 		$sql .= "WHERE media.country_id = " . $country->getId();
@@ -23,6 +23,7 @@ class Mapper extends AbstractEntityMapper
 				$results[] = array(
 					'id'			=> $result['province_id'],
 					'name'			=> $result['name'],
+					'listname'			=> $result['country'] .' - '. $result['name'],
 					'media_count'	=> $result['media_count']
 				);
 			}

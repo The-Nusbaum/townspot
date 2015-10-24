@@ -23,6 +23,7 @@
 					$('#rate-up').unbind('click').bind('click', function() { methods.rate('up') });
 					$('#rate-down').unbind('click').bind('click', function() { methods.rate('down') });
 					$('#contact-interaction').unbind('click').bind('click', function() { $('#ContactCreatorModal').modal('toggle'); });
+					$('#hire-interaction').unbind('click').bind('click', function() { $('#HireArtistModal').modal('toggle'); });
 					$('#follow-interaction').unbind('click').bind('click', function() { $('#ArtistContactModal').modal('toggle'); });
 					$('#report-interaction').unbind('click').bind('click', function() { $('#FlagContentLabel').modal('toggle'); });
 					$('#comment-submit').unbind('click').bind('click', function() { methods.comment_submit() });
@@ -47,6 +48,10 @@
 				$('#flagVideo .details > input').unbind('keyup').bind('keyup',function(){ methods.flagCheckDetails()});
 				$('#flagVideo .btn-primary').unbind('click').bind('click',function(){ methods.reportVideo()});
 		
+				$('#HireArtistModal .hireType').unbind('change').bind('change',function(){ methods.nextHireForm()});
+				$('#HireArtistModal .back').unbind('click').bind('click',function(){ methods.nextHireForm()});
+				$(document).on('click','#HireArtistModal #hire-submit',function(){ methods.submitHire()});
+
 				methods.rate();
 				methods.comments();
                 methods.adjust_vimeo();
@@ -260,9 +265,113 @@
       			console.log(response);
       		}
       	);
+      },
+      nextHireForm: function() {
+      	$('#hireDetails .form-group').hide();
+      	$('#hireDetails .form-group textarea, #hireDetails .form-group select, #hireDetails .form-group input').val('');
+      	$('#hireDetails .form-group .required').removeClass('required');
+      	switch($('.hireType').val()){
+      		case 'venue':
+      			$('.form-group.name').show().children().addClass('required');
+      			$('.form-group.email').show().children().addClass('required');
+      			$('.form-group.phone').show();
+      			$('.form-group.venueName').show().children().addClass('required');
+      			$('.form-group.dates').show();
+      			$('.form-group.budget').show().children().addClass('required');
+      			$('.form-group.website').show();
+      			$('.form-group.desc').show().children().addClass('required');
+      			$('.form-group.message').show().children().addClass('required');
+      			$('.form-group.message label').text('Describe job/gig specifics for '+ options.artistName +': ');
+      			break;
+      		case 'artist':
+      		  $('.form-group.name').show().children().addClass('required');
+      			$('.form-group.email').show().children().addClass('required');
+      			$('.form-group.website').show().children().addClass('required');
+      			$('.form-group.desc').show().children().addClass('required');
+      			$('.form-group.message').show().children().addClass('required');
+      		  $('.form-group.message label').text('Description of desired collaboration:');
+      		  break;
+      		case 'brand':
+      			$('.form-group.name').show().children().addClass('required');
+      			$('.form-group.email').show().children().addClass('required');
+      			$('.form-group.phone').show();
+      			$('.form-group.bizname').show().children().addClass('required');
+      			$('.form-group.jobTitle').show().children().addClass('required');
+      			$('.form-group.budget').show().children().addClass('required');
+      			$('.form-group.desc').show().children().addClass('required');
+      			$('.form-group.message').show().children().addClass('required');
+      			$('.form-group.message label').text('Description of opportunity for '+ options.artistName +': ');
+      		  break;
+      		case 'pro':
+      			$('.form-group.name').show().children().addClass('required');
+      			$('.form-group.email').show().children().addClass('required');
+      			$('.form-group.phone').show();
+      			$('.form-group.bizname').show().children().addClass('required');
+      			$('.form-group.jobTitle').show().children().addClass('required');
+      			$('.form-group.website').show();
+      			$('.form-group.services').show().children().addClass('required');      			
+      			$('.form-group.message').show().children().addClass('required');      			
+      			$('.form-group.message label').text('Why do you want to work with '+ options.artistName +': ');
+      		  break;
+      		case 'manager':
+      			$('.form-group.name').show().children().addClass('required');
+      			$('.form-group.email').show().children().addClass('required');
+      			$('.form-group.phone').show();
+      			$('.form-group.locations').show().children().addClass('required');
+      			$('.form-group.experience').show().children().addClass('required');
+      			$('.form-group.budget').show().children().addClass('required');
+      			$('.form-group.message').show().children().addClass('required');
+      			$('.form-group.message label').text('Why are you contacting '+ options.artistName +': ');
+      		  break;
+      		case 'press':
+      			$('.form-group.name').show().children().addClass('required');
+      			$('.form-group.email').show().children().addClass('required');
+      			$('.form-group.phone').show();
+      			$('.form-group.bizname').show().children().addClass('required');
+      			$('.form-group.website').show().children().addClass('required');
+      			$('.form-group.message').show().children().addClass('required');
+      			$('.form-group.message label').text('Why are you contacting '+ options.artistName +': ');
+      		  break;
+      	}
+      	$('#HireArtistModal fieldset:first').remove().appendTo('#HireArtistModal .modal-body');
+      	$('#HireArtistModal .hireType').unbind('change').bind('change',function(){ methods.nextHireForm()});
+				$('#HireArtistModal .back').unbind('click').bind('click',function(){ methods.nextHireForm()});
+				$('#HireArtistModal .form-control').unbind('change').bind('change',function(){
+					if(methods.checkHireDateForm()) {
+						$('#HireArtistModal #hire-submit').removeAttr('disabled');
+					} else {
+						$('#HireArtistModal #hire-submit').attr('disabled',1);
+					}
+				});
+
+      },
+      checkHireDateForm: function() {
+      	var returnVal = true;
+      	$('#HireArtistModal .required').next().each(function(){
+      		if($(this).val() == '') {
+      			returnVal = false;
+      		}
+      	});
+      	return returnVal;
+      },
+      submitHire: function() {
+      	var data = {};
+      	$('#hireDetails .form-group textarea, #hireDetails .form-group select, #hireDetails .form-group input').each(function(){
+      			var $this = $(this);
+      			if($this.val()) {
+      				data[$this.attr('id')] = $this.val(); 
+      			}
+      		});
+    		$.post(
+    			'/videos/hire-artist/' + options.videoid,
+					data,
+    			function(response){
+    				 $('#HireArtistModal').modal('toggle');
+    			}
+    		);
       }
 		}
-        var options = $.extend(defaults, options);
+    var options = $.extend(defaults, options);
 		methods.initialize();
     };
 })(jQuery);

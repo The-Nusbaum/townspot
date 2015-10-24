@@ -1,16 +1,16 @@
 (function($){
-    $.fn.mediaSearch = function( options ) 
-    {
-        var defaults = {
+	$.fn.mediaSearch = function( options ) 
+	{
+		var defaults = {
 			page: 1,
 			recordcount: 0,
 			sort_field: 'id',
 			sort_order: 'DESC',
 		};
-        var methods = 
-        {
-            setSort : function(field,sortUp)              
-            {
+		var methods = 
+		{
+			setSort : function(field,sortUp)              
+			{
 				options.sort_field = field;
 				$(".icon-admin-sort").removeClass('icon-admin-sort-up').removeClass('icon-admin-sort-down').addClass('icon-admin-sort-undefined');
 				if (sortUp == true) {
@@ -24,23 +24,23 @@
 				}
 				methods.getResults(); 
 			},
-            getResults : function()              
-            {
+			getResults : function()              
+			{
 				$('#record-list-results tbody').html('');	
 				methods._getData();
 			},
-            nextPage : function()              
-            {
+			nextPage : function()              
+			{
 				options.page = options.page + 1;
 				methods.getResults();
 			},
-            previousPage : function()              
-            {
+			previousPage : function()              
+			{
 				options.page = options.page - 1;
 				methods.getResults();
 			},
-            unapprove : function(element)              
-            {
+			unapprove : function(element)              
+			{
 				var id = $(element).parent().attr('id');
 				id = id.replace('row-','');
 				$.ajax({
@@ -53,8 +53,8 @@
 				$(element).css('color','#ff0000');
 				$(element).html('<i class="fa fa-square-o"></i>');
 			},
-            approve : function(element)              
-            {
+			approve : function(element)              
+			{
 				var id = $(element).parent().attr('id');
 				id = id.replace('row-','');
 				$.ajax({
@@ -67,8 +67,8 @@
 				$(element).css('color','#00ff00');
 				$(element).html('<i class="fa fa-check-square"></i>');
 			},
-            _getData : function()   
-            {	
+			_getData : function()   
+			{	
 				$.ajax({
 					url: "/admin/lookupmedia",
 					type: "POST",
@@ -108,23 +108,23 @@
 						html = html + '</tr>';
 						$('#record-list-results tbody').append(html);
 					});
-				});
-			}
-		};
-		
-        var options = $.extend(defaults, options);
-		$(document).on("modified", '#admin-search', function(event)			{ 	methods.getResults();  											});	
-		$(document).on("click", '#admin-sort-id', function(event)			{ 	methods.setSort('id',$(this).hasClass('icon-admin-sort-up'));  	});	
-		$(document).on("click", '#admin-sort-title', function(event)		{ 	methods.setSort('title',$(this).hasClass('icon-admin-sort-up'));  	});	
-		$(document).on("click", '#admin-sort-series', function(event)		{ 	methods.setSort('series',$(this).hasClass('icon-admin-sort-up'));  	});	
-		$(document).on("click", '#admin-sort-username', function(event)		{ 	methods.setSort('username',$(this).hasClass('icon-admin-sort-up'));  	});	
-		$(document).on("click", '#admin-sort-location', function(event)		{ 	methods.setSort('location',$(this).hasClass('icon-admin-sort-up'));  	});	
-		$(document).on("click", '#admin-sort-views', function(event)		{ 	methods.setSort('views',$(this).hasClass('icon-admin-sort-up'));  	});	
-		$(document).on("click", '#admin-sort-added', function(event)		{ 	methods.setSort('added',$(this).hasClass('icon-admin-sort-up'));  	});	
-		$(document).on("click", '#admin-sort-status', function(event)		{ 	methods.setSort('status',$(this).hasClass('icon-admin-sort-up'));  	});	
-		$(document).on("click", '.unapprove', function(event)				{ 	methods.unapprove(this);  	});	
-		$(document).on("click", '.approve', function(event)					{ 	methods.approve(this);  	});	
-		methods.getResults();
-	};	
+});
+}
+};
+
+var options = $.extend(defaults, options);
+$(document).on("modified", '#admin-search', function(event)			{ 	methods.getResults();  											});	
+$(document).on("click", '#admin-sort-id', function(event)			{ 	methods.setSort('id',$(this).hasClass('icon-admin-sort-up'));  	});	
+$(document).on("click", '#admin-sort-title', function(event)		{ 	methods.setSort('title',$(this).hasClass('icon-admin-sort-up'));  	});	
+$(document).on("click", '#admin-sort-series', function(event)		{ 	methods.setSort('series',$(this).hasClass('icon-admin-sort-up'));  	});	
+$(document).on("click", '#admin-sort-username', function(event)		{ 	methods.setSort('username',$(this).hasClass('icon-admin-sort-up'));  	});	
+$(document).on("click", '#admin-sort-location', function(event)		{ 	methods.setSort('location',$(this).hasClass('icon-admin-sort-up'));  	});	
+$(document).on("click", '#admin-sort-views', function(event)		{ 	methods.setSort('views',$(this).hasClass('icon-admin-sort-up'));  	});	
+$(document).on("click", '#admin-sort-added', function(event)		{ 	methods.setSort('added',$(this).hasClass('icon-admin-sort-up'));  	});	
+$(document).on("click", '#admin-sort-status', function(event)		{ 	methods.setSort('status',$(this).hasClass('icon-admin-sort-up'));  	});	
+$(document).on("click", '.unapprove', function(event)				{ 	methods.unapprove(this);  	});	
+$(document).on("click", '.approve', function(event)					{ 	methods.approve(this);  	});	
+methods.getResults();
+};	
 })(jQuery);
 
