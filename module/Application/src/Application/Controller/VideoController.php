@@ -718,7 +718,7 @@ class VideoController extends AbstractActionController
                 $mediaEntity = new \Townspot\Media\Entity();
                 $mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
                 $mediaEntity->setUser($user)
-                    //->setCountry($country)
+                    ->setCountry($country)
                     ->setProvince($province)
                     ->setCity($city)
                     ->setTitle($data->get('title'))
@@ -850,15 +850,23 @@ EOT;
 		$email = new Message();
 		$email->addFrom($post['email']);
 
-		if(!empty($post['bizname'])) $subject = $post['bizname'];
-		elseif(!empty($post['venueName'])) $subject = $post['venueName'];
-		else $subject = $post['name'];
+		$subject = "Townspot: ";		
+
+		if(!empty($post['bizname'])) $subject .= $post['bizname'];
+		elseif(!empty($post['venueName'])) $subject .= $post['venueName'];
+		else $subject .= $post['name'];
 
 		$subject .= ' would like to hire you';
 
 		$email->setSubject($subject);
 
-		$body ="<dl>";
+		$body = "<p>Hello {$user->getDisplayName()},</p>
+
+		<p>A representative for a potential business opportunity has contacted you from your profile on TownSpot.tv. Please see their message below to determine if this is an opportunity you'd like to pursue.</p>
+
+		";
+
+		$body .= "<dl>";
 
 		foreach($post as $field => $val) {
 			switch($field) {
@@ -911,12 +919,22 @@ EOT;
 
 		$body .= "</dl>";
 
+		$body .= "<p>If you feel this opportunity is inappropriate, spam, or offensive in any way, please let us know by emailing admin@townspot.tv so we can take appropriate action.</p>
+
+<p>Thanks!</p>";
+
 		$email->addTo($user->getEmail());
-		
-		$email->setBody($body);
+	
+		$body = new \Zend\Mime\Part($body);
+		$body->type = 'text/html';		
+	
+		$message = new \Zend\Mime\Message();
+		$message->setParts(compact('body'));
+
+		$email->setBody($message);
 
 		if (APPLICATION_ENV == 'production') {
-			$transport = new Mail\Transport\Sendmail();
+			$transport = new \Zend\Mail\Transport\Sendmail();
 			$transport->send($email);				
 		} else {
 			print_r($email);

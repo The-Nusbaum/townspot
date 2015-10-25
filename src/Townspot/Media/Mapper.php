@@ -20,8 +20,6 @@ class Mapper extends AbstractEntityMapper
 		$sql .= "LIMIT 1;";
 		$sql = sprintf($sql,$lat,$long,$lat);
 
-		var_dump($sql);die;
-		
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
 		$stmt->execute();
 		if ($results = $stmt->fetchAll()) {

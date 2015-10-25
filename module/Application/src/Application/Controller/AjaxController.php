@@ -44,7 +44,6 @@ class AjaxController extends AbstractActionController
 			if (($lat)&&($long)) {
 				$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
 				$media = $mediaMapper->getClosest($lat,$long);
-				var_dump($media->toArray());die;
 				$response = array('FullName'	=> $media->getCity()->getFullName(),
 								  'Link'		=> $media->getCity()->getDiscoverLink()
 				);

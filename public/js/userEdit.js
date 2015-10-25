@@ -27,7 +27,8 @@ var userEdit = {
 
         $("#userEdit input[type=checkbox]").click(function(){
             $this = $(this);
-            var val = $this.is(':checked');
+            var val = 0;
+	    if($this.is(':checked')) val = 1;
             userEdit.data[$this.attr('name')] = val;
         });
 
