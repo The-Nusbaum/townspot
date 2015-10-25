@@ -20,13 +20,19 @@ class Edit extends Form
             $countries[$c->getId()] = $c->getName();
         }
 
+        asort($countries);
+
         foreach($colProvinces as $p) {
             $provinces[$p->getId()] = $p->getName();
         }
 
+        asort($provinces);
+
         foreach($colCities as $c) {
             $cities[$c->getId()] = $c->getName();
         }
+
+        asort($cities);
 
         $this->setAttribute('method', 'post');
         $this->setAttribute('columns',2);

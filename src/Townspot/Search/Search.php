@@ -286,7 +286,6 @@ class Search implements ServiceLocatorAwareInterface
 			$provinceMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
 			$cityMapper 	= new \Townspot\City\Mapper($this->getServiceLocator());
 			$categoryMapper = new \Townspot\Category\Mapper($this->getServiceLocator());
-			//$country  		= $countryMapper->findOneByName('United States');
 			if ($terms) {
 				foreach ($terms as $index => $term) {
 				if ($countries = $countryMapper->findByName($term)) {

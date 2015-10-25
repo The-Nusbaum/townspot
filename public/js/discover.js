@@ -55,6 +55,13 @@
 				options.sortTerm = $(element).val();
 				methods.buildUrl();
 			},
+			removeCountry : function()              
+			{
+				options.country = '';
+				options.province = '';
+				options.city = '';
+				methods.buildUrl()
+			},
 			removeState : function()              
 			{
 				options.province = '';
@@ -189,6 +196,7 @@
 		$('.country-selector').click(function() { methods.updateCountry(this) });
 		$('.state-selector').click(function() { methods.updateState(this) });
 		$('.city-selector').click(function() { methods.updateCity(this) });
+		$('.remove-country').click(function() { methods.removeCountry() });
 		$('.remove-state').click(function() { methods.removeState() });
 		$('.remove-city').click(function() { methods.removeCity() });
 		$('.update-subcategory').click(function() { methods.updateSubCategory(this) });
@@ -199,6 +207,7 @@
 		$('.remove-category-4').click(function() { methods.removeCategory4() });
 		$('.remove-category-5').click(function() { methods.removeCategory5() });
 		$(document).on('click', '.category-preview', function()  { $('#Loading').modal('show'); });
+		console.log(options);
 		methods.renderPage();
 	};
 })(jQuery);

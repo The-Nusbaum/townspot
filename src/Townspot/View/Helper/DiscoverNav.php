@@ -17,10 +17,10 @@ class DiscoverNav extends AbstractHelper implements ServiceLocatorAwareInterface
 		$cityMapper 				= new \Townspot\City\Mapper($serviceManager);
 		$countries 					= $countryMapper->getCountriesHavingMedia();
 		$cities							= array();
-		$countryId					= (isset($_SESSION['Discover_Country'])) ? intval($_SESSION['Discover_Country']) : 99;
-		$country = $countryMapper->find($countryId);
+		$countryId					= (isset($_SESSION['Discover_Country'])) ? intval($_SESSION['Discover_Country']) : null;
+		$country 						= ($countryId)? $countryMapper->find($countryId) : array();
 		$provinceId					= (isset($_SESSION['Discover_Province'])) ? $_SESSION['Discover_Province'] : null;
-		$provinces 					= $provinceMapper->getProvincesHavingMedia($country->getName());
+		$provinces 					= ($countryId)? $provinceMapper->getProvincesHavingMedia($country->getName()) : $provinceMapper->getProvincesHavingMedia();
 		$cityId							= (isset($_SESSION['Discover_City'])) ? $_SESSION['Discover_City'] : null;
 		$categoriesSelected	= (isset($_SESSION['Discover_Categories'])) ? $_SESSION['Discover_Categories'] : null;
 		$subCategories			= (isset($_SESSION['Discover_Subcategories'])) ? $_SESSION['Discover_Subcategories'] : null;
@@ -64,7 +64,7 @@ class DiscoverNav extends AbstractHelper implements ServiceLocatorAwareInterface
 		$html .= '					</a>';
 		$html .= '					<ul class="dropdown-menu">';
 		$html .= '						<li data-id="0" class="country-selector">';
-		$html .= '						    <span class="country-name">All</span>'; 
+		$html .= '						    <span class="country-name">Worldwide</span>'; 
 		$html .= '						    <span class="badge pull-right">' . $cMedia_count . '</span>';
 		$html .= '						</li>';
 		foreach ($countries as $country) {
@@ -145,7 +145,7 @@ class DiscoverNav extends AbstractHelper implements ServiceLocatorAwareInterface
 		$html .= '				</tr>';
 		$html .= '				<tr>';
 		if ($countrySelected) {
-			$html .= '					<td class="nowrap">' . $countrySelected . '&nbsp;<img class="remove-state" data-id="' . $countryId . '" src="/img/delete.png">';
+			$html .= '					<td class="nowrap">' . $countrySelected . '&nbsp;<img class="remove-country" data-id="' . $countryId . '" src="/img/delete.png">';
 			$html .= '					</td>';
 		}
 		if ($provinceSelected) {

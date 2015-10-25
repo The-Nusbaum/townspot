@@ -219,8 +219,6 @@ var upload = {
                 $parent.append(html);
             }
         )
-    }
-}
     },
     getStates: function(){
         $('#province_id option:not(:first)').remove();

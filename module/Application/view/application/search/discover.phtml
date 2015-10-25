@@ -58,6 +58,7 @@ Try narrowing your search
 </script>
 <?= $this->partial('partials/backbone/search-template.phtml'); ?>
 <script>
+
 <?php if ($this->matchesFound) { ?>
 var foo = $().Discover({
 	searchId: '<?= $this->searchId; ?>',
@@ -72,6 +73,7 @@ var foo = $().Discover({
 });
 <?php } else { ?>
 $().Discover({
+	country: '<?= $this->country; ?>',
 	province: '<?= $this->province; ?>',
 	city: '<?= $this->city; ?>',
 	categoryId: '<?= $this->categoryId; ?>',

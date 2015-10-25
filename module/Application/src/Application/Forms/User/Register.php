@@ -21,15 +21,21 @@ class Register extends Form
             $countries[$c->getId()] = $c->getName();
         }
 
+        asort($countries);
+
         $provinces = array();
         foreach($colProvinces as $p) {
             $provinces[$p->getId()] = $p->getName();
         }
 
+        asort($provinces);
+
         $cities = array();
         foreach($colCities as $c) {
             $cities[$c->getId()] = $c->getName();
         }
+
+        asort($cities);
 
         $this->setAttribute('method', 'post');
         $this->setAttribute('columns',2);
