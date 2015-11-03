@@ -174,7 +174,7 @@ class Mapper extends AbstractEntityMapper
 		return $results;
 	}
 	
-	public function getDiscoverMedia($province_id = null,$city_id=null,$category_id = null)
+	public function getDiscoverMedia($country_id = null, $province_id = null,$city_id=null,$category_id = null)
 	{
 		$results = array();
 		$sql  = "SELECT ";
@@ -185,6 +185,9 @@ class Mapper extends AbstractEntityMapper
 		$sql .= "LEFT JOIN series_episodes on series_episodes.media_id = media.id ";
 		$sql .= "LEFT JOIN series on series_episodes.series_id = series.id ";
 		$where = array('media.approved = 1');
+		if ($country_id) {
+			$where[] = 'media.country_id=' . $country_id;
+		}
 		if ($province_id) {
 			$where[] = 'media.province_id=' . $province_id;
 		}

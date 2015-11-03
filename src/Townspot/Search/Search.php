@@ -348,9 +348,9 @@ class Search implements ServiceLocatorAwareInterface
 			if ($activeCategory) {
 				$data = array();
 				if ($activeCategory < 0) {
-					$matches = $mediaMapper->getDiscoverMedia($provinceId,$cityId,null);
+					$matches = $mediaMapper->getDiscoverMedia($countryId, $provinceId,$cityId,null);
 				} else {
-					$matches = $mediaMapper->getDiscoverMedia($provinceId,$cityId,$activeCategory);
+					$matches = $mediaMapper->getDiscoverMedia($countryId, $provinceId,$cityId,$activeCategory);
 				}
 				foreach ($matches as $match) {    
 					$media = $mediaMapper->find($match['id']);
