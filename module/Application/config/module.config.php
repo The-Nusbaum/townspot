@@ -522,6 +522,7 @@ return array(
                     'defaults' => array(
                         'controller' => 'Application\Controller\Search',
                         'action' => 'channelsurf',
+                        'country' => 'all-countries',
                         'state' => 'all-states',
                         'city' => 'all-cities',
                     )
