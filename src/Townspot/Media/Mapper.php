@@ -444,7 +444,7 @@ class Mapper extends AbstractEntityMapper
             'preview_url' => $media->getPreviewImage(),
             'video_url' => $media->getUrl(),
             'host' => $encoding['sshHost'],
-            'webroot' => APPLICATION_PATH,
+            'webroot' => APPLICATION_PATH . '/public',
             'imageFileName' => $media->getId().".$imageExt",
             'videoFileName' => $media->getId().".$videoExt"
         ));
