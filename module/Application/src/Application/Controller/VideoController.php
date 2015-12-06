@@ -378,8 +378,8 @@ class VideoController extends AbstractActionController
 		die;			
 	}
 	
-    public function commentsAction()
-    {
+  public function commentsAction()
+  {
 		$videoId = $this->params()->fromRoute('id');
 		$pagelimit = ($this->params()->fromPost('pagelimit')) ?: 5;
 		$page = ($this->params()->fromPost('page')) ?: 1;
@@ -423,7 +423,13 @@ class VideoController extends AbstractActionController
 			);
 		}
 		$startRange = ($page - 1) * $pagelimit;
+		$commentCount = count($comments);
 		$comments = array_slice($comments,$startRange,$pagelimit);
+		$comments = array(
+			'count' => $commentCount,
+			'comments' => $comments
+		);
+
 		$json = new JsonModel($comments);
         return $json;
 	}
@@ -743,8 +749,8 @@ class VideoController extends AbstractActionController
 
                 $mediaMapper->setEntity($mediaEntity);
                 $mediaMapper->save();
-		$_SESSION['flash'] = array();
-		$_SESSION['flash'][] = 'Your video upload was successful. It will be reviewed by our staff for content and quality.';
+								$_SESSION['flash'] = array();
+								$_SESSION['flash'][] = 'Your video upload was successful. It will be reviewed by our staff for content and quality.';
                 //$this->flashMessenger()->addMessage('Your video upload was successful. It will be reviewed by our staff for content and quality.');
                 return $this->redirect()->toRoute('upload');
             }
@@ -758,6 +764,7 @@ class VideoController extends AbstractActionController
         $id = $this->params()->fromRoute('id');
         $seriesMapper = new \Townspot\Series\Mapper($this->getServiceLocator());
         $series = $seriesMapper->find($id);
+
         $mediaList = $series->getEpisodes();
         $index = array();
         foreach($mediaList as $episode) {
@@ -793,7 +800,8 @@ class VideoController extends AbstractActionController
                 'url' => $media->getUrl(),
                 'city' => $media->getCity()->getName(),
                 'state' => $media->getProvince()->getName(),
-                'categories' => $categories
+                'categories' => $categories,
+                'description' => $media->getDescription()
             );
 
             $index[$media->getId()] = $video;
@@ -802,7 +810,7 @@ class VideoController extends AbstractActionController
             ->get('ViewHelperManager')
             ->get('HeadScript')
             ->appendFile('/js/videointeractions.js','text/javascript');
-        return new ViewModel(compact('seasonsList','mediaList','index'));
+        return new ViewModel(compact('seasonsList','mediaList','index','series'));
     }
 	
 	public function reportAction() {

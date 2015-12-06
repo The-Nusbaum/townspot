@@ -30,6 +30,9 @@ $first = $mediaList[0]->getMedia();
     <div class="col-md-12 navbar">
 
     </div>
+    <div class="col-md-12 title">
+        <h3>Series: <?= $series->getName() ?></h3>
+    </div>
     <div class="col-md-12 player">
         <div class="row">
             <div class="col-md-6">
@@ -42,7 +45,7 @@ $first = $mediaList[0]->getMedia();
                                     'width' => '100%',
                                     'preview_width' => 800,
                                     'preview_height' => 450,
-                                    //'include_sharing' => true,
+                                    'include_sharing' => true,
                                     'include_info' => true,
                                     'include_buttons' => true,
                                 )
@@ -89,6 +92,11 @@ $first = $mediaList[0]->getMedia();
                 </div>
             </div>
             <div class="col-md-12">
+                <div class="row">
+                    <div class="col-xs-12 social-media_wrapper">
+                        <?= $this->AddThisLinks($this->serverUrl(true));  ?>                
+                    </div>
+                </div>
                 <div class="row comments-row">
                     <div class="col-xs-12">
                         <div class="col-xxs-5 col-xs-4 col-sm-3 comments-header">
@@ -128,6 +136,7 @@ $first = $mediaList[0]->getMedia();
         </div>
     </div>
     <div class="col-md-12 list">
+    <h3>Episodes <?= count($mediaList); ?></h3>
     <?php foreach($mediaList as $episode): ?>
         <?php $media = $episode->getMedia() ?>
         <div class="col-md-4 episode" data-id="<?= $media->getId() ?>">
@@ -145,7 +154,12 @@ $first = $mediaList[0]->getMedia();
                             </h3>
                             <h3 title="<?= $media->getCity()->getName() ?>,<?= $media->getProvince()->getAbbrev() ?>" class="dot-text"><?= $media->getCity()->getName() ?>,<?= $media->getProvince()->getAbbrev() ?></h3>
                         </div>
-                        <div class="info-button first" title="" data-original-title="<a href='<?= $media->getMediaLink() ?>'><?= $media->getTitle() ?></a> by <a href='<?= $media->getUser()->getProfileLink() ?>'><?= $media->getUser()->getUserName() ?></a>" data-content="<?= $media->getCity()->getName() ?>,<?= $media->getProvince()->getName() ?><br/>					<footer>					<span class='video-duration'><i class='fa fa-clock-o'></i> <?= $media->getDuration(true) ?></span>					<span class='video-plays'><i class='fa fa-play'></i> <?= number_format($media->getViews()) ?></span> 					<span class='video-thumbs-up'><i class='fa fa-thumbs-up'></i> <?= count($media->getRatings(true)) ?></span> 					<span class='video-thumbs-down'><i class='fa fa-thumbs-down'></i> <?= count($media->getRatings(false)) ?></span>					<span class='video-comments'><i class='fa fa-comments'></i> <?= count($media->getCommentsAbout()) ?></span>					</footer>" data-toggle="popover">
+                        <div class="info-button first" title="" 
+                            data-original-title="<a href='<?= $media->getMediaLink() ?>'><?= $media->getTitle() ?></a> by <a href='<?= $media->getUser()->getProfileLink() ?>'><?= $media->getUser()->getUserName() ?></a>" 
+                            data-content="<?= $media->getCity()->getName() ?>,<?= $media->getProvince()->getName() ?><br/>					<footer>					<span class='video-duration'><i class='fa fa-clock-o'></i> <?= $media->getDuration(true) ?></span>					<span class='video-plays'><i class='fa fa-play'></i> <?= number_format($media->getViews()) ?></span> 					<span class='video-thumbs-up'><i class='fa fa-thumbs-up'></i> <?= count($media->getRatings(true)) ?></span> 					<span class='video-thumbs-down'><i class='fa fa-thumbs-down'></i> <?= count($media->getRatings(false)) ?></span>					<span class='video-comments'><i class='fa fa-comments'></i> <?= count($media->getCommentsAbout()) ?></span>					</footer>" 
+                            data-toggle="popover"
+                            data-placement="left"
+                        >
                             <i class="fa fa-info-circle"></i>
                         </div>
                     </div>
@@ -193,8 +207,9 @@ $first = $mediaList[0]->getMedia();
         }];
         jwplayer('media-player').load(playlist);
 
+        $('#comment-list').html('');
 
-        $('.description').html(media.logline);
+        $('.description').html(media.description);
         $('.state a').text(media.state);
         $('.state a').attr('href','/discover/' + encodeURIComponent(media.state));
         $('.city a').text(media.city);
@@ -219,6 +234,8 @@ $first = $mediaList[0]->getMedia();
             favorite: false,
             following: false
         });
+
+        $(document).scrollTop(0);
 
         jwplayer('media-player').play(true);
     }

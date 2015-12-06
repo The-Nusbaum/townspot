@@ -134,8 +134,8 @@
 				});
 				$('#ArtistContactModal').modal('hide');
 			},
-            comments : function()              
-            {
+      comments : function()              
+      {
 				$.ajax({
 					url: "/videos/comments/" + options.videoid,
 					type: "POST",
@@ -146,6 +146,8 @@
 					if (options.page == 1) {
 						$('#comment-list').html('');
 					}
+					var count = data.count;
+					data = data.comments;
 					$(data).each(function() {
 						_html = '<li id="comment-' + this.id + '" class="comment" data-id="'+this.id+'">';
 						if(this.candelete) _html += "<i class='icon-remove-sign deleteme'></i>"
@@ -156,7 +158,7 @@
 						_html = _html + '</li>';
 						$('#comment-list').append(_html);
 					});
-					if (data.length == options.pagelimit) {
+					if (count > options.pagelimit) {
 						options.page = options.page + 1;
 						$('#comment-navigation-down').css('display','block');
 						$('#comment-navigation-down .next').unbind('click').bind('click', function() { methods.comments() });
@@ -164,9 +166,9 @@
 						$('#comment-navigation-down').css('display','none');
 					}
 				});
-            },
-            comment_submit : function()              
-            {
+    	},
+      comment_submit : function()              
+      {
 				var comment = $('#comment-field').val();
 				$('#comment-field').val('');
 				if (comment == '') {
