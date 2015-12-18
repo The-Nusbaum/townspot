@@ -140,20 +140,21 @@ class AjaxController extends AbstractActionController
 		$results = array();
 		$this->isAuthenticated();
 		$request = $this->getRequest();
-        if ($request->isPost()) {
+    if ($request->isPost()) {
 			$options = array(
 				'username'		=> $request->getPost()->get('username'),
 				'province'		=> $request->getPost()->get('province'),
-				'city'			=> $request->getPost()->get('city'),
-				'after'			=> $request->getPost()->get('after'),
-				'before'		=> $request->getPost()->get('before'),
-				'status'		=> $request->getPost()->get('status'),
+				'city'				=> $request->getPost()->get('city'),
+				'after'				=> $request->getPost()->get('after'),
+				'before'			=> $request->getPost()->get('before'),
+				'status'			=> $request->getPost()->get('status'),
 				'sort_field'	=> $request->getPost()->get('sort_field'),
 				'sort_order'	=> $request->getPost()->get('sort_order'),
-				'type'			=> $request->getPost()->get('type'),
+				'type'				=> $request->getPost()->get('type'),
 			);
 			$userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
 			$cityMapper = new \Townspot\City\Mapper($this->getServiceLocator());
+
 			$users = $userMapper->getAdminList($options);
 			foreach ($users as $index => $user) {
 				$users[$index]['joined'] = date('m/d/Y',strtotime($user['joined']));

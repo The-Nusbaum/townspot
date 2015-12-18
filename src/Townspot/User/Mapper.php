@@ -28,11 +28,11 @@ class Mapper extends AbstractEntityMapper
 								 user.email,
 								 city.name as city,
 								 province.name as province
-				 FROM user 
-				 JOIN media on user.user_id = media.user_id
-				 JOIN province on user.province_id = province.id
-				 JOIN city on user.city_id = city.id
-			     WHERE media.approved = 1 ";
+				FROM user 
+				JOIN media on user.user_id = media.user_id
+				JOIN province on user.province_id = province.id
+				JOIN city on user.city_id = city.id
+			  WHERE media.approved = 1 ";
 		if ($dateTime) {
 			$sql .= " AND (media.updated >= '" . $dateTime->format('Y-m-d H:i:s') . "'";
 			$sql .= " OR user.updated >= '" . $dateTime->format('Y-m-d H:i:s') . "')";
@@ -168,6 +168,8 @@ class Mapper extends AbstractEntityMapper
 		} 
 		
 		$sql .= " ORDER BY " . $sort_field . " " . $sort_order;
+		//die($sql);
+		
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
 		$stmt->execute();
 		return $stmt->fetchAll();
@@ -238,9 +240,25 @@ class Mapper extends AbstractEntityMapper
 	
 
     public function save() {
+        $user = $this->getEntity();
+        
+        $has_role = false;
+
+        foreach($user->getRoles() as $role) {
+        	if($role instanceof \Townspot\UserRole\Entity) $has_role = true;
+        }
+
+        if(!$has_role) {
+        	$roleMapper = new \Townspot\UserRole\Mapper($this->getServiceLocator());
+        	$role = $roleMapper->find('Unconfirmed');
+        	$user->addRole($role);
+        }
         parent::save();
+        
         $amqp = $this->getServiceLocator()->get('Config')['amqp'];
         $encoding = $this->getServiceLocator()->get('Config')['encoding'];
+        
+
 
         $queue  = 'user.updated';
         $exchange =  'user';
@@ -257,7 +275,6 @@ class Mapper extends AbstractEntityMapper
         $ch->exchange_declare($exchange, 'direct', false, true, false);
         $ch->queue_bind($queue, $exchange);
 
-        $user = $this->getEntity();
 
         $fileParts = explode('.',$user->getImageUrl());
         $ext = array_pop($fileParts);
