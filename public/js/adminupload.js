@@ -59,6 +59,9 @@ var upload = {
         $('#country_id').change(function(){
             upload.getStates();
         });
+        $('#user_id').change(function(){
+            upload.getUser();
+        });
     },
     clearData: function(){
         $('#submitForm').children('input').remove();
