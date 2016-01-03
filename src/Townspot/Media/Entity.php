@@ -432,7 +432,7 @@ class Entity extends \Townspot\Entity
 			if ($this->getSource() == 'youtube') {
 				$ytId = $this->getYtVideoId();
 				$videoEntry = $this->_getYtVideo($ytId);
-                return $videoEntry->getStatistics()->getViewCount();
+		                if($videoEntry) return $videoEntry->getStatistics()->getViewCount();
 			}
 		}
 		return $this->_views;
@@ -445,6 +445,7 @@ class Entity extends \Townspot\Entity
 			if ($this->getSource() == 'youtube') {
 				$ytId = $this->getYtVideoId();
 				$videoEntry = $this->_getYtVideo($ytId);
+				if(!$videoEntry) return $duration;
 				$duration = $videoEntry->getContentDetails()->getDuration();
                 preg_match('/([0-9]*)H/',$hours);
                 preg_match('/([0-9]*)M/',$minutes);
@@ -719,6 +720,7 @@ class Entity extends \Townspot\Entity
         if ($this->getSource() == 'youtube') {
             $ytId = $this->getYtVideoId();
             $videoEntry = $this->_getYtVideo($ytId);
+	    if(!$videoEntry) return null;
             $author = $videoEntry->getSnippet()->getChannelTitle();
             return $author;
         }
@@ -730,6 +732,7 @@ class Entity extends \Townspot\Entity
 		if ($this->getSource() == 'youtube') {
 			$ytId = $this->getYtVideoId();
 			$videoEntry = $this->_getYtVideo($ytId);
+			if(!$videoEntry) return null;
             $author = $videoEntry->getSnippet()->getChannelId();
             return $author;
 		}
@@ -741,6 +744,7 @@ class Entity extends \Townspot\Entity
         if ($this->getSource() == 'youtube') {
             $ytId = $this->getYtVideoId();
             $videoEntry = $this->_getYtVideo($ytId);
+	    if(!$videoEntry) return null;
             $author = $videoEntry->getSnippet()->getChannelTitle();
             return $author;
         }
