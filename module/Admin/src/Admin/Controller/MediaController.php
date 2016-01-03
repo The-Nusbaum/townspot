@@ -195,10 +195,12 @@ class MediaController extends AbstractActionController
 
         $countryMapper = new \Townspot\Country\Mapper($this->getServiceLocator());
         $countries = $countryMapper->findAll();
-		$country = $countryMapper->find(99);
+        //$country = $countryMapper->find(99);
+		$country = array();
 
         $provinceMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
-        $provinces = $provinceMapper->findByCountry($country);
+        //$provinces = $provinceMapper->findByCountry($country);
+        $provinces = array();
 
         $categoryMapper = new \Townspot\Category\Mapper($this->getServiceLocator());
         $categories = $categoryMapper->findByParent(0);

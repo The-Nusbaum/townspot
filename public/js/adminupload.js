@@ -1,5 +1,6 @@
 var upload = {
     categories: [],
+    user: [],
     init: function(){
         tinyMCE.init({
             mode: "textareas",
@@ -242,4 +243,31 @@ var upload = {
             }
         );
     },
+    getUser: function(){
+        var userId = $('#user_id').val();
+        $.get('/api/user/get/' + userId,
+            function(response){
+                console.log(response);
+                var user = response.data;
+                upload.user = user;
+                $('#country_id').val(user.country_id);
+                $('#country_id').change();
+                upload.waitForStates();
+                upload.waitForCities();
+            }
+        );
+    },
+    waitForStates: function(user){
+        user = upload.user;
+        if($('#province_id').children().length > 1) {
+            $('#province_id').val(user.province_id);
+            $('#province_id').change();
+        } else setTimeout(upload.waitForStates,500);
+    },
+    waitForCities: function(user){
+        user = upload.user;
+        if($('#city_id').children().length > 1) {
+            $('#city_id').val(user.city_id);
+        } else setTimeout(upload.waitForCities,500);
+    }
 }
