@@ -432,7 +432,7 @@ class Entity extends \Townspot\Entity
 			if ($this->getSource() == 'youtube') {
 				$ytId = $this->getYtVideoId();
 				$videoEntry = $this->_getYtVideo($ytId);
-		                if($videoEntry) return $videoEntry->getStatistics()->getViewCount();
+				if($videoEntry) return $videoEntry->getStatistics()->getViewCount();
 			}
 		}
 		return $this->_views;

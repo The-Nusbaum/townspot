@@ -1,3 +1,11 @@
+<?php
+if($this->zfcUserIdentity()) {
+	$sl = $this->getHelperPluginManager()->getServiceLocator(); 
+	$userMapper = new \Townspot\User\Mapper($sl);
+	$user = $userMapper->find($this->zfcUserIdentity()->getId());
+}
+?>
+
 <div class="container-fluid">
 	<div class="navbar-header">
 		<button data-target="#townspot-nav" data-toggle="collapse" class="navbar-toggle" type="button">
@@ -65,6 +73,8 @@
 					$hasAccess = $this->isAllowed($resource,$privilege);
 				}
 			}
+			if($user && $user->hasRole('Administrator')) $hasAccess = true;
+
 			if ($hasAccess) {
 				$href = ($page instanceof Zend\Navigation\Page\Mvc) ? $page->getHref() : $page->getUri();
 				$href .= ($page->getFragment()) ? '#' . $page->getFragment() : '';
