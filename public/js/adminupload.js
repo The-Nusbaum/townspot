@@ -271,7 +271,7 @@ var upload = {
         user = upload.user;
         if($('#city_id').children().length > 1) {
             $('#city_id').val(user.city_id);
-            $('#city_id').click();
+            $('#city_id').change();
         } else setTimeout(upload.waitForCities,500);
     }
 }
