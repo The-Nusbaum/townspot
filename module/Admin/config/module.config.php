@@ -347,6 +347,20 @@ return array(
                     ),
                 ),
             ),
+            'pop-random' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/admin/ajax/pop-random[/:limit]',
+                    'constraints' => array(
+                        'limit'  => '[0-9]*'
+                    ),
+                    'defaults' => array(
+                        'limit' => 5,
+                        'controller' => 'Admin\Controller\Ajax',
+                        'action'     => 'popRandom',
+                    ),
+                ),
+            ),
             'admin-videocategories' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -365,6 +379,7 @@ return array(
                         'controller' => 'Admin\Controller\Section',
                         'action'     => 'media',
                         'section' 	 => 'Staff Favorites',
+                        'randomPop'  => 9
                     ),
                 ),
             ),
@@ -376,6 +391,7 @@ return array(
                         'controller' => 'Admin\Controller\Section',
                         'action'     => 'media',
                         'section' 	 => 'On Screen',
+                        'randomPop'  => 5
                     ),
                 ),
             ),
@@ -386,7 +402,8 @@ return array(
                     'defaults' => array(
                         'controller' => 'Admin\Controller\Section',
                         'action'     => 'media',
-                        'section' 	 => 'Daily Highlights',
+                        'section' 	 => 'D9ily Highlights',
+                        'randomPop'  => 5
                     ),
                 ),
             ),

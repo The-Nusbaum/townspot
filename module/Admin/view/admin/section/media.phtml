@@ -51,6 +51,9 @@
 	</div>
 </div>
 <br/>
+<div class="row">
+	<button class="col-sm-3" id="popRandom">Populate Random</button>
+</div>
 <div class="row" id="admin-search">
 	<div class="col-sm-12">
 		<div class="container">
@@ -224,8 +227,25 @@
 				});
 				methods._updateSection();
 			},
-            _updateSection : function()              
-            {
+			popRandom: function() {
+					$('#dashboard-selected-video-list-data tbody').children().remove();
+					$.get(
+							'/admin/ajax/pop-random/<?= $randomPop ?>',
+							function(response) {
+								$.each(response, function() {
+									var html = '<tr data-ref="' + this.id + '">';
+									html = html + '<td>' + this.id + '</td>';					
+									html = html + '<td>' + this.title + '</td>';					
+									html = html + '<td>' + this.username + '</td>';					
+									html = html + '</tr>';
+									$('#dashboard-selected-video-list-data tbody').append(html);
+								});
+								methods._updateSection();
+							}
+					);
+			},
+      _updateSection : function()              
+      {
 				var videos = [];
 				var selectedvideos = $("#dashboard-selected-video-list-data").find("tr");
 				$.each(selectedvideos, function() {
@@ -289,6 +309,7 @@
 		$(document).on("click", '#MoveDown', function(event)		{ 	methods.moveDown(); 			});
 		$(document).on("click", '#MoveLeft', function(event)		{ 	methods.moveLeft(); 			});
 		$(document).on("click", '#MoveRight', function(event)		{ 	methods.moveRight(); 			});
+		$(document).on("click", '#popRandom', function(event)		{ 	methods.popRandom(); 			});
 		methods.getResults(); 
 	};	
 })(jQuery);

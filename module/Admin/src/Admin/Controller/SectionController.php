@@ -37,7 +37,8 @@ class SectionController extends AbstractActionController
 			array(
 				'section'		=> $section,
 				'section_media'	=> $sectionMedia,
-				'category_tree'	=> $tree
+				'category_tree'	=> $tree,
+				'randomPop' => $this->params()->fromRoute('randomPop')
 			)
 		);
     }

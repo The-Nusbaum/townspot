@@ -336,4 +336,26 @@ class AjaxController extends AbstractActionController
         $encoding = new \Townspot\Encoding();
         die($encoding->finished());
     }
+
+    public function popRandomAction() {
+    	$limit = $this->params()->fromRoute('limit');
+    	$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
+
+    	$authors = array();
+
+    	for ($i = 0; $i < $limit; $i++ ) {
+    		$media = $mediaMapper->getRandom();
+    		$author = $media->getUser()->getId();
+    		if(!in_array($author, $authors)) {
+    			$_media = $media->toArray();
+    			$_media['username'] = $media->getUser()->getUsername();
+  	  		$data[] = $_media;
+	    		$authors[] = $media->getUser()->getId();
+	    	}
+    	}
+
+    	$json = new JsonModel($data);
+      return $json;
+
+    }
 }
