@@ -169,6 +169,8 @@ class VideoPlayer extends AbstractHelper implements ServiceLocatorAwareInterface
 	protected function _playerInfo()
 	{
 		$html = null;
+		$aId = $this->media->getUser()->getId();
+		$mId = $this->media->getId();
 		if ($this->_getVideoInfo()) {
 			$html  = "<div id='video-info' class='row'>\n";
 			$html .= "    <div class='container'>\n";
@@ -178,7 +180,7 @@ class VideoPlayer extends AbstractHelper implements ServiceLocatorAwareInterface
 			$html .= "                    <table>\n";
 			$html .= "                        <tr>\n";
 			$html .= "                            <td rowspan='2'>\n";
-			$html .= "                                <h1><i class='fa fa-star-o fa-toggle-o' id='favorite-link'></i></h1>\n";
+			$html .= "                                <h1><i class='fa fa-star-o fa-toggle-o' id='favorite-link' data-track='click' data-type='fav' data-value='$mId'></i></h1>\n";
 			$html .= "                            </td>\n";
 			$html .= "                            <td>\n";
 			$html .= "                                <h1 class='videoTitle'>%s</h1>\n";
@@ -195,9 +197,9 @@ class VideoPlayer extends AbstractHelper implements ServiceLocatorAwareInterface
 			$html .= "            <div class='col-xs-4 col-sm-1 video-ratings pull-right'>\n";
 			$html .= "                <table class='pull-right'>\n";
 			$html .= "                    <tr>\n";
-			$html .= "                        <th><a href='javascript:void(0)' data-toggle='modal' data-target='#flagVideo'><i class='fa fa-flag' id='flag'></i></a></th>\n";
-			$html .= "                        <th><i class='fa fa-thumbs-o-up' id='rate-up'></i></th>\n";
-			$html .= "                        <th><i class='fa fa-thumbs-o-down' id='rate-down'></i></th>\n";
+			$html .= "                        <th><a href='javascript:void(0)' data-toggle='modal' data-target='#flagVideo' data-track='click' data-type='flag' data-value='$mId'><i class='fa fa-flag' id='flag'></i></a></th>\n";
+			$html .= "                        <th><i class='fa fa-thumbs-o-up' id='rate-up' data-track='click' data-type='rate' data-value='$mId'></i></th>\n";
+			$html .= "                        <th><i class='fa fa-thumbs-o-down' id='rate-down' data-track='click' data-type='rate' data-value='$mId'></i></th>\n";
 			$html .= "                    </tr>\n";
 			$html .= "                    <tr>\n";
 			$html .= "                        <td></td>\n";
@@ -210,12 +212,12 @@ class VideoPlayer extends AbstractHelper implements ServiceLocatorAwareInterface
 			$html .= "        <div class='row'>\n";
 			$html .= "            <div class='col-xs-6 interaction-buttons'>\n";
 			if($this->media->getUser()->getAllowContact()) {
-				$html .= "                <button class='btn interaction-button' id='contact-interaction'>Contact</button>\n";
+				$html .= "                <button class='btn interaction-button' id='contact-interaction' data-track='click' data-type='contact' data-value='$aId'>Contact</button>\n";
 			}
 			if($this->media->getUser()->getAllowHire()) {
-				$html .= "                <button class='btn interaction-button' id='hire-interaction'>Hire Artist</button>\n";
+				$html .= "                <button class='btn interaction-button' id='hire-interaction' data-track='click' data-type='hire' data-value='$aId'>Hire Artist</button>\n";
 			}
-			$html .= "                <button class='btn interaction-button' id='follow-interaction'>Become a Fan</button>\n";
+			$html .= "                <button class='btn interaction-button' id='follow-interaction' data-track='click' data-type='fan' data-value='$aId'>Become a Fan</button>\n";
 			$html .= "                " . $this->_getYtSubscribe();
 			$html .= "            </div>\n";
 			$html .= "            <div class='col-xs-6 video-views'>\n";

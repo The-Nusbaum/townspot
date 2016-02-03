@@ -53,7 +53,7 @@ class VideoBlock extends AbstractHelper implements ServiceLocatorAwareInterface
 		$html .= "			<span class='video-thumbs-down'><i class='fa fa-thumbs-down'></i> {rating_down}</span>\n";
 		$html .= "			<span class='video-comments'><i class='fa fa-comments'></i> {comments}</span></footer>\"\n";
 		$html .= "			data-toggle=\"popover\">\n";
-		$html .= "			<i class=\"fa fa-info-circle\"></i>\n";
+		$html .= "			<i class=\"fa fa-info-circle\" data-track=\"click\" data-type=\"info\" data-value=\"{id}\"></i>\n";
 		$html .= "		</div>\n";
 		$html .= "	</div>\n";
 		$html .= "</div>\n";

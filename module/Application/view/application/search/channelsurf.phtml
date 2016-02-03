@@ -157,7 +157,7 @@ function renderCat($cat,$level = 0,$current = null,$parents = '') {
                     <input type="text" class="col-sm-8 form-control" placeholder="Leave a Comment" id="comment-field">
                 </div>
                 <div class="col-xs-3 nopadding-left full-320">
-                    <button class="form-control btn interaction-button" id="comment-submit">Comment</button>
+                    <button class="form-control btn interaction-button" id="comment-submit" data-track='click' data-type='comment' data-value='0'>Comment</button>
                 </div>
             </div>
             <div class="row">
@@ -322,7 +322,7 @@ function renderCat($cat,$level = 0,$current = null,$parents = '') {
         html += '					<span class=\'video-thumbs-down\'><i class=\'fa fa-thumbs-down\'></i> '+ media.rate_down +'</span>';
         html += '					<span class=\'video-comments\'><i class=\'fa fa-comments\'></i> '+ media.comment_count +'</span>';
         html += '					</footer>" data-toggle="popover">';
-        html += '					<i class="fa fa-info-circle"></i>';
+        html += '					<i class="fa fa-info-circle" data-track="click" data-type="info" data-value="'+ media.id +'"></i>';
         html += '				</div>';
         html += '			</div>';
         html += '		</div>';
@@ -402,6 +402,7 @@ function renderCat($cat,$level = 0,$current = null,$parents = '') {
         $('#down-ratings').text(media.rate_down);
         $('.videoViews').text("View Count: " + media.views);
         $('#videos div[data-id='+media.id+'] .video-preview').addClass('nowPlaying');
+        $('#comment-submit').attr('data-value',media.id);
 
         for(x in media.categories) {
             $('.genres').append('<li><a href="'+ media.categories[x].url +'">'+ media.categories[x].name +'</a></li>');

@@ -47,8 +47,9 @@ class UserController extends AbstractActionController
 
         $this->getServiceLocator()
             ->get('viewhelpermanager')
-            ->get('HeadScript')->appendFile('/js/townspot.js')
-            ->appendFile('/js/userProfile.js');
+            ->get('HeadScript')
+                //->appendFile('/js/townspot.js')
+                ->appendFile('/js/userProfile.js');
 
         $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
         $user = $userMapper->findOneById($this->auth->getIdentity());
@@ -80,8 +81,9 @@ class UserController extends AbstractActionController
 
         $this->getServiceLocator()
             ->get('viewhelpermanager')
-            ->get('HeadScript')->appendFile('/js/townspot.js')
-            ->appendFile('/js/userProfile.js');
+            ->get('HeadScript')
+                //->appendFile('/js/townspot.js')
+                ->appendFile('/js/userProfile.js');
 
         $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
         if($id) {

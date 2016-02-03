@@ -1,0 +1,11 @@
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
+	<entity name="Townspot\Tracking\Entity" table="tracking">
+		<id name="_id" column="id" type="bigint">
+			<generator strategy="AUTO" />
+		</id>
+		<field name="_type" column="type" type="string"/>
+		<field name="_user" column="user_id" type="bigint"/>
+		<field name="_value" column="value" type="string"/>
+		<field name="_created" column="created" nullable="false" type="datetime"/>
+	</entity>
+</doctrine-mapping>

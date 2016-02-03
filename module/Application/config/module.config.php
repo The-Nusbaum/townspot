@@ -986,7 +986,9 @@ return array(
 			array(
 				'label' 		=> 'Channel Surf',
                 'route' 		=> 'channelsurf',
-				'target'	 	=> '_blank',
+				'target'	 	=> '_blank_',
+                'data-track'    => 'click',
+                'data-type'     => 'channel_surf'
             ),
 			array(
 				'label' 		=> 'What is Town<span class="highlight">Spot</span>?',

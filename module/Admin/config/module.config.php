@@ -417,6 +417,16 @@ return array(
                     ),
                 ),
             ),
+             'click-tracking' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route'    => '/admin/tracking',
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Reporting',
+                        'action'     => 'tracking',
+                    ),
+                ),
+            ),
 		)
 	),
     'service_manager' => array(

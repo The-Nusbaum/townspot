@@ -3,6 +3,7 @@ if($this->zfcUserIdentity()) {
 	$sl = $this->getHelperPluginManager()->getServiceLocator(); 
 	$userMapper = new \Townspot\User\Mapper($sl);
 	$user = $userMapper->find($this->zfcUserIdentity()->getId());
+	echo "<script>tracked_user = {$user->getId()}</script>";
 }
 ?>
 
@@ -33,12 +34,24 @@ if($this->zfcUserIdentity()) {
 			$id = ($page->getId()) ?: null;
 			$title = ($page->getTitle()) ?: null;
 			$target = ($page->getTarget()) ?: null;
-			printf('<li class="%s"><a id="%s" title="%s" target="%s" href="%s">%s</a></li>',
+			$dTrack = ($page->get('data-track')) ?: '';
+			$dType  = ($page->get('data-type')) ?: null;
+			$dValue = ($page->get('data-value')) ?: null;
+
+
+			if(strlen($dTrack) > 0) {
+				$dTrack = " data-track='$dTrack'"; 
+				if($dType) $dTrack .= " data-type='$dType'"; 
+				if($dValue) $dTrack .= " data-value='$dValue'"; 
+			}
+
+			printf('<li class="%s"><a id="%s" title="%s" target="%s" href="%s"%s>%s</a></li>',
 				$class,
 				$id,
 				$title,
 				$target,
 				$href,
+				$dTrack,
 				$page->getLabel());
 		}
 	}
@@ -46,7 +59,7 @@ if($this->zfcUserIdentity()) {
 		</ul>
 		<ul class="nav navbar-nav navbar-right">
 			<li>
-				<form class="navbar-form" role="search" method="get" action="/videos/search">
+				<form class="navbar-form" role="search" method="get" action="/videos/search"  data-track='submit' data-type='search' data-value='input.search'>
 					<input class="form-control search" name="q" type="text" autocomplete="off" spellcheck="false" tabindex="-1" placeholder="looking for something?" />
 					<button type="submit" class="btn btn-default search-button"><i class="fa fa-search"></i></button>
 				</form>
@@ -82,12 +95,26 @@ if($this->zfcUserIdentity()) {
 				$title = ($page->getTitle()) ?: null;
 				$target = ($page->getTarget()) ?: null;
 				$label = ($page->getLabel()) ?: null;
-				printf('<li><a id="%s" title="%s" target="%s" href="%s">%s</a></li>',
+
+				$dTrack = ($page->get('data-track')) ?: '';
+				$dType  = ($page->get('data-type')) ?: null;
+				$dValue = ($page->get('data-value')) ?: null;
+
+
+				if(strlen($dTrack) > 0) {
+					$dTrack = " data-track='$dTrack'"; 
+					if($dType) $dTrack .= " data-type='$dType'"; 
+					if($dValue) $dTrack .= " data-value='$dValue'"; 
+				}
+
+				printf('<li><a id="%s" title="%s" target="%s" href="%s"%s>%s</a></li>',
 					$id,
-				    $title,
+				  $title,
 					$target,
 					$href,
-					$label);
+					$dTrack,
+					$label
+				);
 			}
 		}
 	}

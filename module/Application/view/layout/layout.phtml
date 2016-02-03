@@ -1,4 +1,5 @@
 <?php echo $this->doctype(); ?>
+
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -32,7 +33,7 @@
 		                       ->appendFile('//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js','text/javascript')
 		                       ->appendFile('//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js','text/javascript')
 		                       ->appendFile('//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.3.0/bootbox.min.js','text/javascript')
-							   ->appendFile($this->basePath() . '/js/townspot.js');
+							   					 ->appendFile($this->basePath() . '/js/townspot.js');
 		?>
 		<script src="https://apis.google.com/js/platform.js" async defer></script>
 <?php if ($this->facebookInfo) { ?>
@@ -53,6 +54,9 @@
 <?php } ?>
     </head>
     <body id="townspot">
+		<script>
+    	var tracked_user = 0;
+    </script>
 		<nav role="navigation" class="navbar navbar-inverse">
 			<?= $this->navigation('navigation')->menu()->setPartial('partials/menu')->render(); ?>	
 <?php if (($this->controllerName() == 'search') && ($this->actionName() == 'discover')) { ?>			

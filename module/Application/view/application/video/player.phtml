@@ -71,7 +71,7 @@
 						<input type="text" class="col-sm-8 form-control" placeholder="Leave a Comment" id="comment-field">
 					</div>
 					<div class="col-xs-3 nopadding-left full-320">
-						<button class="form-control btn interaction-button" id="comment-submit">Comment</button>
+						<button class="form-control btn interaction-button" id="comment-submit" data-track='click' data-type='comment' data-value='<?=$this->media->getId() ?>'>Comment</button>
 					</div>
 				</div>	
 				<div class="row">
@@ -159,7 +159,7 @@
 	</div>
 </div>
 
-<div class="modal fade hidden" id="ContactCreatorModal" tabindex="-1" role="dialog" aria-labelledby="ContactCreatorLabel" aria-hidden="true">
+<div class="modal fade" id="ContactCreatorModal" tabindex="-1" role="dialog" aria-labelledby="ContactCreatorLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">

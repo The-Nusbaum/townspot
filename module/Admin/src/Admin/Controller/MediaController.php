@@ -224,8 +224,9 @@ class MediaController extends AbstractActionController
 
         $this->getServiceLocator()
             ->get('viewhelpermanager')
-            ->get('HeadScript')->appendFile('/js/townspot.js')
-							   ->appendFile('/js/adminupload.js');
+            ->get('HeadScript')
+                //->appendFile('/js/townspot.js')
+				->appendFile('/js/adminupload.js');
 
 		return new ViewModel( 
 			array(
@@ -292,8 +293,9 @@ class MediaController extends AbstractActionController
 
                 $this->getServiceLocator()
                     ->get('viewhelpermanager')
-                    ->get('HeadScript')->appendFile('/js/townspot.js')
-								       ->appendFile('/js/adminEdit.js');
+                    ->get('HeadScript')
+                        //->appendFile('/js/townspot.js')
+						->appendFile('/js/adminEdit.js');
 				return new ViewModel( 
 					array(
 						'headForm'			=> $headForm,

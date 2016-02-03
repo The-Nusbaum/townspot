@@ -1,0 +1,20 @@
+<table class='table'>
+	<thead>
+		<tr>
+			<th>Event</th>
+			<th>Today</th>
+			<th>Last 30 Days</th>
+			<th>All Time</th>
+		</tr>
+	</thead>
+	<tbody>
+	<?php foreach($data as $label => $counts) : ?>
+		<tr>
+			<td><?= $label ?></td>
+			<td><?= $counts[0] ?></td>
+			<td><?= $counts[1] ?></td>
+			<td><?= $counts[2] ?></td>
+		</tr>
+	<?php endforeach; ?>
+	</tbody>
+</table>

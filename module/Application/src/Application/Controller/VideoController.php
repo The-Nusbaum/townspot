@@ -713,7 +713,7 @@ class VideoController extends AbstractActionController
                     ->set('views', $response['views_total'])
                     ->set('url', $url);
             } elseif(!$data->get('review_ok')) {
-                //do nothing?
+                //do nothing
             } else {
                 if($data->get('source') == 'youtube') {
                     $url = $data->get('youtube_url');
@@ -749,6 +749,12 @@ class VideoController extends AbstractActionController
 
                 $mediaMapper->setEntity($mediaEntity);
                 $mediaMapper->save();
+                $trackingMapper = new \Townspot\Tracking\Mapper($this->getServiceLocator());
+        				$tracking = new \Townspot\Tracking\Entity();
+        				$tracking->setUser($user->getId())
+        								 ->setType("{$data->get('source')}_upload")
+                				 ->setValue($mediaEntity->getId());
+                $trackingMapper->setEntity($tracking)->save();
 								$_SESSION['flash'] = array();
 								$_SESSION['flash'][] = 'Your video upload was successful. It will be reviewed by our staff for content and quality.';
                 //$this->flashMessenger()->addMessage('Your video upload was successful. It will be reviewed by our staff for content and quality.');

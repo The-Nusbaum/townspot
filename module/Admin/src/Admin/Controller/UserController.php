@@ -102,8 +102,9 @@ class UserController extends AbstractActionController
         $form = new \Application\Forms\User\Register('user',$countries,$provinces);
         $this->getServiceLocator()
             ->get('viewhelpermanager')
-            ->get('HeadScript')->appendFile('/js/townspot.js')
-							   ->appendFile('/js/userRegister.js');
+            ->get('HeadScript')
+                //->appendFile('/js/townspot.js')
+				->appendFile('/js/userRegister.js');
 
 		return new ViewModel( 
 			array(
@@ -190,8 +191,9 @@ class UserController extends AbstractActionController
 		
         $this->getServiceLocator()
             ->get('viewhelpermanager')
-            ->get('HeadScript')->appendFile('/js/townspot.js')
-							   ->appendFile('/js/adminUserEdit.js');
+            ->get('HeadScript')
+                //->appendFile('/js/townspot.js')
+				->appendFile('/js/adminUserEdit.js');
 
  	    return new ViewModel( 
 			array(
