@@ -986,7 +986,7 @@ return array(
 			array(
 				'label' 		=> 'Channel Surf',
                 'route' 		=> 'channelsurf',
-				'target'	 	=> '_blank_',
+//				'target'	 	=> '_blank_',
                 'data-track'    => 'click',
                 'data-type'     => 'channel_surf'
             ),
