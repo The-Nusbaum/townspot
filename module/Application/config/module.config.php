@@ -113,6 +113,8 @@ return array(
                     'adminDelete.js',
                     'tinymce/tinymce/tinymce.js',
                     'adminUserEdit.js',
+                    'plupload/moxie.min.js',
+                    'plupload/plupload.min.js',
                     'plupload.js',
 					
 //                    'twitter/typeahead.js/dist/typeahead.bundle.min.js',
