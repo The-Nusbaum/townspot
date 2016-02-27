@@ -992,17 +992,17 @@ EOT;
 			  // When validation fails or other local issues
 			  echo 'Facebook SDK returned an error: ' . $e->getMessage();
 			  exit;
-			} finally {
-				$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
-				$videos = $fb->get('/me/videos/uploaded?fields=title,description,source,length,picture')->getDecodedBody()["data"];
-				foreach($videos as $k =>$video) {
-					$m = $mediaMapper->findOneByUrl($video['source']);
-					if($m instanceof \Townspot\Media\Entity) $videos[$k]['in_system'] = true;
-					else $videos[$k]['in_system'] = false;
-				}
-				$this->_view->setVariable('videos',$videos);
-				return $this->_view;
 			}
+			$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
+			$videos = $fb->get('/me/videos/uploaded?fields=title,description,source,length,picture')->getDecodedBody()["data"];
+			foreach($videos as $k =>$video) {
+				$m = $mediaMapper->findOneByUrl($video['source']);
+				if($m instanceof \Townspot\Media\Entity) $videos[$k]['in_system'] = true;
+				else $videos[$k]['in_system'] = false;
+			}
+			$this->_view->setVariable('videos',$videos);
+			return $this->_view;
+
 		}
 	}
 
