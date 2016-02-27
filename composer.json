@@ -198,7 +198,7 @@
         "google/apiclient": "1.1.4",
         "vimeo/vimeo-api": "1.2.3",
 		    "dailymotion/sdk":"1.6.3",
-		    "facebook/facebook-module":"dev-master"
+		    "facebook/php-sdk-v4":"5.1.*"
     },
     "autoload": {
         "classmap": [

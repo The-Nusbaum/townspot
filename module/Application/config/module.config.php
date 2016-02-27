@@ -75,7 +75,8 @@ return array(
                     'plupload/plupload.min.js',
                     'tinymce/tinymce/tinymce.js',
                     'plupload.js',
-                    'general_init.js'
+                    'general_init.js',
+                    'pick-video.js'
                 ),
                 'js/tinymceTheme.js' => array(
                     'tinymce/tinymce/themes/modern/theme.min.js'
@@ -880,7 +881,36 @@ return array(
                     ),
                 ),
             ),
-
+            'fb-videos' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/videos/fb-videos',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Video',
+                        'action' => 'fbVideos'
+                    )
+                ),          
+            ),
+            'submit-fb' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/videos/submit-fb',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Video',
+                        'action' => 'submitFb'
+                    )
+                ),          
+            ),
+			'review-fb' => array(
+					'type' => 'Zend\Mvc\Router\Http\Segment',
+					'options' => array(
+							'route' => '/videos/review-fb',
+							'defaults' => array(
+									'controller' => 'Application\Controller\Video',
+									'action' => 'reviewFb'
+							)
+					),
+			),
             'application' => array(
                 'type'    => 'Literal',
                 'options' => array(

@@ -40,6 +40,16 @@ var upload = {
         });
         $('#province_id').change(function(){
             upload.getCities();
+        })
+
+        $('#uploadTabs:not(#fbtab) a').click(function(){
+            $('#footerForm').show();
+            $('#submitForm').show();
+        });
+
+        $('#fbtab').click(function(){
+            $('#footerForm').hide();
+            $('#submitForm').hide();
         });
     },
     clearData: function(){

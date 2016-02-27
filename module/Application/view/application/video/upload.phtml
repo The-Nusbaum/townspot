@@ -8,12 +8,15 @@
         </div>
         <div class="row">
             <div class="col-sm-12">
-                <ul class="nav nav-tabs nav-justified">
+                <ul id="uploadTabs" class="nav nav-tabs nav-justified">
                     <li id="youtab" class="active">
                         <a href="#youtube" data-toggle="tab">Submit Via <img class="youtubelogo" src='/img/youtube.png' alt="youtube"></a>
                     </li>
                     <li id="vimtab"><a href="#vimeo" data-toggle="tab">Submit via <img class="vimeologo" src='/img/vimeo.png' alt="youtube"></a></li>
                     <li id="dmtab"><a href="#dailymotion" data-toggle="tab">Submit via <img class="dmlogo" src='/img/dailymotion.png' alt="youtube"></a></li>
+                    <?php if (in_array($authdUser, array(2,242))): ?>
+                    <li id="fbtab"><a href="#facebook" data-toggle="tab">Submit via <img class="fblogo" src='/img/fb.png' alt="facebook"></a></a></li>
+                    <?php endif; ?>
                     <li><a href="#upload" data-toggle="tab">Submit via Upload</a></li>
                 </ul>
             </div>
@@ -38,6 +41,11 @@
                 <?= $vimeoForm ?>
                 <div class="help-block text-center uploadHelp">Just provide us with a <img class="vimeologo" src='/img/vimeo.png' alt="vimeo"> URL and we'll take it from there!</span></div>
             </div>
+            <div class="tab-pane" id="facebook">
+                <h3 class="uploadLogo"><img class="fblogo" src='/img/fb.png' alt="Facebook"> Submission</h3>
+                <p>Click the button below to select which of your Facebook videos you would like to show on Townspot</p>
+                <a href="/videos/fb-videos" class="btn btn-primary form-control">Select Videos</a>
+            </div>
             <div class="tab-pane" id="dailymotion">
                 <h3 class="uploadLogo"><img class="dmlogo" src='/img/dailymotion.png' alt="Daily Motion"> Submission</h3>
                 <?= $dmForm ?>
@@ -47,7 +55,7 @@
     </div>
     <div class="row">
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-8 col-md-offset-2" id="footerForm">
                 <div class="row well well-lg">
                     <?= $footerForm ?>
                 </div>

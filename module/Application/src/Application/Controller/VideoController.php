@@ -16,15 +16,17 @@ use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
 use Zend\Mail\Message;
 use Zend\Mvc\Controller\Plugin\FlashMessenger;
+use Facebook\Helpers\FacebookRedirectLoginHelper;
+use Facebook\FacebookSDKException;
 
 class VideoController extends AbstractActionController
 {
 
-    protected $_api_info = array(
-        'applicationId' => 'Townspot',
-        'clientId' => "872367745273-sbsiuc81kh9o70ok3macc15d2ebpl440.apps.googleusercontent.com",
-        'developerId' => "AIzaSyCa1RYJsf-C94cTQo34GC59DkiijUq_54s",
-    );
+  protected $_api_info = array(
+      'applicationId' => 'Townspot',
+      'clientId' => "872367745273-sbsiuc81kh9o70ok3macc15d2ebpl440.apps.googleusercontent.com",
+      'developerId' => "AIzaSyCa1RYJsf-C94cTQo34GC59DkiijUq_54s",
+  );
 
 	public function __construct() 
 	{
@@ -954,5 +956,128 @@ EOT;
 			print_r($email);
 		}
 		die;		
+	}
+
+	private function _fb() {
+		return new \Facebook\Facebook([
+		  'app_id' => '333808790029898',
+		  'app_secret' => '7315cc6812046cf91419959bdd359bec',
+		  'default_graph_version' => 'v2.5',
+		]);
+	}
+
+	public function fbVideosAction() {
+		$code = $this->params()->fromQuery('code');
+		$state = $this->params()->fromQuery('state');
+		$fb = $this->_fb();
+
+		$helper = $fb->getRedirectLoginHelper();
+
+		if(!$code) {
+			$permissions = ['user_videos'];
+			$loginUrl = $helper->getLoginUrl('http://townspot.local/videos/fb-videos', $permissions);
+			header("Location: $loginUrl");
+			die;
+		} else {
+			try {
+			  $accessToken = $helper->getAccessToken();
+			  $accessToken = $fb->getOAuth2Client()->getLongLivedAccessToken($accessToken);
+			  $_SESSION['fb-token'] = $accessToken;
+				$fb->setDefaultAccessToken($accessToken);
+			} catch(Facebook\Exceptions\FacebookResponseException $e) {
+			  // When Graph returns an error
+			  echo 'Graph returned an error: ' . $e->getMessage();
+			  exit;
+			} catch(Facebook\Exceptions\FacebookSDKException $e) {
+			  // When validation fails or other local issues
+			  echo 'Facebook SDK returned an error: ' . $e->getMessage();
+			  exit;
+			} finally {
+				$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
+				$videos = $fb->get('/me/videos/uploaded?fields=title,description,source,length,picture')->getDecodedBody()["data"];
+				foreach($videos as $k =>$video) {
+					$m = $mediaMapper->findOneByUrl($video['source']);
+					if($m instanceof \Townspot\Media\Entity) $videos[$k]['in_system'] = true;
+					else $videos[$k]['in_system'] = false;
+				}
+				$this->_view->setVariable('videos',$videos);
+				return $this->_view;
+			}
+		}
+	}
+
+	public function reviewFbAction()
+	{
+		$fb = $this->_fb();
+		$fb->setDefaultAccessToken($_SESSION['fb-token']);
+
+		$userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+		$user = $userMapper->find($this->auth->getIdentity());
+		$this->_view->setVariable('user',$user);
+
+		$ids = $this->params()->fromPost('data');
+		foreach ($ids as $id) {
+			$fbVideo = $fb->get("/$id?fields=title,description,source,length,picture")->getDecodedBody();
+			$videos[] = $fbVideo;
+		}
+		$this->_view->setVariable('videos', $videos);
+		return $this->_view;
+	}
+
+	public function submitFbAction()
+	{
+		$fb = $this->_fb();
+		$fb->setDefaultAccessToken($_SESSION['fb-token']);
+
+		$ids = $this->params()->fromPost('data');
+
+		$userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+		$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
+		$trackingMapper = new \Townspot\Tracking\Mapper($this->getServiceLocator());
+		$countryMapper = new \Townspot\Country\Mapper($this->getServiceLocator());
+		$provinceMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
+		$cityMapper = new \Townspot\City\Mapper($this->getServiceLocator());
+
+		$user = $userMapper->find($this->zfcUserAuthentication()->getIdentity()->getId());
+
+		$data = $this->params()->fromPost('data');
+
+		$count = 0;
+
+		foreach ($data as $fbId => $v) {
+
+			$city = $cityMapper->find($v['city_id']);
+			$province = $provinceMapper->find($v['province_id']);
+			$country = $countryMapper->find($v['country_id']);
+			$video = new \Townspot\Media\Entity();
+			$video->setUser($user)
+					->setCountry($country)
+					->setProvince($province)
+					->setCity($city)
+					->setTitle($v['title'])
+					->setDescription($v['description'])
+					->setUrl($v['source'])
+					->setPreviewImage($v['picture'])
+					->setAuthorised($v['authorised'])
+					->setAllowContact($v['contact'])
+					->setSource('facebook')
+					->setDuration($v['length'])
+					->setOnMediaServer(true);
+			$mediaMapper->setEntity($video)->save();
+
+			$tracking = new \Townspot\Tracking\Entity();
+			$tracking->setUser($user->getId())
+					->setType("facebook_upload")
+					->setValue($video->getId());
+			$trackingMapper->setEntity($tracking)->save();
+
+
+			$count++;
+		}
+		$_SESSION['flash'] = array();
+		if ($count > 1) $_SESSION['flash'][] = "Your upload of $count videos was successful. They will be reviewed by our staff for content and quality.";
+		else $_SESSION['flash'][] = 'Your video upload was successful. It will be reviewed by our staff for content and quality.';
+
+		return $this->redirect()->toRoute('upload');
 	}
 }

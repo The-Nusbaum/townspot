@@ -25,6 +25,7 @@ class VideoPlayer extends AbstractHelper implements ServiceLocatorAwareInterface
 		$this->media = $media;
 		
 		$function = $media->getSource();
+		if($function == 'facebook') $function = 'internal';
 		return $this->{$function}();
 	}
 	

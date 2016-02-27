@@ -1,4 +1,6 @@
 $('document').ready(function(){
+	//handle the damned country/state/city logic
+
     jQuery("abbr.timeago").timeago();
     $('[data-toggle="popover"]').popover({
         html: true
