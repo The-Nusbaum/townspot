@@ -18,6 +18,7 @@ return array(
             'AddThisLinks' 	=> 'Townspot\View\Helper\AddThisLinks',
             'Comments' 		=> 'Townspot\View\Helper\Comments',
             'DiscoverNav' 	=> 'Townspot\View\Helper\DiscoverNav',
+            'Location'	 	=> 'Townspot\View\Helper\Location',
         ),
     ),
 	'asset_manager' => array(
