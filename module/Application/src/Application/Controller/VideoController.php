@@ -975,7 +975,7 @@ EOT;
 
 		if(!$code) {
 			$permissions = ['user_videos'];
-			$loginUrl = $helper->getLoginUrl('http://townspot.local/videos/fb-videos', $permissions);
+			$loginUrl = $helper->getLoginUrl('http://townspot.tv/videos/fb-videos', $permissions);
 			header("Location: $loginUrl");
 			die;
 		} else {
