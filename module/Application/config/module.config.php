@@ -686,7 +686,7 @@ return array(
                     ),
                 ),
             ),
-			/*
+/*			
 			'login' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(
@@ -697,7 +697,7 @@ return array(
 					),
 				),
 			),
-            'logout' => array(
+/*            'logout' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
                     'route'    => '/logout',

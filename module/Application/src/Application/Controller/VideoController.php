@@ -30,7 +30,6 @@ class VideoController extends AbstractActionController
 
 	public function __construct() 
 	{
-		session_start();
         $this->_view = new ViewModel();
         $this->auth = new \Zend\Authentication\AuthenticationService();
         $this->_view->setVariable('authdUser',$this->auth->getIdentity());
