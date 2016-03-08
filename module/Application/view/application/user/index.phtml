@@ -310,7 +310,7 @@
             ?>
             <div class="col-sm-6 video">
                 <a href="<?= $v->getMediaLink() ?>" class="thumbnail">
-                    <?php if(preg_match('/(?:ytimg)|(?:files)/',$v->getPreviewImage())): ?>
+                    <?php if(preg_match('/(?:ytimg)|(?:files)|(?:fbcdn)/',$v->getPreviewImage())): ?>
                         <img class="img-responsive" src="<?= $v->getPreviewImage() ?>" alt="<?=$v->getTitle()?>">
                     <?php else: ?>
                         <img src="<?= $this->img('video',$v->getId(),720,540) ?>" alt="<?=$v->getTitle()?>">
