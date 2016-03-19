@@ -1,8 +1,7 @@
 <div id="review-videos" class="row">
     <form id="reviewForm" action="/videos/submit-fb" method="post" class="col-md-12">
         <div class="row col-md-12">
-            <div class="col-md-8">Alrighty. We just need a few more pieces of info</div>
-            <button id="submit-videos" class="btn btn-primary col-md-4">Submit</button>
+            <div class="col-md-8">Please provide a title & description for each video, then hit the "Submit" button</div>
         </div>
         <div class="row col-md-12">
         <?php foreach ($videos as $v): ?>
@@ -53,7 +52,7 @@
         <?php endforeach; ?>
             <div class="row col-md-12">
                 <div class="col-md-8">&nbsp;</div>
-                <button id="submit-videos" class="btn btn-primary col-md-4">Submit</button>
+                <button id="submit-videos" class="btn btn-primary btn-lg col-md-12">Submit</button>
             </div>
         </div>
     </form>
