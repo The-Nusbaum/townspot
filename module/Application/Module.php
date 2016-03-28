@@ -112,7 +112,7 @@ die();
                     $flashMessenger = new \Zend\Mvc\Controller\Plugin\FlashMessenger();
                     $flashMessenger->addMessage('No Linked Account Found...');
                     $authenticationService->clearIdentity();
-                    $url = $e->getTarget()->getRouter()->assemble(array(), array('name' => 'login'));
+                    $url = $e->getTarget()->getRouter()->assemble(array(), array('name' => 'zfcuser-login'));
                     $response=$e->getTarget()->getServiceLocator()->get('Application')->getResponse();
                     $response->getHeaders()->addHeaderLine('Location', $url);
                     $response->setStatusCode(302);

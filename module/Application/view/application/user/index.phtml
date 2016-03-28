@@ -309,13 +309,16 @@
             }
             ?>
             <div class="col-sm-6 video">
-                <a href="<?= $v->getMediaLink() ?>" class="thumbnail">
-                    <?php if(preg_match('/(?:ytimg)|(?:files)|(?:fbcdn)/',$v->getPreviewImage())): ?>
-                        <img class="img-responsive" src="<?= $v->getPreviewImage() ?>" alt="<?=$v->getTitle()?>">
-                    <?php else: ?>
+                <?php if(preg_match('/(?:ytimg)|(?:files)|(?:fbcdn)/',$v->getPreviewImage())): ?>
+                    <div class="thumbnail">
+                        <a href="<?= $v->getMediaLink() ?>" class="thumb_wrapper bg" style="background-image:
+                        url(<?= $v->getPreviewImage() ?>)">&nbsp;</a>
+                    </div>
+                <?php else: ?>
+                    <a href="<?= $v->getMediaLink() ?>" class="thumbnail">
                         <img src="<?= $this->img('video',$v->getId(),720,540) ?>" alt="<?=$v->getTitle()?>">
-                    <?php endif; ?>
-                </a>
+                    </a>
+                <?php endif; ?>
 
                 <div class="caption">
                     <div class="info-button">

@@ -1630,9 +1630,19 @@ div {
         }
         .thumbnail {
           height: auto;
-          a {
+          & > a:not(.thumb_wrapper) {
             .vertical-center
           }
+        }
+
+        .thumb_wrapper {
+          position: relative;
+          height: 238px;
+          background-position: 50% 50%;
+          background-size: contain;
+          background-repeat: no-repeat;
+          display: block;
+          background-color: black;
         }
       }
       .stats {
