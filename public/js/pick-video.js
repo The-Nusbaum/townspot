@@ -7,27 +7,26 @@ $(document).ready(function(){
 		$(this).removeClass('selected');
 	});
 
-	$('#video-fbVideos #submit-videos').click(function(){
+	$('#video-fbVideos #submit-videos,#video-ytVideos #submit-videos').click(function(e){
+		e.preventDefault();
 		var data = [];
 		$('.wrapper.selected').each(function(){
-			$this = $(this);
-			data.push($this.attr('data-id'));
+			data.push($(this).attr('data-id'));
 		});
 
 		data = data.reduce(function(o, v, i) {
-  		o[i] = v;
-  		return o;
+			o[i] = v;
+			return o;
 		}, {});
 
-
-		$('#fbVideosForm').submit(function(e){
-			var i = 0
-			$('.wrapper.selected').each(function(){
-				var $this = $(this);
-				html = "<input type='hidden' name='data[" + i + "]' value='" + $this.attr('data-id') + "'>";
-				$('#fbVideosForm').append(html);
-				i += 1;
-			});
+		var i = 0
+		$('.wrapper.selected').each(function(){
+			var $this = $(this);
+			html = "<input type='hidden' name='data[" + i + "]' value='" + $this.attr('data-id') + "'>";
+			$('[id*=VideosForm]').append(html);
+			i += 1;
 		});
+
+		$('[id*=VideosForm]').submit();
 	});
 });

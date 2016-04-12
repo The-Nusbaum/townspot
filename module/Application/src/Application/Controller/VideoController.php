@@ -26,6 +26,8 @@ class VideoController extends AbstractActionController
       'applicationId' => 'Townspot',
       'clientId' => "872367745273-sbsiuc81kh9o70ok3macc15d2ebpl440.apps.googleusercontent.com",
       'developerId' => "AIzaSyCa1RYJsf-C94cTQo34GC59DkiijUq_54s",
+	  'clientSecret' => 'KkR-tZy_lJmcHHzlKtFWDAdD',
+	  'scope' => 'https://www.googleapis.com/auth/youtube.readonly'
   );
 
 	public function __construct() 
@@ -966,6 +968,7 @@ EOT;
 		]);
 	}
 
+
 	public function fbVideosAction() {
 		$code = $this->params()->fromQuery('code');
 		$state = $this->params()->fromQuery('state');
@@ -1079,5 +1082,129 @@ EOT;
 		else $_SESSION['flash'][] = 'Your video upload was successful. It will be reviewed by our staff for content and quality.';
 
 		return $this->redirect()->toRoute('upload');
+	}
+
+	public function ytVideosAction() {
+		$code = $this->params()->fromQuery('code');
+
+		if(!$code) {
+			$client = new \Google_Client();
+			$client->setApplicationName($this->_api_info['applicationId']);
+			$client->setDeveloperKey($this->_api_info['developerId']);
+			$client->setClientId($this->_api_info['clientId']);
+			$client->setClientSecret($this->_api_info['clientSecret']);
+			$client->setRedirectUri('http://local.townspot.tv/videos/youtube-videos');
+
+			$auth = new \Google_Auth_OAuth2($client);
+			$url = $auth->createAuthUrl(($this->_api_info['scope']));
+			return $this->redirect()->toUrl($url);
+		}
+
+		$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
+
+		$client = new \Google_Client();
+		$client->setApplicationName($this->_api_info['applicationId']);
+		$client->setDeveloperKey($this->_api_info['developerId']);
+		$client->setClientId($this->_api_info['clientId']);
+		$client->setClientSecret($this->_api_info['clientSecret']);
+		$client->setRedirectUri('http://local.townspot.tv/videos/youtube-videos');
+		$client->authenticate($this->params()->fromQuery('code'));
+
+		$yt = new \Google_Service_YouTube($client);
+
+		$ytChannel = $yt->channels->listChannels("contentDetails",array('mine' => "true"))->getItems()[0];
+		$plId = $ytChannel->getContentDetails()->getRelatedPlaylists()->getUploads();
+		$ytPlaylist = $yt->playlistItems->listPlaylistItems("contentDetails",array('playlistId' => $plId));
+		$ids = array();
+		foreach($ytPlaylist->getItems() as $item) {
+			$ids[] = $item->getContentDetails()['videoId'];
+		}
+		$items = array();
+		$in_system = array();
+		foreach($ids as $i => $id) {
+			$items[] = $yt->videos->listVideos("snippet,contentDetails,statistics",array('id' => $id))->getItems()[0];
+			$foo = $mediaMapper->findBy(array('_url' => "https://www.youtube.com/watch?v=$id"));
+			$inSys = (bool) $mediaMapper->findOneByUrl("https://www.youtube.com/watch?v=$id");
+			if($inSys) $in_system[] = $i;
+		}
+		$this->_view->setVariable('videos',$items);
+		$this->_view->setVariable('in_system',$in_system);
+		return $this->_view;
+	}
+
+	public function reviewYtAction()
+	{
+		$client = new \Google_Client();
+		$client->setApplicationName($this->_api_info['applicationId']);
+		$client->setDeveloperKey($this->_api_info['developerId']);
+		$client->setClientId($this->_api_info['clientId']);
+		$client->setClientSecret($this->_api_info['clientSecret']);
+
+		$userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+		$user = $userMapper->find($this->auth->getIdentity());
+		$this->_view->setVariable('user', $user);
+
+		$yt = new \Google_Service_YouTube($client);
+
+		$ids = $this->params()->fromPost('data');
+
+		foreach ($ids as $id) {
+			$ytVideo = $yt->videos->listVideos("snippet,contentDetails,statistics",array('id' => $id))->getItems()[0];
+			$videos[] = $ytVideo;
+		}
+		$this->_view->setVariable('videos', $videos);
+		return $this->_view;
+	}
+	public function submitYtAction() {
+		$userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+		$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
+		$trackingMapper = new \Townspot\Tracking\Mapper($this->getServiceLocator());
+		$countryMapper = new \Townspot\Country\Mapper($this->getServiceLocator());
+		$provinceMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
+		$cityMapper = new \Townspot\City\Mapper($this->getServiceLocator());
+
+		$user = $userMapper->find($this->zfcUserAuthentication()->getIdentity()->getId());
+
+		$data = $this->params()->fromPost('data');
+
+		$count = 0;
+
+		foreach ($data as $fbId => $v) {
+			$city = $cityMapper->find($v['city_id']);
+			$province = $provinceMapper->find($v['province_id']);
+			$country = $countryMapper->find($v['country_id']);
+			$video = new \Townspot\Media\Entity();
+			$video->setUser($user)
+					->setCountry($country)
+					->setProvince($province)
+					->setCity($city)
+					->setTitle($v['title'])
+					->setDescription($v['description'])
+					->setUrl($v['source'])
+					->setPreviewImage($v['picture'])
+					->setAuthorised($v['authorised'])
+					->setAllowContact($v['contact'])
+					->setSource('youtube')
+					->setDuration($v['length'])
+					->setOnMediaServer(true);
+			$mediaMapper->setEntity($video)->save();
+
+			$tracking = new \Townspot\Tracking\Entity();
+			$tracking->setUser($user->getId())
+					->setType("youtube_upload")
+					->setValue($video->getId());
+			$trackingMapper->setEntity($tracking)->save();
+
+			$count++;
+		}
+		$_SESSION['flash'] = array();
+		if ($count > 1) $_SESSION['flash'][] = "Your upload of $count videos was successful. They will be reviewed by our staff for content and quality.";
+		else $_SESSION['flash'][] = 'Your video upload was successful. It will be reviewed by our staff for content and quality.';
+
+		return $this->redirect()->toRoute('upload');
+	}
+
+	public function testAction() {
+
 	}
 }

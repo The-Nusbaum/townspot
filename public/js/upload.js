@@ -42,12 +42,12 @@ var upload = {
             upload.getCities();
         })
 
-        $('#uploadTabs:not(#fbtab) a').click(function(){
+        $('#uploadTabs:not(#fbtab):not(#youtab) a').click(function(){
             $('#footerForm').show();
             $('#submitForm').show();
         });
 
-        $('#fbtab').click(function(){
+        $('#fbtab, #youtab').click(function(){
             $('#footerForm').hide();
             $('#submitForm').hide();
         });

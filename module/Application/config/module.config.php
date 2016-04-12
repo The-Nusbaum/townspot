@@ -892,6 +892,16 @@ return array(
                     )
                 ),          
             ),
+			'yt-videos' => array(
+					'type' => 'Zend\Mvc\Router\Http\Segment',
+					'options' => array(
+							'route' => '/videos/youtube-videos',
+							'defaults' => array(
+									'controller' => 'Application\Controller\Video',
+									'action' => 'ytVideos'
+							)
+					),
+			),
             'submit-fb' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -902,6 +912,16 @@ return array(
                     )
                 ),          
             ),
+			'submit-yt' => array(
+					'type' => 'Zend\Mvc\Router\Http\Segment',
+					'options' => array(
+							'route' => '/videos/submit-yt',
+							'defaults' => array(
+									'controller' => 'Application\Controller\Video',
+									'action' => 'submitYt'
+							)
+					),
+			),
 			'review-fb' => array(
 					'type' => 'Zend\Mvc\Router\Http\Segment',
 					'options' => array(
@@ -909,6 +929,16 @@ return array(
 							'defaults' => array(
 									'controller' => 'Application\Controller\Video',
 									'action' => 'reviewFb'
+							)
+					),
+			),
+			'review-yt' => array(
+					'type' => 'Zend\Mvc\Router\Http\Segment',
+					'options' => array(
+							'route' => '/videos/review-yt',
+							'defaults' => array(
+									'controller' => 'Application\Controller\Video',
+									'action' => 'reviewYt'
 							)
 					),
 			),
@@ -938,6 +968,16 @@ return array(
                     ),
                 ),
             ),
+			'test' => array(
+					'type' => 'Zend\Mvc\Router\Http\Segment',
+					'options' => array(
+							'route' => '/test',
+							'defaults' => array(
+									'controller' => 'Application\Controller\Video',
+									'action' => 'test'
+							)
+					),
+			),
         ),
     ),
     'service_manager' => array(

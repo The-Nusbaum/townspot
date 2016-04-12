@@ -12,6 +12,11 @@ $settings = array(
             'key' => 'wdmZ425vxieBkMEDTRMwoQ',
             'secret' => 'ZLYgVcaAoUNkhJU1K9TweiGAYGnBh1eYDcF1l9vuDE'
         ),
+        'Google' => array(
+            'client_id' => '872367745273-sbsiuc81kh9o70ok3macc15d2ebpl440.apps.googleusercontent.com',
+            'client_secret' => ' KkR-tZy_lJmcHHzlKtFWDAdD',
+            'scope' => 'https://www.googleapis.com/auth/youtube.readonly'
+        )
     ),
     'check_controller_enabled' => false
 );

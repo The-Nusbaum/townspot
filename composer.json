@@ -174,6 +174,7 @@
         "opauth/opauth": "0.4.4",
         "opauth/twitter": "0.3.1",
         "opauth/facebook": "0.2.1",
+        "opauth/google": "0.2.2",
 		"kalenjordan/jquery-cookie": "dev-master",
 		"bootstrap-select/bootstrap-select": "dev-master",
 		"datatables/datatables": "dev-master",
