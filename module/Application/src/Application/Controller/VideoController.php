@@ -1093,7 +1093,7 @@ EOT;
 			$client->setDeveloperKey($this->_api_info['developerId']);
 			$client->setClientId($this->_api_info['clientId']);
 			$client->setClientSecret($this->_api_info['clientSecret']);
-			$client->setRedirectUri('http://local.townspot.tv/videos/youtube-videos');
+			$client->setRedirectUri('http://townspot.tv/videos/youtube-videos');
 
 			$auth = new \Google_Auth_OAuth2($client);
 			$url = $auth->createAuthUrl(($this->_api_info['scope']));
@@ -1107,7 +1107,7 @@ EOT;
 		$client->setDeveloperKey($this->_api_info['developerId']);
 		$client->setClientId($this->_api_info['clientId']);
 		$client->setClientSecret($this->_api_info['clientSecret']);
-		$client->setRedirectUri('http://local.townspot.tv/videos/youtube-videos');
+		$client->setRedirectUri('http://townspot.tv/videos/youtube-videos');
 		$client->authenticate($this->params()->fromQuery('code'));
 
 		$yt = new \Google_Service_YouTube($client);
