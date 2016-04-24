@@ -233,7 +233,7 @@ class Edit extends Form
             'attributes' => array(
                 'type'  => 'button',
                 'column' => 2,
-                'width' => 6,
+                'width' => 4,
                 'label' => 'Link Facebook',
             ),
         ));
@@ -243,8 +243,18 @@ class Edit extends Form
             'attributes' => array(
                 'type'  => 'button',
                 'column' => 2,
-                'width' => 6,
+                'width' => 4,
                 'label' => 'Link Twitter',
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'link_google',
+            'attributes' => array(
+                'type'  => 'button',
+                'column' => 2,
+                'width' => 4,
+                'label' => 'Link Google',
             ),
         ));
 

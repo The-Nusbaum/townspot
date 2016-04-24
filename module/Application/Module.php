@@ -96,6 +96,7 @@ class Module
 die();
 */
 
+
             if($authenticationResult->isValid() && $authenticationService->hasIdentity()) {
                 $userOauthMapper = new \Townspot\UserOauth\Mapper($e->getTarget()->getServiceLocator());
                 try {

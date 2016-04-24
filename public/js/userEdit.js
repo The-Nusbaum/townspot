@@ -69,6 +69,11 @@ var userEdit = {
             window.location = "/custom/login/facebook";
         });
 
+        $('#link_google').click(function(e){
+            e.preventDefault();
+            window.location = "/custom/login/google";
+        });
+
         $('#unlink_twitter').click(function(e){
             e.preventDefault();
             window.location = "/user/unlink/twitter";
@@ -78,6 +83,12 @@ var userEdit = {
             e.preventDefault();
             window.location = "/user/unlink/facebook";
         });
+
+        $('#unlink_google').click(function(e){
+            e.preventDefault();
+            window.location = "/user/unlink/google";
+        });
+
         $("#userEdit").submit(function(e){
             e.preventDefault();
             var editors = tinyMCE.editors;

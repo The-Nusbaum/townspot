@@ -1,0 +1,143 @@
+<div id="review-videos" class="row">
+    <form id="reviewForm" action="/videos/submit-vimeo" method="post" class="col-md-12">
+        <div class="row col-md-12">
+            <div class="col-md-8">Please provide a title & description for each video, then hit the "Submit" button</div>
+        </div>
+        <div class="row col-md-12">
+        <?php foreach ($videos as $v): ?>
+            <div class="media col-md-12 well">
+                <div class="media-left col-md-4" style="background-image: url(<?= $v['pictures']['sizes'][2]['link']?>);">
+                </div>
+                <div class="media-body col-md-8">
+                    <div class="form-group">
+                        <!-- title,description,source,length,picture -->
+                        <label for="title" class="required">Title</label>
+                        <input type="text" class="title form-control" value="<?= $v['name'] ?>"
+                               name="data[<?= $v['uri'] ?>][title]">
+                    </div>
+                    <div class="form-group">
+                        <label for="description" class="required">Description</label>
+                        <textarea class="description form-control"
+                               name="data[<?= $v['uri'] ?>][description]"><?= $v['description'] ?></textarea>
+                    </div>
+                    <?php $this->Location()->setMulti(true); ?>
+                    <?php $this->Location()->setName("data[{$v['uri']}][%name%]"); ?>
+                    <div class="form-group">
+                        <?= $this->Location()->countries($authdUser) ?>
+                    </div>
+                    <div class="form-group">
+                        <?= $this->Location()->provinces($user->getCountry()->getId(), $authdUser) ?>
+                    </div>
+                    <div class="form-group">
+                        <?= $this->Location()->cities($user->getProvince()->getId(), $authdUser) ?>
+                    </div>
+                    <div class="checkbox">
+                        <label class="required">
+                            <input type="checkbox" name="data[<?= $v['uri'] ?>][authorized]"> Yes, I am authorized to post this video pursuant to <a href="http://townspot.local/video-submission-agreement">TownSpot's Video Submission Agreement.</a>
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="data[<?= $v['uri'] ?>][contact]"> Yes, allow users to message me (optional)
+                        </label>
+                    </div>
+                    <input type="hidden" class="source" value="<?= $v['link'] ?>"
+                           name="data[<?= $v['uri'] ?>][source]">
+                    <input type="hidden" class="length" value="<?= $v['duration'] ?>"
+                           name="data[<?= $v['uri'] ?>][length]">
+                    <input type="hidden" class="picture" value="<?= $v['pictures']['sizes'][2]['link'] ?>"
+                           name="data[<?= $v['uri'] ?>][picture]">
+                </div>
+            </div>
+        <?php endforeach; ?>
+            <div class="row col-md-12">
+                <div class="col-md-8">&nbsp;</div>
+                <button id="submit-videos" class="btn btn-primary btn-lg col-md-12">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    function getStates($parent){
+        $parent.find('.province_id option:not(:first)').remove();
+        $parent.find('.province_id option:first').text('loading...');
+        $parent.find('.city_id option:not(:first)').remove();
+        $parent.find('.city_id option:first').text('loading...');
+        $.get(
+            '/api/province/getList/' +  $parent.find('.country_id').val(),
+            function(response){
+                var data = response.data;
+                if(data.length) {
+                    $parent.find('.province_id option:first').text('Please Select a State');
+                    $(data).each(function(){
+                        $parent.find('.province_id').append("<option value='"+ this.id +"'>"+ this.name +"</option>");
+                    });
+                    $parent.find('.city_id option:first').text('Please Select a State');
+                    $parent.find('.province_id, .city_id, [for=province_id], [for=city_id]').show();
+                } else {
+                    $parent.find('.province_id, #city_id, [for=province_id], [for=city_id]').hide();
+                }
+            }
+        );
+    }
+    function getCities($parent) {
+        $parent.find('.city_id option:not(:first)').remove();
+        $parent.find('.city_id option:first').text('loading...');
+        $.get(
+            '/api/city/getList/' +  $parent.find('.province_id').val(),
+            function (response) {
+                var data = response.data;
+                if (data.length) {
+                    $parent.find('.city_id option:first').text('Please Select a City');
+                    $(data).each(function () {
+                        $parent.find('.city_id').append("<option value='" + this.id + "'>" + this.name + "</option>");
+                    });
+                    $parent.find('.city_id option:first').text('Please Select a City');
+                    $parent.find('.city_id').show();
+                } else {
+                    $parent.find('.city_id option:first').text('Not Applicable');
+                }
+            }
+        );
+    }
+
+    function validate_fb() {
+        $('.formError').removeClass('.formError');
+        var val_error = false;
+        $('label.required + input, label.required + textarea, label.required + select, label.required > input').each(function(){
+            var $this = $(this);
+            console.log($this);
+            var error = false;
+            if($this.is('input,textarea') && $this.val().length == 0) {
+                error = true;
+            } else if($this.is('select') && ($this.val() == 0 || $this.val() == '' || $this.val() == undefined)) {
+                error = true;
+            } else if($this.is('[type=checkbox]') && !$this.is(':checked')) {
+                //custom error stuff
+                $this.parent().addClass('formError');
+            }
+
+            if(error) {
+                $this.addClass('formError');
+                val_error = true;
+            }
+        });
+
+        return !val_error;
+    }
+$(document).ready(function() {
+    $('.country_id').change(function () {
+        $parent = $(this).parents('.media');
+        getStates($parent);
+    });
+    $('.province_id').change(function () {
+        $parent = $(this).parents('.media');
+        getCities($parent);
+    });
+
+    $('#reviewForm').submit(function () {
+        return validate_fb();
+    });
+});
+</script>

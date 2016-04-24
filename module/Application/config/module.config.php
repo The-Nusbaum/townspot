@@ -902,6 +902,16 @@ return array(
 							)
 					),
 			),
+			'vimeo-videos' => array(
+					'type' => 'Zend\Mvc\Router\Http\Segment',
+					'options' => array(
+							'route' => '/videos/vimeo-videos',
+							'defaults' => array(
+									'controller' => 'Application\Controller\Video',
+									'action' => 'vimeoVideos'
+							)
+					),
+			),
             'submit-fb' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
                 'options' => array(
@@ -922,6 +932,16 @@ return array(
 							)
 					),
 			),
+			'submit-vimeo' => array(
+					'type' => 'Zend\Mvc\Router\Http\Segment',
+					'options' => array(
+							'route' => '/videos/submit-vimeo',
+							'defaults' => array(
+									'controller' => 'Application\Controller\Video',
+									'action' => 'submitVimeo'
+							)
+					),
+			),
 			'review-fb' => array(
 					'type' => 'Zend\Mvc\Router\Http\Segment',
 					'options' => array(
@@ -939,6 +959,16 @@ return array(
 							'defaults' => array(
 									'controller' => 'Application\Controller\Video',
 									'action' => 'reviewYt'
+							)
+					),
+			),
+			'review-vimeo' => array(
+					'type' => 'Zend\Mvc\Router\Http\Segment',
+					'options' => array(
+							'route' => '/videos/review-vimeo',
+							'defaults' => array(
+									'controller' => 'Application\Controller\Video',
+									'action' => 'reviewVimeo'
 							)
 					),
 			),

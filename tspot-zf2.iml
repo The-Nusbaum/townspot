@@ -61,6 +61,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/ocramius/ocra-service-manager" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/ocramius/proxy-manager" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/opauth/facebook" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/opauth/google" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/opauth/opauth" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/opauth/twitter" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/phpunit/php-code-coverage" />
@@ -176,6 +177,7 @@
           <root url="file://$MODULE_DIR$/vendor/ocramius/ocra-service-manager" />
           <root url="file://$MODULE_DIR$/vendor/ocramius/proxy-manager" />
           <root url="file://$MODULE_DIR$/vendor/opauth/facebook" />
+          <root url="file://$MODULE_DIR$/vendor/opauth/google" />
           <root url="file://$MODULE_DIR$/vendor/opauth/opauth" />
           <root url="file://$MODULE_DIR$/vendor/opauth/twitter" />
           <root url="file://$MODULE_DIR$/vendor/phpunit/php-code-coverage" />
@@ -276,6 +278,7 @@
           <root url="file://$MODULE_DIR$/vendor/ocramius/ocra-service-manager" />
           <root url="file://$MODULE_DIR$/vendor/ocramius/proxy-manager" />
           <root url="file://$MODULE_DIR$/vendor/opauth/facebook" />
+          <root url="file://$MODULE_DIR$/vendor/opauth/google" />
           <root url="file://$MODULE_DIR$/vendor/opauth/opauth" />
           <root url="file://$MODULE_DIR$/vendor/opauth/twitter" />
           <root url="file://$MODULE_DIR$/vendor/phpunit/php-code-coverage" />

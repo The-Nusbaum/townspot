@@ -14,9 +14,10 @@ $settings = array(
         ),
         'Google' => array(
             'client_id' => '872367745273-sbsiuc81kh9o70ok3macc15d2ebpl440.apps.googleusercontent.com',
-            'client_secret' => ' KkR-tZy_lJmcHHzlKtFWDAdD',
-            'scope' => 'https://www.googleapis.com/auth/youtube.readonly'
+            'client_secret' => 'KkR-tZy_lJmcHHzlKtFWDAdD',
+            'scope' => 'profile'
         )
+
     ),
     'check_controller_enabled' => false
 );

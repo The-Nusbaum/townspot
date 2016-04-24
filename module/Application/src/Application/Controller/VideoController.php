@@ -30,6 +30,13 @@ class VideoController extends AbstractActionController
 	  'scope' => 'https://www.googleapis.com/auth/youtube.readonly'
   );
 
+	protected $_vimeo_info = array(
+		'id' => '938463ff9c7bc67df401a52dbac998c04153ce99',
+		'secret' => 'VDgEGqc6tmL9rmaksJMJT+PwvkrAE8+LQLsatL92Z3Lc4ZM9T0taXZZN+SOeuH2zdYG14skXtu/rVPhtU6erAXVIInyUMPQtNqZvX6ztmgpfLkt4tTdNRfzHbLTWf416',
+		'authUrl' => 'https://api.vimeo.com/oauth/authorize'
+
+	);
+
 	public function __construct() 
 	{
         $this->_view = new ViewModel();
@@ -1124,7 +1131,7 @@ EOT;
 		foreach($ids as $i => $id) {
 			$items[] = $yt->videos->listVideos("snippet,contentDetails,statistics",array('id' => $id))->getItems()[0];
 			$foo = $mediaMapper->findBy(array('_url' => "https://www.youtube.com/watch?v=$id"));
-			$inSys = (bool) $mediaMapper->findOneByUrl("https://www.youtube.com/watch?v=$id");
+			$inSys = $mediaMapper->findOneByUrl("https://www.youtube.com/watch?v=$id");
 			if($inSys) $in_system[] = $i;
 		}
 		$this->_view->setVariable('videos',$items);
@@ -1155,56 +1162,169 @@ EOT;
 		$this->_view->setVariable('videos', $videos);
 		return $this->_view;
 	}
+
+    public function reviewVimeoAction()
+    {
+        $creds = $this->_vimeo_info;
+        $vimeo = new \Vimeo\Vimeo($creds['id'],$creds['secret']);
+        $vimeo->setToken($_SESSION['vimeoToken']);
+
+        $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+        $user = $userMapper->find($this->auth->getIdentity());
+        $this->_view->setVariable('user', $user);
+
+        $ids = $this->params()->fromPost('data');
+
+        foreach ($ids as $id) {
+            $vVideo = $vimeo->request(urldecode($id));
+            $videos[] = $vVideo['body'];
+        }
+        //var_dump('<pre>',$videos);die;
+        $this->_view->setVariable('videos', $videos);
+        return $this->_view;
+    }
+
+    public function submitVimeoAction() {
+        $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+        $mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
+        $trackingMapper = new \Townspot\Tracking\Mapper($this->getServiceLocator());
+        $countryMapper = new \Townspot\Country\Mapper($this->getServiceLocator());
+        $provinceMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
+        $cityMapper = new \Townspot\City\Mapper($this->getServiceLocator());
+
+        $user = $userMapper->find($this->zfcUserAuthentication()->getIdentity()->getId());
+
+        $data = $this->params()->fromPost('data');
+
+        $count = 0;
+
+        foreach ($data as $fbId => $v) {
+            $city = $cityMapper->find($v['city_id']);
+            $province = $provinceMapper->find($v['province_id']);
+            $country = $countryMapper->find($v['country_id']);
+            $video = new \Townspot\Media\Entity();
+            $video->setUser($user)
+                ->setCountry($country)
+                ->setProvince($province)
+                ->setCity($city)
+                ->setTitle($v['title'])
+                ->setDescription($v['description'])
+                ->setUrl($v['source'])
+                ->setPreviewImage($v['picture'])
+                ->setAuthorised($v['authorised'])
+                ->setAllowContact($v['contact'])
+                ->setSource('vimeo')
+                ->setDuration($v['length'])
+                ->setOnMediaServer(true);
+            $mediaMapper->setEntity($video)->save();
+
+            $tracking = new \Townspot\Tracking\Entity();
+            $tracking->setUser($user->getId())
+                ->setType("vimeo_upload")
+                ->setValue($video->getId());
+            $trackingMapper->setEntity($tracking)->save();
+
+            $count++;
+        }
+        $_SESSION['flash'] = array();
+        if ($count > 1) $_SESSION['flash'][] = "Your upload of $count videos was successful. They will be reviewed by our staff for content and quality.";
+        else $_SESSION['flash'][] = 'Your video upload was successful. It will be reviewed by our staff for content and quality.';
+
+        return $this->redirect()->toRoute('upload');
+    }
+
 	public function submitYtAction() {
-		$userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
-		$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
-		$trackingMapper = new \Townspot\Tracking\Mapper($this->getServiceLocator());
-		$countryMapper = new \Townspot\Country\Mapper($this->getServiceLocator());
-		$provinceMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
-		$cityMapper = new \Townspot\City\Mapper($this->getServiceLocator());
+    $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+    $mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
+    $trackingMapper = new \Townspot\Tracking\Mapper($this->getServiceLocator());
+    $countryMapper = new \Townspot\Country\Mapper($this->getServiceLocator());
+    $provinceMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
+    $cityMapper = new \Townspot\City\Mapper($this->getServiceLocator());
 
-		$user = $userMapper->find($this->zfcUserAuthentication()->getIdentity()->getId());
+    $user = $userMapper->find($this->zfcUserAuthentication()->getIdentity()->getId());
 
-		$data = $this->params()->fromPost('data');
+    $data = $this->params()->fromPost('data');
 
-		$count = 0;
+    $count = 0;
 
-		foreach ($data as $fbId => $v) {
-			$city = $cityMapper->find($v['city_id']);
-			$province = $provinceMapper->find($v['province_id']);
-			$country = $countryMapper->find($v['country_id']);
-			$video = new \Townspot\Media\Entity();
-			$video->setUser($user)
-					->setCountry($country)
-					->setProvince($province)
-					->setCity($city)
-					->setTitle($v['title'])
-					->setDescription($v['description'])
-					->setUrl($v['source'])
-					->setPreviewImage($v['picture'])
-					->setAuthorised($v['authorised'])
-					->setAllowContact($v['contact'])
-					->setSource('youtube')
-					->setDuration($v['length'])
-					->setOnMediaServer(true);
-			$mediaMapper->setEntity($video)->save();
+    foreach ($data as $fbId => $v) {
+        $city = $cityMapper->find($v['city_id']);
+        $province = $provinceMapper->find($v['province_id']);
+        $country = $countryMapper->find($v['country_id']);
+        $video = new \Townspot\Media\Entity();
+        $video->setUser($user)
+            ->setCountry($country)
+            ->setProvince($province)
+            ->setCity($city)
+            ->setTitle($v['title'])
+            ->setDescription($v['description'])
+            ->setUrl($v['source'])
+            ->setPreviewImage($v['picture'])
+            ->setAuthorised($v['authorised'])
+            ->setAllowContact($v['contact'])
+            ->setSource('youtube')
+            ->setDuration($v['length'])
+            ->setOnMediaServer(true);
+        $mediaMapper->setEntity($video)->save();
 
-			$tracking = new \Townspot\Tracking\Entity();
-			$tracking->setUser($user->getId())
-					->setType("youtube_upload")
-					->setValue($video->getId());
-			$trackingMapper->setEntity($tracking)->save();
+        $tracking = new \Townspot\Tracking\Entity();
+        $tracking->setUser($user->getId())
+            ->setType("youtube_upload")
+            ->setValue($video->getId());
+        $trackingMapper->setEntity($tracking)->save();
 
-			$count++;
-		}
-		$_SESSION['flash'] = array();
-		if ($count > 1) $_SESSION['flash'][] = "Your upload of $count videos was successful. They will be reviewed by our staff for content and quality.";
-		else $_SESSION['flash'][] = 'Your video upload was successful. It will be reviewed by our staff for content and quality.';
+        $count++;
+    }
+    $_SESSION['flash'] = array();
+    if ($count > 1) $_SESSION['flash'][] = "Your upload of $count videos was successful. They will be reviewed by our staff for content and quality.";
+    else $_SESSION['flash'][] = 'Your video upload was successful. It will be reviewed by our staff for content and quality.';
 
-		return $this->redirect()->toRoute('upload');
-	}
+    return $this->redirect()->toRoute('upload');
+}
+
+    public function vimeoVideosAction() {
+        $creds = $this->_vimeo_info;
+        $vimeo = new \Vimeo\Vimeo($creds['id'],$creds['secret']);
+        $code = $this->params()->fromQuery('code');
+
+        if(!$code) {
+            $state = time();
+            $_SESSION['state'] = $state;
+            return $this->redirect()->toUrl(
+                $vimeo->buildAuthorizationEndpoint(
+                    'http://local.townspot.tv/videos/vimeo-videos',
+                    array('public'),
+                    $state
+                )
+            );
+        }
+
+        $token = $vimeo->accessToken($code, "http://local.townspot.tv/videos/vimeo-videos");
+        $vimeo->setToken($token['body']['access_token']);
+        $_SESSION['vimeoToken'] = $token['body']['access_token'];
+        $raw = $vimeo->request("/me/videos");
+
+        $mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
+        foreach($raw['body']['data'] as $v) {
+            $media = $mediaMapper->findByUrl($v['link']);
+            if($media) $v['in_system'] = true;
+            $videos[] = $v;
+        }
+        $this->_view->setVariable('videos', $videos);
+        return $this->_view;
+    }
 
 	public function testAction() {
-
+        $creds = $this->_vimeo_info;
+        $vimeo = new \Vimeo\Vimeo($creds['id'],$creds['secret']);
+        $state = time();
+        $_SESSION['state'] = $state;
+        return $this->redirect()->toUrl(
+            $vimeo->buildAuthorizationEndpoint(
+                'http://local.townspot.tv/videos/vimeo-videos',
+                array('public'),
+                $state
+            )
+        );
 	}
 }
