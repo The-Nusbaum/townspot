@@ -7,7 +7,7 @@ $(document).ready(function(){
 		$(this).removeClass('selected');
 	});
 
-	$('#video-vimeoVideos #submit-videos,#video-fbVideos #submit-videos,#video-ytVideos #submit-videos').click(function(e){
+	$('#video-dailymotionVideos #submit-videos, #video-vimeoVideos #submit-videos,#video-fbVideos #submit-videos,#video-ytVideos #submit-videos').click(function(e){
 		e.preventDefault();
 		var data = [];
 		$('.wrapper.selected').each(function(){

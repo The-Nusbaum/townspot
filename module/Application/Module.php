@@ -82,29 +82,33 @@ class Module
             $target = $e->getTarget();
 
             $provider = $e->getParam('provider');
-/*
-            echo '<pre>';
-            var_dump(get_class($e->getTarget()));
-            var_dump($e->getParam('provider'));
-            var_dump('$authenticationResult->isValid()', $authenticationResult->isValid());
-            var_dump('$authenticationService->hasIdentity()', $authenticationService->hasIdentity());
-            var_dump('$authenticationService->getIdentity()', $authenticationService->getIdentity());
-            var_dump('$authenticationResult->getCode()', $authenticationResult->getCode());
-            var_dump('$authenticationResult->getIdentity()', $authenticationResult->getIdentity());
-            print_r($authenticationResult->getIdentity());
-            var_dump('$authenticationResult->getMessages()', $authenticationResult->getMessages());
-die();
-*/
 
+
+//            echo '<pre>';
+//            var_dump(get_class($e->getTarget()));
+//            var_dump($e->getParam('provider'));
+//            var_dump('$authenticationResult->isValid()', $authenticationResult->isValid());
+//            var_dump('$authenticationService->hasIdentity()', $authenticationService->hasIdentity());
+//            var_dump('$authenticationService->getIdentity()', $authenticationService->getIdentity());
+//            var_dump('$authenticationResult->getCode()', $authenticationResult->getCode());
+//            var_dump('$authenticationResult->getIdentity()', $authenticationResult->getIdentity());
+//            print_r($authenticationResult->getIdentity());
+//            var_dump('$authenticationResult->getMessages()', $authenticationResult->getMessages());
+//            var_dump($authenticationResult()->get);
+//die();
+
+            if ($provider == 'google' || $provider == 'twitter') {
+                $_SESSION['authData'] = $authenticationResult->getIdentity()['lfjopauth']['opauth'][$provider]['auth'];
+            }
 
             if($authenticationResult->isValid() && $authenticationService->hasIdentity()) {
                 $userOauthMapper = new \Townspot\UserOauth\Mapper($e->getTarget()->getServiceLocator());
                 try {
                     $external_id = $authenticationResult->getIdentity()['lfjopauth']['opauth'][$provider]["auth"]["uid"];
                     $userOauth = $userOauthMapper->findOneByExternalId($external_id);
-
                     if (empty($userOauth)) {
-                        throw new Exception('No Linked Account Found');
+                        header("Location: /user/social-register/$provider/$external_id");
+                        die;
                     }
                     $user = $userOauth->getUser();
                     $_SESSION['tmpData'] = base64_encode($user->getId());

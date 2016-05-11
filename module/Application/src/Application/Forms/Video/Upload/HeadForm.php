@@ -47,7 +47,8 @@ class HeadForm extends Form {
                 'label' => 'Country',
                 'placeholder' => 'Please select a Country',
                 'errorId' => 'nocountry',
-                'errorMessage' => 'You must choose a country'
+                'errorMessage' => 'You must choose a country',
+                'width' => 4
             ),
             'options' => array(
                 'value_options' => $countries
@@ -61,7 +62,7 @@ class HeadForm extends Form {
                 'type'  => 'select',
                 'label' => 'State',
                 'placeholder' => 'Please select a State',
-                'width' => 6,
+                'width' => 4,
                 'errorId' => 'nostate',
                 'errorMessage' => 'You must choose a state'
             ),
@@ -76,12 +77,30 @@ class HeadForm extends Form {
                 'type'  => 'select',
                 'label' => 'City',
                 'placeholder' => 'Please select a City',
-                'width' => 6,
+                'width' => 4,
                 'errorId' => 'noAuth',
                 'errorMessage' => 'You must confirm that you are authorized to post this video'
             ),
             'options' => array(
                 'value_options' => $cities
+            ),
+        ));
+        $this->add(array(
+            'name' => 'allow_contact',
+            'attributes' => array(
+                'type' => 'checkbox',
+                'label' => 'Yes, allow users to message me (optional)',
+                'width' => '12',
+            ),
+        ));
+        $this->add(array(
+            'name' => 'authorised',
+            'attributes' => array(
+                'type' => 'checkbox',
+                'label' => ' Yes, I am authorized to post this/these video(s) pursuant to <a href="video-submission-agreement" target="_blank">TownSpot\'s Video Submission Agreement</a>.',
+                'width' => '12',
+                'errorId' => 'noauth',
+                'errorMessage' => 'You must confirm that you are authorized to post this video'
             ),
         ));
     }

@@ -1,52 +1,43 @@
 <div id="review-videos" class="row">
-    <form id="reviewForm" action="/videos/submit-fb" method="post" class="col-md-12">
+    <form id="reviewForm" action="/videos/submit/<?= $source ?>" method="post" class="col-md-12">
         <div class="row col-md-12">
             <div class="col-md-8">Please provide a title & description for each video, then hit the "Submit" button</div>
         </div>
         <div class="row col-md-12">
         <?php foreach ($videos as $v): ?>
             <div class="media col-md-12 well">
-                <div class="media-left col-md-4" style="background-image: url(<?= $v['picture'] ?>);">
+                <div class="media-left col-md-4" style="background-image: url(<?= $v['thumbnail'] ?>);">
                 </div>
                 <div class="media-body col-md-8">
                     <div class="form-group">
-                        <!-- title,description,source,length,picture -->
                         <label for="title" class="required">Title</label>
                         <input type="text" class="title form-control" value="<?= $v['title'] ?>"
                                name="data[<?= $v['id'] ?>][title]">
                     </div>
                     <div class="form-group">
                         <label for="description" class="required">Description</label>
-                        <textarea class="description form-control" value="<?= $v['title'] ?>"
+                        <textarea class="description form-control" value="<?= $v['description'] ?>"
                                name="data[<?= $v['id'] ?>][description]"><?= $v['description'] ?></textarea>
                     </div>
-                    <?php $this->Location()->setMulti(true); ?>
-                    <?php $this->Location()->setName("data[{$v['id']}][%name%]"); ?>
-                    <div class="form-group">
-                        <?= $this->Location()->countries($authdUser) ?>
-                    </div>
-                    <div class="form-group">
-                        <?= $this->Location()->provinces($user->getCountry()->getId(), $authdUser) ?>
-                    </div>
-                    <div class="form-group">
-                        <?= $this->Location()->cities($user->getProvince()->getId(), $authdUser) ?>
-                    </div>
-                    <div class="checkbox">
-                        <label class="required">
-                            <input type="checkbox" name="data[<?= $v['id'] ?>][authorized]"> Yes, I am authorized to post this video pursuant to <a href="http://townspot.local/video-submission-agreement">TownSpot's Video Submission Agreement.</a>
-                        </label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="data[<?= $v['id'] ?>][contact]"> Yes, allow users to message me (optional)
-                        </label>
-                    </div>
-                    <input type="hidden" class="source" value="<?= $v['source'] ?>"
+
+                    <input type="hidden" class="url" value="<?= $v['url'] ?>"
+                           name="data[<?= $v['id'] ?>][url]">
+                    <input type="hidden" class="source" value="<?= $source ?>"
                            name="data[<?= $v['id'] ?>][source]">
-                    <input type="hidden" class="length" value="<?= $v['length'] ?>"
-                           name="data[<?= $v['id'] ?>][length]">
-                    <input type="hidden" class="picture" value="<?= $v['picture'] ?>"
-                           name="data[<?= $v['id'] ?>][picture]">
+                    <input type="hidden" class="duration" value="<?= $v['duration'] ?>"
+                           name="data[<?= $v['id'] ?>][duration]">
+                    <input type="hidden" class="thumbnail" value="<?= $v['thumbnail'] ?>"
+                           name="data[<?= $v['id'] ?>][thumbnail]">
+                    <input type="hidden" class="country_id" value=""
+                           name="data[<?= $v['id'] ?>][country_id]">
+                    <input type="hidden" class="province_id" value=""
+                           name="data[<?= $v['id'] ?>][province_id]">
+                    <input type="hidden" class="city_id" value=""
+                           name="data[<?= $v['id'] ?>][city_id]">
+                    <input type="hidden" class="allow_contact" value=""
+                           name="data[<?= $v['id'] ?>][allow_contact]">
+                    <input type="hidden" class="authorised" value=""
+                           name="data[<?= $v['id'] ?>][authorised]">
                 </div>
             </div>
         <?php endforeach; ?>
@@ -126,18 +117,11 @@
 
         return !val_error;
     }
-$(document).ready(function() {
-    $('.country_id').change(function () {
-        $parent = $(this).parents('.media');
-        getStates($parent);
+    $(document).ready(function(){
+        $('.country_id').val(localStorage.getItem('countryId'));
+        $('.province_id').val(localStorage.getItem('provinceId'));
+        $('.city_id').val(localStorage.getItem('cityId'));
+        $('.authorised').val(localStorage.getItem('authorised'));
+        $('.allow_contact').val(localStorage.getItem('allowContact'));
     });
-    $('.province_id').change(function () {
-        $parent = $(this).parents('.media');
-        getCities($parent);
-    });
-
-    $('#reviewForm').submit(function () {
-        return validate_fb();
-    });
-});
 </script>

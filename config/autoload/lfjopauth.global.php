@@ -15,7 +15,7 @@ $settings = array(
         'Google' => array(
             'client_id' => '872367745273-sbsiuc81kh9o70ok3macc15d2ebpl440.apps.googleusercontent.com',
             'client_secret' => 'KkR-tZy_lJmcHHzlKtFWDAdD',
-            'scope' => 'profile'
+            'scope' => "email"
         )
 
     ),
