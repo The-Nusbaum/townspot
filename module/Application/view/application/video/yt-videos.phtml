@@ -1,3 +1,6 @@
+<div class='hidden'>
+	<?php var_dump($in_system); ?>
+</div>
 <form id="ytVideosForm" class="row" action="/videos/review-yt" method="post">
 	<div class="col-md-8">
 		Please click on the video(s) you want to upload to TownSpot, then click the "Continue" button,
@@ -7,7 +10,10 @@
 	<div id="pick-videos" class="row">
 	<?php foreach($videos as $i =>  $v): ?>
 	  <div class="media col-md-6">
-		<?php $wrapperClass = (in_array($i, $in_system))? ' panel panel-default' : ' well'; ?>
+<div class='hidden'>
+        <?php var_dump($in_system,  in_array($i, $in_system)); ?>
+</div>
+		<?php $wrapperClass = !in_array($i, $in_system)? ' panel panel-default' : ' well'; ?>
 		  <div class="wrapper col-md-12<?= $wrapperClass ?>" data-id="<?= $v->getId() ?>">
 			<div class="media-left col-md-6" style="background-image: url(<?= $v->getSnippet()['thumbnails']['high']['url'] ?>);">
 				&nbsp;

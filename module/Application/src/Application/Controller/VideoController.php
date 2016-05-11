@@ -1292,18 +1292,17 @@ EOT;
             $_SESSION['state'] = $state;
             return $this->redirect()->toUrl(
                 $vimeo->buildAuthorizationEndpoint(
-                    'http://local.townspot.tv/videos/vimeo-videos',
+                    'http://townspot.tv/videos/vimeo-videos',
                     array('public'),
                     $state
                 )
             );
         }
 
-        $token = $vimeo->accessToken($code, "http://local.townspot.tv/videos/vimeo-videos");
+        $token = $vimeo->accessToken($code, "http://townspot.tv/videos/vimeo-videos");
         $vimeo->setToken($token['body']['access_token']);
         $_SESSION['vimeoToken'] = $token['body']['access_token'];
         $raw = $vimeo->request("/me/videos");
-
         $mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
         foreach($raw['body']['data'] as $v) {
             $media = $mediaMapper->findByUrl($v['link']);
