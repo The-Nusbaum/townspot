@@ -527,6 +527,7 @@ class UserController extends AbstractActionController
     public function socialRegisterAction() {
         $provider = $this->params()->fromRoute('provider');
         if(count($_POST)) {
+            $external_id = $this->params()->fromPost('external_id');
             $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
             $roleMapper = new \Townspot\UserRole\Mapper($this->getServiceLocator());
             $trackingMapper = new \Townspot\Tracking\Mapper($this->getServiceLocator());
@@ -564,16 +565,18 @@ class UserController extends AbstractActionController
 
             $userMapper->setEntity($user)->save();
 
+            $_SESSION['newUser'] = $user;
+
             $role = $roleMapper->find('User');
             $role->addUser($user);
 
             $userAuth = new \Townspot\UserOauth\Entity();
-            $userAuth->setExternalId($this->params()->fromPost('external_id'))
+            $userAuth->setExternalId($external_id)
                 ->setSource($provider)
                 ->setUser($user);
 
             $userAuthMapper->setEntity($userAuth)->save();
-            return $this->redirect()->toUrl("/user/opauth/login/$provider");
+            return $this->redirect()->toUrl("/validate-new-user/$provider/$external_id");
         } else {
             switch($provider) {
                 case 'facebook':
@@ -619,6 +622,26 @@ class UserController extends AbstractActionController
             } else {
                 die('nope');
             }
+        }
+    }
+
+    public function validateNewUserAction()
+    {
+        $userAuthMapper = new \Townspot\UserOauth\Mapper($this->getServiceLocator());
+
+        $p = $this->params()->fromRoute('provider');
+        $i = $this->params()->fromRoute('external_id');
+
+        $auth = $userAuthMapper->findOneBy(
+            array(
+                '_source' => $p,
+                '_external_id' => $i
+            )
+        );
+
+        if($auth) {
+            $this->auth->authenticate(new \Townspot\Authentication\Adapter\ForceLogin($auth->getUser()));
+            return $this->redirect()->toRoute('dashboard');
         }
     }
 }
