@@ -30,7 +30,15 @@
         </div>
         <div class="row">
             <div class="col-sm-6">
+                <?php if(
+                    preg_match("/fbcdn/",$user->getImageUrl())
+                    || preg_match("/googleusercontent/",$user->getImageUrl())
+                    || preg_match("/twimg/",$user->getImageUrl())
+                ) : ?>
+                <img class='profile-pic img-responsive' src="<?= $user->getImageUrl() ?>" alt="a"/>
+                <?php else: ?>
                 <img class='profile-pic img-responsive' src="<?= $this->img('user',$user->getId(),260) ?>" alt="a"/>
+                <?php endif; ?>
                 <h3>Username</h3>
                 <div><?= $user->getUsername() ?></div>
                 <?php if ($canEdit && $authdUser) : ?>

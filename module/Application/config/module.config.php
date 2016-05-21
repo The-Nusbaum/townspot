@@ -912,40 +912,30 @@ return array(
 							)
 					),
 			),
-            'submit-fb' => array(
-                'type' => 'Zend\Mvc\Router\Http\Segment',
-                'options' => array(
-                    'route' => '/videos/submit-fb',
-                    'defaults' => array(
-                        'controller' => 'Application\Controller\Video',
-                        'action' => 'submitFb'
-                    )
-                ),          
-            ),
-			'submit-yt' => array(
+			'dailymotion-videos' => array(
 					'type' => 'Zend\Mvc\Router\Http\Segment',
 					'options' => array(
-							'route' => '/videos/submit-yt',
+							'route' => '/videos/dailymotion-videos',
 							'defaults' => array(
 									'controller' => 'Application\Controller\Video',
-									'action' => 'submitYt'
+									'action' => 'dailymotionVideos'
 							)
 					),
 			),
-			'submit-vimeo' => array(
+			'submit' => array(
 					'type' => 'Zend\Mvc\Router\Http\Segment',
 					'options' => array(
-							'route' => '/videos/submit-vimeo',
+							'route' => '/videos/submit/[:source]',
 							'defaults' => array(
 									'controller' => 'Application\Controller\Video',
-									'action' => 'submitVimeo'
+									'action' => 'submit'
 							)
 					),
 			),
 			'review-fb' => array(
 					'type' => 'Zend\Mvc\Router\Http\Segment',
 					'options' => array(
-							'route' => '/videos/review-fb',
+							'route' => '/videos/review-facebook',
 							'defaults' => array(
 									'controller' => 'Application\Controller\Video',
 									'action' => 'reviewFb'
@@ -955,7 +945,7 @@ return array(
 			'review-yt' => array(
 					'type' => 'Zend\Mvc\Router\Http\Segment',
 					'options' => array(
-							'route' => '/videos/review-yt',
+							'route' => '/videos/review-youtube',
 							'defaults' => array(
 									'controller' => 'Application\Controller\Video',
 									'action' => 'reviewYt'
@@ -969,6 +959,26 @@ return array(
 							'defaults' => array(
 									'controller' => 'Application\Controller\Video',
 									'action' => 'reviewVimeo'
+							)
+					),
+			),
+			'review-dailymotion' => array(
+					'type' => 'Zend\Mvc\Router\Http\Segment',
+					'options' => array(
+							'route' => '/videos/review-dailymotion',
+							'defaults' => array(
+									'controller' => 'Application\Controller\Video',
+									'action' => 'reviewDailymotion'
+							)
+					),
+			),
+			'social-register' => array(
+					'type' => 'Zend\Mvc\Router\Http\Segment',
+					'options' => array(
+							'route' => '/user/social-register/[:provider][/:external_id]',
+							'defaults' => array(
+									'controller' => 'Application\Controller\User',
+									'action' => 'socialRegister'
 							)
 					),
 			),

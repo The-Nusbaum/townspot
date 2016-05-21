@@ -28,6 +28,15 @@ class UserController extends AbstractActionController
         $this->auth = new \Zend\Authentication\AuthenticationService();
     }
 
+    protected $_api_info = array(
+        'applicationId' => 'Townspot',
+        'clientId' => "872367745273-sbsiuc81kh9o70ok3macc15d2ebpl440.apps.googleusercontent.com",
+        'developerId' => "AIzaSyCa1RYJsf-C94cTQo34GC59DkiijUq_54s",
+        'clientSecret' => 'KkR-tZy_lJmcHHzlKtFWDAdD',
+        'scope' => 'https://www.googleapis.com/auth/youtube.readonly'
+//        'scope' => 'https://www.googleapis.com/auth/plus.me'
+    );
+
     protected  function auth() {
         if(!empty($_SESSION['tmpData'])) {
             $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
@@ -109,6 +118,7 @@ class UserController extends AbstractActionController
         $this->_view->setVariable('TZoffset', 0);
         return $this->_view;
     }
+
     protected function _process($values)
     {
     // Get our authentication adapter and check credentials
@@ -185,6 +195,9 @@ class UserController extends AbstractActionController
         }
         $userData = $user->toArray();
         $userData['user_id'] = $userData['id'];
+        $userData['description'] = $userData['descriptions'];
+        $userData['emailNotifications'] = $userData['emailNotification'];
+
         $form->setData($userData);
 
         $form->setData($user->toArray());
@@ -430,5 +443,182 @@ class UserController extends AbstractActionController
             }
         }
         $this->redirect()->toUrl('/user/login');
+    }
+
+    private function _fb() {
+        return new \Facebook\Facebook([
+            'app_id' => '333808790029898',
+            'app_secret' => '7315cc6812046cf91419959bdd359bec',
+            'default_graph_version' => 'v2.5',
+        ]);
+    }
+
+    private function _facebookReg() {
+        $fb = $this->_fb();
+        $helper = $fb->getRedirectLoginHelper();
+        $code = $this->params()->fromQuery('code');
+        $id = $this->params()->fromRoute('external_id');
+        if(!$code) {
+            $_SESSION['external_id'] = $id;
+            $permissions = ['public_profile'];
+            $loginUrl = $helper->getLoginUrl("http://{$_SERVER['HTTP_HOST']}/user/social-register/facebook", $permissions);
+            header("Location: $loginUrl");
+            die;
+        } else {
+            try {
+                $accessToken = $helper->getAccessToken();
+                $accessToken = $fb->getOAuth2Client()->getLongLivedAccessToken($accessToken);
+                $_SESSION['fb-token'] = $accessToken;
+                $fb->setDefaultAccessToken($accessToken);
+            } catch(Facebook\Exceptions\FacebookResponseException $e) {
+                // When Graph returns an error
+                echo 'Graph returned an error: ' . $e->getMessage();
+                exit;
+            } catch(Facebook\Exceptions\FacebookSDKException $e) {
+                // When validation fails or other local issues
+                echo 'Facebook SDK returned an error: ' . $e->getMessage();
+                exit;
+            }
+            //$fbReq = new \Facebook\FacebookRequest($fb->getApp(),$accessToken,'GET',"/$")
+            $id = $_SESSION['external_id'];
+            $fbData = $fb->get("/$id?fields=id,name,email,picture,first_name,last_name")->getDecodedBody();
+            $fbData['imageUrl'] = $fbData['picture']['data']['url'];
+            $fbData['external_id'] = $fbData['id'];
+            return $fbData;
+        }
+    }
+
+    private function _googleReg() {
+        $id = $this->params()->fromRoute('external_id');
+
+        $gdata = $_SESSION['authData']['info'];
+        $img = $gdata['image'];
+        $img = substr($img,0,strlen($img) - 2)."300";
+        $data = array(
+            "external_id" => $id,
+            "email" => $gdata['email'],
+            "imageUrl" => $img,
+            "first_name" => $gdata['first_name'],
+            "last_name" => $gdata['last_name']
+        );
+        return $data;
+
+    }
+
+    private function _twitterReg() {
+        $id = $this->params()->fromRoute('external_id');
+
+        $space = strpos($gData['name'],' ');
+        $fname = substr($gdata['name'],0,$space - 1);
+        $lname = substr($gdata['name'],$space + 1, strlen($gdata['name']));
+
+        $gdata = $_SESSION['authData']['info'];
+        $img = $gdata['image'];
+        $data = array(
+            "external_id" => $id,
+            "imageUrl" => $img,
+            "first_name" => $fname,
+            "last_name" => $lname
+        );
+        return $data;
+
+    }
+
+    public function socialRegisterAction() {
+        $provider = $this->params()->fromRoute('provider');
+        if(count($_POST)) {
+            $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+            $roleMapper = new \Townspot\UserRole\Mapper($this->getServiceLocator());
+            $trackingMapper = new \Townspot\Tracking\Mapper($this->getServiceLocator());
+            $countryMapper = new \Townspot\Country\Mapper($this->getServiceLocator());
+            $provinceMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
+            $cityMapper = new \Townspot\City\Mapper($this->getServiceLocator());
+            $userAuthMapper = new \Townspot\UserOauth\Mapper($this->getServiceLocator());
+
+            $country = $countryMapper->find($this->params()->fromPost('country_id'));
+            $province = $provinceMapper->find($this->params()->fromPost('province_id'));
+            $city = $cityMapper->find($this->params()->fromPost('city_id'));
+
+            $user = new \Townspot\User\Entity();
+            $username = strtolower($this->params()->fromPost()['displayName']);
+
+            $username = preg_replace("/[^[:alnum:]-_]*/",'',$username);
+
+            $user->setDisplayName($this->params()->fromPost()['displayName'])
+                ->setUserName($username)
+                ->setWebsite($this->params()->fromPost()['website'])
+                ->setEmail($this->params()->fromPost()['email'])
+                ->setAllowContact($this->params()->fromPost()['allowContact'])
+                ->setAllowHire($this->params()->fromPost()['allowHire'])
+                ->setEmailNotification($this->params()->fromPost()['emailNotifications'])
+                ->setCountry($country)
+                ->setProvince($province)
+                ->setCity($city)
+                ->setFirstName($this->params()->fromPost('first_name'))
+                ->setLastName($this->params()->fromPost('last_name'))
+                ->setImageUrl($this->params()->fromPost('imageUrl'))
+                ->setAboutMe($this->params()->fromPost('aboutMe'))
+                ->setInterests($this->params()->fromPost('interests'))
+                ->setDescriptions($this->params()->fromPost('description'))
+                ->setPassword('bollucks');
+
+            $userMapper->setEntity($user)->save();
+
+            $role = $roleMapper->find('User');
+            $role->addUser($user);
+
+            $userAuth = new \Townspot\UserOauth\Entity();
+            $userAuth->setExternalId($this->params()->fromPost('external_id'))
+                ->setSource($provider)
+                ->setUser($user);
+
+            $userAuthMapper->setEntity($userAuth)->save();
+            return $this->redirect()->toUrl("/user/opauth/login/$provider");
+        } else {
+            switch($provider) {
+                case 'facebook':
+                    $data = $this->_facebookReg();
+                    break;
+                case 'google':
+                    $data = $this->_googleReg();
+                    break;
+                case 'twitter':
+                    $data = $this->_twitterReg();
+                    break;
+                default:
+                    die('no provider');
+            }
+
+            if ($data) {
+                $data['provider'] = $this->params()->fromRoute('provider');
+                $countryMapper = new \Townspot\Country\Mapper($this->getServiceLocator());
+                $countries = $countryMapper->findAll();
+
+                $form = new \Application\Forms\User\SocialRegister('user', $provider, $countries);
+                $form->populateValues($data);
+
+                if($provider == 'twitter') {
+                    $email = $form->get('email');
+                    $email->setAttributes( array(
+                        'type'          => 'text',
+                        'label'         => 'Email',
+                        'length'        => '50',
+                        'width'         => '4',
+                        'errorId'       => 'noemail',
+                        'errorMessage'  => 'You must enter an email address'
+                    ));
+                }
+
+                $this->_view->setVariable('form', $form);
+                $this->_view->setVariable('data', $data);
+
+                $this->getServiceLocator()
+                    ->get('viewhelpermanager')
+                    ->get('HeadScript')->appendFile('/js/userEdit.js');
+                return $this->_view;
+            } else {
+                die('nope');
+            }
+        }
     }
 }

@@ -1,6 +1,6 @@
 <div class="container" id="videoUpload">
     <div class="row">
-        <div class="col-md-10 col-md-offset-1 row">
+        <div class="col-md-12 row">
             <div class="col-sm-12">
                 <h2>Submit a Video</h2>
             </div>
@@ -27,44 +27,32 @@
                 <div class="col-md-4">
                     <?= $videoMediaForm ?>
                 </div>
+                <div class="col-md-12">
+                    <form id="submitForm" action="/videos/review" method="POST" style="display:none;">
+                        <button id="submit" class="form-control btn btn-primary" type="submit">Submit Video</button>
+                    </form>
+                </div>
 
             </div>
             <div class="tab-pane  active" id="youtube">
                 <h3 class="uploadLogo"><img class="youtubelogo" src="/img/youtube.png" alt="youtube"> Submission</h3>
                 <p>Click the button below to select which of your Youtube videos you would like to show on Townspot</p>
-                <a href="/videos/youtube-videos" class="btn btn-primary btn-lg col-md-12">Select Videos</a>
+                <a href="/videos/youtube-videos" class="btn btn-primary btn-lg col-md-12 selectVideos">Select Videos</a>
             </div>
             <div class="tab-pane" id="vimeo">
                 <h3 class="uploadLogo"><img class="vimeologo" src='/img/vimeo.png' alt="vimeo"> Submission</h3>
                 <p>Click the button below to select which of your Vimeo videos you would like to show on Townspot</p>
-                <a href="/videos/vimeo-videos" class="btn btn-primary btn-lg col-md-12">Select Videos</a>
+                <a href="/videos/vimeo-videos" class="btn btn-primary btn-lg col-md-12 selectVideos">Select Videos</a>
             </div>
             <div class="tab-pane" id="facebook">
                 <h3 class="uploadLogo"><img class="fblogo" src='/img/fb.png' alt="Facebook"> Submission</h3>
                 <p>Click the button below to select which of your Facebook videos you would like to show on Townspot</p>
-                <a href="/videos/fb-videos" class="btn btn-primary btn-lg col-md-12">Select Videos</a>
+                <a href="/videos/fb-videos" class="btn btn-primary btn-lg col-md-12 selectVideos">Select Videos</a>
             </div>
             <div class="tab-pane" id="dailymotion">
                 <h3 class="uploadLogo"><img class="dmlogo" src='/img/dailymotion.png' alt="Daily Motion"> Submission</h3>
-                <?= $dmForm ?>
-                <div class="help-block text-center uploadHelp">Just provide us with a <img class="dmlogo" src='/img/dailymotion.png' alt="Daily Motion"> URL and we'll take it from there!</span></div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2" id="footerForm" style="display:none;">
-                <div class="row well well-lg ">
-                    <?= $footerForm ?>
-                </div>
-            </div>
-
-        </div>
-        <div class="row">
-            <div class="col-md-10 col-md-offset-1 form-group">
-                <form id="submitForm" action="/videos/review" method="POST" style="display:none;">
-                    <button id="submit" class="form-control btn btn-primary" type="submit">Submit Video</button>
-                </form>
+                <p>Click the button below to select which of your Dailymotion videos you would like to show on Townspot</p>
+                <a href="/videos/dailymotion-videos" class="btn btn-primary btn-lg col-md-12 selectVideos">Select Videos</a>
             </div>
         </div>
     </div>

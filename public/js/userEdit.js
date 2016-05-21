@@ -37,6 +37,26 @@ var userEdit = {
             window.location = "/custom/login/twitter";
         });
 
+        $('#country_id').change(function(){
+            cId = $(this).val();
+            $target = $('#province_id');
+            $target.children().remove();
+            $target.append("<option>loading...</option>");
+            $.get(
+                '/api/province/getList/'+cId,
+                function(data){
+                    $target = $('#province_id');
+                    if(data.success) {
+                        $target.children().remove();
+                        $target.append("<option>Please select a State/Province</option>");
+                        var states = data.data;
+                        $(states).each(function(){
+                            $target.append('<option value="'+this.id+'">'+this.name+'</option>');
+                        })
+                    }
+                }
+            );
+        });
         $('#province_id').change(function(){
             pId = $(this).val();
             $target = $('#city_id');
@@ -89,6 +109,12 @@ var userEdit = {
             window.location = "/user/unlink/google";
         });
 
+        $("#socialRegister #submit").click(function(e){
+            var editors = tinyMCE.editors;
+
+            if(!userEdit.validate())  e.preventDefault();
+        });
+
         $("#userEdit").submit(function(e){
             e.preventDefault();
             var editors = tinyMCE.editors;
@@ -106,16 +132,11 @@ var userEdit = {
                 }
             });
         });
-
+        $('#socialRegister').attr('action','/user/social-register/'+$('#provider').val());
     },
     validate: function() {
         $('.alert').hide();
         var error = false;
-        if($('#username').val() == ''){
-            error = true;
-            $('.nousername').show();
-        }
-
         if($('#display_name').val() == ''){
             error = true;
             $('.nodisplayname').show();
@@ -126,33 +147,14 @@ var userEdit = {
             $('.noemail').show();
         }
 
-        /*
-        if($('#firstName').val() == ''){
+        if($('#display_name').val() == ''){
             error = true;
-            $('.nofirstname').show();
+            $('.noname').show();
         }
 
-        if($('#lastName').val() == ''){
+        if($('#country_id').val() == ''){
             error = true;
-            $('.nolastname').show();
-        }
-        */
-
-        if($('#password').val() != ''){
-             if($('#password').val() != $('#password2').val()){
-                error = true;
-                $('.noconfirmpass').show();
-            }
-
-            if(!$('#password').val().match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,15}$/)) {
-                error = true;
-                $('.invalidpass').show();
-            }
-        }
-
-        if($('#email').val() == ''){
-            error = true;
-            $('.noemail').show();
+            $('.nocountry').show();
         }
 
         if($('#province_id').val() == ''){
@@ -165,12 +167,11 @@ var userEdit = {
             $('.nocity').show();
         }
 
-        /*
-        if($('#plupPicVal').val() == "http://images.townspot.tv/resizer.php?id=none&type=profile") {
+        if($('#allow_contact').val() == ''){
             error = true;
-            $('.noimage').show();
+            $('.nocity').show();
         }
-        */
+
         return !error;
     },
     checkUsername: function(){

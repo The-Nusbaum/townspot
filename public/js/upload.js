@@ -37,10 +37,35 @@ var upload = {
         });
         $('#country_id').change(function(){
             upload.getStates();
+            localStorage.setItem('countryId', $(this).val());
         });
         $('#province_id').change(function(){
             upload.getCities();
-        })
+            localStorage.setItem('provinceId', $(this).val());
+        });
+        $('#city_id').change(function(){
+            localStorage.setItem('cityId', $(this).val());
+        });
+        $('#allow_contact').click(function(){
+            localStorage.setItem('allowContact',$(this).is(':checked'));
+        });
+        $('#authorised').click(function(){
+            localStorage.setItem('authorised',$(this).is(':checked'));
+        });
+
+        localStorage.setItem('countryId', $('#country_id').val());
+        localStorage.setItem('provinceId', $('#province_id').val());
+        localStorage.setItem('cityId', $('#city_id').val());
+        localStorage.setItem('authorised',false);
+        localStorage.setItem('allowContact',false);
+
+        $('.selectVideos').click(function(e){
+            if(!$('#authorised').is(':checked')) {
+                error = true;
+                $('.noauth').show();
+                e.preventDefault();
+            }
+        });
 
         $('#uploadTabs:not(#fbtab):not(#youtab):not(#vimtab) a').click(function(){
             $('#footerForm').show();
