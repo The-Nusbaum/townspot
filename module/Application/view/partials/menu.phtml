@@ -86,8 +86,8 @@ if($this->zfcUserIdentity()) {
 					$hasAccess = $this->isAllowed($resource,$privilege);
 				}
 			}
+			if($resource == 'admin') $hasAccess = false;
 			if($user && $user->hasRole('Administrator')) $hasAccess = true;
-
 			if ($hasAccess) {
 				$href = ($page instanceof Zend\Navigation\Page\Mvc) ? $page->getHref() : $page->getUri();
 				$href .= ($page->getFragment()) ? '#' . $page->getFragment() : '';
@@ -107,12 +107,16 @@ if($this->zfcUserIdentity()) {
 					if($dValue) $dTrack .= " data-value='$dValue'"; 
 				}
 
+				$access = "data-resource='{$page->getResource()}'";
+				$access .= " data-hasAccess='{$user->hasRole($page->getResource())}'";
+
 				printf('<li><a id="%s" title="%s" target="%s" href="%s"%s>%s</a></li>',
 					$id,
-				  $title,
+				  	$title,
 					$target,
 					$href,
-					$dTrack,
+					$access,
+					//$dTrack,
 					$label
 				);
 			}

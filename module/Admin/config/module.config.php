@@ -402,7 +402,7 @@ return array(
                     'defaults' => array(
                         'controller' => 'Admin\Controller\Section',
                         'action'     => 'media',
-                        'section' 	 => 'D9ily Highlights',
+                        'section' 	 => 'Daily Highlights',
                         'randomPop'  => 5
                     ),
                 ),

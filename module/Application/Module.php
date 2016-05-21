@@ -103,8 +103,14 @@ class Module
 
             if($authenticationResult->isValid() && $authenticationService->hasIdentity()) {
                 $userOauthMapper = new \Townspot\UserOauth\Mapper($e->getTarget()->getServiceLocator());
-                try {
+                if ($_SESSION['newUser']) {
+                    $loginResult = $authenticationService->authenticate(new \Townspot\Authentication\Adapter\ForceLogin($_SESSION['newUser']));
+                    unset($_SESSION['newUser']);
+                } else try {
                     $external_id = $authenticationResult->getIdentity()['lfjopauth']['opauth'][$provider]["auth"]["uid"];
+                    if(!$external_id) {
+                        $external_id = $_SESSION['tmpData']['external_id'];
+                    }
                     $userOauth = $userOauthMapper->findOneByExternalId($external_id);
                     if (empty($userOauth)) {
                         header("Location: /user/social-register/$provider/$external_id");

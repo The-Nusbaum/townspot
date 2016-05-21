@@ -982,6 +982,16 @@ return array(
 							)
 					),
 			),
+			'validate-new-user' => array(
+					'type' => 'Zend\Mvc\Router\Http\Segment',
+					'options' => array(
+							'route' => '/validate-new-user/[:provider]/[:external_id]',
+							'defaults' => array(
+									'controller' => 'Application\Controller\User',
+									'action' => 'validateNewUser'
+							)
+					),
+			),
             'application' => array(
                 'type'    => 'Literal',
                 'options' => array(
@@ -1119,6 +1129,8 @@ return array(
                 'route' 		=> 'admin',
 				'class'			=> 'visible-xs',
 				'resource'		=> 'admin',
+				'privilege'		=> 'Administrator',
+				'target'		=> '_blank'
             ),
         )
     ),
