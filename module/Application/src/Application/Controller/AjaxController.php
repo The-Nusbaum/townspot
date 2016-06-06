@@ -120,7 +120,31 @@ class AjaxController extends AbstractActionController
         $json = new JsonModel($results);
         return $json;
     }
-	
+
+	public function similarVideosAction() {
+		$id = $this->params()->fromRoute('id');
+		$limit = $this->params()->fromRoute('limit');
+		$page = $this->params()->fromRoute('page');
+
+		$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
+		$media = $mediaMapper->find($id);
+
+		$results    = array();
+		foreach($mediaMapper->getMediaLike($media,$limit) as $media) {
+			$m = $media->toArray();
+			$m['username'] = $media->getUser()->getDisplayName();
+			$m['profileLink'] = $media->getUser()->getProfileLink();
+			$m['mediaLink'] = $media->getMediaLink();
+			$m['rate_up'] = count($media->getRatings(1));
+			$m['rate_down'] = count($media->getRatings(0));
+			$m['comment_count'] = count($media->getCommentsAbout());
+
+			$results[] = $m;
+		}
+		$json = new JsonModel($results);
+		return $json;
+	}
+
     public function discoverresultsAction()
     {
 		$data = array();

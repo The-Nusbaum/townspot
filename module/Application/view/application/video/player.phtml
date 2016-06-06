@@ -1,3 +1,4 @@
+<script src="/js/similar-videos.js"></script>
 <?php
 	$artist = $this->media->getUser();
 	$artistName = $artist->getDisplayName();
@@ -98,16 +99,21 @@
 		</div>
 		<div class="col-sm-4">
 			<h3>Similar Videos</h3>
-			<ul id="matching-videos" class="matching-videos">
-<?php foreach ($this->related as $related_video) { ?>
+			<button id="prev-similar" class="col-sm-12"><i class="fa fa-angle-double-up"></i></button>
+			<div id="matching-videos" class="matching-videos">
+<?php foreach ($this->related as $index => $related_video) { ?>
+		<?php break; ?>
+	<?php if($index == 1) : ?>
+		<li><div class="google-ad loading" data-position="rectangle" ></div></li>
+	<?php endif ?>
 				<li><?= $this->VideoBlock($related_video,false); ?></li>
-<?php } ?>			
-			</ul>
+<?php } ?>
+			</div>
 		<?= $this->VideoCarousel($this->related,array(
 			'id' => 'matching-videos-xs',
 			'per_panel' => 3,
-			)); ?>
-			
+		)); ?>
+			<button id="next-similar" class="col-sm-12"><i class="fa fa-angle-double-down"></i></button>
 		</div>
 	</div>
 </div>
@@ -335,11 +341,13 @@
 	</div>
 </div>
 
+<?= $this->partial('partials/backbone/video-template.phtml'); ?>
 <script>
-$().Interactions({
-	videoid: <?= $this->media->getId(); ?>,
-	userid: <?= ($this->zfcUserIdentity()) ? $this->zfcUserIdentity()->getId() : 0; ?>,
-	artistName: '<?= $artistName ?>'
-});
-setInfoButtons();
+	$().Similar({'mediaId': <?= $this->media->getId() ?>});
+	$().Interactions({
+		videoid: <?= $this->media->getId(); ?>,
+		userid: <?= ($this->zfcUserIdentity()) ? $this->zfcUserIdentity()->getId() : 0; ?>,
+		artistName: '<?= $artistName ?>'
+	});
+	setInfoButtons();
 </script>

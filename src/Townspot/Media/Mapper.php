@@ -81,8 +81,9 @@ class Mapper extends AbstractEntityMapper
 		return null;
 	}
 
-	public function getMediaLike($object,$limit=3) 
+	public function getMediaLike($object,$limit=3,$offset = 1)
 	{
+		$offset = $offset - 1;
 		$results = array();
 		$seriesId = 0;
 		$seriesEpisodeMapper = new \Townspot\SeriesEpisode\Mapper($this->getServiceLocator());

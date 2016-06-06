@@ -96,12 +96,18 @@ return array(
                     'view/searchresult.js',
                     'search.js',
                 ),
-                'js/discoverpage.js' => array(
-                    'collection/searchresult.js',
-                    'model/video.js',
-                    'view/searchresult.js',
-                    'discover.js',
-                ),
+				'js/discoverpage.js' => array(
+						'collection/searchresult.js',
+						'model/video.js',
+						'view/searchresult.js',
+						'discover.js',
+				),
+				'js/similar-videos.js' => array(
+						'model/video.js',
+						'view/video.js',
+						'collection/video.js',
+						'similar.js',
+				),
                 'js/admin.js' => array(
 					'trentrichardson/jquery-timepicker-addon/dist/jquery-ui-timepicker-addon.min.js',
                     'datatables/datatables/media/js/jquery.dataTables.js',
@@ -264,7 +270,17 @@ return array(
                     ),
                 ),
             ),
-
+			'similar-videos' => array(
+					'type' => 'Zend\Mvc\Router\Http\Segment',
+					'options' => array(
+							'route'    => '/videos/similar-videos/:id[/:limit]',
+							'defaults' => array(
+									'controller' => 'Application\Controller\Ajax',
+									'action'     => 'similarVideos',
+									'limit'		 => '3'
+							),
+					),
+			),
 			'video_player' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(
