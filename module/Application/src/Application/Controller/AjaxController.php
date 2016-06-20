@@ -320,7 +320,7 @@ class AjaxController extends AbstractActionController
                 if($f->getShareEmail()) {
                     $m = new \Zend\Mail\Message();
                     $m->addFrom('webmaster@townspot.tv', 'Townspot.tv')
-                        ->addTo($f->getUser()->getEmail(), $f->getUser()->getDispayName())
+                        ->addTo($f->getUser()->getEmail(), $f->getUser()->getDisplayName())
                         ->setSubject($subject);
 
                     $m->setBody($bodyPart);
