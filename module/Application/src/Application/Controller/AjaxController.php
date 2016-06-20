@@ -317,15 +317,17 @@ class AjaxController extends AbstractActionController
 			$transport = new Mail\Transport\Sendmail();
 
 			foreach ($user->getFollowedBy() as $f) {
-				$m = new \Zend\Mail\Message();
-				$m->addFrom('webmaster@townspot.tv', 'Townspot.tv')
-						->addTo($f->getEmail(), $f->getDispayName())
-						->setSubject($subject);
+                if($f->getShareEmail()) {
+                    $m = new \Zend\Mail\Message();
+                    $m->addFrom('webmaster@townspot.tv', 'Townspot.tv')
+                        ->addTo($f->getUser()->getEmail(), $f->getUser()->getDispayName())
+                        ->setSubject($subject);
 
-				$m->setBody($bodyPart);
-				$m->setEncoding('UTF-8');
+                    $m->setBody($bodyPart);
+                    $m->setEncoding('UTF-8');
 
-				$transport->send($m);
+                    $transport->send($m);
+                }
 			}
 		}
 	}
