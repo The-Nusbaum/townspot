@@ -206,7 +206,7 @@
                     $fanCount = count($user->getFollowedBy());
                     foreach($user->getFollowedBy() as $i => $fan) :?>
                         <?=($x==1)?'<div class="fangroup">':'' ?>
-                        <a href="/u/<?=$fan->getTargetId()?>"><img class='col-md-2 col-sm-4 col-xs-6 img-circle' src="<?= $this->img('user',$fan->getTargetId(),100,100)?>" alt="a"/></a>
+                        <a href="/u/<?=$fangetFollower()->getId() ?>"><img class='col-md-2 col-sm-4 col-xs-6 img-circle' src="<?= $this->img('user',$fan->getFollower()->getId(),100,100)?>" alt="a"/></a>
                         <?=(!($x % 12) || $x == $fanCount)?'</div>':'' ?>
                         <?=(!($x % 12) && $x < $fanCount)?'<div class="fangroup">':'' ?>
                         <?php
