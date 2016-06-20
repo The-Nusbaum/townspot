@@ -288,5 +288,44 @@ class AjaxController extends AbstractActionController
 		}
 		return $results;
 	}
-	
+
+	public function contactFansAction()
+	{
+		$userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+		$user = $userMapper->find($this->params()->fromRoute('id'));
+
+		if ($user instanceof \Townspot\User\Entity) {
+			$bodyPart = new \Zend\Mime\Message();
+			$messageTemplate = "<p>%s, that you subscribed to on www.TownSpot.tv has sent you a message, displayed below.</p>
+
+                            %s
+
+                            <p>If you feel this message was inappropriate, please report it <a href='http://www.townspot.tv/contact-us'>here</a>.";
+
+			$subjectTemplate = "%s on TownSpot has contacted you: %s";
+
+			$subject = sprintf($subjectTemplate, $user->getDisplayName(), $this->params()->fromPost('subject'));
+
+			$html = sprintf($messageTemplate, $user->getDisplayName(), $this->params()->fromPost('body')); //my html string here
+
+			$bodyMessage = new \Zend\Mime\Part($html);
+			$bodyMessage->type = 'text/html';
+
+			$bodyPart->setParts(array($bodyMessage));
+
+			$transport = new Mail\Transport\Sendmail();
+
+			foreach ($user->getFollowedBy() as $f) {
+				$m = new \Zend\Mail\Message();
+				$m->addFrom('webmaster@townspot.tv', 'Townspot.tv')
+						->addTo($f->getEmail(), $f->getDispayName())
+						->setSubject($subject);
+
+				$m->setBody($bodyPart);
+				$m->setEncoding('UTF-8');
+
+				$transport->send($m);
+			}
+		}
+	}
 }

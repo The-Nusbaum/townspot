@@ -6,6 +6,21 @@
         {
             init : function()
             {
+                tinyMCE.init({
+                    mode: "textareas",
+                    theme_url: "/js/tinymceTheme.js",
+                    skin_url: "/css/tinymce",
+                    content_css: "/css/tinymce",
+                    menubar:false,
+                    statusbar: false,
+                    setup: function(editor) {
+                        editor.on('change', function(e) {
+                            var editor = tinyMCE.activeEditor
+                            editor.save();
+                            //$(editor.getElement()).change();
+                        });
+                    }
+                });
 
                 $('#userDetails').on('click','.btn-follow',function(){
                     methods.follow();
@@ -80,6 +95,10 @@
                     var id = $target.parents('ul').attr('data-id');
                     window.location = "/videos/edit/" + id;
                 });
+
+                $('#contactFansSubmit').click(function(){
+                    methods.contactFans();
+                })
 
                 //calculate the offset
                 options.offset = (new Date().getTimezoneOffset() * -1) * 60000 ;
@@ -211,6 +230,32 @@
                             });
                     }
                 });
+            },
+            contactFans: function(){
+                if (methods.validateContact()) {
+                    $.post(
+                        '/user/contact-fans/' + options.followee_id,
+                        {
+                            body: $('#contactBody').val()
+                        },
+                        function(){
+                            $('#contactFansModal').modal('hide');
+                        }
+                    );
+                }
+            },
+            validateContact: function(){
+                var errors = false;
+                $('#contactFansModal label.required').each(function(){
+                    var $this = $('#'+ $(this).attr('for'));
+                    if($this.val().length) {
+                        $this.removeClass('formError');
+                    } else {
+                        $this.addClass('formError');
+                        errors = true;
+                    }
+                })
+                return !errors;
             }
         }
         var options = $.extend(defaults, options);
@@ -221,3 +266,4 @@
 $(document).ready(function(){
     $('.more-info').popover({html:true});
 });
+
