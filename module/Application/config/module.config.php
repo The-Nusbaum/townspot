@@ -250,16 +250,26 @@ return array(
                     ),
                 ),
             ),
-            'search-results' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route'    => '/videos/searchresults',
-                    'defaults' => array(
-                        'controller' => 'Application\Controller\Ajax',
-                        'action'     => 'searchresults',
-                    ),
-                ),
-            ),
+			'search-results' => array(
+					'type' => 'Zend\Mvc\Router\Http\Literal',
+					'options' => array(
+							'route'    => '/videos/searchresults',
+							'defaults' => array(
+									'controller' => 'Application\Controller\Ajax',
+									'action'     => 'searchresults',
+							),
+					),
+			),
+			'contact-fans' => array(
+					'type' => 'Zend\Mvc\Router\Http\Segment',
+					'options' => array(
+							'route'    => '/user/contact-fans/:id',
+							'defaults' => array(
+									'controller' => 'Application\Controller\Ajax',
+									'action'     => 'contactFans',
+							),
+					),
+			),
             'discover-results' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(

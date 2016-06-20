@@ -196,6 +196,7 @@
         <?php if (count($user->getFollowedBy())):?>
             <div class="row">
                 <h3 class="col-xs-12"><?= (!$canEdit)?$user->getUsername()."'s":'My' ?> Fans (<?= count($user->getFollowedBy()) ?>):</h3>
+                <button class="form-control btn btn-primary" id="contactFans" data-toggle="modal" data-target="#contactFansModal">Contact Fans</button>
                 <div class="col-xs-1 control-container">
                     <?= (count($user->getFollowedBy()) > 12)?'<i class="fa fa-chevron-left prev"></i>':'' ?>
                 </div>
@@ -440,8 +441,41 @@
 <?php endif; ?>
 </div>
 </div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="contactFansModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Contact Fans</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="contactSubject" class="col-sm-2 control-label required">Subject</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="contactSubject" placeholder="What is the email about?">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactBody" class="col-sm-2 control-label required">Message Body</label>
+                            <div class="col-sm-10">
+                                <textarea name="contactBody" id="contactBody" rows="20" class="form-control"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <span class="help-block">Clicking submit will send an email to every user following you who has allowed email contacts from other users</span>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" id="contactFansSubmit">Send Emails</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
 <script>
-    $(function() {
+        $(function() {
         var hash = window.location.hash;
         hash && $('ul.nav a[href="' + hash + '"]').tab('show');
     });
