@@ -13,6 +13,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
 use \Townspot\Lucene\VideoIndex;
+use Zend\Mail;
 
 class AjaxController extends AbstractActionController
 {
