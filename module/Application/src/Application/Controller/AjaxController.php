@@ -329,6 +329,8 @@ class AjaxController extends AbstractActionController
                     $transport->send($m);
                 }
 			}
+            $json = new JsonModel(array(1));
+            return $json;
 		}
 	}
 }
