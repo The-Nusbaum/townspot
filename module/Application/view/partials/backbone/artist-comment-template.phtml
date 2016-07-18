@@ -1,0 +1,12 @@
+<script type="text/template" id="artist-comment-template">
+	<div class="row -col-xs-12 comment" data-id="<%- id %>">
+		<a class="col-xs-2 user" href="/u/<%- user_id %>" title="<%- username %>">
+			<img class="commentThumb img-circle"
+				 src="http://images.townspot.tv/resizer.php?id=<%- user_id %>&amp;w=100&amp;h=100&amp;type=profile)"
+				 alt="<%- username %>">
+
+		</a>
+		<p class="col-xs-9 offset-xs-1"><%- comment %><br><a href="/u/<%- user_id %>"><%- username %></a> - <abbr class="timeago" title="<%- created %>"></abbr> <i class="fa fa-times"></i></p>
+	</div>
+</script>
+

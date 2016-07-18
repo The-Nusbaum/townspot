@@ -30,15 +30,17 @@
         </div>
         <div class="row">
             <div class="col-sm-6">
+                <div class="profile-pic" style="background-image: url(
                 <?php if(
                     preg_match("/fbcdn/",$user->getImageUrl())
                     || preg_match("/googleusercontent/",$user->getImageUrl())
                     || preg_match("/twimg/",$user->getImageUrl())
                 ) : ?>
-                <img class='profile-pic img-responsive' src="<?= $user->getImageUrl() ?>" alt="a"/>
+                    <?= $user->getImageUrl() ?>
                 <?php else: ?>
-                <img class='profile-pic img-responsive' src="<?= $this->img('user',$user->getId(),260) ?>" alt="a"/>
+                    <?= $this->img('user',$user->getId(),260) ?>
                 <?php endif; ?>
+                )"></div>
                 <h3>Username</h3>
                 <div><?= $user->getUsername() ?></div>
                 <?php if ($canEdit && $authdUser) : ?>
@@ -163,9 +165,11 @@
         </div>
         <?php if($authdUser): ?>
         <div class="row form-group">
-            <div class="col-sm-8"><input class='col-sm-8 form-control' placeholder='Leave a Comment' type="text" id="commentText"/></div>
-            <div class="col-sm-4">
-                <button class="form-control btn btn-primary" id="comment">Comment</button>
+            <div class="col-sm-8 input-group" id="leaveComment">
+                <input class='col-sm-12 form-control' placeholder='Leave a Comment' type="text" id="commentText"/>
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button"><i class="fa fa-check"></i></button>
+                </span>
             </div>
         </div>
         <?php endif; ?>
@@ -175,16 +179,16 @@
                 <button class="comment-ctrl prev btn btn-default col-xs-12<?= $class ?>"><i class="fa fa-chevron-up"></i></button>
             </div>
         </div>
-        <div class="row list">
-            <?php $comments = array_reverse($user->getCommentsAbout()->toArray()); ?>
-            <?php foreach($comments as $comment): ?>
+        <div class="row list" id="commentList">
+            <?php // $comments = array_reverse($user->getCommentsAbout()->toArray()); ?>
+            <?php /*foreach($comments as $comment): ?>
                 <div class="row col-xs-12 comment" data-id="<?=$comment->getId()?>">
                     <a class="col-xs-2" href="/u/<?=$comment->getUser()->getId()?>">
                         <img class="img-responsive" src="<?= $this->img('user',$comment->getUser()->getId(),100,100)?>" alt="a"/></a>
                     <p class="col-xs-9 offset-xs-1"><?=$comment->getComment()?><br><a href="/u/<?=$comment->getUser()->getId()?>"><?=$comment->getUser()->getUsername()?></a> - <abbr class="timeago" title="<?= $comment->getCreated()->format('Y-m-d H:i:s') ?>"></abbr> <i class="fa fa-times"></i></p>
 
                 </div>
-            <?php endforeach; ?>
+            <?php endforeach; */ ?>
         </div>
         <div class="row">
             <div class="col-xs-12 control-container">
@@ -193,55 +197,43 @@
         </div>
     </div>
     <div class="col-md-6" id="fans">
-        <?php if (count($user->getFollowedBy())):?>
-            <div class="row">
-                <h3 class="col-xs-12"><?= (!$canEdit)?$user->getUsername()."'s":'My' ?> Fans (<?= count($user->getFollowedBy()) ?>):</h3>
-                <button class="form-control btn btn-primary" id="contactFans" data-toggle="modal" data-target="#contactFansModal">Contact Fans</button>
-                <div class="col-xs-1 control-container">
-                    <?= (count($user->getFollowedBy()) > 12)?'<i class="fa fa-chevron-left prev"></i>':'' ?>
-                </div>
-                <div class="col-xs-9 col-sm-10 list">
-                    <?php
-                    $x = 1;
-                    $fanCount = count($user->getFollowedBy());
-                    foreach($user->getFollowedBy() as $i => $fan) :?>
-                        <?=($x==1)?'<div class="fangroup">':'' ?>
-                        <a href="/u/<?=$fan->getUser()->getId() ?>"><img class='col-md-2 col-sm-4 col-xs-6 img-circle' src="<?= $this->img('user',$fan->getUser()->getId(),100,100)?>" alt="a"/></a>
-                        <?=(!($x % 12) || $x == $fanCount)?'</div>':'' ?>
-                        <?=(!($x % 12) && $x < $fanCount)?'<div class="fangroup">':'' ?>
-                        <?php
-                        $x++;
-                    endforeach; ?>
-                </div>
-                <div class="col-xs-1 control-container">
-                    <?= (count($user->getFollowedBy()) > 12)?'<i class="fa fa-chevron-right next"></i>':'' ?>
+        <div class="row" id="followers">
+            <h3 class="col-xs-12"><?= (!$canEdit)?$user->getUsername()."'s":'My' ?> Fans (<?= count($user->getFollowedBy()) ?>):</h3>
+                <?php if($canEdit): ?>
+                <button class="form-control btn btn-primary"
+                        id="contactFans"
+                        data-toggle="modal"
+                        data-target="#contactFansModal">
+                    Contact Fans
+                </button>
+                <?php endif; ?>
+
+                <div class="row col-xs-12">
+                    <div class="col-md-1 hidden-xs hidden-sm control-container">
+                        <i class="fa fa-chevron-left prev"></i>
+                    </div>
+                    <div class="col-sm-12 col-md-10 list" id="followerList">
+
+                    </div>
+                    <div class="col-md-1 hidden-xs hidden-sm control-container">
+                        <i class="fa fa-chevron-right next"></i>
+                    </div>
                 </div>
             </div>
-        <?php endif; ?>
-        <?php if (count($user->getFollowing())):?>
-            <div class="row">
+            <div class="row" id="following">
                 <h3 class="col-xs-12">Fan of (<?= count($user->getFollowing()) ?>):</h3>
-                <div class="col-xs-1 control-container">
-                    <?= (count($user->getFollowing()) > 12)?'<i class="fa fa-chevron-left prev"></i>':'' ?>
-                </div>
-                <div class="col-sm-10 col-xs-9 list">
-                    <?php
-                    $x = 1;
-                    $fanCount = count($user->getFollowing());
-                    foreach($user->getFollowing() as $fan) :?>
-                        <?=($x==1)?'<div class="fangroup">':'' ?>
-                        <a href="/u/<?=$fan->getFollower()->getId()?>"><img class='col-md-2 col-sm-4 col-xs-6 img-circle' src="<?= $this->img('user',$fan->getFollower()->getId(),100,100)?>" alt="a"/></a>
-                        <?=(!($x % 12) || $x == $fanCount)?'</div>':'' ?>
-                        <?=(!($x % 12) && $x < $fanCount)?'<div class="fangroup">':'' ?>
-                        <?php
-                        $x++;
-                    endforeach; ?>
-                </div>
-                <div class="col-xs-1 control-container">
-                    <?= (count($user->getFollowing()) > 12)?'<i class="fa fa-chevron-right next"></i>':'' ?>
+                <div class="row col-xs-12">
+                    <div class="col-md-1 hidden-xs hidden-sm control-container">
+                        <i class="fa fa-chevron-left next"></i>
+                    </div>
+                    <div class="col-sm-12 col-md-10 list" id="followingList">
+
+                    </div>
+                    <div class="col-md-1 hidden-xs hidden-sm control-container">
+                        <i class="fa fa-chevron-right prev"></i>
+                    </div>
                 </div>
             </div>
-        <?php endif; ?>
     </div>
 </div>
 </div>
@@ -473,7 +465,16 @@
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-
+<?= $this->partial('partials/backbone/artist-comment-template.phtml'); ?>
+<?= $this->partial('partials/backbone/follow-template.phtml'); ?>
+<script src="/js/model/artistcomment.js"></script>
+<script src="/js/collection/artistcomment.js"></script>
+<script src="/js/view/artistcomment.js"></script>
+<script src="/js/model/follow.js"></script>
+<script src="/js/collection/follow.js"></script>
+<script src="/js/view/follow.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+<script src="/js/userProfile.js"></script>
 <script>
         $(function() {
         var hash = window.location.hash;
@@ -482,8 +483,9 @@
     $(document).ready(
         $().UserProfile({
             username: '<?= $authdUser?$authdUser->getUsername():''; ?>',
-            follower_id: <?= $authdUser? $authdUser->getId():'' ?>,
+            follower_id: <?= $authdUser? $authdUser->getId():'0' ?>,
             followee_id: <?= $user->getId()?>,
+            user_id: <?= $user->getId()?>,
             share_email: '<?= $user->getAllowContact() ?>'
         })
     );

@@ -1,11 +1,15 @@
 (function($){
     $.fn.UserProfile = function( options ) {
+        var artistCommentCollection = new ArtistCommentCollection();
+        var artistCommentView = new ArtistCommentView({model: new ArtistComment(), el: '#commentList'});
+        var followerCollection = new FollowCollection();
+        var followerView = new FollowView({model: new Follow(), el: '#followers .list'});
+        var followingCollection = new FollowCollection();
+        var followingView = new FollowView({model: new Follow(), el: '#following .list'});
         var defaults = {
         }
-        var methods =
-        {
-            init : function()
-            {
+        var methods = {
+            init : function() {
                 tinyMCE.init({
                     mode: "textareas",
                     theme_url: "/js/tinymceTheme.js",
@@ -42,13 +46,13 @@
                     );
                 });
                 $('#fans .prev').click(function(e){
-                    methods.prevFans(e);
+                    methods.prevFans($(e.target));
                 });
                 $('#fans .next').click(function(e){
-                    methods.nextFans(e);
+                    methods.nextFans($(e.target));
                 });
                 $('#Comments .prev').click(function(e){
-                    methods.prevComments(e);
+                    methods.prevComments($(e.target));
                 });
                 $('#Comments').on('click','.fa-times',function(e){
                     methods.delComment(e);
@@ -57,7 +61,7 @@
                     methods.leaveComment();
                 });
                 $('#Comments .next').click(function(e){
-                    methods.nextComments(e);
+                    methods.nextComments($(e.target));
                 });
                 $('#videos .prev, #favorites .prev').click(function(e){
                     methods.prevVideos(e);
@@ -89,19 +93,85 @@
                         }
                     });
                 });
-
                 $('.stats .edit').click(function(e){
                     var $target = $(e.target);
                     var id = $target.parents('ul').attr('data-id');
                     window.location = "/videos/edit/" + id;
                 });
-
                 $('#contactFansSubmit').click(function(){
                     methods.contactFans();
                 })
+                $.get(
+                    'http://local.townspot.tv/api/ArtistComment/getforartist/' + options.user_id,
+                    function(response){
+                        if (response.count > 0) {
+                            var data = response.data;
+                            $(data).each(function () {
+                                var comment = new ArtistComment(this);
+                                artistCommentCollection.add(comment);
+                            });
+                            //artistCommentView.render(artistCommentCollection);
+                            artistCommentView.render(artistCommentCollection);
+                        }
+                    }
+                );
 
+                $.get(
+                    'http://local.townspot.tv/api/user/getfollowers/' + options.user_id,
+                    function(response){
+                        if (response.count > 0) {
+                            var data = response.data;
+                            $(data).each(function () {
+                                var follow = new Follow(this);
+                                followerCollection.add(follow);
+                            });
+                            followerView.render(followerCollection);
+                        }
+                    }
+                );
+
+                $.get(
+                    'http://local.townspot.tv/api/user/getfollowing/' + options.user_id,
+                    function(response){
+                        if (response.count > 0) {
+                            var data = response.data;
+                            $(data).each(function () {
+                                var follow = new Follow(this);
+                                followingCollection.add(follow);
+                            });
+                            followingView.render(followingCollection);
+                        }
+                    }
+                );
                 //calculate the offset
                 options.offset = (new Date().getTimezoneOffset() * -1) * 60000 ;
+                var hFollower = new Hammer(document.getElementById('followerList'));
+                var hFollowing = new Hammer(document.getElementById('followingList'));
+                var hComments = new Hammer(document.getElementById('commentList'));
+
+                hFollower.on('swipeleft',function(ev) {
+                    methods.prevFans($('#followers .prev'));
+                });
+
+                hFollower.on('swiperight',function(ev) {
+                    methods.nextFans($('#followers .next'));
+                });
+
+                hFollowing.on('swipeleft',function(ev) {
+                    methods.prevFans($('#following .prev'));
+                });
+
+                hFollowing.on('swiperight',function(ev) {
+                    methods.nextFans($('#following .next'));
+                });
+
+                hComments.on('swipeup',function() {
+                    methods.prevComments($('.comment-ctrl.prev'))
+                });
+
+                hComments.on('swipedown',function() {
+                    methods.prevComments($('.comment-ctrl.next'))
+                });
             },
             follow : function(){
                 $.ajax({
@@ -131,31 +201,25 @@
                         .text('Become a Fan');
                 });
             },
-            nextFans : function(e){
-                $target = $(e.target).parent().siblings('.list').children(':first');
-                $parent = $(e.target).parent().siblings('.list');
+            nextFans : function($init){
+                $parent = $init.parent().siblings('.list').children(':first');
+                $target = $parent.children(':first');
                 $target.remove().appendTo($parent);
             },
-            prevFans : function(e){
-                $target = $(e.target).parent().siblings('.list').children(':last');
-                $parent = $(e.target).parent().siblings('.list');
+            prevFans : function($init){
+                $parent = $init.parent().siblings('.list').children(':first');
+                $target = $parent.children(':last');
                 $target.remove().prependTo($parent);
             },
-            nextComments : function(e){
-                $target = $(e.target).parents('.row:first').siblings('.list').children(':nth-child(-n+5)');
-                $parent = $(e.target).parents('.row:first').siblings('.list');
+            nextComments : function($init){
+                $target = $init.parents('.row:first').siblings('.list').children(':nth-child(-n+5)');
+                $parent = $init.parents('.row:first').siblings('.list');
                 $target.remove().appendTo($parent);
-                $('html, body').animate({
-                    scrollTop: $('#Comments').offset().top
-                }, 500);
             },
-            prevComments : function(e){
-                $target = $(e.target).parents('.row:first').siblings('.list').children(':nth-last-of-type(-n+5)');
-                $parent = $(e.target).parents('.row:first').siblings('.list');
+            prevComments : function($init){
+                $target = $init.parents('.row:first').siblings('.list').children(':nth-last-of-type(-n+5)');
+                $parent = $init.parents('.row:first').siblings('.list');
                 $target.remove().prependTo($parent);
-                $('html, body').animate({
-                    scrollTop: $('#Comments').offset().top
-                }, 500);
             },
             leaveComment : function() {
                 $target = $('#commentText');
