@@ -102,7 +102,7 @@
                     methods.contactFans();
                 })
                 $.get(
-                    'http://local.townspot.tv/api/ArtistComment/getforartist/' + options.user_id,
+                    '/api/ArtistComment/getforartist/' + options.user_id,
                     function(response){
                         if (response.count > 0) {
                             var data = response.data;
@@ -117,7 +117,7 @@
                 );
 
                 $.get(
-                    'http://local.townspot.tv/api/user/getfollowers/' + options.user_id,
+                    '/api/user/getfollowers/' + options.user_id,
                     function(response){
                         if (response.count > 0) {
                             var data = response.data;
@@ -131,7 +131,7 @@
                 );
 
                 $.get(
-                    'http://local.townspot.tv/api/user/getfollowing/' + options.user_id,
+                    '/api/user/getfollowing/' + options.user_id,
                     function(response){
                         if (response.count > 0) {
                             var data = response.data;
