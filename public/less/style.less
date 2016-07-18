@@ -1498,6 +1498,7 @@ div {
 }
 
 #userProfile {
+  padding-bottom: 50px;
   h3 {
     margin-top: 1em;
   }
@@ -1505,7 +1506,7 @@ div {
     text-align: center;
   }
   #username {
-    padding: 10px 0px 10px 40px;
+    padding: 10px 0px 10px 0px;
     font-weight: bold;
     font-size: 32px;
   }
@@ -1566,14 +1567,14 @@ div {
   }
   #fans {
     .control-container {
-      height: 136px;
+      height: 100%;
       text-align: center;
       i.fa {
         .vertical-center;
       }
     }
     .list {
-      //max-height: 200px;
+      margin-top: 10px;
       .fangroup:first-child {
         display: block;
       }
@@ -1805,7 +1806,7 @@ div {
       padding-right: 40px;
     }
   }
-  .btn:not(#comment), .btn:not(#contact-fans), {
+  .btn:not(#comment), .btn:not(#contact-fans) {
     color: white;
     width: 100%;
     border-color: white;
@@ -1955,6 +1956,10 @@ iframe.dmPlayer {
   .phone-ad, .tablet-ad, .desktop-ad {
     display: none;
   }
+
+  .comment .user {
+    width: 50px;
+  }
 }
 
 @media (min-width: 480px) {
@@ -2073,80 +2078,7 @@ iframe.dmPlayer {
   }
 }
 
-@media (max-width: 767px) {
 
-  #userDetails {
-    height: auto !important;
-    margin-bottom: 15px;
-    padding-left: 40px !important;
-    padding-right: 40px !important;
-  }
-
-  #profile > .row > *:first-child {
-    padding-left: 0px;
-  }
-
-  #profile > .row > *:last-child {
-    padding-right: 0px;
-    padding-left: 0px;
-  }
-
-  .wide-carousel-row {
-    padding-left: 15px !important;
-    padding-right: 15px !important;
-  }
-
-  #index-index {
-    padding-left: 0px;
-    padding-right: 0px;
-    .main-content {
-      padding-left: 0px;
-      padding-right: 0px;
-    }
-  }
-
-  #townspot-nav {
-    ul {
-      &.navbar-left {
-        li {
-          float: none;
-        }
-      }
-      &.navbar-right {
-        li {
-          float: none;
-          form {
-            margin-left: 0px !important;
-            margin-bottom: 20px;
-            .form-control {
-              width: 200px;
-            }
-          }
-          .navbar-form {
-            .search {
-              position: relative;
-              display: inline;
-              right: auto;
-            }
-            .search-button {
-              position: relative;
-              right: auto;
-            }
-          }
-        }
-      }
-    }
-  }
-
-  #daily-hightlights-carousel,
-  #staff-favorites-carousel {
-    .video-preview {
-      & > a {
-        height: 252px;
-      }
-    }
-  }
-}
 
 @media (max-width: 575px) {
   .col-wide {
@@ -2236,4 +2168,182 @@ label.formError {
   border: none;
   font-weight: bold;
   color: red;
+}
+
+#leaveComment {
+  padding-left: 15px;
+}
+
+.comment {
+  margin-left: 15px;
+  .user {
+    margin-right: 15px;
+    .commentThumb {
+      width: 50px;
+      height: 50px;
+      box-shadow: 4px 4px 10px darkgray;
+      border: 1px solid darkgray;
+    }
+  }
+}
+
+#profile > .row > *:first-child {
+  padding-left: 0px;
+}
+
+#profile {
+  #userDetails {
+    &> .row > *:first-child {
+      padding-left: 40px;
+    }
+    .profile-pic {
+      background-position: 50% 50%;
+      background-size: contain;
+      background-repeat: no-repeat;
+      height: 167px;
+      width: 100%;
+    }
+  }
+  #fans {
+    & > .row {
+      height: 125px;
+      .row{
+        height:100%;
+      }
+    }
+    .list {
+      bad: rule;
+      text-align: center;
+      .followGroup:not(:first-child) {
+        display:none;
+      }
+      .follow {
+        margin: 1%;
+        width: 16%;
+        display: inline-block;
+        .followThumb {
+          width: 100%;
+          box-shadow: 4px 4px 10px darkgray;
+          border: 1px solid darkgray;
+        }
+      }
+    }
+
+    & > .row {
+      bad: rule;
+    }
+
+    #followers{
+      bad: rule;
+    }
+
+    #following {
+      bad: rule
+    }
+  }
+
+}
+
+@media (max-width: 992px) {
+  #profile > .row > *:last-child {
+    padding-left: 0px;
+  }
+  #profile > .row > *:first-child {
+    padding-left: 0px;
+  }
+
+  #profile #userDetails .profile-pic {
+    height: 90px;
+  }
+  #username {
+    padding: 10px 0px 10px 40px;
+  }
+
+  #profile #fans > .row {
+    height: 220px;
+  }
+}
+
+@media (max-width: 767px) {
+
+  #userDetails {
+    height: auto !important;
+    margin-bottom: 15px;
+    padding-left: 40px !important;
+    padding-right: 40px !important;
+  }
+  #profile #userDetails > .row > *:first-child {
+    padding-left: 17px;
+  }
+  #profile > .row > *:first-child {
+    padding-left: 0px;
+  }
+  #profile > .row > *:last-child {
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+
+  #profile #fans > .row .row {
+    height: auto;
+  }
+
+  #profile #fans .list .follow {
+    width: 50px;
+  }
+
+  .wide-carousel-row {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+  }
+
+  #index-index {
+    padding-left: 0px;
+    padding-right: 0px;
+    .main-content {
+      padding-left: 0px;
+      padding-right: 0px;
+    }
+  }
+
+  #townspot-nav {
+    ul {
+      &.navbar-left {
+        li {
+          float: none;
+        }
+      }
+      &.navbar-right {
+        li {
+          float: none;
+          form {
+            margin-left: 0px !important;
+            margin-bottom: 20px;
+            .form-control {
+              width: 200px;
+            }
+          }
+          .navbar-form {
+            .search {
+              position: relative;
+              display: inline;
+              right: auto;
+            }
+            .search-button {
+              position: relative;
+              right: auto;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  #daily-hightlights-carousel,
+  #staff-favorites-carousel {
+    .video-preview {
+      & > a {
+        height: 252px;
+      }
+    }
+  }
 }

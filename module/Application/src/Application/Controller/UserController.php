@@ -58,6 +58,9 @@ class UserController extends AbstractActionController
             ->get('viewhelpermanager')
             ->get('HeadScript')
                 //->appendFile('/js/townspot.js')
+                ->appendFile('/js/collection/artistcomments.js')
+                ->appendFile('/js/model/artistcomment.js')
+                ->appendFile('/js/view/ArtistComment.js')
                 ->appendFile('/js/userProfile.js');
 
         $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
@@ -88,11 +91,11 @@ class UserController extends AbstractActionController
             ->get('HeadTitle')
             ->set('TownSpot &bull; Your Town. Your Talent. Spotlighted');
 
-        $this->getServiceLocator()
-            ->get('viewhelpermanager')
-            ->get('HeadScript')
+//        $this->getServiceLocator()
+//            ->get('viewhelpermanager')
+//            ->get('HeadScript');
                 //->appendFile('/js/townspot.js')
-                ->appendFile('/js/userProfile.js');
+                //->appendFile('/js/userProfile.js');
 
         $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
         if($id) {

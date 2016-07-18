@@ -95,4 +95,52 @@ class UserController extends \Townspot\Controller\BaseRestfulController
 
         return new JsonModel($this->getResponse()->build());
     }
-} 
+
+    public function getFollowingAction() {
+        $id = $this->params()->fromRoute('id');
+        $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+        $user = $userMapper->find($id);
+
+        foreach($user->getFollowing() as $f ){
+            $u = $f->getFollower();
+            $data[] = array(
+                'id' => $u->getId(),
+                'username' => $u->getDisplayName(),
+                'profile' => "/u/{$u->getId()}",
+                'thumb' => "http://images".mt_rand(0,9).".townspot.tv/resizer.php?id={$u->getId()}&w=100&h=100&type=profile"
+            );
+        }
+
+        $this->getResponse()
+            ->setCode(200)
+            ->setSuccess(true)
+            ->setData($data)
+            ->setCount(count($data));
+
+        return new JsonModel($this->getResponse()->build());
+    }
+
+    public function getFollowersAction() {
+        $id = $this->params()->fromRoute('id');
+        $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+        $user = $userMapper->find($id);
+
+        foreach($user->getFollowedBy() as $f ){
+            $u = $f->getUser();
+            $data[] = array(
+                'id' => $u->getId(),
+                'username' => $u->getDisplayName(),
+                'profile' => "/u/{$u->getId()}",
+                'thumb' => "http://images".mt_rand(0,9).".townspot.tv/resizer.php?id={$u->getId()}&w=100&h=100&type=profile"
+            );
+        }
+
+        $this->getResponse()
+            ->setCode(200)
+            ->setSuccess(true)
+            ->setData($data)
+            ->setCount(count($data));
+
+        return new JsonModel($this->getResponse()->build());
+    }
+}
