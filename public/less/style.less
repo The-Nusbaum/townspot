@@ -2082,8 +2082,10 @@ iframe.dmPlayer {
     }
   }
 
-  #search-discover .video-preview > a {
-    height: 145px;
+  #search-results, #search-discover{
+    .video-preview > a {
+      height: 145px;
+    }
   }
 }
 
@@ -2096,8 +2098,10 @@ iframe.dmPlayer {
       }
     }
   }
-  #search-discover .video-preview > a {
-    height: 200px;
+  #search-results, #search-discover {
+    .video-preview > a {
+      height: 200px;
+    }
   }
 }
 
@@ -2126,12 +2130,14 @@ iframe.dmPlayer {
     }
   }
 
-  #search-discover .video-preview {
-    margin: 0;
-    border: none;
-    width:100%;
-    & > a {
-      padding-top: 75%;
+  #search-results, #search-discover {
+    .video-preview {
+      margin: 0;
+      border: none;
+      width: 100%;
+      & > a {
+        padding-top: 75%;
+      }
     }
   }
 }
@@ -2379,11 +2385,13 @@ label.formError {
     }
   }
 
-  #search-discover .video-preview {
-    width:242px ;
-    & > a {
-      width: 234px;
-      height: 175px;
+  #search-results, #search-discover{
+    .video-preview {
+      width: 242px;
+      & > a {
+        width: 234px;
+        height: 175px;
+      }
     }
   }
 }
