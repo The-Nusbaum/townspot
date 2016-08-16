@@ -7,6 +7,10 @@
   -o-transform: translateY(-50%);
 }
 
+.video-shadow {
+  box-shadow: gray 2px 2px 10px;
+}
+
 body {
   color: #404040;
   font-family: Franklin Gothic, Helvetica, Arial, sans-serif;
@@ -935,6 +939,12 @@ div {
   margin-bottom: 25px;
   padding-left: 10px;
   padding-right: 10px;
+  .video-preview {
+    box-shadow: gray 2px 2px 10px;
+  }
+  &#on-stage-carousel .video-preview {
+    box-shadow: none;
+  }
 }
 
 .carousel-indicators {
@@ -1910,15 +1920,32 @@ iframe.dmPlayer {
     border: solid 2px orange;
   }
   .video-preview {
+    .video-shadow;
     .carousel-caption {
       height: 35px;
     }
   }
   #comment-submit {
-    width: auto;
+    width: 100%;
+    margin: 0px 5px;
+  }
+  .controls {
+    &.up {
+      padding-bottom: 10px;
+    }
+  }
+
+  #videos {
+    & > div {
+      padding-bottom: 10px;
+    }
   }
 }
-
+.genres {
+  li {
+    text-align: center;
+  }
+}
 #series {
   .episode {
     //    height: 150px;
@@ -1987,9 +2014,17 @@ iframe.dmPlayer {
   }
 }
 
-@media (min-width: 500px) {
+@media (max-width: 766px) {
   .tablet-ad {
     display: block;
+  }
+
+  .img-youtube {
+    //max-height: 249px;
+  }
+
+  .img-internal {
+    //max-height: 249px;
   }
 
   .phone-ad, .mobile-ad, .desktop-ad {
@@ -2015,7 +2050,7 @@ iframe.dmPlayer {
   }
 }
 
-@media (min-width: 768px) {
+@media (max-width: 799px) {
   #matching-videos {
     display: block;
   }
@@ -2025,11 +2060,11 @@ iframe.dmPlayer {
   }
 
   .img-youtube {
-    max-height: 249px;
+    max-height: auto;
   }
 
   .img-internal {
-    max-height: 249px;
+    max-height: auto;
   }
 
   #on-stage-carousel {
@@ -2043,9 +2078,17 @@ iframe.dmPlayer {
   }
 }
 
-@media (min-width: 800px) {
+@media (max-width: 991px) {
   .desktop-ad {
     display: block;
+  }
+
+  .img-youtube {
+    max-height: auto;
+  }
+
+  .img-internal {
+    max-height: auto;
   }
 
   .phone-ad, .mobile-ad, .tablet-ad {
@@ -2070,6 +2113,11 @@ iframe.dmPlayer {
     .video-preview {
       height: 475px;
     }
+  }
+
+  #daily-hightlights-carousel .video-preview > a,
+  #staff-favorites-carousel .video-preview > a {
+    height: 145px;
   }
 
   #daily-hightlights-carousel,
@@ -2126,6 +2174,24 @@ iframe.dmPlayer {
     .video-preview {
       & > a {
         height: 388px;
+      }
+    }
+  }
+
+  #daily-hightlights-carousel .video-preview,
+  #staff-favorites-carousel .video-preview {
+    width: 100%;
+    border: none;
+    box-shadow: none;
+    background: none;
+    a {
+      background: none;
+      height: auto;
+      img {
+        display: block;
+        position: relative;
+        top: 0;
+        -webkit-transform: translateY(0%);
       }
     }
   }
