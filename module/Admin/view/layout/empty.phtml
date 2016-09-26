@@ -1,0 +1,39 @@
+<?php echo $this->doctype(); ?>
+<html>
+<head>
+    <meta charset="utf-8">
+    <?= $this->headTitle('Townspot Admin')->setAutoEscape(false) ?>
+    <?= $this->headMeta()
+        ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+        ->appendName('robots','NOODP')
+        ->appendName('MSSmartTagsPreventParsing','true')
+        ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+        ->appendHttpEquiv('Pragma','no-cache')
+        ->appendHttpEquiv('cache-control','no-cache')
+        ->appendHttpEquiv('expires',date('r'));
+    ?>
+    <?= $this->headLink(array(	'rel' => 'shortcut icon',
+        'type' => 'image/vnd.microsoft.icon',
+        'href' => $this->basePath() . '/img/favicon.ico'
+    ))->appendStylesheet('//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css')
+        ->appendStylesheet('//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css')
+        ->appendStylesheet('//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css')
+        ->appendStylesheet('//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css','screen')
+        ->appendStylesheet($this->basePath() . '/css/admin.css');
+    ?>
+    <?= $this->headScript()->prependFile('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js','text/javascript')
+        ->prependFile('//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js','text/javascript');
+    ?>
+    <?= $this->headScript()->appendFile('//jwpsrv.com/library/y3klzqiFEeKGEyIACpYGxA.js','text/javascript')
+        ->appendFile('//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js','text/javascript')
+        ->appendFile('//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js','text/javascript')
+        ->appendFile('//cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js','text/javascript')
+        ->appendFile('//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.js','text/javascript')
+        ->appendFile('//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.3.0/bootbox.min.js','text/javascript');
+    ?>
+    <script src="/js/admin.js" type="text/javascript"></script>
+</head>
+<body>
+<?php echo $this->content; ?>
+</body>
+</html>

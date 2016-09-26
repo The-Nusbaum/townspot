@@ -6,7 +6,6 @@ use Zend\View\Model\ViewModel;
 
 class MediaController extends AbstractActionController
 {
-
     protected $_api_info = array(
         'applicationId' => 'Townspot',
         'clientId' => "872367745273-sbsiuc81kh9o70ok3macc15d2ebpl440.apps.googleusercontent.com",
@@ -353,7 +352,33 @@ class MediaController extends AbstractActionController
 			)
 		);
     }
-	
+
+    public function thumbsAction() {
+        $this->layout('admin/empty');
+        $id = $this->params()->fromRoute('id');
+        $mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
+        $media = $mediaMapper->find($id);
+        $id = str_replace('https://www.youtube.com/watch?v=','',$media->getUrl());
+        $content = file_get_contents("http://youtube.com/get_video_info?video_id=".$id);
+        parse_str($content, $ytarr);
+        $fullstr = $ytarr["url_encoded_fmt_stream_map"];
+        $estr = explode(',',$fullstr);
+        foreach($estr as $e) {
+            parse_str($e,$atarget);
+            if(preg_match('/video\/mp4/',$atarget['type'])) break;
+//            echo $atarget['type']."\n";
+        }
+//        var_dump($atarget);die;
+//        var_dump('<pre>',$atarget['url']);
+
+        file_put_contents("public/thumb.mp4", fopen($atarget['url'], 'r'));
+        return new ViewModel(
+            array(
+                'id'		=> $media->getId(),
+            )
+        );
+    }
+
     protected function _tierCats($cats) {
         $categoryMapper = new \Townspot\Category\Mapper($this->getServiceLocator());
         $data = array();
@@ -396,5 +421,4 @@ class MediaController extends AbstractActionController
         }
         return $data;
     }
-	
 }

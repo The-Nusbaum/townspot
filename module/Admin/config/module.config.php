@@ -314,6 +314,19 @@ return array(
                     ),
                 ),
             ),
+            'admin-series-edit' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/admin/video/thumbs/:id',
+                    'constraints' => array(
+                        'id'  => '[0-9]*'
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Admin\Controller\Media',
+                        'action'     => 'thumbs',
+                    ),
+                ),
+            ),
             'admin-add-video' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -473,6 +486,7 @@ return array(
         'template_map' => array(
             'admin/layout'            => APPLICATION_PATH . '/module/Admin/view/layout/layout.phtml',
             'admin/index/index' 	  => APPLICATION_PATH . '/module/Admin/view/admin/index/index.phtml',
+            'admin/empty'             => APPLICATION_PATH . '/module/Admin/view/layout/empty.phtml',
         ),
         'template_path_stack' => array(
             APPLICATION_PATH . '/module/Admin/view',

@@ -1,0 +1,102 @@
+<div style="border: solid 1px #ccc; padding: 10px; text-align: center;">
+    <video id="video" width="640" controls="true">
+        <source src="/thumb.mp4">
+    </video>
+    <br/>
+    <button onclick="start()" style="width: 64px;border: solid 2px #ccc;">Capture</button>
+    <br/>
+
+    <div id="output"
+         style="display: inline-block; top: 4px; position: relative ;border: dotted 1px #ccc; padding: 2px;"></div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>
+    var videoId = 'video';
+    var scaleFactor = 1;
+    var snapshots = [];
+    var video = document.getElementById(videoId);
+    var output = document.getElementById('output');
+    var step = 0;
+
+    /**
+     * Captures a image frame from the provided video element.
+     *
+     * @param {Video} video HTML5 video element from where the image frame will be captured.
+     * @param {Number} scaleFactor Factor to scale the canvas element that will be return. This is an optional parameter.
+     *
+     * @return {Canvas}
+     */
+    function capture(video, scaleFactor, i, redo = false) {
+        console.warn('capture');
+        if (scaleFactor == null) {
+            scaleFactor = 1;
+        }
+        var w = video.videoWidth * scaleFactor;
+        var h = video.videoHeight * scaleFactor;
+        var canvas = document.createElement('canvas');
+        canvas.width = w;
+        canvas.height = h;
+        var ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0, w, h);
+        var x = 0;
+
+        while (x < 5) {
+            console.log(canvas.toDataURL("image/jpg").length)
+            if (canvas.toDataURL("image/jpg").length < 10000) {
+                ctx.drawImage(video, 0, 0, w, h);
+                x++;
+            } else {
+                x = 6;
+            }
+        }
+
+        $('#output').children().remove();
+        $('#output').append(canvas);
+
+        send(i);
+
+        return canvas;
+    }
+
+    function send(i) {
+        console.warn('send');
+        var imgstr = $('canvas')[0].toDataURL("image/jpg");
+        console.info(imgstr.length);
+        $.post('http://images.townspot.tv/upload.php',
+            {
+                file: imgstr,
+                i: i,
+                id: '<?= $id ?>'
+            }
+        );
+        console.warn('=================');
+        //var ctime = video.currentTime - 15 + i * step;
+        video.currentTime += step;
+        console.log(video.currentTime);
+    }
+
+    function start() {
+        console.warn('start');
+        video = $('video')[0];
+        if (video.duration) {
+            console.log(video.duration);
+            var relduration = video.duration - 15;
+            console.log(relduration);
+            step = Math.floor(relduration / 6);
+            video.currentTime = 15
+            setTimeout("capture(video, " + scaleFactor + ", 0)", 2000);
+            setTimeout("capture(video, " + scaleFactor + ", 1)", 4000);
+            setTimeout("capture(video, " + scaleFactor + ", 2)", 6000);
+            setTimeout("capture(video, " + scaleFactor + ", 3)", 8000);
+            setTimeout("capture(video, " + scaleFactor + ", 4)", 10000);
+            setTimeout("capture(video, " + scaleFactor + ", 5)", 12000);
+//            $.get('/videos/has-thumbs/'.<?//= $id ?>//);
+        } else {
+            setTimeout('start()', 1000);
+        }
+    }
+
+    $(document).ready(function () {
+
+    });
+</script>
