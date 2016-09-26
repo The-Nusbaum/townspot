@@ -370,8 +370,8 @@ class MediaController extends AbstractActionController
         }
 //        var_dump($atarget);die;
 //        var_dump('<pre>',$atarget['url']);
-
-        file_put_contents(APPLICATION_PATH . "/public/thumb.mp4", fopen($atarget['url'], 'w'));
+        $str = file_get_contents($atarget['url']);
+        file_put_contents(APPLICATION_PATH . "/public/thumb.mp4", $str);
 
 //        error_reporting(E_ALL);
 //        ini_set('display_errors', true);
