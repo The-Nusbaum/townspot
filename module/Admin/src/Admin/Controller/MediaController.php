@@ -373,13 +373,13 @@ class MediaController extends AbstractActionController
 
         //file_put_contents(APPLICATION_PATH . "/public/thumb.mp4", fopen($atarget['url'], 'w'));
 
-        error_reporting(E_ALL);
-        ini_set('display_errors', true);
+//        error_reporting(E_ALL);
+//        ini_set('display_errors', true);
 
         $ch = curl_init();
         $fp = fopen (APPLICATION_PATH . "/public/thumb.mp4", 'w+');
 
-        var_dump(error_get_last());die;
+//        var_dump(error_get_last());die;
 
 
         $ch = curl_init($atarget['url']);
