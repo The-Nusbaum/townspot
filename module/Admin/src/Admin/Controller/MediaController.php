@@ -379,7 +379,7 @@ class MediaController extends AbstractActionController
 //        $ch = curl_init();
 //        $fp = fopen (APPLICATION_PATH . "/public/thumb.mp4", 'w+');
 
-        var_dump(error_get_last());die;
+//        var_dump(error_get_last());die;
 
 
 //        $ch = curl_init($atarget['url']);
