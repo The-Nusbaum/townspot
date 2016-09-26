@@ -371,7 +371,18 @@ class MediaController extends AbstractActionController
 //        var_dump($atarget);die;
 //        var_dump('<pre>',$atarget['url']);
 
-        file_put_contents(APPLICATION_PATH . "/public/thumb.mp4", fopen($atarget['url'], 'w'));
+        //file_put_contents(APPLICATION_PATH . "/public/thumb.mp4", fopen($atarget['url'], 'w'));
+
+        $ch = curl_init();
+        $fp = fopen (APPLICATION_PATH . "/public/thumb.mp4", 'w+');
+        $ch = curl_init($atarget['url']);
+        curl_setopt($ch, CURLOPT_FILE, $fp);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_ENCODING, "");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_exec($ch);
+        curl_close($ch);
+        fclose($fp);
         return new ViewModel(
             array(
                 'id'		=> $media->getId(),
