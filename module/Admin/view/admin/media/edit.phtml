@@ -22,4 +22,10 @@
     </div>
     <script>
         upload.init();
+
+        $('<button style="position: relative; z-index: 1;" class="form-control" id="genthumbs"><i class="fa fa-image"></i> Generate Thumbs</button>')
+            .insertAfter('#previewImage').click(function(e){
+            e.preventDefault();
+                window.open('/admin/video/thumbs/' + <?= $data['id'] ?>);
+        });
     </script>

@@ -5,7 +5,7 @@
 	</div>
 <% } else if (type == "category") { %>
 	<div class="col-sm-4 col-xs-6 col-wide loading">
-		<div class="video-preview category-preview">
+		<div class="video-preview category-preview"  data-id="<%- id %>">
 			<a href="<%- link %>" style="background-image: url(<%- image %>)">
 				<!-- <img alt="<%- escaped_title %>" src="<%- image %>" class="img-responsive preview-img img-<%- image_source %>"> -->
 			</a>
@@ -22,7 +22,7 @@
 	</div>
 <% } else if (type == "city") { %>
 	<div class="col-sm-4 col-xs-6 col-wide loading">
-		<div class="video-preview">
+		<div class="video-preview" data-id="<%- id %>">
 			<a href="<%- link %>"  style="background-image: url(<%- image %>)">
 				<!-- <img alt="<%- escaped_title %>" src="<%- image %>" class="img-responsive preview-img img-<%- image_source %>"> -->
 			</a>
@@ -39,7 +39,7 @@
 	</div>
 <% } else if (type == "user") { %>
 	<div class="col-sm-4 col-xs-6 col-wide loading">
-		<div class="video-preview">
+		<div class="video-preview" data-id="<%- id %>">
 			<a href="<%- link %>"  style="background-image: url(<%- image %>)">
 				<!-- <img alt="<%- escaped_title %>" src="<%- image %>" class="img-responsive preview-img img-<%- image_source %>"> -->
 			</a>
@@ -58,7 +58,7 @@
 	</div>
 <% } else if (type == "series") { %>
 	<div class="col-sm-4 col-xs-6 col-wide loading">
-		<div class="video-preview">
+		<div class="video-preview" data-id="<%- id %>">
 			<a href="<%- link %>" style="background-image: url(<%- image %>)">
 				<!-- <img alt="<%- escaped_title %>" src="<%- image %>" class="img-responsive preview-img img-<%- image_source %>"> -->
 			</a>
@@ -82,7 +82,7 @@
 	</div>
 <% } else {%>		
 	<div class="col-sm-4 col-xs-6 col-wide loading">
-		<div class="video-preview <%- position %>">
+		<div class="video-preview <%- position %>" data-id="<%- id %>">
 			<a href="<%- link %>" style="background-image: url(<%- image %>)">
 				<!-- <img class="img-responsive preview-img img-<%- image_source %>" alt="<%- escaped_title %>" src="<%- image %>"> -->
 			</a>
