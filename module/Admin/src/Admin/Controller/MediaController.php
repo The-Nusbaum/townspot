@@ -371,7 +371,7 @@ class MediaController extends AbstractActionController
 //        var_dump($atarget);die;
 //        var_dump('<pre>',$atarget['url']);
 
-        file_put_contents("public/thumb.mp4", fopen($atarget['url'], 'r'));
+        file_put_contents(APPLICATION_PATH . "/public/thumb.mp4", fopen($atarget['url'], 'w'));
         return new ViewModel(
             array(
                 'id'		=> $media->getId(),
