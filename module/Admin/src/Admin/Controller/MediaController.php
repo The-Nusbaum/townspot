@@ -353,11 +353,7 @@ class MediaController extends AbstractActionController
 		);
     }
 
-    public function thumbsAction() {
-        $this->layout('admin/empty');
-        $id = $this->params()->fromRoute('id');
-        $mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
-        $media = $mediaMapper->find($id);
+    private function _youtube_thumbs($media) {
         $id = str_replace('https://www.youtube.com/watch?v=','',$media->getUrl());
         $content = file_get_contents("http://youtube.com/get_video_info?video_id=".$id);
         parse_str($content, $ytarr);
@@ -366,30 +362,71 @@ class MediaController extends AbstractActionController
         foreach($estr as $e) {
             parse_str($e,$atarget);
             if(preg_match('/video\/mp4/',$atarget['type'])) break;
-//            echo $atarget['type']."\n";
         }
-//        var_dump($atarget);die;
-//        var_dump('<pre>',$atarget['url']);
         $str = file_get_contents($atarget['url']);
         file_put_contents(APPLICATION_PATH . "/public/thumb.mp4", $str);
+    }
 
-//        error_reporting(E_ALL);
-//        ini_set('display_errors', true);
+    private function _vimeo_thumbs($media) {
+        $id = str_replace('https://vimeo.com/','',$media->getUrl());
+        $ch = curl_init();
 
-//        $ch = curl_init();
-//        $fp = fopen (APPLICATION_PATH . "/public/thumb.mp4", 'w+');
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_COOKIESESSION, true);
+        curl_setopt($ch, CURLOPT_ENCODING , "gzip");
 
-//        var_dump(error_get_last());die;
+        curl_setopt($ch, CURLOPT_URL, "https://vimeo.com/$id");
 
+        curl_exec($ch);
 
-//        $ch = curl_init($atarget['url']);
-//        curl_setopt($ch, CURLOPT_FILE, $fp);
-//        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-//        curl_setopt($ch, CURLOPT_ENCODING, "");
-//        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-//        curl_exec($ch);
-//        curl_close($ch);
-//        fclose($fp);
+        $headers = array(
+            'GET /|id|?action=load_download_config HTTP/1.1',
+            'Host: vimeo.com',
+            'User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:49.0) Gecko/20100101 Firefox/49.0',
+            'Accept: */*',
+            'Accept-Language: en-US,en;q=0.5',
+            'Accept-Encoding: gzip, deflate, br',
+            'X-Requested-With: XMLHttpRequest',
+            'Origin: https://vimeo.com',
+            'Referer: https://vimeo.com/|id|',
+            'Connection: keep-alive'
+        );
+
+        $headers[0] = str_replace('|id|',$id,$headers[0]);
+        $headers[8] = str_replace('|id|',$id,$headers[8]);
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+        curl_setopt($ch, CURLOPT_URL, "https://vimeo.com/$id?action=load_download_config");
+
+        $response = json_decode(curl_exec($ch));
+
+        $fh = fopen(APPLICATION_PATH . "/public/thumb.mp4",'w');
+
+        curl_setopt($ch, CURLOPT_URL, $response->files['0']->download_url);
+        curl_setopt($ch, CURLOPT_FILE, $fh);
+
+        $response = curl_exec($ch);
+    }
+
+    public function thumbsAction() {
+        $this->layout('admin/empty');
+        $id = $this->params()->fromRoute('id');
+        $mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
+        $media = $mediaMapper->find($id);
+        switch($media->getSource()){
+            case 'youtube':
+                $this->_youtube_thumbs($media);
+                break;
+            case 'vimeo':
+                $this->_vimeo_thumbs($media);
+                break;
+            default:
+        }
+
         return new ViewModel(
             array(
                 'id'		=> $media->getId(),
