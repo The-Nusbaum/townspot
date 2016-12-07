@@ -298,9 +298,9 @@ class VideoController extends AbstractActionController
 
 	public function uploadAction()
 	{
-//		if (!$this->isAllowed('artist')) {
-//			return $this->redirect()->toRoute('zfcuser-login');
-//		}
+		if (!$this->isAllowed('user')) {
+			return $this->redirect()->toRoute('zfcuser-login');
+		}
 		$userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
 		$user = $userMapper->findOneById($this->auth->getIdentity());
 
@@ -1150,6 +1150,7 @@ EOT;
 	}
 
 	public function dailymotionVideosAction() {
+		$this->_view->setTemplate('application/video/pick-videos');
 		$api = $this->_dm();
 
 		try
@@ -1334,55 +1335,6 @@ EOT;
 		return $this->_view;
 	}
 
-	public function submitYtAction() {
-		$userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
-		$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
-		$trackingMapper = new \Townspot\Tracking\Mapper($this->getServiceLocator());
-		$countryMapper = new \Townspot\Country\Mapper($this->getServiceLocator());
-		$provinceMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
-		$cityMapper = new \Townspot\City\Mapper($this->getServiceLocator());
-
-		$user = $userMapper->find($this->zfcUserAuthentication()->getIdentity()->getId());
-
-		$data = $this->params()->fromPost('data');
-
-		$count = 0;
-
-		foreach ($data as $fbId => $v) {
-			$city = $cityMapper->find($v['city_id']);
-			$province = $provinceMapper->find($v['province_id']);
-			$country = $countryMapper->find($v['country_id']);
-			$video = new \Townspot\Media\Entity();
-			$video->setUser($user)
-					->setCountry($country)
-					->setProvince($province)
-					->setCity($city)
-					->setTitle($v['title'])
-					->setDescription($v['description'])
-					->setUrl($v['source'])
-					->setPreviewImage($v['picture'])
-					->setAuthorised($v['authorised'])
-					->setAllowContact($v['contact'])
-					->setSource('youtube')
-					->setDuration($v['length'])
-					->setOnMediaServer(true);
-			$mediaMapper->setEntity($video)->save();
-
-			$tracking = new \Townspot\Tracking\Entity();
-			$tracking->setUser($user->getId())
-					->setType("youtube_upload")
-					->setValue($video->getId());
-			$trackingMapper->setEntity($tracking)->save();
-
-			$count++;
-		}
-		$_SESSION['flash'] = array();
-		if ($count > 1) $_SESSION['flash'][] = "Your upload of $count videos was successful. They will be reviewed by our staff for content and quality.";
-		else $_SESSION['flash'][] = 'Your video upload was successful. It will be reviewed by our staff for content and quality.';
-
-		return $this->redirect()->toRoute('upload');
-	}
-
 	public function submitAction() {
 		$userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
 		$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
@@ -1432,109 +1384,4 @@ EOT;
 		return $this->redirect()->toRoute('upload');
 	}
 
-	public function submitFbAction()
-	{
-		$fb = $this->_fb();
-		$fb->setDefaultAccessToken($_SESSION['fb-token']);
-
-		$ids = $this->params()->fromPost('data');
-
-		$userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
-		$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
-		$trackingMapper = new \Townspot\Tracking\Mapper($this->getServiceLocator());
-		$countryMapper = new \Townspot\Country\Mapper($this->getServiceLocator());
-		$provinceMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
-		$cityMapper = new \Townspot\City\Mapper($this->getServiceLocator());
-
-		$user = $userMapper->find($this->zfcUserAuthentication()->getIdentity()->getId());
-
-		$data = $this->params()->fromPost('data');
-
-		$count = 0;
-
-		foreach ($data as $fbId => $v) {
-
-			$city = $cityMapper->find($v['city_id']);
-			$province = $provinceMapper->find($v['province_id']);
-			$country = $countryMapper->find($v['country_id']);
-			$video = new \Townspot\Media\Entity();
-			$video->setUser($user)
-					->setCountry($country)
-					->setProvince($province)
-					->setCity($city)
-					->setTitle($v['title'])
-					->setDescription($v['description'])
-					->setUrl($v['source'])
-					->setPreviewImage($v['picture'])
-					->setAuthorised($v['authorised'])
-					->setAllowContact($v['contact'])
-					->setSource('facebook')
-					->setDuration($v['length'])
-					->setOnMediaServer(true);
-			$mediaMapper->setEntity($video)->save();
-
-			$tracking = new \Townspot\Tracking\Entity();
-			$tracking->setUser($user->getId())
-					->setType("facebook_upload")
-					->setValue($video->getId());
-			$trackingMapper->setEntity($tracking)->save();
-
-
-			$count++;
-		}
-		$_SESSION['flash'] = array();
-		if ($count > 1) $_SESSION['flash'][] = "Your upload of $count videos was successful. They will be reviewed by our staff for content and quality.";
-		else $_SESSION['flash'][] = 'Your video upload was successful. It will be reviewed by our staff for content and quality.';
-
-		return $this->redirect()->toRoute('upload');
-	}
-
-	public function submitVimeoAction() {
-		$userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
-		$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
-		$trackingMapper = new \Townspot\Tracking\Mapper($this->getServiceLocator());
-		$countryMapper = new \Townspot\Country\Mapper($this->getServiceLocator());
-		$provinceMapper = new \Townspot\Province\Mapper($this->getServiceLocator());
-		$cityMapper = new \Townspot\City\Mapper($this->getServiceLocator());
-
-		$user = $userMapper->find($this->zfcUserAuthentication()->getIdentity()->getId());
-
-		$data = $this->params()->fromPost('data');
-
-		$count = 0;
-
-		foreach ($data as $fbId => $v) {
-			$city = $cityMapper->find($v['city_id']);
-			$province = $provinceMapper->find($v['province_id']);
-			$country = $countryMapper->find($v['country_id']);
-			$video = new \Townspot\Media\Entity();
-			$video->setUser($user)
-				->setCountry($country)
-				->setProvince($province)
-				->setCity($city)
-				->setTitle($v['title'])
-				->setDescription($v['description'])
-				->setUrl($v['source'])
-				->setPreviewImage($v['picture'])
-				->setAuthorised($v['authorised'])
-				->setAllowContact($v['contact'])
-				->setSource('vimeo')
-				->setDuration($v['length'])
-				->setOnMediaServer(true);
-			$mediaMapper->setEntity($video)->save();
-
-			$tracking = new \Townspot\Tracking\Entity();
-			$tracking->setUser($user->getId())
-				->setType("vimeo_upload")
-				->setValue($video->getId());
-			$trackingMapper->setEntity($tracking)->save();
-
-			$count++;
-		}
-		$_SESSION['flash'] = array();
-		if ($count > 1) $_SESSION['flash'][] = "Your upload of $count videos was successful. They will be reviewed by our staff for content and quality.";
-		else $_SESSION['flash'][] = 'Your video upload was successful. It will be reviewed by our staff for content and quality.';
-
-		return $this->redirect()->toRoute('upload');
-	}
 }
