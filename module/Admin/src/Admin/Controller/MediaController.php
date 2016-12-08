@@ -416,7 +416,6 @@ class MediaController extends AbstractActionController
         set_time_limit(300);
         $url = $media->getUrl();
         $ch = curl_init();
-
 //        $url = "http://www.dailymotion.com/video/x529eyv_barack-obama-in-athens-democracy-can-be-complicated-video_news";
 
         curl_setopt($ch, CURLOPT_AUTOREFERER, true);
@@ -439,6 +438,7 @@ class MediaController extends AbstractActionController
         $data = json_decode($matches[1][0]);
         $q = "480";
         $q = (array) $data->metadata->qualities->$q;
+
         $url = $q[1]->url;
 
         $fh = fopen(APPLICATION_PATH . "/public/thumb.mp4","w");
@@ -469,6 +469,9 @@ class MediaController extends AbstractActionController
                 break;
             case 'vimeo':
                 $this->_vimeo_thumbs($media);
+                break;
+     	    case 'dailymotion':
+                $this->_dailymotion_thumbs($media);
                 break;
             default:
         }
