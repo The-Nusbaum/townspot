@@ -1090,6 +1090,8 @@ EOT;
 			$twitch->state
 		);
 
+		die($apiCalls->authorizeUrl);
+
 
 		$twitch->api = $apiCalls;
 		return $twitch;
