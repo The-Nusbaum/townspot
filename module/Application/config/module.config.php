@@ -928,6 +928,16 @@ return array(
 							)
 					),
 			),
+            'twitch-videos' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route' => '/videos/twitch-videos',
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Video',
+                        'action' => 'twitchVideos'
+                    )
+                ),
+            ),
 			'vimeo-videos' => array(
 					'type' => 'Zend\Mvc\Router\Http\Segment',
 					'options' => array(

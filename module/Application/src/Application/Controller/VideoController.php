@@ -1059,7 +1059,7 @@ EOT;
 
 		$apiCalls = new \stdClass();
 
-		$apiCalls->authorize = sprintf("https://api.twitch.tv/kraken/oauth2/authorize?response_type=code&client_id=%s&redirect_uri=%s&scope=%s&state=$s",
+		$apiCalls->authorizeUrl = sprintf("https://api.twitch.tv/kraken/oauth2/authorize?response_type=code&client_id=%s&redirect_uri=%s&scope=%s&state=$s",
 			$twitch->id,
 			$twitch->redirect,
 			$twitch->scope,
@@ -1106,7 +1106,8 @@ EOT;
 		if($code) {
 		//no? get code asshole!
 		} else {
-
+			header("Location: $twitch->authorizeUrl");
+			die;
 		}
 		//spit out vids
 	}
