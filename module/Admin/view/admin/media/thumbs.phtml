@@ -1,6 +1,6 @@
 <div style="border: solid 1px #ccc; padding: 10px; text-align: center;">
     <video id="video" width="640" controls="true">
-        <source src="/thumb.mp4">
+        <source src="/thumb.mp4?nocache=<?= rand(1,10000) ?>">
     </video>
     <br/>
     <button onclick="start()" style="width: 64px;border: solid 2px #ccc;">Capture</button>

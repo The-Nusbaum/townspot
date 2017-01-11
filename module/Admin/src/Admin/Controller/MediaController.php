@@ -458,6 +458,33 @@ class MediaController extends AbstractActionController
         $resp = curl_exec($ch);
     }
 
+    private function _internal_thumbs($media) {
+        set_time_limit(300);
+        $url = $media->getUrl();
+        $ch = curl_init();
+
+//        curl_setopt($ch, CURLOPT_AUTOREFERER, true);
+//        curl_setopt($ch, CURLOPT_COOKIESESSION, true);
+//        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_URL, $url);
+
+        $fh = fopen(APPLICATION_PATH . "/public/thumb.mp4","w");
+        
+	curl_setopt($ch, CURLOPT_FILE, $fh);
+        curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
+        curl_setopt($ch, CURLOPT_TIMEOUT, -1); # optional: -1 = unlimited, 3600 = 1 hour
+        curl_setopt($ch, CURLOPT_VERBOSE, true); # Set to true to see all the innards
+
+        # Only if you need to bypass SSL certificate validation
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+        # Assign a callback function to the CURL Write-Function
+        // curl_setopt($ch, CURLOPT_WRITEFUNCTION, 'curlWriteFile');
+        $resp = curl_exec($ch);
+    }
+
     public function thumbsAction() {
         $this->layout('admin/empty');
         $id = $this->params()->fromRoute('id');
@@ -474,6 +501,7 @@ class MediaController extends AbstractActionController
                 $this->_dailymotion_thumbs($media);
                 break;
             default:
+                $this->_internal_thumbs($media);
         }
 
         return new ViewModel(
