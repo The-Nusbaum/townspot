@@ -1102,10 +1102,13 @@ EOT;
 		//get state
 		$state = $this->params()->fromQuery('state');
 		//get twitch data
-		$twitch = $this->_twitch();
+		$twitch = $this->_twitch($code);
 		//have code? get vids
 		if($code) {
 		//no? get code asshole!
+			$response = $twitch->getToken($twitch);
+
+			var_dump($response);die;
 		} else {
 			header("Location: $twitch->authorizeUrl");
 			die;
