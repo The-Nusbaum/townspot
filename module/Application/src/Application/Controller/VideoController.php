@@ -1047,6 +1047,70 @@ EOT;
 		return $this->_view;
 	}
 
+	protected function _twitch($code) {
+		$twitch = new \stdClass();
+		$twitch->secret = 'ijygmuxd0w02fuvq185rj9s9nmkkcg';
+		$twitch->id = '3nbquwcvdzqzrp99qqs6zpiiqx7ppe';
+		$twitch->code = $code;
+		$twitch->state = (empty($_SESSION['twitchState']))? $_SESSION['twitchState'] = uniqid() : $_SESSION['twitchState'];
+		$twitch->redirect = "http://townspot.tv/videos/twitch-videos";
+		$twitch->scope = "channel_feed_read";
+
+
+		$apiCalls = new \stdClass();
+
+		$apiCalls->authorize = sprintf("https://api.twitch.tv/kraken/oauth2/authorize?response_type=code&client_id=%s&redirect_uri=%s&scope=%s&state=$s",
+			$twitch->id,
+			$twitch->redirect,
+			$twitch->scope,
+			$twitch->state
+		);
+
+		$apiCalls->getToken = function($twitch) {
+			$ch = curl_init("https://api.twitch.tv/kraken/oauth2/token");
+
+			$body = array(
+				"client_id" 	=> $twitch->id,
+				"client_secret" => $twitch->secret,
+				"grant_type" 	=> "authorization_code",
+				"redirect_uri" 	=> $twitch->redirect,
+				"code" 			=> $twitch->code,
+				"state" 		=> $twitch->state
+			);
+
+			$body = http_build_query($body);
+
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+			curl_setopt($ch, CURLOPT_POST,           1 );
+			curl_setopt($ch, CURLOPT_POSTFIELDS,     $body );
+			curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain'));
+
+			$result = curl_exec($ch);
+
+			return json_decode($result);
+		};
+
+		$twitch->api = $apiCalls;
+		return $twitch;
+	}
+
+	public function twitchVideosAction() {
+		$this->_view->setTemplate('application/video/pick-videos');
+		//get code
+		$code = $this->params()->fromQuery('code');
+		//get state
+		$state = $this->params()->fromQuery('state');
+		//get twitch data
+		$twitch = $this->_twitch();
+		//have code? get vids
+		if($code) {
+		//no? get code asshole!
+		} else {
+
+		}
+		//spit out vids
+	}
+
 	public function fbVideosAction() {
 		$this->_view->setTemplate('application/video/pick-videos');
 		$code = $this->params()->fromQuery('code');
