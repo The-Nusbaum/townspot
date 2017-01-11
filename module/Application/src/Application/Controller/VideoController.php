@@ -1047,6 +1047,30 @@ EOT;
 		return $this->_view;
 	}
 
+	protected function _twitchGetToken($twitch) {
+		$ch = curl_init("https://api.twitch.tv/kraken/oauth2/token");
+
+		$body = array(
+			"client_id" 	=> $twitch->id,
+			"client_secret" => $twitch->secret,
+			"grant_type" 	=> "authorization_code",
+			"redirect_uri" 	=> $twitch->redirect,
+			"code" 			=> $twitch->code,
+			"state" 		=> $twitch->state
+		);
+
+		$body = http_build_query($body);
+
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+		curl_setopt($ch, CURLOPT_POST,           1 );
+		curl_setopt($ch, CURLOPT_POSTFIELDS,     $body );
+		curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain'));
+
+		$result = curl_exec($ch);
+
+		return json_decode($result);
+	};
+
 	protected function _twitch($code) {
 		$twitch = new \stdClass();
 		$twitch->secret = 'ijygmuxd0w02fuvq185rj9s9nmkkcg';
@@ -1066,29 +1090,6 @@ EOT;
 			$twitch->state
 		);
 
-		$apiCalls->getToken = function($twitch) {
-			$ch = curl_init("https://api.twitch.tv/kraken/oauth2/token");
-
-			$body = array(
-				"client_id" 	=> $twitch->id,
-				"client_secret" => $twitch->secret,
-				"grant_type" 	=> "authorization_code",
-				"redirect_uri" 	=> $twitch->redirect,
-				"code" 			=> $twitch->code,
-				"state" 		=> $twitch->state
-			);
-
-			$body = http_build_query($body);
-
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
-			curl_setopt($ch, CURLOPT_POST,           1 );
-			curl_setopt($ch, CURLOPT_POSTFIELDS,     $body );
-			curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain'));
-
-			$result = curl_exec($ch);
-
-			return json_decode($result);
-		};
 
 		$twitch->api = $apiCalls;
 		return $twitch;
@@ -1106,7 +1107,7 @@ EOT;
 		//have code? get vids
 		if($code) {
 		//no? get code asshole!
-			$response = $twitch->api->getToken($twitch);
+			$response = $this->_twitchGetToken($twitch);
 
 			var_dump($response);die;
 		} else {
