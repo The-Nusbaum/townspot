@@ -1110,7 +1110,7 @@ EOT;
 
 			var_dump($response);die;
 		} else {
-			header("Location: $twitch->authorizeUrl");
+			header("Location: {$twitch->api->authorizeUrl}");
 			die;
 		}
 		//spit out vids
