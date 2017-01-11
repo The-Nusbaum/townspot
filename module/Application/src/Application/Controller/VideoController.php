@@ -1095,6 +1095,7 @@ EOT;
 	}
 
 	public function twitchVideosAction() {
+		ini_set("display_startup_errors", 1); ini_set("display_errors", 1); /* Reports for either E_ERROR. E_WARNING. E_NOTICE. Any Error*/ error_reporting(E_ALL);
 		$this->_view->setTemplate('application/video/pick-videos');
 		//get code
 		$code = $this->params()->fromQuery('code');
