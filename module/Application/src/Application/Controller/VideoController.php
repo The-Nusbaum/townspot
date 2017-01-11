@@ -1106,7 +1106,7 @@ EOT;
 		//have code? get vids
 		if($code) {
 		//no? get code asshole!
-			$response = $twitch->getToken($twitch);
+			$response = $twitch->api->getToken($twitch);
 
 			var_dump($response);die;
 		} else {
