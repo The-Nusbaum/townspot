@@ -1061,6 +1061,8 @@ EOT;
 
 		$body = http_build_query($body);
 
+		var_dump($body);die;
+
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
 		curl_setopt($ch, CURLOPT_POST,           1 );
 		curl_setopt($ch, CURLOPT_POSTFIELDS,     $body );
@@ -1090,7 +1092,6 @@ EOT;
 			$twitch->state
 		);
 
-		die($apiCalls->authorizeUrl);
 
 
 		$twitch->api = $apiCalls;
