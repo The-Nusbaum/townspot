@@ -1069,7 +1069,7 @@ EOT;
 		$result = curl_exec($ch);
 
 		return json_decode($result);
-	};
+	}
 
 	protected function _twitch($code) {
 		$twitch = new \stdClass();
