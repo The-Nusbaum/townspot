@@ -1071,6 +1071,22 @@ EOT;
 		return json_decode($result);
 	}
 
+	protected function _twitchGetThing($twitch) {
+
+		$token = $this->_twitchGetToken($twitch);
+		var_dump($token);
+
+		$ch = curl_init("https://api.twitch.tv/kraken/feed/7064b5ce67962d2c/posts?oauth_token");
+
+		$body = http_build_query($body);
+
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+
+		$result = curl_exec($ch);
+
+		return json_decode($result);
+	}
+
 	protected function _twitch($code) {
 		$twitch = new \stdClass();
 		$twitch->secret = 'ijygmuxd0w02fuvq185rj9s9nmkkcg';
@@ -1078,7 +1094,7 @@ EOT;
 		$twitch->code = $code;
 		$twitch->state = (empty($_SESSION['twitchState']))? $_SESSION['twitchState'] = uniqid() : $_SESSION['twitchState'];
 		$twitch->redirect = "http://townspot.tv/videos/twitch-videos";
-		$twitch->scope = "channel_feed_read";
+		$twitch->scope = "channel_feed_read,user_read";
 
 
 		$apiCalls = new \stdClass();
@@ -1108,9 +1124,9 @@ EOT;
 		//have code? get vids
 		if($code) {
 		//no? get code asshole!
-			$response = $this->_twitchGetToken($twitch);
-
+			$response = $this->_twitchGetThing($twitch);
 			var_dump($response);die;
+
 		} else {
 			header("Location: {$twitch->api->authorizeUrl}");
 			die;
