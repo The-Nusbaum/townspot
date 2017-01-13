@@ -1096,7 +1096,7 @@ EOT;
 		$twitch->code = $code;
 		$twitch->state = (empty($_SESSION['twitchState']))? $_SESSION['twitchState'] = uniqid() : $_SESSION['twitchState'];
 		$twitch->redirect = "http://townspot.tv/videos/twitch-videos";
-		$twitch->scope = "channel_feed_read,user_read";
+		$twitch->scope = "channel_feed_read user_read";
 
 
 		$apiCalls = new \stdClass();
