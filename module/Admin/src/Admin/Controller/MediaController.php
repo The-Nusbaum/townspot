@@ -416,7 +416,6 @@ class MediaController extends AbstractActionController
         set_time_limit(300);
         $url = $media->getUrl();
         $ch = curl_init();
-
 //        $url = "http://www.dailymotion.com/video/x529eyv_barack-obama-in-athens-democracy-can-be-complicated-video_news";
 
         curl_setopt($ch, CURLOPT_AUTOREFERER, true);
@@ -439,6 +438,7 @@ class MediaController extends AbstractActionController
         $data = json_decode($matches[1][0]);
         $q = "480";
         $q = (array) $data->metadata->qualities->$q;
+
         $url = $q[1]->url;
 
         $fh = fopen(APPLICATION_PATH . "/public/thumb.mp4","w");
@@ -458,39 +458,20 @@ class MediaController extends AbstractActionController
         $resp = curl_exec($ch);
     }
 
-    private function _dailymotion_thumbs($media) {
+    private function _internal_thumbs($media) {
         set_time_limit(300);
         $url = $media->getUrl();
         $ch = curl_init();
 
-//        $url = "http://www.dailymotion.com/video/x529eyv_barack-obama-in-athens-democracy-can-be-complicated-video_news";
-
-        curl_setopt($ch, CURLOPT_AUTOREFERER, true);
-        curl_setopt($ch, CURLOPT_COOKIESESSION, true);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+//        curl_setopt($ch, CURLOPT_AUTOREFERER, true);
+//        curl_setopt($ch, CURLOPT_COOKIESESSION, true);
+//        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_URL, $url);
-//        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-//            'Host: www.dailymotion.com',
-//            'Connection: keep-alive',
-//            'Upgrade-Insecure-Requests: 1',
-//            'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36',
-//            'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-//            // 'Accept-Encoding: gzip, deflate, sdch',
-//            'Accept-Language: en-US,en;q=0.8',
-//        ));
 
-//        $resp = curl_exec($ch);
-//        preg_match_all("/var config = (.*);/",$resp,$matches);
-//        $data = json_decode($matches[1][0]);
-//        $q = "480";
-//        $q = (array) $data->metadata->qualities->$q;
-//        $url = $q[1]->url;
-//
         $fh = fopen(APPLICATION_PATH . "/public/thumb.mp4","w");
-//
-//        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_FILE, $fh);
+        
+	curl_setopt($ch, CURLOPT_FILE, $fh);
         curl_setopt($ch, CURLOPT_BINARYTRANSFER, true);
         curl_setopt($ch, CURLOPT_TIMEOUT, -1); # optional: -1 = unlimited, 3600 = 1 hour
         curl_setopt($ch, CURLOPT_VERBOSE, true); # Set to true to see all the innards
@@ -516,7 +497,7 @@ class MediaController extends AbstractActionController
             case 'vimeo':
                 $this->_vimeo_thumbs($media);
                 break;
-            case 'dailymotion':
+     	    case 'dailymotion':
                 $this->_dailymotion_thumbs($media);
                 break;
             default:

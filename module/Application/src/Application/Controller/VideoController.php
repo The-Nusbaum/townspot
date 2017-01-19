@@ -1055,38 +1055,82 @@ EOT;
 			"client_secret" => $twitch->secret,
 			"grant_type" 	=> "authorization_code",
 			"redirect_uri" 	=> $twitch->redirect,
-			"code" 			=> $twitch->code,
-			"state" 		=> $twitch->state
+			"code" 		=> $twitch->code,
+			"state"		=> $twitch->state
 		);
 
 		$body = http_build_query($body);
-
-		var_dump($body);die;
-
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+//		curl_setopt($ch, CURLOPT_HEADER, 1 );
+//		curl_setopt($ch, CURLOPT_VERBOSE, 1 );
 		curl_setopt($ch, CURLOPT_POST,           1 );
+//		curl_setopt($ch, CURLINFO_HEADER_OUT,    1 );
 		curl_setopt($ch, CURLOPT_POSTFIELDS,     $body );
-		curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain'));
+//		curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain'));
 
 		$result = curl_exec($ch);
-
+//var_dump($result);die('end');
 		return json_decode($result);
 	}
 
-	protected function _twitchGetThing($twitch) {
+	protected function _getTwitchVideo($id) {
+		$token = $_SESSION['twitchToken'];	
+		$ch = curl_init("https://api.twitch.tv/kraken/videos/$id?oauth_token=$token");
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+		$result = curl_exec($ch);
+		$video = json_decode($result);
+		return $video;
+	} 
 
-		$token = $this->_twitchGetToken($twitch);
-		var_dump($token);
+	protected function _twitchGetVideos($twitch) {
 
-		$ch = curl_init("https://api.twitch.tv/kraken/feed/7064b5ce67962d2c/posts?oauth_token");
+		if(empty($_SESSION['twitchToken'])) {
+			$token = $this->_twitchGetToken($twitch)->access_token;
+			$_SESSION['twitchToken'] = $token;
+		} else $token = $_SESSION['twitchToken'];
 
-		$body = http_build_query($body);
-
+		$ch = curl_init("https://api.twitch.tv/kraken/user?oauth_token=$token");
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+		$result = curl_exec($ch);
+		$user = json_decode($result);
+		$ch = curl_init("https://api.twitch.tv/kraken/channels/$user->name/videos?oauth_token=$token&limit=100");
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
 
-		$result = curl_exec($ch);
+		$results = json_decode(curl_exec($ch));
 
-		return json_decode($result);
+		$continue = true;
+		$videos = array();
+		$out = array();
+		while($continue) {
+			if(count($results->videos)) {
+				$videos = array_merge($videos,$results->videos);
+			}
+			$url = $results->_links->next; 
+			$ch = curl_init("$url&oauth_token=$token");
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+			$results = json_decode(curl_exec($ch));
+			if(!count($results->videos)) {
+				$continue = false;
+			}
+		}
+	
+		$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
+		foreach($videos as $k =>$v) {
+			$src = "https://player.twitch.tv/?video={$v->_id}";
+			$m = $mediaMapper->findOneByUrl($src);
+			$video = array(
+				'id'			=> $v->_id,
+				'url' 			=> $src,
+				'thumbnail' 		=> $v->preview,
+				'title'			=> $v->title,
+				'duration'		=> $v->length,
+				'description'		=> $v->description,
+			);
+			if($m instanceof \Townspot\Media\Entity) $video['in_system'] = true;
+			$out[] = $video;
+		}
+
+		return $out;
 	}
 
 	protected function _twitch($code) {
@@ -1126,14 +1170,17 @@ EOT;
 		//have code? get vids
 		if($code) {
 		//no? get code asshole!
-			$response = $this->_twitchGetThing($twitch);
-			var_dump($response);die;
+			$videos = $this->_twitchGetVideos($twitch);
 
 		} else {
 			header("Location: {$twitch->api->authorizeUrl}");
 			die;
 		}
 		//spit out vids
+			
+		$this->_view->setVariable('videos',$videos);
+		$this->_view->setVariable('source','twitch');
+		return $this->_view;
 	}
 
 	public function fbVideosAction() {
@@ -1421,6 +1468,34 @@ EOT;
 		//var_dump('<pre>',$videos);die;
 		$this->_view->setVariable('videos', $videos);
 		$this->_view->setVariable('source', 'dailymotion');
+		return $this->_view;
+	}
+	
+	public function reviewTwitchAction()
+	{
+		$this->_view->setTemplate('application/video/review-ext');
+		$twitch = $this->_twitch();
+
+		$userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+		$user = $userMapper->find($this->auth->getIdentity());
+		$this->_view->setVariable('user',$user);
+
+		$ids = $this->params()->fromPost('data');
+		foreach ($ids as $id) {
+			$v = $this->_getTwitchVideo($id);
+			$src = "https://player.twitch.tv/?video={$v->_id}";
+			$video = array(
+				'id'			=> $v->_id,
+				'url' 			=> $src,
+				'thumbnail' 		=> $v->preview,
+				'title'			=> $v->title,
+				'duration'		=> $v->length,
+				'description'		=> $v->description,
+			);
+			$videos[] = $video;
+		}
+		$this->_view->setVariable('videos', $videos);
+		$this->_view->setVariable('source', 'twitch');
 		return $this->_view;
 	}
 
