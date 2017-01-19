@@ -97,11 +97,14 @@
 									<?php if ($video_url = $this->media->getMediaUrl()) {} 
 										   else {	$video_url = $this->media->getUrl();	 }
 									?>
-                  <?php if($this->media->getSource() == 'vimeo') :
+				  <?php if($this->media->getSource() == 'vimeo') :
                       preg_match("/\/([0-9]+)/",$video_url,$matches);
                       $id = $matches[1];
                       ?>
                       <iframe class="vimeoPlayer" src="https://player.vimeo.com/video/<?= $id ?>?api=1" frameborder="0"></iframe>
+				  <?php if($this->media->getSource() == 'twitch') : ?>
+					  <iframe class="twitchPlayer" src="<?= $this->media->getUrl() ?>" frameborder="0"></iframe>
+
                     <?php elseif($this->media->getSource() == 'dailymotion') :
                       preg_match('/\/(x.*?)_/',$video_url,$matches);
     									$id = $matches[1];
