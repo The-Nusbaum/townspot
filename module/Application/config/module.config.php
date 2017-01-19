@@ -978,6 +978,16 @@ return array(
 							)
 					),
 			),
+			'review-twitch' => array(
+					'type' => 'Zend\Mvc\Router\Http\Segment',
+					'options' => array(
+							'route' => '/videos/review-twitch',
+							'defaults' => array(
+									'controller' => 'Application\Controller\Video',
+									'action' => 'reviewTwitch'
+							)
+					),
+			),
 			'review-yt' => array(
 					'type' => 'Zend\Mvc\Router\Http\Segment',
 					'options' => array(
