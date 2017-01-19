@@ -75,21 +75,28 @@ class VideoPlayer extends AbstractHelper implements ServiceLocatorAwareInterface
 		return $html;	
 	}
 
+	public function twitch() {
+		$html  = sprintf("<iframe class='twitchPlayer' src='%s' frameborder='0'></iframe>",$this->media->getUrl());
+		$html .= $this->_playerInfo();
+		return $html;
+	}
+
 	public function vimeo()
 	{
 		preg_match("/\/([0-9]+)/",$this->media->getUrl(),$matches);
+
 		$id = $matches[1];
-    $vimeo = new \Vimeo\Vimeo('ac278d2d73248632ac83bf9fc43900876b9c12e0', '68c3d6ee56c6a66a2c4e6f05c06f0199f84b94c3');
-    $token = '45dd4e70cfd1a1b307c683c1b5deff2a';
-    $vimeo->setToken($token);
-    $response = $vimeo->request("/videos/$id");
+    	$vimeo = new \Vimeo\Vimeo('ac278d2d73248632ac83bf9fc43900876b9c12e0', '68c3d6ee56c6a66a2c4e6f05c06f0199f84b94c3');
+    	$token = '45dd4e70cfd1a1b307c683c1b5deff2a';
+    	$vimeo->setToken($token);
+    	$response = $vimeo->request("/videos/$id");
 
 
-    $this->media->setViews($response['body']['stats']['plays']);
-    $helperPluginManager	= $this->getServiceLocator();
-    $serviceManager 		= $helperPluginManager->getServiceLocator();
-    $mediaMapper = new \Townspot\Media\Mapper($serviceManager);
-    $mediaMapper->setEntity($this->media)->save();
+    	$this->media->setViews($response['body']['stats']['plays']);
+    	$helperPluginManager	= $this->getServiceLocator();
+    	$serviceManager 		= $helperPluginManager->getServiceLocator();
+    	$mediaMapper = new \Townspot\Media\Mapper($serviceManager);
+    	$mediaMapper->setEntity($this->media)->save();
 
 		$html  = sprintf("<iframe class='vimeoPlayer' src='https://player.vimeo.com/video/%s?api=1' frameborder='0'></iframe>",$id);
 		$html .= $this->_playerInfo();
