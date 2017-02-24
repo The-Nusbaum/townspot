@@ -14,6 +14,9 @@
             <?php if($canEdit): ?>
                 <li><a href="#favorites" data-toggle="tab">Favorites</a></li>
             <?php endif; ?>
+            <?php if($user->getId() == 242): ?>
+                <li><a href="#playlists" data-toggle="tab">Playlists</a></li>
+            <?php endif; ?>
         </ul>
     </div>
 
@@ -429,6 +432,11 @@
                 </div>
             </div -->
         <?php endif; ?>
+    </div>
+<?php endif; ?>
+<?php if($user->getId() == 242): ?>
+    <div class="tab-pane" id="playlists">
+
     </div>
 <?php endif; ?>
 </div>

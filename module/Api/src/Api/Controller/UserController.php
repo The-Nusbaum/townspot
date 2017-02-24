@@ -143,4 +143,13 @@ class UserController extends \Townspot\Controller\BaseRestfulController
 
         return new JsonModel($this->getResponse()->build());
     }
+
+    public function getPlaylistsAction() {
+        $id = $this->params()->fromRoute('id');
+        $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+        $user = $userMapper->find($id);
+
+        $playListMapper = new \Townspot\Playlist\Mapper($this->getServiceLocator());
+        $playLists = $playListMapper->list();
+    }
 }
