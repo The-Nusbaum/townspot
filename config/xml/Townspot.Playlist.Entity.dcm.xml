@@ -8,10 +8,10 @@
 		<many-to-many field="_media" target-entity="Townspot\Media\Entity">
 			<join-table name="playlist_media">
 				<join-columns>
-					<join-column name="media_id" referenced-column-name="id" />
+					<join-column name="playlist_id" referenced-column-name="id" />
 				</join-columns>
 				<inverse-join-columns>
-					<join-column name="playlist_id" referenced-column-name="id" />
+					<join-column name="media_id" referenced-column-name="id" />
 				</inverse-join-columns>
 			</join-table>
 		</many-to-many>
