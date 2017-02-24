@@ -1,5 +1,5 @@
 <?php
-namespace Townspot\Series;
+namespace Townspot\Playlist;
 
 class Entity extends \Townspot\Entity
 {

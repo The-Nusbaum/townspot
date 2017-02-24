@@ -1,5 +1,5 @@
 <?php
-namespace Townspot\Series;
+namespace Townspot\Playlist;
 use Townspot\Doctrine\Mapper\AbstractEntityMapper;
 
 class Mapper extends AbstractEntityMapper
