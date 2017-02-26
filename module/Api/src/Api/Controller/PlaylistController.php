@@ -168,7 +168,7 @@ class PlaylistController extends \Townspot\Controller\BaseRestfulController
             $code = 404;
         }
 
-        $playListMapper->save($playlist);
+        $playListMapper->setEntity($playlist)->save();
 
         $data = $this->_playlist($playlist);
 
