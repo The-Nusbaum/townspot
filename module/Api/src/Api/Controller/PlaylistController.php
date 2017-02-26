@@ -107,7 +107,9 @@ class PlaylistController extends \Townspot\Controller\BaseRestfulController
         $mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
         $media = $mediaMapper->find($mid);
 
-        $playlist->addMedia($media);
+        $add = true;
+        foreach($playlist->getMedia as $m) if($m->getId() == $mid) $add = false;
+        if ($add) $playlist->addMedia($media);
 
         $data = $this->_playlist($playlist);
 
@@ -166,6 +168,32 @@ class PlaylistController extends \Townspot\Controller\BaseRestfulController
             $code = 404;
         }
 
+        $playListMapper->save($playlist);
+
+        $data = $this->_playlist($playlist);
+
+        $this->getResponse()
+            ->setCode($code)
+            ->setSuccess($success)
+            ->setData($data)
+            ->setCount(count($data));
+
+        return new JsonModel($this->getResponse()->build());
+    }
+
+    public function updateAction() {
+        $pid = $this->params()->fromRoute('id');
+        $name = $this->params()->fromPost('name');
+        $desc = $this->params()->fromPost('desc');
+
+        $playListMapper = new \Townspot\Playlist\Mapper($this->getServiceLocator());
+
+        $success = true;
+        $code = 200;
+
+        $playlist = $playListMapper->find($pid);
+        $playlist->setName($name);
+        $playlist->setDesc($desc);
         $playListMapper->save($playlist);
 
         $data = $this->_playlist($playlist);
