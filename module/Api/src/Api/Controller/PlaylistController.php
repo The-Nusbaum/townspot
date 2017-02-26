@@ -109,7 +109,7 @@ class PlaylistController extends \Townspot\Controller\BaseRestfulController
 
         $playlist->addMedia($media);
 
-        $data = $playlist->asArray();
+        $data = $this->_playlist($playlist);
 
         $this->getResponse()
             ->setCode(200)
