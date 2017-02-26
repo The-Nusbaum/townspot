@@ -20,10 +20,10 @@
 					)
 				); ?>
 
-				<?php if($authdUser): ?>
+				<?php if($this->zfcUserIdentity()): ?>
 					<div class="col-md-4 pull-right">
 						<div class="input-group">
-							<select class="form-control" name="playlists" id="playlists" data-uid="<?= $authdUser ?>">
+							<select class="form-control" name="playlists" id="playlists" data-uid="<?= $this->zfcUserIdentity()->getId() ?>">
 								<option value="create">Create New...</option>
 							</select>
 							<span class="input-group-addon">
