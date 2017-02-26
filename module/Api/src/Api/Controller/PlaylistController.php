@@ -192,11 +192,17 @@ class PlaylistController extends \Townspot\Controller\BaseRestfulController
         $code = 200;
 
         $playlist = $playListMapper->find($pid);
-        $playlist->setName($name);
-        $playlist->setDesc($desc);
-        $playListMapper->save($playlist);
+        if($playlist instanceof \Townspot\Playlist\Entity) {
+            $playlist->setName($name);
+            $playlist->setDesc($desc);
+            $playListMapper->save($playlist);
+            $data = $this->_playlist($playlist);
+        } else {
+            $success = !$success;
+            $code = 404;
+            $data = "invalid playlist";
+        }
 
-        $data = $this->_playlist($playlist);
 
         $this->getResponse()
             ->setCode($code)
