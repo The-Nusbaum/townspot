@@ -19,6 +19,7 @@
 						'include_buttons' => true,
 					)
 				); ?>
+
 				<?php if($authdUser): ?>
 					<div class="col-md-4 pull-right">
 						<div class="input-group">
@@ -30,7 +31,7 @@
 							</span>
 						</div>
 					</div>
-				
+
 				<?php endif; ?>
 
 			</div>
@@ -365,3 +366,7 @@
 	});
 	setInfoButtons();
 </script>
+
+<!-- devtest
+<?php var_dump($authdUser); ?>
+-->
