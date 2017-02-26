@@ -103,6 +103,6 @@ class Entity extends \Townspot\Entity
 
 	public function getPlaylistLink()
 	{
-		return "/users/" . htmlentities(strtolower($this->getUser()->getUsername())) . "/" . htmlentities(strtolower($this->getName()));
+		return "/users/" . htmlentities(strtolower($this->getUser()->getUsername())) . "/playlist/" . htmlentities(strtolower($this->getName()));
 	}
 }
