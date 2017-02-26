@@ -92,8 +92,8 @@ class Entity extends \Townspot\Entity
 	protected $_comments_about;
 	
 	protected $_media_comments;
-
-	protected $_media_comments;
+	
+	protected $_playlists;
 
   protected $_serviceLocator;
   
