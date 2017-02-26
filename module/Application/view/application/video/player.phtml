@@ -19,6 +19,18 @@
 						'include_buttons' => true,
 					)
 				); ?>
+				<?php if($authdUser): ?>
+					<div class="col-md-4 pull-right">
+						<div class="input-group">
+							<select class="form-control" name="playlists" id="playlists" data-uid="<?= $authdUser ?>">
+								<option value="create">Create New...</option>
+							</select>
+							<span class="input-group-addon">
+								<button class="add"><i class="fa fa-plus"></i></button>
+							</span>
+						</div>
+					</div>
+				<?php endif; ?>
 			</div>
 		</div>
 	</div>
