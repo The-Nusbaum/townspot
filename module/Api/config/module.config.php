@@ -11,6 +11,7 @@ return array(
             'Api\Controller\ArtistCommentController' => 'Api\Controller\ArtistCommentController',
             'Api\Controller\ProvinceController' => 'Api\Controller\ProvinceController',
             'Api\Controller\TrackingController' => 'Api\Controller\TrackingController',
+            'Api\Controller\PlaylistController' => 'Api\Controller\PlaylistController',
             'model' => 'Api\Controller\ModelController',
         ),
     ),
