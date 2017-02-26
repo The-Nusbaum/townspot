@@ -144,34 +144,5 @@ class UserController extends \Townspot\Controller\BaseRestfulController
         return new JsonModel($this->getResponse()->build());
     }
 
-    public function getPlaylistsAction() {
-        $id = $this->params()->fromRoute('id');
-        $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
-        $user = $userMapper->find($id);
 
-        $playListMapper = new \Townspot\Playlist\Mapper($this->getServiceLocator());
-        $playlists = $playListMapper->findByUser($user);
-
-	$data = array();
-
-	foreach($playlists as $p) {
-		$media = array();
-		foreach($p->getMedia() as $m) {
-			$media[] = $m->toArray();
-		}
-		$data[] = array(
-			'id' => $p->getId(),
-			'name' => $p->getName(),
-			'desc' => $p->getDescription(),
-			'media' => $media
-		);
-	}
-	$this->getResponse()
-            ->setCode(200)
-            ->setSuccess(true)
-            ->setData($data)
-            ->setCount(count($data));
-
-        return new JsonModel($this->getResponse()->build());
-    }
 }

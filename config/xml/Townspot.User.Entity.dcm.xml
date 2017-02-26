@@ -34,7 +34,8 @@
 		<one-to-many field="_followed_by" target-entity="Townspot\UserFollowing\Entity" mapped-by="_follower" />		
 		<one-to-many field="_user_events" target-entity="Townspot\UserEvent\Entity" mapped-by="_user" />		
 		<one-to-many field="_media" target-entity="Townspot\Media\Entity" mapped-by="_user" />		
-		<one-to-many field="_approved" target-entity="Townspot\Media\Entity" mapped-by="_admin" />		
+		<one-to-many field="_playlists" target-entity="Townspot\Playlist\Entity" mapped-by="_user" />
+		<one-to-many field="_approved" target-entity="Townspot\Media\Entity" mapped-by="_admin" />
 		<one-to-many field="_ratings" target-entity="Townspot\Rating\Entity" mapped-by="_user" />		
 		<one-to-many field="_activity" target-entity="Townspot\UserActivity\Entity" mapped-by="_user" />
 		<one-to-many field="_activities_against" target-entity="Townspot\UserActivity\Entity" mapped-by="_artist" />

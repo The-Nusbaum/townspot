@@ -93,6 +93,8 @@ class Entity extends \Townspot\Entity
 	
 	protected $_media_comments;
 
+	protected $_media_comments;
+
   protected $_serviceLocator;
   
   protected $_allow_hire;
@@ -772,6 +774,9 @@ class Entity extends \Townspot\Entity
 		}
 		return $location;
 	}
-	
+
+	public function getPlaylists() {
+		return $this->_playlists;
+	}
 
 }
