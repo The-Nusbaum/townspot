@@ -146,7 +146,7 @@ class PlaylistController extends \Townspot\Controller\BaseRestfulController
     }
 
     public function createAction() {
-        $uid = $this->params()->fromPost('uid');
+        $uid = $this->params()->fromRoute('id');
         $name = $this->params()->fromPost('name');
         $desc = $this->params()->fromPost('desc');
 
