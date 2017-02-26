@@ -195,8 +195,7 @@ class PlaylistController extends \Townspot\Controller\BaseRestfulController
         if($playlist instanceof \Townspot\Playlist\Entity) {
             $playlist->setName($name);
             $playlist->setDescription($desc);
-            var_dump($playlist);die;
-            $playListMapper->save($playlist);
+            $playListMapper->setEntity($playlist)->save();
             $data = $this->_playlist($playlist);
         } else {
             $success = !$success;
