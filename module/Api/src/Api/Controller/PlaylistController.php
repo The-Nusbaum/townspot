@@ -213,7 +213,8 @@ class PlaylistController extends \Townspot\Controller\BaseRestfulController
         $playListMapper = new \Townspot\Playlist\Mapper($this->getServiceLocator());
         $playlist = $playListMapper->find($pid);
 
-        $playListMapper->setEntity($playlist)->delete();
+        $playListMapper->setEntity($playlist);
+        $playListMapper->delete();
 
         $data = null;
 
