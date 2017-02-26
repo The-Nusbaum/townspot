@@ -99,7 +99,7 @@ class PlaylistController extends \Townspot\Controller\BaseRestfulController
 
     public function addAction() {
         $pid = $this->params()->fromRoute('id');
-        $mid = $this->params()->fromGet('mid');
+        $mid = $this->params()->fromQuery('mid');
 
         $playListMapper = new \Townspot\Playlist\Mapper($this->getServiceLocator());
         $playlist = $playListMapper->find($pid);
@@ -122,7 +122,7 @@ class PlaylistController extends \Townspot\Controller\BaseRestfulController
 
     public function removeAction() {
         $pid = $this->params()->fromRoute('id');
-        $mid = $this->params()->fromRoute('mid');
+        $mid = $this->params()->fromQuery('mid');
 
         $playListMapper = new \Townspot\Playlist\Mapper($this->getServiceLocator());
         $playlist = $playListMapper->find($pid);
