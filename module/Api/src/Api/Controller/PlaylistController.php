@@ -161,7 +161,7 @@ class PlaylistController extends \Townspot\Controller\BaseRestfulController
             $playlist = new \Townspot\Playlist\Entity();
             $playlist->setUser($user);
             $playlist->setName($name);
-            $playlist->setDesc($desc);
+            $playlist->setDescription($desc);
         } else {
             $success = false;
             $data = "No such user";
@@ -194,7 +194,7 @@ class PlaylistController extends \Townspot\Controller\BaseRestfulController
         $playlist = $playListMapper->find($pid);
         if($playlist instanceof \Townspot\Playlist\Entity) {
             $playlist->setName($name);
-            $playlist->setDesc($desc);
+            $playlist->setDescription($desc);
             $playListMapper->save($playlist);
             $data = $this->_playlist($playlist);
         } else {
