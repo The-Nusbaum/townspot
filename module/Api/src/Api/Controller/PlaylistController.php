@@ -184,7 +184,6 @@ class PlaylistController extends \Townspot\Controller\BaseRestfulController
     public function updateAction() {
         $pid = $this->params()->fromRoute('id');
         $name = $this->params()->fromPost('name');
-        die($name);
         $desc = $this->params()->fromPost('desc');
 
         $playListMapper = new \Townspot\Playlist\Mapper($this->getServiceLocator());
@@ -196,6 +195,7 @@ class PlaylistController extends \Townspot\Controller\BaseRestfulController
         if($playlist instanceof \Townspot\Playlist\Entity) {
             $playlist->setName($name);
             $playlist->setDescription($desc);
+            var_dump($playlist);die;
             $playListMapper->save($playlist);
             $data = $this->_playlist($playlist);
         } else {
