@@ -366,6 +366,13 @@
 	setInfoButtons();
 </script>
 
-<!-- devtest
-<?php var_dump($this->zfcUserIdentity()); ?>
--->
+<?php if($this->zfcUserIdentity()->getId() == 242): ?>
+	<script src="/js/playlist.js"></script>
+	<sript>
+		$(document).ready(function(){
+			playlist.uid = <?= $this->zfcUserIdentity()->getId() ?>;
+			playlist.populateList();
+		});
+	</sript>
+<?php endif; ?>
+
