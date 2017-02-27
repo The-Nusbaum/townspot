@@ -20,7 +20,7 @@
 					)
 				); ?>
 
-				<?php if($this->zfcUserIdentity() && $this->zfcUserIdentity()->getId() = 242 ): ?>
+				<?php if($this->zfcUserIdentity() && $this->zfcUserIdentity()->getId() == 242 ): ?>
 					<div class="col-xs-12 pull-right">
 						<div class="input-group">
 							<select class="form-control" name="playlists" id="playlists" data-uid="<?= $this->zfcUserIdentity()->getId() ?>">
@@ -31,7 +31,6 @@
 							</span>
 						</div>
 					</div>
-
 				<?php endif; ?>
 
 			</div>
