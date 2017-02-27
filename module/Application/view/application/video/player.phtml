@@ -368,11 +368,11 @@
 
 <?php if($this->zfcUserIdentity()->getId() == 242): ?>
 	<script src="/js/playlist.js"></script>
-	<sript>
+	<script>
 		$(document).ready(function(){
 			playlist.uid = <?= $this->zfcUserIdentity()->getId() ?>;
 			playlist.populateList();
 		});
-	</sript>
+	</script>
 <?php endif; ?>
 
