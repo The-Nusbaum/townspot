@@ -5,7 +5,7 @@ var playlist = {
         $(".addToList").click(function(){
             $('.playlistAddon').toggle();
             $('select#playlists').attr('disabled',1);
-            $.get('/api/playlist/playlist/add/' + $('#playlists').val() + '?mid=' + playlist.mid,
+            $.get('/api/playlist/add/' + $('#playlists').val() + '?mid=' + playlist.mid,
                 function(){
                     $('.playlistAddon').toggle();
                     $('select#playlists').removeAttr('disabled');
