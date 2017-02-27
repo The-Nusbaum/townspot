@@ -11,7 +11,8 @@ var playlist = {
                     if(response.success) {
                         var data = response.data;
                         $(data).each(function(){
-                            var html = "<option value='" + this.id + "'>" + this.name + "</option>";
+			    var p = this[0];
+                            var html = "<option value='" + p.id + "'>" + p.name + "</option>";
                             $('#playlists option:last').before(html);
                         });
                     }
