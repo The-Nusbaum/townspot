@@ -17,6 +17,19 @@ var playlist = {
             }
         });
 
+        $('#createPlaylist .submit').click(function(){
+            $.post('/api/playlist/create',
+                {
+                    name: $('#createPlaylist #playlistName').val(),
+                    desc: $('#createPlaylist #playlistDescription').val()
+                }, function(response) {
+                    var data = response.data;
+                    console.log(data);
+
+                }
+            );
+        });
+
     },
     populateList: function() {
         $('#playlists').each(function(){
