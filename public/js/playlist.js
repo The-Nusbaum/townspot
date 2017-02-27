@@ -28,6 +28,8 @@ var playlist = {
                     var html = "<option value='" + p.id + "'>" + p.name + "</option>";
                     $('#playlists option:last').before(html);
                     $.get('/api/playlist/add/' + p.id + '?mid=' + playlist.mid);
+                    $('#createPlaylist').modal('hide');
+                    $('#createPlaylist input, #createPlaylist textarea, #createPlaylist select').val('');
                 }
             );
         });
