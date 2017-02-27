@@ -1,6 +1,17 @@
 var playlist = {
     uid: 0,
+    mid: 0,
     init: function() {
+        $(".addToList").click(function(){
+            $('.playlistAddon').toggle();
+            $('select#playlists').attr('disabled',1);
+            $.get('/api/playlist/playlist/add/' + $('#playlists').val() + '?mid=' + playlist.mid,
+                function(){
+                    $('.playlistAddon').toggle();
+                    $('select#playlists').removeAttr('disabled');
+                }
+            );
+        });
 
     },
     populateList: function() {

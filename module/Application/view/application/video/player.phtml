@@ -27,8 +27,11 @@
 								<option value="">Add to Talent Show...</option>
 								<option value="create">Create New...</option>
 							</select>
-							<span class="input-group-btn">
-								<button class="add btn btn-default"><i class="fa fa-plus"></i></button>
+							<span class="input-group-btn playlistAddon">
+								<button class="addToList btn btn-default"><i class="fa fa-plus"></i></button>
+							</span>
+							<span class="activity input-group-addon  playlistAddon" style="display:none">
+								<i class="fa fa-cog fa-spin"></i>
 							</span>
 						</div>
 					</div>
@@ -372,6 +375,8 @@
 	<script>
 		$(document).ready(function(){
 			playlist.uid = <?= $this->zfcUserIdentity()->getId() ?>;
+			playlist.mid = <?= $this->media->getId() ?>;
+			playlist.init();
 			playlist.populateList();
 		});
 	</script>
