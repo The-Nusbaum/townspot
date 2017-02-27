@@ -6,7 +6,7 @@ var playlist = {
     populateList: function() {
         $('#playlists').each(function(){
             var uid = $(this).attr('data-uid');
-            $.get('/api/playlist/user?uid=' + uid,
+            $.get('/api/playlist/user/' + uid,
                 function(response){
                     if(response.success) {
                         var data = response.data;
