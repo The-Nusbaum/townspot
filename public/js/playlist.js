@@ -24,8 +24,10 @@ var playlist = {
                     desc: $('#createPlaylist #playlistDescription').val()
                 }, function(response) {
                     var data = response.data;
-                    console.log(data);
-
+                    var p = data[0];
+                    var html = "<option value='" + p.id + "'>" + p.name + "</option>";
+                    $('#playlists option:last').before(html);
+                    $.get('/api/playlist/add/' + p.id + '?mid=' + playlist.mid);
                 }
             );
         });
