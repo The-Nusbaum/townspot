@@ -20,6 +20,7 @@ var playlist = {
         $('#createPlaylist .submit').click(function(){
             $.post('/api/playlist/create',
                 {
+                    uid: playlist.uid,
                     name: $('#createPlaylist #playlistName').val(),
                     desc: $('#createPlaylist #playlistDescription').val()
                 }, function(response) {
