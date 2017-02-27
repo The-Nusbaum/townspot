@@ -13,7 +13,7 @@ var playlist = {
                     }
                 );
             } else {
-
+                $('#createPlaylist').modal('show');
             }
         });
 
