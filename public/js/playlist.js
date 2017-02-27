@@ -3,14 +3,18 @@ var playlist = {
     mid: 0,
     init: function() {
         $(".addToList").click(function(){
-            $('.playlistAddon').toggle();
-            $('select#playlists').attr('disabled',1);
-            $.get('/api/playlist/add/' + $('#playlists').val() + '?mid=' + playlist.mid,
-                function(){
-                    $('.playlistAddon').toggle();
-                    $('select#playlists').removeAttr('disabled');
-                }
-            );
+            if($('#playlists').val() != 'create' && $('#playlists').val() != '') {
+                $('.playlistAddon').toggle();
+                $('select#playlists').attr('disabled', 1);
+                $.get('/api/playlist/add/' + $('#playlists').val() + '?mid=' + playlist.mid,
+                    function () {
+                        $('.playlistAddon').toggle();
+                        $('select#playlists').removeAttr('disabled');
+                    }
+                );
+            } else {
+
+            }
         });
 
     },
