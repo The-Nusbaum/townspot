@@ -34,7 +34,7 @@ var playlist = {
             );
         });
 
-        $('.delete').click(function(){
+        $('#playlists').on('click','.delete',function(){
             var $this = $(this);
             if($this.attr('data-type') == 'playlist') {
                 $.get('/api/playlist/delete/' + $this.attr('data-id'));
