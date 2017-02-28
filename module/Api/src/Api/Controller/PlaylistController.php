@@ -23,8 +23,13 @@ class PlaylistController extends \Townspot\Controller\BaseRestfulController
 
     protected function _playlist(\Townspot\Playlist\Entity $raw) {
         $media = array();
+        $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+
         foreach($raw->getMedia() as $m) {
-            $media[] = $m->toArray();
+            $m = $m->toArray();
+            $author = $userMapper->find($m['user_id']);
+            $m['author'] = $author->toArray();
+            $media[] = $m;
         }
         $data[] = array(
             'id' => $raw->getId(),

@@ -61,7 +61,46 @@ var playlist = {
                         var data = response.data;
                         $(data).each(function(){
                             var p = this[0];
-                            var html = "<option value='" + p.id + "'>" + p.name + "</option>";
+                            var html = '' +
+                            '<div class="playlist">' +
+                                '<header class="row">' +
+                                    '<div class="name col-xs-8">Playlist Name</div>' +
+                                    '<div class="name col-xs-1 pull-right"><i class="fa fa-minus-circle delete"></i></div>' +
+                                '</header>' +
+                                '<div class="row">' +
+                                    '<p class="col-xs-12">' +
+                                        'description' +
+                                    '</p>' +
+                                '</div>' +
+                                '<div class="row playlist-media-list">' +
+                                    '<div class="col-sm-4 col-xs-6 col-wide">' +
+                                        '<div class="video-preview first" data-id="[id]">' +
+                                            '<a href="[video_link]" style="background-image: url(https://i.vimeocdn.com/video/455791683_1280x720.jpg?r=pad)"></a>' +
+                                        '<div class="carousel-caption small">' +
+                                        '<div class="video-title">' +
+                                            '<h3 title="[title]" class="dot-text">' +
+                                                '<a href="[video_link]">' +
+                                                    '<div class="dot-text">[Title]</div>' +
+                                                '</a>' +
+                                            '</h3>' +
+
+                                            '<h3 class="dot-text">' +
+                                                '<a href="[profile_link]">' +
+                                                    '<div class="dot-text">by [display_name]</div>' +
+                                                '</a>' +
+                                            '</h3>' +
+
+                                            '<h3 title="[location]" class="dot-text">[location]</h3>' +
+                                        '</div>' +
+                                    '</div>' +
+                                '</div>' +
+                            '</div>';
+                            html = html.replace('[id]', p.id);
+                            html = html.replace('[id]', p.id);
+                            html = html.replace('[id]', p.id);
+                            html = html.replace('[id]', p.id);
+                            html = html.replace('[id]', p.id);
+                            html = html.replace('[id]', p.id);
                             $('#playlists option:last').before(html);
                         });
                     }
