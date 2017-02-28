@@ -111,7 +111,7 @@ var playlist = {
                                 $html.find('.playlist-media-list').prepend(html);
                             });
 
-                            $('#playlists option:last').before(html);
+                            $('#playlists').prepend(html);
                         });
                     }
                 }
