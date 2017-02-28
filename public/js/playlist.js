@@ -61,7 +61,7 @@ var playlist = {
                         var data = response.data;
                         $(data).each(function(){
                             var p = this[0];
-                            var html = '' +
+                            var ohtml = '' +
                             '<div class="playlist">' +
                                 '<header class="row">' +
                                     '<div class="name col-xs-8">' +
@@ -76,12 +76,10 @@ var playlist = {
                                 '</div>' +
                                 '<div class="row playlist-media-list">' +
 
-                                '</div>' +
-                            '</div>';
-                            var $html = $(html);
+
                             console.log(p);
                             $(p.media).each(function(){
-                                var html =  '<div class="col-sm-4 col-xs-6 col-wide">' +
+                                var ihtml =  '<div class="col-sm-4 col-xs-6 col-wide">' +
                                                 '<div class="video-preview first" data-id="[id]">' +
                                                     '<a href="[video_link]" style="background-image: url([thumb])"></a>' +
                                                     '<div class="carousel-caption small">' +
@@ -103,15 +101,16 @@ var playlist = {
                                                     '</div>' +
                                                 '</div>' +
                                             '</div>';
-                                html = html.replace('[id]', this.id);
-                                html = html.replace('[location]', this.location);
-                                html = html.replace('[profile_link]', this.author.profileLink);
-                                html = html.replace('[video_link]', this.mediaLink);
-                                html = html.replace('[thumb]', p.previewImage);
-                                $html.find('.playlist-media-list').prepend(html);
+                                ihtml = ihtml.replace('[id]', this.id);
+                                ihtml = ihtml.replace('[location]', this.location);
+                                ihtml = ihtml.replace('[profile_link]', this.author.profileLink);
+                                ihtml = ihtml.replace('[video_link]', this.mediaLink);
+                                ihtml = ihtml.replace('[thumb]', p.previewImage);
+                                ohtml += ihtml
                             });
-
-                            $('#playlists').prepend(html);
+                            ohtml += '</div>' +
+                            '</div>';
+                            $('#playlists').prepend(ohtml);
                         });
                     }
                 }
