@@ -550,7 +550,7 @@
     <script src="/js/playlist.js"></script>
     <script>
         $(document).ready(function(){
-            playlist.uid = <?= $this->zfcUserIdentity()->getId() ?>;
+            playlist.uid = <?= $user->getId() ?>;
             playlist.init();
             playlist.populateProfile();
         });
