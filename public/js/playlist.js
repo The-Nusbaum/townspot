@@ -80,7 +80,7 @@ var playlist = {
                             '</div>';
                             var $html = $(html);
                             console.log(p);
-                            p.media.each(function(){
+                            $(p.media).each(function(){
                                 var html =  '<div class="col-sm-4 col-xs-6 col-wide">' +
                                                 '<div class="video-preview first" data-id="[id]">' +
                                                     '<a href="[video_link]" style="background-image: url([thumb])"></a>' +
