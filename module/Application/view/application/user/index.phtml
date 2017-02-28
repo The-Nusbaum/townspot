@@ -437,11 +437,18 @@
 <?php if($user->getId() == 242): ?>
     <style>
         .playlist-media-list > div {
+            padding-bottom: 25px;
         }
 
         .video-preview {
             height: 200px;
-            padding-bottom: 25px;
+        }
+
+        .video-preview a {
+            background-color: black;
+            background-position: 50% 50%;
+            background-size: contain;
+            background-repeat: no-repeat;
         }
     </style>
     <div class="tab-pane" id="playlists">
