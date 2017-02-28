@@ -75,7 +75,7 @@ var playlist = {
                                 '<div class="row playlist-media-list">' +
                                     '<div class="col-sm-4 col-xs-6 col-wide">' +
                                         '<div class="video-preview first" data-id="[id]">' +
-                                            '<a href="[video_link]" style="background-image: url(https://i.vimeocdn.com/video/455791683_1280x720.jpg?r=pad)"></a>' +
+                                            '<a href="[video_link]" style="background-image: url([thumb])"></a>' +
                                         '<div class="carousel-caption small">' +
                                         '<div class="video-title">' +
                                             '<h3 title="[title]" class="dot-text">' +
@@ -96,11 +96,10 @@ var playlist = {
                                 '</div>' +
                             '</div>';
                             html = html.replace('[id]', p.id);
-                            html = html.replace('[id]', p.id);
-                            html = html.replace('[id]', p.id);
-                            html = html.replace('[id]', p.id);
-                            html = html.replace('[id]', p.id);
-                            html = html.replace('[id]', p.id);
+                            html = html.replace('[location]', p.location);
+                            html = html.replace('[profile_link]', p.author.profileLink);
+                            html = html.replace('[video_link]', p.mediaLink);
+                            html = html.replace('[thumb]', p.previewImage);
                             $('#playlists option:last').before(html);
                         });
                     }
