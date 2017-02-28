@@ -95,6 +95,7 @@ var playlist = {
                                     '</div>' +
                                 '</div>' +
                             '</div>';
+                            console.log(p);
                             html = html.replace('[id]', p.id);
                             html = html.replace('[location]', p.location);
                             html = html.replace('[profile_link]', p.author.profileLink);
