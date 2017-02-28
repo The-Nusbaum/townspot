@@ -103,7 +103,7 @@ var playlist = {
                                                     '</div>' +
                                                 '</div>' +
                                             '</div>';
-                                html = html.replace('[id]', id);
+                                html = html.replace('[id]', this.id);
                                 html = html.replace('[location]', this.location);
                                 html = html.replace('[profile_link]', this.author.profileLink);
                                 html = html.replace('[video_link]', this.mediaLink);
