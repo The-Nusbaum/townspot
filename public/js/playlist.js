@@ -101,11 +101,13 @@ var playlist = {
                                                     '</div>' +
                                                 '</div>' +
                                             '</div>';
-                                ihtml = ihtml.replace('[id]', this.id);
-                                ihtml = ihtml.replace('[location]', this.location);
-                                ihtml = ihtml.replace('[profile_link]', this.author.profileLink);
-                                ihtml = ihtml.replace('[video_link]', this.mediaLink);
-                                ihtml = ihtml.replace('[thumb]', p.previewImage);
+                                ihtml = ihtml.replace(/\[id\]/g, this.id);
+                                ihtml = ihtml.replace(/\[location\]/g, this.location);
+                                ihtml = ihtml.replace(/\[profile_link\]/g, this.author.profileLink);
+                                ihtml = ihtml.replace(/\[display_name\]/g, this.author.displayName);
+                                ihtml = ihtml.replace(/\[video_link\]/g, this.mediaLink);
+                                ihtml = ihtml.replace(/\[thumb\]/g, this.previewImage);
+                                ihtml = ihtml.replace(/\[title\]/g, this.title);
                                 ohtml += ihtml
                             });
                             ohtml += '</div>' +
