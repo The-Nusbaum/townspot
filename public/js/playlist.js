@@ -71,7 +71,7 @@ var playlist = {
                                 '</header>' +
                                 '<div class="row">' +
                                     '<p class="col-xs-12">' +
-                                        p.description +
+                                        p.desc +
                                     '</p>' +
                                 '</div>' +
                                 '<div class="row playlist-media-list">';
