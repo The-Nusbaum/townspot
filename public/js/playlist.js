@@ -74,7 +74,7 @@ var playlist = {
                                         p.description +
                                     '</p>' +
                                 '</div>' +
-                                '<div class="row playlist-media-list">' +
+                                '<div class="row playlist-media-list">';
 
 
                             console.log(p);
@@ -86,7 +86,7 @@ var playlist = {
                                                         '<div class="video-title">' +
                                                             '<h3 title="[title]" class="dot-text">' +
                                                                 '<a href="[video_link]">' +
-                                                                    '<div class="dot-text">[Title]</div>' +
+                                                                    '<div class="dot-text">[title]</div>' +
                                                                 '</a>' +
                                                             '</h3>' +
 
