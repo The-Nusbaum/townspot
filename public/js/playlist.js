@@ -34,6 +34,16 @@ var playlist = {
             );
         });
 
+        $('.delete').click(function(){
+            var $this = $(this);
+            if($this.attr('data-type') == 'playlist') {
+                $.get('/api/playlist/delete/' + $this.attr('data-id'));
+                $this.parents('.playlist').remove();
+            } else if($this.attr('data-type') == 'media') {
+                $.get('/api/playlist/delete/' + $this.parents('.playlist').attr('data-id') + '?mid=' + $this.attr('data-id'));
+                $this.parents('.playlistMedia').remove();
+            }
+        });
     },
     populateList: function() {
         $('#playlists').each(function(){
@@ -62,12 +72,12 @@ var playlist = {
                         $(data).each(function(){
                             var p = this[0];
                             var ohtml = '' +
-                                '<div class="playlist">' +
+                                '<div class="playlist" data-id="'+ p.id +'">' +
                                     '<header class="row">' +
                                         '<div class="name col-xs-8">' +
                                             p.name +
                                         '</div>' +
-                                        '<div class="name col-xs-1 pull-right"><i class="fa fa-times-circle delete" data-id="'+ p.id +'"></i></div>' +
+                                        '<div class="name col-xs-1 pull-right"><i class="fa fa-times-circle delete" data-type="playlist" data-id="'+ p.id +'"></i></div>' +
                                     '</header>' +
                                     '<div class="row">' +
                                         '<p class="col-xs-12">' +
@@ -80,11 +90,11 @@ var playlist = {
                             $('#playlists').append(ohtml);
 
                             $(p.media).each(function(){
-                                var ihtml =  '<div class="col-sm-4 col-xs-6 col-wide">' +
+                                var ihtml =  '<div class="col-sm-4 col-xs-6 col-wide playlistMedia">' +
                                                 '<div class="video-preview first" data-id="[id]">' +
                                                     '<a href="[video_link]" style="background-image: url([thumb])"></a>' +
                                                     '<div class="carousel-caption small">' +
-                                                        '<i class="fa fa-times-circle delete" data-id="'+ p.id +'"></i>' +
+                                                        '<i class="fa fa-times-circle delete" data-type="media" data-id="'+ p.id +'"></i>' +
                                                         '<div class="video-title">' +
                                                             '<h3 title="[title]" class="dot-text">' +
                                                                 '<a href="[video_link]">' +
