@@ -62,22 +62,23 @@ var playlist = {
                         $(data).each(function(){
                             var p = this[0];
                             var ohtml = '' +
-                            '<div class="playlist">' +
-                                '<header class="row">' +
-                                    '<div class="name col-xs-8">' +
-                                        p.name +
+                                '<div class="playlist">' +
+                                    '<header class="row">' +
+                                        '<div class="name col-xs-8">' +
+                                            p.name +
+                                        '</div>' +
+                                        '<div class="name col-xs-1 pull-right"><i class="fa fa-minus-circle delete" data-id="'+ p.id +'"></i></div>' +
+                                    '</header>' +
+                                    '<div class="row">' +
+                                        '<p class="col-xs-12">' +
+                                            p.desc +
+                                        '</p>' +
                                     '</div>' +
-                                    '<div class="name col-xs-1 pull-right"><i class="fa fa-minus-circle delete" data-id="'+ p.id +'"></i></div>' +
-                                '</header>' +
-                                '<div class="row">' +
-                                    '<p class="col-xs-12">' +
-                                        p.desc +
-                                    '</p>' +
-                                '</div>' +
-                                '<div class="row playlist-media-list">';
+                                    '<div class="row playlist-media-list">' +
+                                    '</div>' +
+                                '</div>';
+                            $('#playlists').append(ohtml);
 
-
-                            console.log(p);
                             $(p.media).each(function(){
                                 var ihtml =  '<div class="col-sm-4 col-xs-6 col-wide">' +
                                                 '<div class="video-preview first" data-id="[id]">' +
@@ -108,11 +109,8 @@ var playlist = {
                                 ihtml = ihtml.replace(/\[video_link\]/g, this.mediaLink);
                                 ihtml = ihtml.replace(/\[thumb\]/g, this.previewImage);
                                 ihtml = ihtml.replace(/\[title\]/g, this.title);
-                                ohtml += ihtml
+                                $('#playlists .playlist:last .playlist-media-list').append(ihtml);
                             });
-                            ohtml += '</div>' +
-                            '</div>';
-                            $('#playlists').prepend(ohtml);
                         });
                     }
                 }
