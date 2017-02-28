@@ -55,7 +55,7 @@ var playlist = {
     populateProfile: function() {
         $('#playlists').each(function(){
             var uid = $(this).attr('data-uid');
-            $.get('/api/playlist/user/' + uid,
+            $.get('/api/playlist/user/' + playlist.uid,
                 function(response){
                     if(response.success) {
                         var data = response.data;
