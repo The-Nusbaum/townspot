@@ -67,7 +67,7 @@ var playlist = {
                                         '<div class="name col-xs-8">' +
                                             p.name +
                                         '</div>' +
-                                        '<div class="name col-xs-1 pull-right"><i class="fa fa-minus-circle delete" data-id="'+ p.id +'"></i></div>' +
+                                        '<div class="name col-xs-1 pull-right"><i class="fa fa-times-circle delete" data-id="'+ p.id +'"></i></div>' +
                                     '</header>' +
                                     '<div class="row">' +
                                         '<p class="col-xs-12">' +
@@ -84,6 +84,7 @@ var playlist = {
                                                 '<div class="video-preview first" data-id="[id]">' +
                                                     '<a href="[video_link]" style="background-image: url([thumb])"></a>' +
                                                     '<div class="carousel-caption small">' +
+                                                        '<i class="fa fa-times-circle delete" data-id="'+ p.id +'"></i>' +
                                                         '<div class="video-title">' +
                                                             '<h3 title="[title]" class="dot-text">' +
                                                                 '<a href="[video_link]">' +
