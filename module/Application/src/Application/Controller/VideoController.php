@@ -1554,37 +1554,8 @@ EOT;
 		$videoId = $this->params()->fromRoute('id');
 		$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
 		if ($media = $mediaMapper->find($videoId)) {
-			$url = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-			$facebookInfo = array(
-				'title'			=> $media->getTitle(),
-				'description'	=> str_replace('"',"'",strip_tags($media->getDescription())),
-				'url'			=> $url,
-				'image'			=> $media->getResizerCdnLink(700,535),
-				'width'			=> 700
-			);
-			$twitterInfo = array(
-				'title'			=> $media->getTitle(),
-				'description'	=> str_replace('"',"'",strip_tags($media->getDescription())),
-				'url'			=> $url,
-				'image'			=> $media->getResizerCdnLink(435,326),
-				'width'			=> 435
-			);
-
-			$this->getServiceLocator()
-				->get('ViewHelperManager')
-				->get('HeadScript')
-				->appendFile('/js/videointeractions.js','text/javascript');
-			$this->getServiceLocator()
-				->get('ViewHelperManager')
-				->get('HeadMeta')
-				->appendName('description', strip_tags($media->getDescription()));
-			$this->init($media->getTitle());
-			$relatedMedia  = $mediaMapper->getMediaLike($media);
-			$this->layout()->facebookInfo = $facebookInfo;
-			$this->layout()->twitterInfo = $twitterInfo;
 			$results = array(
 				'media'    		=> $media,
-				'related'  		=> $relatedMedia,
 			);
 		} else {
 			$this->getResponse()->setStatusCode(404);
