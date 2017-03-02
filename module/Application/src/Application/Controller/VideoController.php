@@ -1593,7 +1593,7 @@ EOT;
 
 		$view = new ViewModel( $results );
 		$view->setTerminal(true);
-		return $$view;
+		return $view;
 	}
 
 }
