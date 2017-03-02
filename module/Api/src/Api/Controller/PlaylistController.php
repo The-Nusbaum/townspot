@@ -143,7 +143,7 @@ class PlaylistController extends \Townspot\Controller\BaseRestfulController
         $playlist->removeMedia($media);
         $playListMapper->setEntity($playlist)->save();
 
-        $data = $playlist->toArray();
+        $data = $this->_playlist($playlist);
 
         $this->getResponse()
             ->setCode(200)
