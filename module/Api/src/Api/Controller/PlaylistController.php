@@ -136,7 +136,7 @@ class PlaylistController extends \Townspot\Controller\BaseRestfulController
 
         $playListMapper = new \Townspot\Playlist\Mapper($this->getServiceLocator());
         $playlist = $playListMapper->find($pid);
-
+var_dump(get_class_methods($playListMapper));die;
         //$playlist->removeMedia($mid);
         $playListMapper->getConnection()->execute("delete from playlist_media where playlist_id = $pid and media_id = $mid");
 
