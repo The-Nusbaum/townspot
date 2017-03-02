@@ -141,7 +141,7 @@ class PlaylistController extends \Townspot\Controller\BaseRestfulController
         $media = $mediaMapper->find($mid);
 
         $playlist->removeMedia($media);
-        $playListMapper->SetEntity($playlist)->save()
+        $playListMapper->SetEntity($playlist)->save();
 
         $data = $playlist->toArray();
 
