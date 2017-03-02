@@ -304,7 +304,20 @@ return array(
 						'action'     => 'player',
 					),
 				),
-			),	
+			),
+            'mini_player' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/mini-player/:id',
+                    'constraints' => array(
+                        'id' => '\d+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Video',
+                        'action'     => 'miniPlayer',
+                    ),
+                ),
+            ),
 			'video_embed' => array(
                 'type' => 'Zend\Mvc\Router\Http\Segment',
 				'options' => array(

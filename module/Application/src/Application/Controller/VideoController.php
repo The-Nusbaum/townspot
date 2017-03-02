@@ -1550,22 +1550,23 @@ EOT;
 
 	public function miniPlayerAction()
 	{
-		$id = $this->params()->fromRoute('id');
-		$playlistMapper = new \Townspot\Playlist\Mapper($this->getServiceLocator());
-		if ($playlist = $playlistMapper->find($id)) {
+
+		$videoId = $this->params()->fromRoute('id');
+		$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
+		if ($media = $mediaMapper->find($videoId)) {
 			$url = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 			$facebookInfo = array(
-				'title'			=> $playlist->getName(),
-				'description'	=> str_replace('"',"'",strip_tags($playlist->getDescription())),
+				'title'			=> $media->getTitle(),
+				'description'	=> str_replace('"',"'",strip_tags($media->getDescription())),
 				'url'			=> $url,
-				'image'			=> $playlist->getMedia()[0]->getResizerCdnLink(700,535),
+				'image'			=> $media->getResizerCdnLink(700,535),
 				'width'			=> 700
 			);
 			$twitterInfo = array(
-				'title'			=> $playlist->getName(),
-				'description'	=> str_replace('"',"'",strip_tags($playlist->getDescription())),
+				'title'			=> $media->getTitle(),
+				'description'	=> str_replace('"',"'",strip_tags($media->getDescription())),
 				'url'			=> $url,
-				'image'			=> $playlist->getMedia()[0]->getResizerCdnLink(435,326),
+				'image'			=> $media->getResizerCdnLink(435,326),
 				'width'			=> 435
 			);
 
@@ -1576,12 +1577,14 @@ EOT;
 			$this->getServiceLocator()
 				->get('ViewHelperManager')
 				->get('HeadMeta')
-				->appendName('description', strip_tags($playlist->getDescription()));
-			$this->init($playlist->getName());
+				->appendName('description', strip_tags($media->getDescription()));
+			$this->init($media->getTitle());
+			$relatedMedia  = $mediaMapper->getMediaLike($media);
 			$this->layout()->facebookInfo = $facebookInfo;
 			$this->layout()->twitterInfo = $twitterInfo;
 			$results = array(
-				'playlist' 		=> $playlist,
+				'media'    		=> $media,
+				'related'  		=> $relatedMedia,
 			);
 		} else {
 			$this->getResponse()->setStatusCode(404);
