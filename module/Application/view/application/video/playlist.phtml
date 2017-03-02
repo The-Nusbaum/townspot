@@ -1,0 +1,102 @@
+<script src="/js/similar-videos.js"></script>
+<?php
+	$author = $playlist->getUser();
+	$name = $playlist->getName();
+	$desc = $playlist->getDescription();
+?>
+<header class="container">
+	<h1>Talent Show</h1>
+	<h2 class="name"><?= $name ?> by <a href="<?= $author->getProfileLink() ?>"><?= $author->getDisplayName() ?></a> </h2>
+	<p class="desc"><?= $desc ?></p>
+</header>
+<div class="container playlist-player">
+	<div class="row" id="player">
+	</div>
+	<div class="row hidden-xs">
+		<div class="col-sm-12">
+			<h1>Talent Show Videos</h1>
+		</div>
+	</div>
+	<div class="row wide-carousel">
+		<div class="col-sm-12 wide-carousel-row">
+			<div data-ride="carousel" class="col-sm-12 carousel slide" id="on-stage-carousel">
+				<div id="on-stage-carousel-inner" class="carousel-inner">
+					<div class="item active"><div class="row">
+							<div class="col-xs-12 col-sm-6">
+								<div class="video-preview first" data-id="3506">
+									<a href="/videos/3506/the_great_office_war">
+										<img class="img-responsive preview-img" alt="The Great Office War" src="http://images2.townspot.tv/thumbs/3506/2.jpg">
+									</a>
+									<div class="carousel-caption small">
+										<div class="video-title">
+											<h3 title="The Great Office War" class="dot-text">
+												<a href="/videos/3506/the_great_office_war">
+													<div class="dot-text">The Great Office War</div>
+												</a>
+											</h3>
+											<h3 class="dot-text">
+
+												<a href="/profile/runawaybox">
+													<div class="dot-text">by runawaybox</div>
+												</a>
+
+											</h3>
+											<h3 title="New York, United States" class="dot-text">New York, United States</h3>
+										</div>
+										<div class="info-button first" title="" data-original-title="<a href='/videos/3506/the_great_office_war'>The Great Office War</a> by <a href='/profile/runawaybox'>runawaybox</a>" data-content="New York, United States<br/>IT Vs. Sales Nerf War
+					<footer>
+					<span class='video-duration'><i class='fa fa-clock-o'></i> 00:04:50</span>
+					<span class='video-plays'><i class='fa fa-play'></i> 1156093</span>
+					<span class='video-thumbs-up'><i class='fa fa-thumbs-up'></i> 1</span>
+					<span class='video-thumbs-down'><i class='fa fa-thumbs-down'></i> 0</span>
+					<span class='video-comments'><i class='fa fa-comments'></i> 0</span>
+					</footer>" data-toggle="popover">
+											<i class="fa fa-info-circle" data-track="click" data-type="info" data-value="3506"></i>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-xs-12 col-sm-6">
+								<div class="video-preview in-row" data-id="3482">
+									<a href="/videos/3482/submarine_sandwich_by_pes">
+										<img class="img-responsive preview-img" alt="Submarine Sandwich by PES" src="https://i.ytimg.com/vi/EWEl8-PHhMI/hqdefault.jpg">
+									</a>
+									<div class="carousel-caption small">
+										<div class="video-title">
+											<h3 title="Submarine Sandwich by PES" class="dot-text">
+												<a href="/videos/3482/submarine_sandwich_by_pes">
+													<div class="dot-text">Submarine Sandwich by PES</div>
+												</a>
+											</h3>
+											<h3 class="dot-text">
+
+												<a href="/profile/PESfilm">
+													<div class="dot-text">by PESfilm</div>
+												</a>
+
+											</h3>
+											<h3 title="Los Angeles, United States" class="dot-text">Los Angeles, United States</h3>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div></div>
+				</div>
+				<a class="left carousel-control on-stage-carousel-control" href="#on-stage-carousel" data-slide="prev">
+					<img src="/img/slide-left.gif">
+				</a>
+				<a class="right carousel-control on-stage-carousel-control" href="#on-stage-carousel" data-slide="next">
+					<img src="/img/slide-right.gif">
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+	<script src="/js/playlist.js"></script>
+	<script>
+		$(document).ready(function(){
+			playlist.init();
+		});
+	</script>
+
