@@ -15,10 +15,10 @@
 				 ->appendName('description',
 							  "TownSpot.tv is the Local Video Network spotlighting local talent across the country through a curated video directory.");
 		?>
-        <?= $this->headLink(array(	'rel' => 'shortcut icon', 
-									'type' => 'image/vnd.microsoft.icon', 
+        <?= $this->headLink(array(	'rel' => 'shortcut icon',
+									'type' => 'image/vnd.microsoft.icon',
 									'href' => $this->basePath() . '/img/favicon.ico?v=2'
-			))->appendStylesheet('//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css')	
+			))->appendStylesheet('//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css')
 			  ->appendStylesheet('//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css')
 			  ->appendStylesheet('//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css')
 			  ->appendStylesheet('//code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css','screen')
@@ -43,7 +43,7 @@
 		<meta property="og:url" content="<?= $this->facebookInfo['url']; ?>" />
 		<meta property="og:image" content="<?= $this->facebookInfo['image']; ?>" />
 		<meta property="og:image:width" content="<?= $this->facebookInfo['width']; ?>" />
-		<meta property="og:type" content="video.movie" /> 
+		<meta property="og:type" content="video.movie" />
 <?php } ?>
 <?php if ($this->twitterInfo) { ?>
 		<meta name="twitter:card" content="summary_large_image" />
@@ -58,10 +58,10 @@
     	var tracked_user = 0;
     </script>
 		<nav role="navigation" class="navbar navbar-inverse">
-			<?= $this->navigation('navigation')->menu()->setPartial('partials/menu')->render(); ?>	
-<?php if (($this->controllerName() == 'search') && ($this->actionName() == 'discover')) { ?>			
+			<?= $this->navigation('navigation')->menu()->setPartial('partials/menu')->render(); ?>
+<?php if (($this->controllerName() == 'search') && ($this->actionName() == 'discover')) { ?>
 			<?= $this->DiscoverNav(); ?>
-<?php } ?>			
+<?php } ?>
 		</nav>
 		<div class="container explore-btn-wrapper">
 			<a href="#" id="explore-btn-link">
@@ -72,7 +72,7 @@
 					</span>
 				</button>
 			</a>
-		</div>		
+		</div>
         <div class="container" id="<?= $this->controllerName(); ?>-<?= $this->actionName(); ?>">
             <div id="fb-root"></div>
 
@@ -82,13 +82,13 @@
 		<?php
 			if(!empty($_SESSION['flash'])) foreach($_SESSION['flash'] as $flash): ?>
 			<div class='alert alert-success text-center' style="display:block"><?= $flash ?></div>
-				
+
 		<?php	endforeach;
 			$_SESSION['flash'] = array();
 		?>
             </div>
             <?php echo $this->content; ?>
-        </div> 
+        </div>
 		<nav id="footer" role="navigation" class="navbar navbar-footer">
 			<div class="container hidden-xs">
 				<ul class="nav navbar-nav navbar-left">

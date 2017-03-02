@@ -1550,7 +1550,7 @@ EOT;
 
 	public function miniPlayerAction()
 	{
-
+		$this->layout('layout/blank');
 		$videoId = $this->params()->fromRoute('id');
 		$mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
 		if ($media = $mediaMapper->find($videoId)) {
