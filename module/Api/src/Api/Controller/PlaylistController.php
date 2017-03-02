@@ -114,7 +114,10 @@ class PlaylistController extends \Townspot\Controller\BaseRestfulController
 
         $add = true;
         foreach($playlist->getMedia as $m) if($m->getId() == $mid) $add = false;
-        if ($add) $playlist->addMedia($media);
+        if ($add) {
+            $playlist->addMedia($media);
+            $playListMapper->SetEntity($playlist)->save();
+        }
 
         $data = $this->_playlist($playlist);
 
@@ -138,6 +141,7 @@ class PlaylistController extends \Townspot\Controller\BaseRestfulController
         $media = $mediaMapper->find($mid);
 
         $playlist->removeMedia($media);
+        $playListMapper->SetEntity($playlist)->save()
 
         $data = $playlist->toArray();
 
