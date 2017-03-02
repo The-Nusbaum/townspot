@@ -1590,7 +1590,10 @@ EOT;
 			$this->getResponse()->setStatusCode(404);
 			return;
 		}
-		return new ViewModel( $results );
+
+		$view = new ViewModel( $results );
+		$view->setTerminal(true);
+		return $view;
 	}
 
 }
