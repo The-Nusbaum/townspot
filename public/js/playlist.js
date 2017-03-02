@@ -94,7 +94,7 @@ var playlist = {
                                                 '<div class="video-preview first" data-id="[id]">' +
                                                     '<a href="[video_link]" style="background-image: url([thumb])"></a>' +
                                                     '<div class="carousel-caption small">' +
-                                                        '<i class="fa fa-times-circle delete" data-type="media" data-id="'+ p.id +'"></i>' +
+                                                        '<i class="fa fa-times-circle delete" data-type="media" data-id="[id]"></i>' +
                                                         '<div class="video-title">' +
                                                             '<h3 title="[title]" class="dot-text">' +
                                                                 '<a href="[video_link]">' +
