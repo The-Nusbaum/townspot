@@ -562,7 +562,7 @@
 
 </script>
 
-<?php if($this->zfcUserIdentity()->getId() == 242): ?>
+<?php if($this->zfcUserIdentity() && $this->zfcUserIdentity()->getId() == 242): ?>
     <script src="/js/playlist.js"></script>
     <script>
         $(document).ready(function(){
