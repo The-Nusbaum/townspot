@@ -1567,4 +1567,12 @@ EOT;
 		return $view;
 	}
 
+	public function playlistAction() {
+		$id = $this->params()->fromRoute('id');
+		$playlistMapper = new \Townspot\Playlist\Mapper($this->getServiceLocator());
+		$playlist = $playlistMapper->find($id);
+
+		return new ViewModel(compact('playlist'));
+	}
+
 }
