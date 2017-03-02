@@ -51,6 +51,7 @@ var playlist = {
             function(response) {
                 var playlist = response.data[0];
                 var media = playlist.media;
+                $(media)
             }
         );
     },

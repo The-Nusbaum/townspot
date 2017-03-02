@@ -4,13 +4,31 @@
 	$name = $playlist->getName();
 	$desc = $playlist->getDescription();
 ?>
-<header class="container">
-	<h1>Talent Show</h1>
-	<h2 class="name"><?= $name ?> by <a href="<?= $author->getProfileLink() ?>"><?= $author->getDisplayName() ?></a> </h2>
-	<p class="desc"><?= $desc ?></p>
-</header>
 <div class="container playlist-player">
-	<div class="row" id="mini-player" data-id="<?= $playlist->getId() ?>">
+	<div class="row">
+		<div class="col-md-8" id="mini-player" data-id="<?= $playlist->getId() ?>"></div>
+		<div class="col-md-4">
+			<header>
+				<h3><?= $playlist->getName() ?></h3>
+				<h4><?= $playlist->getUser()->getDisplayname() ?></h4>
+				<p><?= $playlist->getDescription() ?></p>
+			</header>
+			<ul class="list-unstyled">
+				<?php foreach($playlist->getMedia() as $m ): ?>
+					<div class="media playlist-media">
+						<div class="media-left">
+							<a href="<? $m->getMediaLInk() ?>">
+								<img class="media-object" src="<?= $m->getPreviewImage() ?>" alt="<?= $m->getTitle() ?>">
+							</a>
+						</div>
+						<div class="media-body">
+							<h4 class="media-heading"><a href="<? $m->getMediaLInk() ?>"><?= $m->getTitle() ?></a></h4>
+							<h5>by <a href="<?= $m->getUser()->getProfileLink() ?>"><?= $m->getUser()->getDisplayname() ?></a><br><?= $m->getLocation() ?></h5>
+						</div>
+					</div>
+				<?php endforeach; ?>
+			</ul>
+		</div>
 	</div>
 </div>
 
