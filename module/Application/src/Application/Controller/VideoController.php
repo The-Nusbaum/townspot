@@ -1592,7 +1592,8 @@ EOT;
 		}
 
 		$view = new ViewModel( $results );
-		return $this->getResponse();
+		$view->setTerminal(true);
+		return $$view;
 	}
 
 }
