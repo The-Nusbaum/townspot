@@ -72,7 +72,7 @@ var playlist = {
                         $(data).each(function(){
                             var p = this[0];
                             var ohtml = '' +
-                                '<div class="playlist" data-id="'+ p.id +'">' +
+                                '<div class="playlist well" data-id="[id]">' +
                                     '<header class="row">' +
                                         '<div class="name col-xs-8">' +
                                             p.name +
