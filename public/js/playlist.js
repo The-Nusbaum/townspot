@@ -40,7 +40,7 @@ var playlist = {
                 $.get('/api/playlist/delete/' + $this.attr('data-id'));
                 $this.parents('.playlist').remove();
             } else if($this.attr('data-type') == 'media') {
-                $.get('/api/playlist/delete/' + $this.parents('.playlist').attr('data-id') + '?mid=' + $this.attr('data-id'));
+                $.get('/api/playlist/remove/' + $this.parents('.playlist').attr('data-id') + '?mid=' + $this.attr('data-id'));
                 $this.parents('.playlistMedia').remove();
             }
         });
