@@ -1548,7 +1548,7 @@ EOT;
 		return $this->redirect()->toRoute('upload');
 	}
 
-	public function playerAction()
+	public function miniPlayerAction()
 	{
 		$id = $this->params()->fromRoute('id');
 		$playlistMapper = new \Townspot\Playlist\Mapper($this->getServiceLocator());
