@@ -47,7 +47,7 @@ var playlist = {
 
     },
     populatePlayer: function() {
-        $.get('/api/playlist/get/' + $('#mini-player').attr('data-id'),
+        $.get('/mini-player/' + $('.playlist-media:first').attr('data-id'),
             function(response) {
                 console.log(response);
             }
