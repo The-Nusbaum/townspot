@@ -1592,7 +1592,7 @@ EOT;
 		}
 
 		$view = new ViewModel( $results );
-		$view->setTerminal(true);
+		$view->setLayout(false);
 		return $view;
 	}
 
