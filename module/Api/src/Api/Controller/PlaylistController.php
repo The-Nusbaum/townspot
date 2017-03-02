@@ -137,10 +137,13 @@ class PlaylistController extends \Townspot\Controller\BaseRestfulController
         $playListMapper = new \Townspot\Playlist\Mapper($this->getServiceLocator());
         $playlist = $playListMapper->find($pid);
 
-        $playlist->removeMedia($mid);
+        $mediaMapper = new \Townspot\Media\Mapper($this->getServiceLocator());
+        $media = $mediaMapper->find($mid);
+
+        $playlist->removeMedia($media);
         $playListMapper->setEntity($playlist)->save();
 
-        $data = $this->_playlist($playlist);
+        $data = $playlist->toArray();
 
         $this->getResponse()
             ->setCode(200)
