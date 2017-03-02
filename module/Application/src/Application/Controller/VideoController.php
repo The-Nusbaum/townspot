@@ -1548,4 +1548,46 @@ EOT;
 		return $this->redirect()->toRoute('upload');
 	}
 
+	public function playerAction()
+	{
+		$id = $this->params()->fromRoute('id');
+		$playlistMapper = new \Townspot\Playlist\Mapper($this->getServiceLocator());
+		if ($playlist = $playlistMapper->find($id)) {
+			$url = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+			$facebookInfo = array(
+				'title'			=> $playlist->getName(),
+				'description'	=> str_replace('"',"'",strip_tags($playlist->getDescription())),
+				'url'			=> $url,
+				'image'			=> $playlist->getMedia()[0]->getResizerCdnLink(700,535),
+				'width'			=> 700
+			);
+			$twitterInfo = array(
+				'title'			=> $playlist->getName(),
+				'description'	=> str_replace('"',"'",strip_tags($playlist->getDescription())),
+				'url'			=> $url,
+				'image'			=> $playlist->getMedia()[0]->getResizerCdnLink(435,326),
+				'width'			=> 435
+			);
+
+			$this->getServiceLocator()
+				->get('ViewHelperManager')
+				->get('HeadScript')
+				->appendFile('/js/videointeractions.js','text/javascript');
+			$this->getServiceLocator()
+				->get('ViewHelperManager')
+				->get('HeadMeta')
+				->appendName('description', strip_tags($playlist->getDescription()));
+			$this->init($playlist->getName());
+			$this->layout()->facebookInfo = $facebookInfo;
+			$this->layout()->twitterInfo = $twitterInfo;
+			$results = array(
+				'playlist' 		=> $playlist,
+			);
+		} else {
+			$this->getResponse()->setStatusCode(404);
+			return;
+		}
+		return new ViewModel( $results );
+	}
+
 }

@@ -778,6 +778,19 @@ return array(
                     ),
                 ),
             ),
+            'playlist' => array(
+                'type' => 'Zend\Mvc\Router\Http\Segment',
+                'options' => array(
+                    'route'    => '/talent-show/:id[/:name]',
+                    'constraints' => array(
+                        'name' => '[a-zA-Z0-9_-]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'Application\Controller\Video',
+                        'action'     => 'playlist',
+                    ),
+                ),
+            ),
 			'what_is_townspot' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
 				'options' => array(
