@@ -15,7 +15,7 @@
 		<div class="col-md-5">
 			<ul class="list-unstyled">
 				<?php foreach($playlist->getMedia() as $m ): ?>
-					<div class="media playlist-media">
+					<div class="media playlist-media" data-id="<?= $m->getId() ?>">
 						<div class="media-left col-xs-4">
 							<a href="<? $m->getMediaLink() ?>">
 								<img class="media-object img-responsive" src="<?= $m->getPreviewImage() ?>" alt="<?= $m->getTitle() ?>">
