@@ -6,13 +6,13 @@
 ?>
 <div class="container" id="playlist-player">
 	<div class="row" id="mini-player-container">
+		<header class="col-xs-12">
+			<h3><?= $playlist->getName() ?></h3>
+			<h4><?= $playlist->getUser()->getDisplayname() ?></h4>
+			<p><?= $playlist->getDescription() ?></p>
+		</header>
 		<div class="col-md-7" id="mini-player" data-id="<?= $playlist->getId() ?>"></div>
 		<div class="col-md-5">
-			<header>
-				<h3><?= $playlist->getName() ?></h3>
-				<h4><?= $playlist->getUser()->getDisplayname() ?></h4>
-				<p><?= $playlist->getDescription() ?></p>
-			</header>
 			<ul class="list-unstyled">
 				<?php foreach($playlist->getMedia() as $m ): ?>
 					<div class="media playlist-media">
