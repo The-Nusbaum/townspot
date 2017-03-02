@@ -16,15 +16,15 @@
 			<ul class="list-unstyled">
 				<?php foreach($playlist->getMedia() as $m ): ?>
 					<div class="media playlist-media">
-						<div class="media-left">
+						<div class="media-left col-xs-4">
 							<a href="<? $m->getMediaLink() ?>">
 								<img class="media-object" src="<?= $m->getPreviewImage() ?>" alt="<?= $m->getTitle() ?>">
 							</a>
 						</div>
-						<div class="media-body">
-							<h4 class="media-heading"><a href="<? $m->getMediaLInk() ?>"><?= $m->getTitle() ?></a></h4>
+						<div class="media-body col-xs-8">
 							<h5>by <a href="<?= $m->getUser()->getProfileLink() ?>"><?= $m->getUser()->getDisplayname() ?></a><br><?= $m->getLocation() ?></h5>
 						</div>
+						<header class="col-xs-12"><h4 class="media-heading"><a href="<? $m->getMediaLInk() ?>"><?= $m->getTitle() ?></a></h4></header>
 					</div>
 				<?php endforeach; ?>
 			</ul>
