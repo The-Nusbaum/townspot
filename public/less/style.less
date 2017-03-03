@@ -1996,6 +1996,148 @@ iframe.dmPlayer {
   color: red;
 }
 
+#HireArtistModal {
+  label[for='hireType'] {
+    display: inline;
+  }
+  input[type='radio'] {
+    display: inline;
+  }
+}
+
+#vimtab {
+  a {
+    height: 68px;
+  }
+}
+
+h3.uploadLogo {
+  height: 50px;
+}
+
+.uploadHelp {
+  height: 20px;
+}
+
+#product-gallery img.img-responsive {
+  width: 80%;
+}
+
+#pick-videos, #review-videos {
+  .media {
+    margin-top: 15px !important;
+    .wrapper {
+      padding: 10px;
+      float: left;
+      border-radius: 10px;
+
+      &.well {
+        cursor: not-allowed;
+      }
+
+      &.selected {
+        background-color: #fcad1c;
+      }
+    }
+    .media-left {
+      position: relative;
+      height: 138px;
+      background-position: 50% 50%;
+      background-size: contain;
+      background-repeat: no-repeat;
+      img {
+        .vertical-center;
+      }
+    }
+
+  }
+}
+.formError {
+  border: 2px solid red;
+}
+
+label.formError {
+  border: none;
+  font-weight: bold;
+  color: red;
+}
+
+#leaveComment {
+  padding-left: 15px;
+}
+
+.comment {
+  margin-left: 15px;
+  .user {
+    margin-right: 15px;
+    .commentThumb {
+      width: 50px;
+      height: 50px;
+      box-shadow: 4px 4px 10px darkgray;
+      border: 1px solid darkgray;
+    }
+  }
+}
+
+#profile > .row > *:first-child {
+  padding-left: 0px;
+}
+
+#profile {
+  #userDetails {
+    &> .row > *:first-child {
+      padding-left: 40px;
+    }
+    .profile-pic {
+      background-position: 50% 50%;
+      background-size: contain;
+      background-repeat: no-repeat;
+      height: 167px;
+      width: 100%;
+    }
+  }
+  #fans {
+    & > .row {
+      height: 125px;
+      .row{
+        height:100%;
+      }
+    }
+    .list {
+      bad: rule;
+      text-align: center;
+      .followGroup:not(:first-child) {
+        display:none;
+      }
+      .follow {
+        margin: 1%;
+        width: 16%;
+        display: inline-block;
+        .followThumb {
+          width: 100%;
+          box-shadow: 4px 4px 10px darkgray;
+          border: 1px solid darkgray;
+        }
+      }
+    }
+
+    & > .row {
+      bad: rule;
+    }
+
+    #followers{
+      bad: rule;
+    }
+
+    #following {
+      bad: rule
+    }
+  }
+
+}
+
+@import "playlist";
+
 @media (min-width: 400px) {
   .mobile-ad {
     display: block;
@@ -2159,8 +2301,6 @@ iframe.dmPlayer {
   }
 }
 
-
-
 @media (max-width: 575px) {
   .col-wide {
     width: 100% !important;
@@ -2214,158 +2354,9 @@ iframe.dmPlayer {
   }
 }
 
-#HireArtistModal {
-  label[for='hireType'] {
-    display: inline;
-  }
-  input[type='radio'] {
-    display: inline;
-  }
-}
 
-#vimtab {
-  a {
-    height: 68px;
-  }
-}
 
-h3.uploadLogo {
-  height: 50px;
-}
 
-.uploadHelp {
-  height: 20px;
-}
-
-#playlist-player {
-  #mini-player-container {
-    background-color: #559FD2;
-    color: white;
-    a {
-      color: white;
-    }
-    .playlist-media:nth-child(n+4) {
-      display:none;
-    }
-  }
-}
-
-#product-gallery img.img-responsive {
-  width: 80%;
-}
-
-#pick-videos, #review-videos {
-  .media {
-    margin-top: 15px !important;
-    .wrapper {
-      padding: 10px;
-      float: left;
-      border-radius: 10px;
-
-      &.well {
-        cursor: not-allowed;
-      }
-
-      &.selected {
-        background-color: #fcad1c;
-      }
-    }
-    .media-left {
-      position: relative;
-      height: 138px;
-      background-position: 50% 50%;
-      background-size: contain;
-      background-repeat: no-repeat;
-      img {
-        .vertical-center;
-      }
-    }
-
-  }
-}
-.formError {
-  border: 2px solid red;
-}
-
-label.formError {
-  border: none;
-  font-weight: bold;
-  color: red;
-}
-
-#leaveComment {
-  padding-left: 15px;
-}
-
-.comment {
-  margin-left: 15px;
-  .user {
-    margin-right: 15px;
-    .commentThumb {
-      width: 50px;
-      height: 50px;
-      box-shadow: 4px 4px 10px darkgray;
-      border: 1px solid darkgray;
-    }
-  }
-}
-
-#profile > .row > *:first-child {
-  padding-left: 0px;
-}
-
-#profile {
-  #userDetails {
-    &> .row > *:first-child {
-      padding-left: 40px;
-    }
-    .profile-pic {
-      background-position: 50% 50%;
-      background-size: contain;
-      background-repeat: no-repeat;
-      height: 167px;
-      width: 100%;
-    }
-  }
-  #fans {
-    & > .row {
-      height: 125px;
-      .row{
-        height:100%;
-      }
-    }
-    .list {
-      bad: rule;
-      text-align: center;
-      .followGroup:not(:first-child) {
-        display:none;
-      }
-      .follow {
-        margin: 1%;
-        width: 16%;
-        display: inline-block;
-        .followThumb {
-          width: 100%;
-          box-shadow: 4px 4px 10px darkgray;
-          border: 1px solid darkgray;
-        }
-      }
-    }
-
-    & > .row {
-      bad: rule;
-    }
-
-    #followers{
-      bad: rule;
-    }
-
-    #following {
-      bad: rule
-    }
-  }
-
-}
 
 @media (max-width: 992px) {
   #profile > .row > *:last-child {
