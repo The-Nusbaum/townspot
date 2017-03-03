@@ -145,7 +145,7 @@ var playlist = {
     playThis: function(id) {
         $('.playlist-media.active').removeClass('active');
         $('.playlist-media[data-id=' + id + ']').addClass('active');
-        var i = $('.playlist-media[data-id=1043' + id + ']').prevAll().get().length;
+        var i = $('.playlist-media[data-id=' + id + ']').prevAll().get().length;
         for(x = 0; x == i; x++) {
             playlist.cycleNext();
         }
