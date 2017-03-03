@@ -568,7 +568,11 @@
         $(document).ready(function(){
             playlist.uid = <?= $user->getId() ?>;
             playlist.init();
-            playlist.populateProfile();
+        <?php if($canEdit) : ?>
+            playlist.populateProfileSelf();
+        <?php else: ?>
+            playlist.populateProfileOther();
+        <?php endif; ?>
         });
     </script>
 <?php endif; ?>

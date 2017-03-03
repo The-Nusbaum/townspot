@@ -75,7 +75,7 @@ var playlist = {
             );
         });
     },
-    populateProfile: function() {
+    populateProfileSelf: function() {
         $('#playlists').each(function(){
             var uid = $(this).attr('data-uid');
             $.get('/api/playlist/user/' + playlist.uid,
@@ -135,6 +135,35 @@ var playlist = {
                                 ihtml = ihtml.replace(/\[title\]/g, this.title);
                                 $('#playlists .playlist:last .playlist-media-list').append(ihtml);
                             });
+                        });
+                    }
+                }
+            );
+        });
+    },
+    populateProfileOther: function() {
+        $('#playlists').each(function(){
+            var uid = $(this).attr('data-uid');
+            $.get('/api/playlist/user/' + playlist.uid,
+                function(response){
+                    if(response.success) {
+                        var data = response.data;
+                        $(data).each(function(){
+                            var p = this[0];
+                            var ohtml = '' +
+                                '<div class="playlist well" data-id="[id]">' +
+                                    '<header class="row">' +
+                                        '<div class="name col-xs-8">' +
+                                            '<a href="/talent-show/'+ p.id +'/' + encodeURI(p.name.replace(' ','-')) + '">' + p.name + '</a>' +
+                                        '</div>' +
+                                    '</header>' +
+                                    '<div class="row">' +
+                                        '<p class="col-xs-12">' +
+                                            p.desc +
+                                        '</p>' +
+                                    '</div>' +
+                                '</div>';
+                            $('#playlists').append(ohtml);
                         });
                     }
                 }
