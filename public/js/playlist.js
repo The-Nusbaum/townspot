@@ -52,8 +52,6 @@ var playlist = {
         $('#next-playlist-videos').click(function(){
             $('#playlist-media .playlist-media:last').remove().prependTo('#playlist-media');
         });
-
-        $('#mini-player iframe').css('height',$('iframe').contents().find('.video-player').outerHeight());
     },
     populateList: function() {
         $('#playlists').each(function(){

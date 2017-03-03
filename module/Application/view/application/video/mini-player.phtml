@@ -25,3 +25,8 @@ $artistName = $artist->getDisplayName();
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function(){
+        $('#mini-player iframe',window.parent.document).css('height', $('.video-player').outerHeight());
+    });
+</script>
