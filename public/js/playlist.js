@@ -145,9 +145,10 @@ var playlist = {
     playThis: function(id) {
         $('.playlist-media.active').removeClass('active');
         $('.playlist-media[data-id=' + id + ']').addClass('active');
-        $($('.playlist-media[data-id=1043' + id + ']').prevAll().get().reverse()).each(function(){
-            $(this).remove().appendTo('#playlist-media');
-        });
+        var i = $($('.playlist-media[data-id=1043' + id + ']').prevAll().get().length;
+        for(x = 0; x < i; x++) {
+            playlist.cycleNext();
+        }
         $('#mini-player iframe').attr('src',"/mini-player/" + id);
     }
 };
