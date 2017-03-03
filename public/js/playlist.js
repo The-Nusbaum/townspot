@@ -45,6 +45,13 @@ var playlist = {
             }
         });
 
+        $('#prev-playlist-videos').click(function(){
+            $('#playlist-media .playlist-media:first').remove().appendTo('#playlist-media');
+        });
+
+        $('#next-playlist-videos').click(function(){
+            $('#playlist-media .playlist-media:last').remove().prependTo('#playlist-media');
+        });
     },
     populatePlayer: function() {
         $.get('/mini-player/' + $('.playlist-media:first').attr('data-id'),
