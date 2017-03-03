@@ -12,7 +12,7 @@
 			<p><?= $playlist->getDescription() ?></p>
 		</header>
 		<div class="col-md-7" id="mini-player" data-id="<?= $playlist->getId() ?>">
-
+			<iframe src="/mini-player/<?= $playlist->getMedia()[0]->getId() ?>" frameborder="0"></iframe>
 		</div>
 		<div class="col-md-5">
 			<button class="btn col-xs-12" id="prev-playlist-videos"><i class="fa fa-chevron-up"></i></button>
