@@ -17,8 +17,8 @@
 		<div class="col-md-5">
 			<button class="btn col-xs-12" id="prev-playlist-videos"><i class="fa fa-chevron-up"></i></button>
 			<ul class="list-unstyled col-xs-12" id="playlist-media">
-				<?php foreach($playlist->getMedia() as $m ): ?>
-					<div class="media playlist-media" data-id="<?= $m->getId() ?>">
+				<?php foreach($playlist->getMedia() as $k => $m ): ?>
+					<div class="media playlist-media<?= (!$k)? " active":'' ?>" data-id="<?= $m->getId() ?>">
 						<div class="media-left col-xs-4">
 							<a href="<? $m->getMediaLink() ?>">
 								<img class="media-object img-responsive" src="<?= $m->getPreviewImage() ?>" alt="<?= $m->getTitle() ?>">
