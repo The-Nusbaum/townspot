@@ -52,13 +52,8 @@ var playlist = {
         $('#next-playlist-videos').click(function(){
             $('#playlist-media .playlist-media:last').remove().prependTo('#playlist-media');
         });
-    },
-    populatePlayer: function() {
-        $.get('/mini-player/' + $('.playlist-media:first').attr('data-id'),
-            function(response) {
-                console.log(response);
-            }
-        );
+
+        $('#mini-player iframe').css('height',$('iframe').contents().find('.video-player').outerHeight());
     },
     populateList: function() {
         $('#playlists').each(function(){

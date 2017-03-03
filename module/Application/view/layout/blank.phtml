@@ -38,6 +38,9 @@
         <script src="https://apis.google.com/js/platform.js" async defer></script>
      </head>
     <body id="townspot">
+    <script>
+        var tracked_user = 0;
+    </script>
         <div class="container" id="<?= $this->controllerName(); ?>-<?= $this->actionName(); ?>">
             <?php echo $this->content; ?>
         </div>
