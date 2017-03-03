@@ -20,14 +20,14 @@
 				<?php foreach($playlist->getMedia() as $k => $m ): ?>
 					<div class="media playlist-media<?= (!$k)? " active":'' ?>" data-id="<?= $m->getId() ?>">
 						<div class="media-left col-xs-4">
-							<a href="<? $m->getMediaLink() ?>">
+							<a href="<? $m->getId() ?>" class="playMe">
 								<img class="media-object img-responsive" src="<?= $m->getPreviewImage() ?>" alt="<?= $m->getTitle() ?>">
 							</a>
 						</div>
 						<div class="media-body col-xs-8">
-							<h5>by <a href="<?= $m->getUser()->getProfileLink() ?>"><?= $m->getUser()->getDisplayname() ?></a><br><?= $m->getLocation() ?></h5>
+							<h5>by <a href="<?= $m->getUser()->getProfileLink() ?>" target="_blank"><?= $m->getUser()->getDisplayname() ?></a><br><?= $m->getLocation() ?></h5>
 						</div>
-						<header class="col-xs-12"><h4 class="media-heading"><a href="<? $m->getMediaLInk() ?>"><?= $m->getTitle() ?></a></h4></header>
+						<header class="col-xs-12"><h4 class="media-heading"><a href="<? $m->getId() ?>" class="playMe"><?= $m->getTitle() ?></a></h4></header>
 					</div>
 				<?php endforeach; ?>
 			</ul>

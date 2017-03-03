@@ -52,6 +52,11 @@ var playlist = {
         $('#next-playlist-videos').click(function(){
             playlist.cycleNext()
         });
+
+        $('.playMe').click(function(e){
+            e.preventDefault();
+            playlist.playThis($(this).attr('href'));
+        });
     },
     populateList: function() {
         $('#playlists').each(function(){
