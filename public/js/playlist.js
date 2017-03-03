@@ -87,9 +87,9 @@ var playlist = {
                             var ohtml = '' +
                                 '<div class="playlist well" data-id="[id]">' +
                                     '<header class="row">' +
-                                        '<div class="name col-xs-8">' +
-                                            p.name +
-                                        '</div>' +
+                                    '<div class="name col-xs-8">' +
+                                        '<a href="/talent-show/'+ p.id +'/' + encodeURI(p.name.replace(' ','-')) + '">' + p.name + '</a>' +
+                                    '</div>' +
                                         '<div class="name col-xs-1 pull-right"><i class="fa fa-times-circle delete" data-type="playlist" data-id="'+ p.id +'"></i></div>' +
                                     '</header>' +
                                     '<div class="row">' +
