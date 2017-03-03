@@ -46,11 +46,11 @@ var playlist = {
         });
 
         $('#prev-playlist-videos').click(function(){
-            $('#playlist-media .playlist-media:first').remove().appendTo('#playlist-media');
+            playlist.cyclePrev();
         });
 
         $('#next-playlist-videos').click(function(){
-            $('#playlist-media .playlist-media:last').remove().prependTo('#playlist-media');
+            playlist.cycleNext()
         });
     },
     populateList: function() {
@@ -135,5 +135,19 @@ var playlist = {
                 }
             );
         });
+    },
+    cycleNext: function(){
+        $('#playlist-media .playlist-media:first').remove().appendTo('#playlist-media');
+    },
+    cyclePrev: function(){
+        $('#playlist-media .playlist-media:last').remove().prependTo('#playlist-media');
+    },
+    playThis: function(id) {
+        $('.playlist-media.active').removeClass('active');
+        $('.playlist-media[data-id=' + id).addClass('active');
+        $($('.playlist-media[data-id=1043]').prevAll().get().reverse()).each(function(){
+            $(this).remove().appendTo('#playlist-media');
+        });
+        $('#mini-player iframe').attr('src',"/mini-player/" + id);
     }
 };
