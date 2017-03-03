@@ -25,8 +25,244 @@ $artistName = $artist->getDisplayName();
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="FlagContentModal" tabindex="-1" role="dialog" aria-labelledby="FlagContentLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                <h4 class="modal-title" id="FlagContentLabel">Flag for Review</h4>
+            </div>
+            <div class="modal-body">
+                <label>Reason</label>
+                <select id="flag-reason" class="form-control">
+                    <option>Inappropriate Content</option>
+                    <option>Copyright Infringement</option>
+                </select>
+                <label>Your Name</label>
+                <input id="flag-name" type="text" placeholder="Please enter your name" class="form-control">
+                <div id="name-error" class="alert alert-block alert-error">
+                    <button data-dismiss="alert" class="close" type="button">x</button>
+                    <h4 class="alert-heading"></h4>
+                    <p class="alert-body"></p>
+                </div>
+                <label>Your Email</label>
+                <input id="flag-email" type="text" placeholder="Please enter your email" class="form-control">
+                <div id="email-error" class="alert alert-block alert-error">
+                    <button data-dismiss="alert" class="close" type="button">x</button>
+                    <h4 class="alert-heading"></h4>
+                    <p class="alert-body"></p>
+                </div>
+                <label>Message</label>
+                <textarea placeholder="Please state reason for flagging video" id="flag-message" class="form-control"></textarea>
+                <div id="flag-error" class="alert alert-block alert-error">
+                    <button data-dismiss="alert" class="close" type="button">x</button>
+                    <h4 class="alert-heading"></h4>
+                    <p class="alert-body"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button value="Request Review" id="flag-submit" class="btn btn-primary btn-large">Request Review</button>
+            </div>
+            <div id="success-message" class="alert alert-success">
+                <button data-dismiss="alert" class="close" type="button">x</button>
+                <h4 class="alert-heading"></h4>
+                <p class="alert-body"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ContactCreatorModal" tabindex="-1" role="dialog" aria-labelledby="ContactCreatorLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                <h4 class="modal-title" id="ContactCreatorLabel">Contact Video Creator</h4>
+            </div>
+            <div class="modal-body">
+                <label>Subject</label>
+                <input id="contact-subject" type="text" placeholder="Please enter a subject" class="form-control">
+                <div id="contact-error-subject" class="alert alert-block alert-error">
+                    <button data-dismiss="alert" class="close" type="button">x</button>
+                    <h4 class="alert-heading"></h4>
+                    <p class="alert-body"></p>
+                </div>
+                <label>Message</label>
+                <textarea placeholder="Please enter a message" id="contact-message" class="form-control"></textarea>
+                <div id="contact-error" class="alert alert-block alert-error">
+                    <button data-dismiss="alert" class="close" type="button">x</button>
+                    <h4 class="alert-heading"></h4>
+                    <p class="alert-body"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button value="Send" id="contact-submit" class="btn btn-primary btn-large">Send</button>
+            </div>
+            <div id="message-success-message" class="alert alert-success">
+                <button data-dismiss="alert" class="close" type="button">x</button>
+                <h4 class="alert-heading"></h4>
+                <p class="alert-body"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ArtistContactModal" tabindex="-1" role="dialog" aria-labelledby="ArtistContactLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                <h4 class="modal-title" id="ArtistContactLabel">Allow Artist to Contact Me</h4>
+            </div>
+            <div class="modal-body">
+                <table>
+                    <tr>
+                        <td><button id="artist-contact-yes" class="btn btn-success btn-large">Yes</button></td>
+                        <td><button id="artist-contact-no" class="btn btn-danger btn-large">No</button></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="HireArtistModal" tabindex="-1" role="dialog" aria-labelledby="FlagContentLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                <h4 class="modal-title" id="FlagContentLabel">Hire Artist</h4>
+            </div>
+            <div class="modal-body">
+                <fieldset>
+                    <div class="form-group">
+                        <h5>Are you...</h5>
+                        <input type="radio" name="hireType" class="hireType" value="venue">
+                        <label for="hireType">a representative of a Venue/Event that wants to hire <?= $artistName ?>’s services?</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="radio" name="hireType" class="hireType" value="artist">
+                        <label for="hireType">a fellow Artist wanting to collaborate with <?= $artistName ?>?</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="radio" name="hireType" class="hireType" value="brand">
+                        <label for="hireType">a representative of a brand or business that wants to make a sponsorship or product integration deal with <?= $artistName ?>?</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="radio" name="hireType" class="hireType" value="profesional">
+                        <label for="hireType">a professional (ex: manager/agent/lawyer) that wants to offer services to <?= $artistName ?>?</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="radio" name="hireType" class="hireType" value="profesional">
+                        <label for="hireType">a Tour Manager/Act Booker that wants to book <?= $artistName ?>?</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="radio" name="hireType" class="hireType" value="press">
+                        <label for="hireType">a member of the Press wanting to interview <?= $artistName ?>?</label>
+                    </div>
+                </fieldset>
+                <fieldset id="hireDetails">
+                    <div class="form-group name">
+                        <label class="">Your Name:</label>
+                        <input type="text" class="form-control " id="name">
+                    </div>
+                    <div class="form-group email">
+                        <label class="">Email:</label>
+                        <input type="text" class="form-control "  id="email">
+                    </div>
+                    <!-- <div class="form-group phone">
+                        <label class="">Phone:</label>
+                        <input type="text" class="form-control "  id="phone">
+                    </div> -->
+                    <div class="form-group locations">
+                        <label class="">What locations do you serve? (ex: local city, national, worldwide):</label>
+                        <input type="text" class="form-control "  id="locations">
+                    </div>
+                    <div class="form-group experience">
+                        <label class="">What are some examples of past experience:</label>
+                        <input type="text" class="form-control "  id="experience">
+                    </div>
+                    <div class="form-group venueName">
+                        <label>Venue Name:</label>
+                        <input type="text" class="form-control"  id="venueName">
+                    </div>
+                    <div class="form-group bizname">
+                        <label>Business Name:</label>
+                        <input type="text" class="form-control"  id="bizname">
+                    </div>
+                    <div class="form-group jobTitle">
+                        <label>Job Title:</label>
+                        <input type="text" class="form-control"  id="jobTitle">
+                    </div>
+                    <div class="form-group desc">
+                        <label class="">Description:</label>
+                        <textarea id="event-desc" rows="5" class="form-control "  id="description"></textarea>
+                    </div>
+                    <div class="form-group dates">
+                        <label>Dates (if applicable) for event:</label>
+                        <input type="text" class="form-control" id="dates">
+                    </div>
+                    <div class="form-group website">
+                        <label>Website:</label>
+                        <input type="text" class="form-control " id="website">
+                    </div>
+                    <div class="form-group budget">
+                        <label class="">Budget (estimate) for event:</label>
+                        <input type="text" class="form-control " id="budget">
+                    </div>
+                    <div class="form-group services">
+                        <label class="">Description of services you provide:</label>
+                        <textarea rows="5" class="form-control " id="services"></textarea>
+                    </div>
+                    <div class="form-group message">
+                        <label class="">Message to <?= $artistName ?>:</label>
+                        <textarea rows="10" class="form-control " id="message"></textarea>
+                    </div>
+                    <div class="form-group back">
+                        <button class="back form-control">Back</button>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="modal-footer">
+                <button value="Send Request" id="hire-submit" class="btn btn-primary btn-large" disabled="">Send Request</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="SetupError" tabindex="-1" role="dialog" aria-labelledby="SetupLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                <h4 class="modal-title" id="SetUpLabel">An Error has occurred</h4>
+            </div>
+            <div class="modal-body" id="SetupErrorMessage">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row ad-panel">
+    <div class="col-xs-12">
+        <div class="col-xs-12 google-ad" data-position="leaderboard" ></div>
+    </div>
+</div>
+
+<?= $this->partial('partials/backbone/video-template.phtml'); ?>
+<script>
+    $().Similar({'mediaId': <?= $this->media->getId() ?>});
+    $().Interactions({
+        videoid: <?= $this->media->getId(); ?>,
+        userid: <?= ($this->zfcUserIdentity()) ? $this->zfcUserIdentity()->getId() : 0; ?>,
+        artistName: '<?= $artistName ?>'
+    });
+    setInfoButtons();
+</script>
 <script>
     $(document).ready(function(){
-        $('#mini-player iframe',window.parent.document).css('height', $('.video-player').outerHeight());
+        setTimeout(function(){
+            $('#mini-player iframe',window.parent.document).css('height', $('.video-player').outerHeight());
+        },500);
     });
 </script>
