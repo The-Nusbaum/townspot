@@ -2,10 +2,11 @@ var upload = {
     categories: [],
     init: function(){
         tinyMCE.init({
-            mode: "textareas",
-            theme_url: "/js/tinymceTheme.js",
-            skin_url: "/css/tinymce",
-            content_css: "/css/tinymce",
+//            mode: "textareas",
+            selector: "textarea",
+//            theme_url: "/js/tinymceTheme.js",
+//            skin_url: "/css/tinymce",
+//            content_css: "/css/tinymce",
             menubar:false,
             statusbar: false,
             setup: function(editor) {

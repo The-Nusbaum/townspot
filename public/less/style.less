@@ -158,6 +158,34 @@ li {
   background-color: #F0F1F4;
   padding-left: 0;
   padding-right: 0;
+  #on-stage-carousel-inner {
+    height: 417px;  
+    .item {
+      height: 100%;
+      & > .row {
+        height: 100%;
+        & > div:not(.video-info) {
+          height: 100%;
+          .video-preview {
+            height: 100%;
+            position: relative;
+            img {
+              position: absolute;
+              top: 50%;
+              transform: translateY(-50%);
+            }
+          }
+        }
+      }
+      .video-info {
+        .active-info {
+          .p1 {
+            height:288px;
+          }
+        }
+      }
+    }
+  }
   .video-preview {
     border: 0 solid #cccccc;
     padding: 0;

@@ -20,7 +20,7 @@
 					)
 				); ?>
 
-				<?php if($this->zfcUserIdentity() && $this->zfcUserIdentity()->getId() == 242 ): ?>
+				<?php if(in_array($this->zfcUserIdentity() && $this->zfcUserIdentity()->getId(),array(2,242))): ?>
 					<div class="col-xs-12 pull-right">
 						<div class="input-group">
 							<select class="form-control" name="playlists" id="playlists" data-uid="<?= $this->zfcUserIdentity()->getId() ?>">
@@ -371,7 +371,7 @@
 	setInfoButtons();
 </script>
 
-<?php if($this->zfcUserIdentity() && $this->zfcUserIdentity()->getId() == 242): ?>
+<?php if(in_array($this->zfcUserIdentity() && $this->zfcUserIdentity()->getId(),array(2,242))): ?>
 	<script src="/js/playlist.js"></script>
 	<script>
 		$(document).ready(function(){

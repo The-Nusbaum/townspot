@@ -35,6 +35,8 @@
 		                       ->appendFile('//cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.3.0/bootbox.min.js','text/javascript')
 							   					 ->appendFile($this->basePath() . '/js/townspot.js');
 		?>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+		<script src="/js/textfill/jquery.textfill.min.js"></script>
 		<script src="https://apis.google.com/js/platform.js" async defer></script>
 <?php if ($this->facebookInfo) { ?>
 		<meta property="og:title" content="<?= $this->facebookInfo['title']; ?> - townspot.tv" />

@@ -2,7 +2,8 @@ var userEdit = {
     data: {},
     init: function() {
         tinyMCE.init({
-            mode: "textareas",
+//            mode: "textareas",
+            selector: "textarea",
             theme_url: "/js/tinymceTheme.js",
             skin_url: "/css/tinymce",
             content_css: "/css/tinymce",
@@ -27,8 +28,7 @@ var userEdit = {
 
         $("#userEdit input[type=checkbox]").click(function(){
             $this = $(this);
-            var val = 0;
-	    if($this.is(':checked')) val = 1;
+            l = $this.is(':checked');
             userEdit.data[$this.attr('name')] = val;
         });
 
@@ -37,26 +37,6 @@ var userEdit = {
             window.location = "/custom/login/twitter";
         });
 
-        $('#country_id').change(function(){
-            cId = $(this).val();
-            $target = $('#province_id');
-            $target.children().remove();
-            $target.append("<option>loading...</option>");
-            $.get(
-                '/api/province/getList/'+cId,
-                function(data){
-                    $target = $('#province_id');
-                    if(data.success) {
-                        $target.children().remove();
-                        $target.append("<option>Please select a State/Province</option>");
-                        var states = data.data;
-                        $(states).each(function(){
-                            $target.append('<option value="'+this.id+'">'+this.name+'</option>');
-                        })
-                    }
-                }
-            );
-        });
         $('#province_id').change(function(){
             pId = $(this).val();
             $target = $('#city_id');
@@ -89,11 +69,6 @@ var userEdit = {
             window.location = "/custom/login/facebook";
         });
 
-        $('#link_google').click(function(e){
-            e.preventDefault();
-            window.location = "/custom/login/google";
-        });
-
         $('#unlink_twitter').click(function(e){
             e.preventDefault();
             window.location = "/user/unlink/twitter";
@@ -103,18 +78,6 @@ var userEdit = {
             e.preventDefault();
             window.location = "/user/unlink/facebook";
         });
-
-        $('#unlink_google').click(function(e){
-            e.preventDefault();
-            window.location = "/user/unlink/google";
-        });
-
-        $("#socialRegister #submit").click(function(e){
-            var editors = tinyMCE.editors;
-
-            if(!userEdit.validate())  e.preventDefault();
-        });
-
         $("#userEdit").submit(function(e){
             e.preventDefault();
             var editors = tinyMCE.editors;
@@ -132,11 +95,16 @@ var userEdit = {
                 }
             });
         });
-        $('#socialRegister').attr('action','/user/social-register/'+$('#provider').val());
+
     },
     validate: function() {
         $('.alert').hide();
         var error = false;
+        if($('#username').val() == ''){
+            error = true;
+            $('.nousername').show();
+        }
+
         if($('#display_name').val() == ''){
             error = true;
             $('.nodisplayname').show();
@@ -147,14 +115,33 @@ var userEdit = {
             $('.noemail').show();
         }
 
-        if($('#display_name').val() == ''){
+        /*
+        if($('#firstName').val() == ''){
             error = true;
-            $('.noname').show();
+            $('.nofirstname').show();
         }
 
-        if($('#country_id').val() == ''){
+        if($('#lastName').val() == ''){
             error = true;
-            $('.nocountry').show();
+            $('.nolastname').show();
+        }
+        */
+
+        if($('#password').val() != ''){
+             if($('#password').val() != $('#password2').val()){
+                error = true;
+                $('.noconfirmpass').show();
+            }
+
+            if(!$('#password').val().match(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,15}$/)) {
+                error = true;
+                $('.invalidpass').show();
+            }
+        }
+
+        if($('#email').val() == ''){
+            error = true;
+            $('.noemail').show();
         }
 
         if($('#province_id').val() == ''){
@@ -167,11 +154,12 @@ var userEdit = {
             $('.nocity').show();
         }
 
-        if($('#allow_contact').val() == ''){
+        /*
+        if($('#plupPicVal').val() == "http://images.townspot.tv/resizer.php?id=none&type=profile") {
             error = true;
-            $('.nocity').show();
+            $('.noimage').show();
         }
-
+        */
         return !error;
     },
     checkUsername: function(){

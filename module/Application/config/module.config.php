@@ -37,21 +37,21 @@ return array(
                     'socialmedia.css',
                     'style.less',
                 ),
-                'css/tinymce/skin.min.css' => array(
-                    'tinymce/tinymce/skins/lightgray/skin.min.css'
-                ),
-                'css/tinymce/content.min.css' => array(
-                    'tinymce/tinymce/skins/lightgray/content.min.css'
-                ),
-                'css/tinymce/fonts/tinymce.woff' => array(
-                    'tinymce/tinymce/skins/lightgray/fonts/tinymce.woff'
-                ),
-                'css/tinymce/fonts/tinymce.ttf' => array(
-                    'tinymce/tinymce/skins/lightgray/fonts/tinymce.ttf'
-                ),
-                'css/tinymce/fonts/tinymce.svg' => array(
-                    'tinymce/tinymce/skins/lightgray/fonts/tinymce.svg'
-                ),
+//                'css/tinymce/skin.min.css' => array(
+//                    'tinymce/tinymce/skins/lightgray/skin.min.css'
+//                ),
+//               'css/tinymce/content.min.css' => array(
+//                    'tinymce/tinymce/skins/lightgray/content.min.css'
+//                ),
+//                'css/tinymce/fonts/tinymce.woff' => array(
+//                    'tinymce/tinymce/skins/lightgray/fonts/tinymce.woff'
+//                ),
+//                'css/tinymce/fonts/tinymce.ttf' => array(
+//                    'tinymce/tinymce/skins/lightgray/fonts/tinymce.ttf'
+//                ),
+//                'css/tinymce/fonts/tinymce.svg' => array(
+//                    'tinymce/tinymce/skins/lightgray/fonts/tinymce.svg'
+//                ),
                 'css/admin.css' => array(
                     'xxs.less',
                     'socialmedia.css',
@@ -74,14 +74,14 @@ return array(
 					'expander.js',
                     'plupload/moxie.min.js',
                     'plupload/plupload.min.js',
-                    'tinymce/tinymce/tinymce.js',
+//                    'tinymce/tinymce/tinymce.js',
                     'plupload.js',
                     'general_init.js',
                     'pick-video.js'
                 ),
-                'js/tinymceTheme.js' => array(
-                    'tinymce/tinymce/themes/modern/theme.min.js'
-                ),
+//                'js/tinymceTheme.js' => array(
+//                    'tinymce/tinymce/themes/modern/theme.min.js'
+//                ),
                 'js/userEdit.js' => array(
                     'userEdit.js'
                 ),
@@ -119,7 +119,7 @@ return array(
                     'searchStatus.js',
                     'searchTitle.js',
                     'adminDelete.js',
-                    'tinymce/tinymce/tinymce.js',
+//                    'tinymce/tinymce/tinymce.js',
                     'adminUserEdit.js',
                     'plupload/moxie.min.js',
                     'plupload/plupload.min.js',
