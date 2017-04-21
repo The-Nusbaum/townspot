@@ -141,4 +141,28 @@ $(function(){
 	});
 });
 
+$(document).ready(function(){
+	var $highlights = $("#daily-hightlights-carousel");
+	var $staffFavorites = $("#staff-favorites-carousel");
+
+	var hammer_highlights = new Hammer($highlights[0]);
+	var hammer_staff = new Hammer($staffFavorites[0]);
+
+	hammer_highlights.on('panleft swipeleft',function(){
+		$highlights.find('.fa-chevron-right').click();
+	});
+
+	hammer_highlights.on('panright swiperight',function(){
+                $highlights.find('.fa-chevron-left').click();
+        });
+
+	hammer_staff.on('panleft swipeleft',function(){
+                $staffFavorites.find('.fa-chevron-right').click();
+        });
+
+        hammer_staff.on('panright swiperight',function(){
+                $staffFavorites.find('.fa-chevron-left').click();
+        });
+});
+
 </script>
