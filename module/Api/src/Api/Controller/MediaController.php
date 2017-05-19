@@ -73,11 +73,7 @@ class MediaController extends \Townspot\Controller\BaseRestfulController
             'series_name'		=> '',
             'series_link'		=> '',
         );
-        //Is Part of Series
-        if ($seriesEpisode = $episodeMapper->findOneByMedia($object)) {
-            $_media['series_name'] = htmlentities($seriesEpisode->getSeries()->getName());
-            $_media['series_link'] = $seriesEpisode->getSeries()->getSeriesLink();
-        }
+
         $media = $_media;
 
         $this->getResponse()
