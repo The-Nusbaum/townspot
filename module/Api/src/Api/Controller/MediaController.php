@@ -79,7 +79,7 @@ class MediaController extends \Townspot\Controller\BaseRestfulController
         $this->getResponse()
             ->setCode(200)
             ->setSuccess(true)
-            ->setData($media->toArray())
+            ->setData($media)
             ->setCount(1);
         return new JsonModel($this->getResponse()->build());
     }
