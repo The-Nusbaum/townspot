@@ -39,47 +39,12 @@ class MediaController extends \Townspot\Controller\BaseRestfulController
 
     public function slot1Action() {
         $id = $this->params()->fromRoute('id');
-        $object = $this->getMapper()->slot1($id);
-
-        $resizerLink 		= $object->getResizerLink(640,480);
-        $escaped_title		= $object->getTitle(false,true);
-        $comment_count		= count($object->getCommentsAbout());
-        $escaped_logline	= $object->getLogline(true);
-        $escaped_location	= $object->getLocation(false,true);
-        $rate_up			= count($object->getRatings(true));
-        $rate_down			= count($object->getRatings(false));
-        if (!preg_match('/^http/',$resizerLink)) {
-            $server = rand(1,9);
-            $resizerLink = 'http://images' . $server . '.townspot.tv' . $resizerLink;
-        }
-        $_media = array(
-            'id'				=> $object->getId(),
-            'link'				=> $object->getMediaLink(),
-            'image'				=> $resizerLink,
-            'escaped_title'		=> $escaped_title,
-            'title'				=> $object->getTitle(),
-            'logline'			=> $object->getLogline(),
-            'user'				=> $object->getUser()->getUsername(),
-            'user_profile'		=> $object->getUser()->getProfileLink(),
-            'duration'			=> $object->getDuration(true),
-            'comment_count'		=> $comment_count,
-            'views'				=> $object->getViews(),
-            'escaped_logline'	=> $escaped_logline,
-            'location'			=> $object->getLocation(),
-            'escaped_location'	=> $escaped_location,
-            'rate_up'			=> $rate_up,
-            'rate_down'			=> $rate_down,
-            'why_we_choose'		=> $object->getWhyWeChose(),
-            'series_name'		=> '',
-            'series_link'		=> '',
-        );
-
-        $media = $_media;
+        $media = $this->getMapper()->slot1($id);
 
         $this->getResponse()
             ->setCode(200)
             ->setSuccess(true)
-            ->setData($media)
+            ->setData($media->toArray())
             ->setCount(1);
         return new JsonModel($this->getResponse()->build());
     }
