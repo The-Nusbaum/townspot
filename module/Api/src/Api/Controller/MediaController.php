@@ -37,6 +37,18 @@ class MediaController extends \Townspot\Controller\BaseRestfulController
             ->setCount(count($data['media']));
     }
 
+    public function slot1Action() {
+        $id = $this->params()->fromRoute('id');
+        $media = $this->getMapper()->slot1($id);
+
+        $this->getResponse()
+            ->setCode(200)
+            ->setSuccess(true)
+            ->setData($media->toArray())
+            ->setCount(1);
+        return new JsonModel($this->getResponse()->build());
+    }
+
     public function getAvailableSeriesMediaAction() {
         $id = $this->params()->fromRoute('id');
         $page = $this->params()->fromQuery('page');
@@ -155,4 +167,8 @@ class MediaController extends \Townspot\Controller\BaseRestfulController
         return new JsonModel($this->getResponse()->build());
 
     }
-} 
+
+    public function slot1() {
+
+    }
+}
