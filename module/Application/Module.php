@@ -222,7 +222,7 @@ class Module
 							'name' => 'filesystem',
 							'options' => array(
 								'cache_dir' => APPLICATION_PATH . '/data/cache/general',
-								'ttl' => 3600
+								'ttl' => 300
 							),
 						),
 						'plugins' => array(
@@ -237,7 +237,7 @@ class Module
 							'name' => 'filesystem',
 							'options' => array(
 								'cache_dir' => APPLICATION_PATH . '/data/cache/page',
-								'ttl' => 3600
+								'ttl' => 300
 							),
 						),
 						'plugins' => array(
