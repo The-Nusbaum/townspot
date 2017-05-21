@@ -163,6 +163,28 @@ $(document).ready(function(){
         hammer_staff.on('panright swiperight',function(){
                 $staffFavorites.find('.fa-chevron-left').click();
         });
+
+	$('#daily-highlights-carousel-inner .item.active .row:first .col-xs-12').attr('id','slot1target');
+
+	var slotUser = 0;
+	<?php if($this->zfcUserIdentity()) : ?>
+		slotUser = <?= $this->zfcUserIdentity()->getId() ?>
+	<?php endif; ?>
+
+	if(slotUser) {
+		$.get('/api/media/slot1/2',function(response){
+			slot1media = response.data;
+
+			var slot1media_collection = new VideoCollection();
+			var slot1media_view = new VideoView({el: '#slot1target'});
+
+			$.each(slot1media,function(){slot1media_collection.add(new Video(this))});
+
+			$('#slot1media').children().remove();
+
+			slot1media_view.render(slot1media_collection);
+		});
+	}
 });
 
 </script>

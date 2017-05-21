@@ -41,10 +41,12 @@ class MediaController extends \Townspot\Controller\BaseRestfulController
         $id = $this->params()->fromRoute('id');
         $media = $this->getMapper()->slot1($id);
 
+        $output[] = $media->toArray();
+
         $this->getResponse()
             ->setCode(200)
             ->setSuccess(true)
-            ->setData($media->toArray())
+            ->setData($output)
             ->setCount(1);
         return new JsonModel($this->getResponse()->build());
     }
