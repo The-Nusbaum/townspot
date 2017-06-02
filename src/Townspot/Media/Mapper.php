@@ -38,7 +38,7 @@ class Mapper extends AbstractEntityMapper
 		if ($results = $stmt->fetchAll()) {
 			foreach($results as $r) {
 
-				$media[] = $this->find($r['id']]);
+				$media[] = $this->find($r['id']);
 			}
 			return $media;
 		}
