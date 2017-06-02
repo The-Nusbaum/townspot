@@ -37,6 +37,24 @@ class MediaController extends \Townspot\Controller\BaseRestfulController
             ->setCount(count($data['media']));
     }
 
+    public function getSlotsAction() {
+        $id = $this->params()->fromRoute('id');
+        $media = $this->getMapper()->getSlots($id);
+
+        foreach($media as $m) {
+            $_m = $m->toArray();
+            $_m['username'] = $m->getUser()->getDisplayName();
+            $output[] = $_m;
+        }
+
+        $this->getResponse()
+            ->setCode(200)
+            ->setSuccess(true)
+            ->setData($output)
+            ->setCount(count($output));
+        return new JsonModel($this->getResponse()->build());
+    }
+
     public function slot1Action() {
         $id = $this->params()->fromRoute('id');
         $media = $this->getMapper()->slot1($id);

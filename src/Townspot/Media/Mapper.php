@@ -31,6 +31,19 @@ class Mapper extends AbstractEntityMapper
 		return null;
 	}
 
+	public function getSlots($user_id) {
+		$sql = "CALL getSlots($user_id)";
+		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+		$stmt->execute();
+		if ($results = $stmt->fetchAll()) {
+			foreach($results as $r) {
+				$media[] = $this->find($r);
+			}
+			return $media;
+		}
+		return null;
+	}
+
 	public function slot1($user_id) {
 		$sql = "SELECT slot1($user_id) as id";
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
