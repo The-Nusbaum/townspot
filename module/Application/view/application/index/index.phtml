@@ -164,7 +164,7 @@ $(document).ready(function(){
                 $staffFavorites.find('.fa-chevron-left').click();
         });
 
-	$('#daily-highlights-carousel-inner .item.active .row:first .col-xs-12').attr('id','slot1target');
+	$('#daily-hightlights-carousel-inner .video-preview.first:first').parent().attr('id','slot1target')
 
 	var slotUser = 0;
 	<?php if($this->zfcUserIdentity()) : ?>
@@ -172,7 +172,7 @@ $(document).ready(function(){
 	<?php endif; ?>
 
 	if(slotUser) {
-		$.get('/api/media/slot1/2',function(response){
+		$.get('/api/media/slot1/' + slotUser,function(response){
 			slot1media = response.data;
 
 			var slot1media_collection = new VideoCollection();
@@ -180,7 +180,7 @@ $(document).ready(function(){
 
 			$.each(slot1media,function(){slot1media_collection.add(new Video(this))});
 
-			$('#slot1media').children().remove();
+			$('#slot1target').children().remove();
 
 			slot1media_view.render(slot1media_collection);
 		});

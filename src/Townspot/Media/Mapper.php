@@ -32,7 +32,7 @@ class Mapper extends AbstractEntityMapper
 	}
 
 	public function slot1($user_id) {
-		$sql = "SELECT slot1($user_id)";
+		$sql = "SELECT slot1($user_id) as id";
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
 		$stmt->execute();
 		if ($results = $stmt->fetchAll()) {
