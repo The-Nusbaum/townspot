@@ -3,6 +3,7 @@ var Video = Backbone.Model.extend({
         id: '',
         type: '',
         link: '',
+        mediaLink: '',
         image: '',
         escaped_title: '',
         title: '',

@@ -41,7 +41,6 @@ class MediaController extends \Townspot\Controller\BaseRestfulController
         try {
             $id = $this->params()->fromRoute('id');
             $media = $this->getMapper()->getSlots($id);
-
             foreach ($media as $m) {
                 $_m = $m->toArray();
                 $_m['username'] = $m->getUser()->getDisplayName();
