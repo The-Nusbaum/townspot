@@ -36,10 +36,11 @@ class Mapper extends AbstractEntityMapper
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
 		$stmt->execute();
 		if ($results = $stmt->fetchAll()) {
+			$ids = array()
 			foreach($results as $r) {
-
-				$media[] = $this->find($r['id']]);
+				$ids[] = $r['id'];
 			}
+			$media[] = $this->findById($ids);
 			return $media;
 		}
 		return null;
