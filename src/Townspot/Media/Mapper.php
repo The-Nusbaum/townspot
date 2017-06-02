@@ -42,6 +42,37 @@ class Mapper extends AbstractEntityMapper
 				$ids[] = $r['id'];
 			}
 			$media = $this->findById($ids);
+			$out = array();
+			foreach($media as $m) {
+				$m instanceof \Townspot\Media\Entity;
+				$_m = array(
+					'id' => $m->getId(),
+					'type' => $m->getMediaType(),
+					'link' => $m->getMediaLink(),
+					'image' => $m->getPreviewImage(),
+					'escaped_title' => $m->getTitle(false,true),
+					'title' => $m->getTitle(),
+					'logline' => $m->getLogline(true),
+					'user' => $m->getUser()->getId(),
+					'user_profile' => "/u/".$m->getUser()->getId(),
+					'profileLink' => "/u/".$m->getUser()->getId(),
+					'username' => $m->getUser()->getDisplayName(),
+					'displayName' => $m->getdisplayName(),
+					'duration' => $m->getDuration(),
+					'comment_count' => count($m->getCommentsAbout()),
+					'views' => $m->getViews(),
+					'escaped_logline' => $m->getLogline(true),
+					'location' => $m->getLocation(),
+					'escaped_location' => urlencode($m->getLocation()),
+					'rate_up' => count($m->getRatings(1)),
+					'rate_down' => count($m->getRatings(0)),
+					'why_we_choose' => $m->getWhyWeCoose(),
+//					'series_name' => $m->getSeries()->getName(),
+//					'series_link' => $m->getSeries()_link(),
+//					'image_source' => $m->getimage_source(),
+				)
+
+			}
 			return $media;
 		}
 		return null;
