@@ -24,12 +24,12 @@
 </div>
 <div class="container">
 
-<div class="row wide-carousel">
+<div class="row wide-carousel" id="DH">
 	<div class="col-sm-12">
 		<h1>Daily Highlights</h1>	
 	</div>
 </div>
-<div class="row">
+<div class="row" id="DHContent">
 	<div class="col-sm-12">
 		<div data-ride="carousel" class="carousel slide" id="daily-hightlights-carousel">
 			<div class="carousel-inner" id="daily-hightlights-carousel-inner"></div>
@@ -165,60 +165,29 @@ $(document).ready(function(){
         });
 
 	$('#daily-highlights-carousel-inner .item.active .row:first .col-xs-12').attr('id','slot1target');
-	$('#daily-highlights-carousel-inner .item .row:nth-child(2) .col-xs-12').attr('id','slot2target');
-	$('#daily-highlights-carousel-inner .item .row:nth-child(2) .col-xs-12').attr('id','slot3target');
+
 
 	var slotUser = 0;
 	<?php if($this->zfcUserIdentity()) : ?>
 		slotUser = <?= $this->zfcUserIdentity()->getId() ?>
 	<?php endif; ?>
 
-	var slot1media = '';
+	var slotmedia = '';
 
 	if(slotUser) {
 		$.get('/api/media/slot1/2',function(response){
-			slot1media = response.data;
+			slotmedia = response.data;
 
-			var slot1media_collection = new VideoCollection();
-			var slot1media_view = new VideoView({el: '#slot1target'});
+			var slotmedia_collection = new VideoCollection();
+			var slotmedia_view = new VideoView({el: '#slottarget'});
 
-			$.each(slot1media,function(){slot1media_collection.add(new Video(this))});
+			$.each(slotmedia,function(){slotmedia_collection.add(new Video(this))});
 
-			$('#slot1media').children().remove();
+			$('#slottarget').children().remove();
 
-			slot1media_view.render(slot1media_collection);
+			slotmedia_view.render(slotmedia_collection);
 		});
 	}
-
-	var slot2media = '';
-
-	$.get('/api/media/slot2',function(response){
-		slot2media = response.data;
-
-		var slot2media_collection = new VideoCollection();
-		var slot2media_view = new VideoView({el: '#slot2target'});
-
-		$.each(slot2media,function(){slot2media_collection.add(new Video(this))});
-
-		$('#slot2media').children().remove();
-
-		slot2media_view.render(slot2media_collection);
-	});
-
-	var slot3media = '';
-
-	$.get('/api/media/slot3',function(response){
-		slot3media = response.data;
-
-		var slot3media_collection = new VideoCollection();
-		var slot3media_view = new VideoView({el: '#slot3target'});
-
-		$.each(slot3media,function(){slot3media_collection.add(new Video(this))});
-
-		$('#slot3media').children().remove();
-
-		slot3media_view.render(slot3media_collection);
-	});
 });
 
 </script>
