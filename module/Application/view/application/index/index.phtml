@@ -183,6 +183,9 @@ $(document).ready(function(){
 			var slotmedia_view					= new VideoView({el: '#daily-hightlights-carousel-inner'});
 			var slotmedia_carousel_view	= new VideoView({el: '#daily-hightlights-carousel-indicators'});
 
+			slotmedia_view.setTemplate('#carousel-row-template');
+			slotmedia_carousel_view.setTemplate('#carousel-indicator-template');
+
 			$('#daily-hightlights-carousel-inner').children().remove();
 			$('#daily-hightlights-carousel-inner-indicators').children().remove();
 
