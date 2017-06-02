@@ -41,7 +41,11 @@ class MediaController extends \Townspot\Controller\BaseRestfulController
         $id = $this->params()->fromRoute('id');
         $media = $this->getMapper()->slot1($id);
 
-        $output[] = $media->toArray();
+        $_output = $media->toArray();
+        $_output['username'] = $media->getUser()->getDisplayName();
+
+        $output[] = $_output;
+
 
         $this->getResponse()
             ->setCode(200)
@@ -55,7 +59,10 @@ class MediaController extends \Townspot\Controller\BaseRestfulController
     public function slot2Action() {
         $media = $this->getMapper()->slot2();
 
-        $output[] = $media->toArray();
+        $_output = $media->toArray();
+        $_output['username'] = $media->getUser()->getDisplayName();
+
+        $output[] = $_output;
 
         $this->getResponse()
             ->setCode(200)
@@ -68,7 +75,10 @@ class MediaController extends \Townspot\Controller\BaseRestfulController
     public function slot3Action() {
         $media = $this->getMapper()->slot3();
 
-        $output[] = $media->toArray();
+        $_output = $media->toArray();
+        $_output['username'] = $media->getUser()->getDisplayName();
+
+        $output[] = $_output;
 
         $this->getResponse()
             ->setCode(200)
