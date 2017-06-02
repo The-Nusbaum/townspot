@@ -164,28 +164,39 @@ $(document).ready(function(){
                 $staffFavorites.find('.fa-chevron-left').click();
         });
 
-	$('#daily-highlights-carousel-inner .item.active .row:first .col-xs-12').attr('id','slot1target');
-
-
 	var slotUser = 0;
 	<?php if($this->zfcUserIdentity()) : ?>
 		slotUser = <?= $this->zfcUserIdentity()->getId() ?>
+
+
 	<?php endif; ?>
 
 	var slotmedia = '';
 
 	if(slotUser) {
-		$.get('/api/media/slot1/2',function(response){
+		$.get('/api/media/getSlots/2',function(response){
 			slotmedia = response.data;
 
 			var slotmedia_collection = new VideoCollection();
-			var slotmedia_view = new VideoView({el: '#slottarget'});
-
 			$.each(slotmedia,function(){slotmedia_collection.add(new Video(this))});
 
-			$('#slottarget').children().remove();
+			var slotmedia_view					= new VideoView({el: '#daily-hightlights-carousel-inner'});
+			var slotmedia_carousel_view	= new VideoView({el: '#daily-hightlights-carousel-indicators'});
 
-			slotmedia_view.render(slotmedia_collection);
+			$('#daily-hightlights-carousel-inner').children().remove();
+			$('#daily-hightlights-carousel-inner-indicators').children().remove();
+
+			if ( $(window).width() > 768) {
+				slotmedia_view.renderCarouselRow(slotmedia_collection,3);
+				slotmedia_carousel_view.renderCarouselRowIndicators('daily-hightlights-carousel',slotmedia_collection,3);
+			} else if ( $(window).width() > 600) {
+				slotmedia_view.renderCarouselRow(slotmedia_collection,2);
+				slotmedia_carousel_view.renderCarouselRowIndicators('daily-hightlights-carousel',slotmedia_collection,2);
+			} else {
+				slotmedia_view.renderCarouselRow(slotmedia_collection,1);
+				slotmedia_carousel_view.renderCarouselRowIndicators('daily-hightlights-carousel',slotmedia_collection,1);
+			}
+			setInfoButtons();
 		});
 	}
 });
