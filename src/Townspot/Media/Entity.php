@@ -3,6 +3,10 @@ namespace Townspot\Media;
 
 require_once APPLICATION_PATH . "/google/apiclient/src/Google/autoload.php";
 
+/**
+ * Class Entity
+ * @package Townspot\Media
+ */
 class Entity extends \Townspot\Entity
 {
 	protected $_id;
@@ -355,11 +359,19 @@ class Entity extends \Townspot\Entity
 		return $this;
 	}
 
+	/**
+	 * @return mixed
+     */
 	public function getId()
 	{
 		return $this->_id;
 	}
 
+	/**
+	 * @param bool $formatted
+	 * @param bool $escaped
+	 * @return mixed|string
+     */
 	public function getTitle($formatted = false,$escaped = false)
 	{
 		$title = $this->_title;
@@ -373,16 +385,26 @@ class Entity extends \Townspot\Entity
 		return str_replace(' ','_',$title);
 	}
 
+	/**
+	 * @return mixed
+     */
 	public function getMediaType()
 	{
 		return $this->_media_type;
 	}
 
+	/**
+	 * @return mixed
+     */
 	public function getSource()
 	{
 		return $this->_source;
 	}
 
+	/**
+	 * @param bool $escaped
+	 * @return string
+     */
 	public function getLogline($escaped = false)
 	{
 		$logline = $this->_logline;
@@ -392,6 +414,10 @@ class Entity extends \Townspot\Entity
 		return $logline;
 	}
 
+	/**
+	 * @param bool $escaped
+	 * @return mixed|string
+     */
 	public function getDescription($escaped = false)
 	{
 		$description = $this->_description;
@@ -404,6 +430,10 @@ class Entity extends \Townspot\Entity
 		return $description;
 	}
 
+	/**
+	 * @param bool $escaped
+	 * @return mixed|string
+     */
 	public function getWhyWeChose($escaped = false)
 	{
 		$why_we_chose = $this->_why_we_chose;
@@ -416,16 +446,26 @@ class Entity extends \Townspot\Entity
 		return $why_we_chose;
 	}
 
+	/**
+	 * @return mixed
+     */
 	public function getUrl()
 	{
 		return $this->_url;
 	}
 
+	/**
+	 * @return mixed
+     */
 	public function getPreviewImage()
 	{
 		return $this->_preview_image;
 	}
 
+	/**
+	 * @param bool $fromSource
+	 * @return mixed
+     */
 	public function getViews($fromSource = true)
 	{
 		if ($fromSource) {
@@ -438,6 +478,11 @@ class Entity extends \Townspot\Entity
 		return $this->_views;
 	}
 
+	/**
+	 * @param bool $formatted
+	 * @param bool $fromSource
+	 * @return int|string
+     */
 	public function getDuration($formatted = false,$fromSource = false)
 	{
 		$duration = $this->_duration;
@@ -469,102 +514,163 @@ class Entity extends \Townspot\Entity
 		return $duration;
 	}
 
+	/**
+	 * @return bool
+     */
 	public function getAllowContact()
 	{
 		return (bool)$this->_allow_contact;
 	}
 
+	/**
+	 * @return bool
+     */
 	public function getAuthorised()
 	{
 		return (bool)$this->_authorised;
 	}
 
+	/**
+	 * @return bool
+     */
 	public function getRequestDebutTime()
 	{
 		return (bool)$this->_request_debut_time;
 	}
 
+	/**
+	 * @return bool
+     */
 	public function getApproved()
 	{
 		return (bool)$this->_approved;
 	}
 
+	/**
+	 * @return mixed
+     */
 	public function getOnMediaServer()
 	{
 		return $this->_on_media_server;
 	}
 
+	/**
+	 * @return mixed
+     */
 	public function getNeighborhood()
 	{
 		return $this->_neighborhood;
 	}
 
+	/**
+	 * @return mixed
+     */
 	public function getLatitude()
 	{
 		return $this->_latitude;
 	}
 
+	/**
+	 * @return mixed
+     */
 	public function getLongitude()
 	{
 		return $this->_longitude;
 	}
 
+	/**
+	 * @return \Townspot\User\Entity
+     */
 	public function getUser()
 	{
 		return $this->_user;
 	}
 
+	/**
+	 * @return mixed
+     */
 	public function getAdmin()
 	{
 		return $this->_admin;
 	}
 
+	/**
+	 * @return mixed
+     */
 	public function getCountry()
 	{
 		return $this->_country;
 	}
-	
+
+	/**
+	 * @return mixed
+     */
 	public function getProvince()
 	{
 		return $this->_province;
 	}
 
+	/**
+	 * @return mixed
+     */
 	public function getCity()
 	{
 		return $this->_city;
 	}
 
+	/**
+	 * @return \Doctrine\Common\Collections\ArrayCollection
+     */
 	public function getCategories()
 	{
 		return $this->_categories;
 	}
-	
+
+	/**
+	 * @return \Doctrine\Common\Collections\ArrayCollection
+     */
 	public function getFans()
 	{
 		return $this->_fans;
 	}
 
+	/**
+	 * @return \DateTime
+     */
 	public function getCreated()
 	{
 		return $this->_created;
 	}
 
+	/**
+	 * @return \DateTime
+     */
 	public function getUpdated()
 	{
 		return $this->_updated;
 	}
 
+	/**
+	 * @return \DateTime
+     */
 	public function getDebutTime()
 	{
 		return $this->_debut_time;
 	}
-	
+
+	/**
+	 * @return \Doctrine\Common\Collections\ArrayCollection
+     */
 	public function getEncodings()
 	{
 		return $this->_encodings;
 	}
 
-	public function getRatings($rate = null)
+	/**
+	 * @param null $rate
+	 * @return int|array|\Doctrine\Common\Collections\ArrayCollection
+     */
+	public function getRatings($rate = null, $count = false)
 	{
 		if ($rate === null) {
 			return $this->_ratings;
@@ -575,37 +681,59 @@ class Entity extends \Townspot\Entity
 				$ratings[] = $rating;
 			}
 		}
+		if ($count) return count($ratings);
 		return $ratings;
 	}
 
+	/**
+	 * @return \Doctrine\Common\Collections\ArrayCollection
+     */
 	public function getTags()
 	{
 		return $this->_tags;
 	}
 
-	public function getCommentsAbout($order = 'ASC')
+	/**
+	 * @param string $order
+	 * @return int|array|\Doctrine\Common\Collections\ArrayCollection
+     */
+	public function getCommentsAbout($order = 'ASC', $count = false)
 	{
+		if($count) return count($this->_comments_about);
 		if ($order == 'ASC') {
 			return array_reverse($this->_comments_about->toArray());
 		} 
 		return $this->_comments_about;
 	}
-	
+
+	/**
+	 * @return mixed
+     */
 	public function getSchedule()
 	{
 		return $this->_schedule;
 	}
 
+	/**
+	 * @return mixed
+     */
 	public function getSectionMedia()
 	{
 		return $this->_section_media;
 	}
 
-    public function getEpisode()
+	/**
+	 * @return mixed
+     */
+	public function getEpisode()
     {
         return $this->_episode;
     }
 
+	/**
+	 * @param string $resolution
+	 * @return mixed|string
+     */
 	public function getMediaUrl($resolution = 'HD')
 	{
 		switch ($this->getSource()) {
@@ -637,7 +765,10 @@ class Entity extends \Townspot\Entity
 				break;
 		}
 	}
-	
+
+	/**
+	 * @return string
+     */
 	public function getMediaLink()
 	{
 		return sprintf('/videos/%d/%s',
@@ -645,7 +776,10 @@ class Entity extends \Townspot\Entity
 			strtolower($this->getTitle(true))
 		);
 	}
-	
+
+	/**
+	 * @return string
+     */
 	public function getEmbedLink()
 	{
 		return sprintf('/embed/%d/%s',
@@ -653,7 +787,12 @@ class Entity extends \Townspot\Entity
 			$this->getTitle(true)
 		);
 	}
-	
+
+	/**
+	 * @param int $width
+	 * @param int $height
+	 * @return mixed|string
+     */
 	public function getResizerLink($width = 332,$height = 249)
 	{
 		if (!(preg_match('/ytimg|vimeocdn|dmcdn/',$this->getPreviewImage()))) {
@@ -664,7 +803,12 @@ class Entity extends \Townspot\Entity
 		}
 		return $this->getPreviewImage();
 	}
-	
+
+	/**
+	 * @param int $width
+	 * @param int $height
+	 * @return mixed|string
+     */
 	public function getResizerCdnLink($width = 332,$height = 249)
 	{
 		$imageServer = "http://images" . rand(0,9) . ".townspot.tv";
@@ -675,7 +819,12 @@ class Entity extends \Townspot\Entity
 		}
 		return $imageServer . $link;
 	}
-	
+
+	/**
+	 * @param bool $includeNeighborhood
+	 * @param bool $escaped
+	 * @return string
+     */
 	public function getLocation($includeNeighborhood = false,$escaped = false)
 	{
 		/*
@@ -699,7 +848,10 @@ class Entity extends \Townspot\Entity
 		}
 		return $location;
 	}
-	
+
+	/**
+	 * @return mixed
+     */
 	public function getYtVideoId()
 	{
 		$url = $this->getUrl();
@@ -715,7 +867,10 @@ class Entity extends \Townspot\Entity
 		}
 	}
 
-    public function getYtAuthor()
+	/**
+	 * @return null
+     */
+	public function getYtAuthor()
     {
         if ($this->getSource() == 'youtube') {
             $ytId = $this->getYtVideoId();
@@ -726,7 +881,10 @@ class Entity extends \Townspot\Entity
         }
         return null;
     }
-	
+
+	/**
+	 * @return null
+     */
 	public function getYtSubscriberChannelId()
 	{
 		if ($this->getSource() == 'youtube') {
@@ -739,7 +897,10 @@ class Entity extends \Townspot\Entity
 		return null;
 	}
 
-    public function getYtSubscriberChannelTitle()
+	/**
+	 * @return null
+     */
+	public function getYtSubscriberChannelTitle()
     {
         if ($this->getSource() == 'youtube') {
             $ytId = $this->getYtVideoId();
