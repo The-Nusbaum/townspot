@@ -173,7 +173,7 @@ $(document).ready(function(){
 
 	var slotmedia = '';
 
-	if(slotUser) {
+	if(slotUser && false) {
 		$.get('/api/media/getSlots/2',function(response){
 			slotmedia = response.data;
 
@@ -181,23 +181,18 @@ $(document).ready(function(){
 			$.each(slotmedia,function(){slotmedia_collection.add(new Video(this))});
 
 			var slotmedia_view					= new VideoView({el: '#daily-hightlights-carousel-inner'});
-			var slotmedia_carousel_view	= new VideoView({el: '#daily-hightlights-carousel-indicators'});
 
 			slotmedia_view.setTemplate('#carousel-row-template');
-			slotmedia_carousel_view.setTemplate('#carousel-indicator-template');
 
 			$('#daily-hightlights-carousel-inner').children().remove();
-			$('#daily-hightlights-carousel-inner-indicators').children().remove();
+		        $('#DHContent').find('.carousel-control, .carousel-indicators').remove();
 
 			if ( $(window).width() > 768) {
 				slotmedia_view.renderCarouselRow(slotmedia_collection,3);
-				slotmedia_carousel_view.renderCarouselRowIndicators('daily-hightlights-carousel',slotmedia_collection,3);
 			} else if ( $(window).width() > 600) {
 				slotmedia_view.renderCarouselRow(slotmedia_collection,2);
-				slotmedia_carousel_view.renderCarouselRowIndicators('daily-hightlights-carousel',slotmedia_collection,2);
 			} else {
 				slotmedia_view.renderCarouselRow(slotmedia_collection,1);
-				slotmedia_carousel_view.renderCarouselRowIndicators('daily-hightlights-carousel',slotmedia_collection,1);
 			}
 			setInfoButtons();
 		});
