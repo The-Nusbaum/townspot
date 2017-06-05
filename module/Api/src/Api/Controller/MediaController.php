@@ -41,16 +41,11 @@ class MediaController extends \Townspot\Controller\BaseRestfulController
         try {
             $id = $this->params()->fromRoute('id');
             $media = $this->getMapper()->getSlots($id);
-            foreach ($media as $m) {
-                $_m = $m->toArray();
-                $_m['username'] = $m->getUser()->getDisplayName();
-                $output[] = $_m;
-            }
 
             $this->getResponse()
                 ->setCode(200)
                 ->setSuccess(true)
-                ->setData($output)
+                ->setData($media)
                 ->setCount(count($output));
         } catch(Exception $e) {
             $output = array_merge(array($e->getMessage(),$e->getFile(),$e->getLine()),$e->getTrace() );

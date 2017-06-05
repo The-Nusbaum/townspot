@@ -69,34 +69,11 @@ class Mapper extends AbstractEntityMapper
 					'user_profile'		=> $m->getUser()->getProfileLink(),
 					'username'			=> $m->getUser()->getDisplayName(),
 					'views'				=> $m->getViews(),
-//					'id' => $m->getId(),
-//					'type' => $m->getMediaType(),
-//					'link' => $m->getMediaLink(),
-//					'image' => $m->getPreviewImage(),
-//					'escaped_title' => $m->getTitle(false,true),
-//					'title' => $m->getTitle(),
-//					'logline' => $m->getLogline(true),
-//					'user' => $m->getUser()->getId(),
-//					'user_profile' => "/u/".$m->getUser()->getId(),
-//					'profileLink' => "/u/".$m->getUser()->getId(),
-//					'username' => $m->getUser()->getDisplayName(),
-//					'displayName' => $m->getUser()->getDisplayName(),
-//					'duration' => $m->getDuration(),
-//					'comment_count' => count($m->getCommentsAbout()),
-//					'views' => $m->getViews(),
-//					'escaped_logline' => $m->getLogline(true),
-//					'location' => $m->getLocation(),
-//					'escaped_location' => urlencode($m->getLocation()),
-//					'rate_up' => count($m->getRatings(1)),
-//					'rate_down' => count($m->getRatings(0)),
-//					'why_we_choose' => $m->getWhyWeChose(),
-////					'series_name' => $m->getSeries()->getName(),
-////					'series_link' => $m->getSeries()_link(),
-////					'image_source' => $m->getimage_source(),
 				);
+				$out[] = $_m;
 
 			}
-			return $media;
+			return $out;
 		}
 		return null;
 	}
