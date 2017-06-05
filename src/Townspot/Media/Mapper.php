@@ -57,7 +57,7 @@ class Mapper extends AbstractEntityMapper
 					'user_profile' => "/u/".$m->getUser()->getId(),
 					'profileLink' => "/u/".$m->getUser()->getId(),
 					'username' => $m->getUser()->getDisplayName(),
-					'displayName' => $m->getDisplayName(),
+					'displayName' => $m->getUser()->getDisplayName(),
 					'duration' => $m->getDuration(),
 					'comment_count' => count($m->getCommentsAbout()),
 					'views' => $m->getViews(),
