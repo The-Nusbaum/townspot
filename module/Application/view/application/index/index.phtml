@@ -72,6 +72,8 @@
 <?= $this->partial('partials/backbone/carousel-video.phtml'); ?>
 <?= $this->partial('partials/backbone/carousel-indicator-template.phtml'); ?>
 <script>
+	var slotmedia_collection = new VideoCollection();
+	var dailyHighlights_media_collection			= new VideoCollection();
 $(function(){
 
 	var onScreen_media 								= <?= $onScreen; ?>;
@@ -197,6 +199,5 @@ $(document).ready(function(){
 		});
 	}
 });
-var slotmedia_collection = new VideoCollection();
-var dailyHighlights_media_collection			= new VideoCollection();
+
 </script>
