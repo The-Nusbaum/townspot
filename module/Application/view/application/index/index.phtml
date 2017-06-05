@@ -176,7 +176,7 @@ $(document).ready(function(){
 
 	if(slotUser) {
 
-		$.get('/api/media/getSlots/2',function(response){
+		$.get('/api/media/getSlots/' + slotUser,function(response){
 			slotmedia = response.data.media;
 
 			var slotUserName = response.data.user.displayName;
