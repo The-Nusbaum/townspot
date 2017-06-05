@@ -129,6 +129,9 @@ class Entity extends \Townspot\Entity
 
 		$tightStrip = array(
 			'email',
+			'firstName',
+			'lastName',
+			'userName'
 		);
 
 		if($tight) $strip = array_merge($strip, $tightStrip);
