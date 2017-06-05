@@ -119,6 +119,27 @@ class Entity extends \Townspot\Entity
 		$this->_media_comments = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 
+	public function sanitize($tight = false) {
+		$_u = $this->toArray();
+		$strip = array(
+			'activation_string',
+			'password',
+			'securityKey'
+		);
+
+		$tightStrip = array(
+			'email',
+		);
+
+		if($tight) $strip = array_merge($strip, $tightStrip);
+
+		foreach($strip as $s) {
+			unset($_u[$s]);
+		}
+
+		return $_u;
+	}
+
 	public function setUsername($value)
 	{
 		$this->_username = $value;
