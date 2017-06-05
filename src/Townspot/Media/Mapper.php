@@ -70,7 +70,7 @@ class Mapper extends AbstractEntityMapper
 //					'series_name' => $m->getSeries()->getName(),
 //					'series_link' => $m->getSeries()_link(),
 //					'image_source' => $m->getimage_source(),
-				)
+				);
 
 			}
 			return $media;
