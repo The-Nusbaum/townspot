@@ -82,7 +82,7 @@ $(function(){
     onScreen_media_view.renderCarouselCollection(onScreen_media_collection);
 
 	var dailyHighlights_media 						= <?= $dailyHighlights; ?>;
-    var dailyHighlights_media_collection			= new VideoCollection();		
+//    var dailyHighlights_media_collection			= new VideoCollection();
     $.each(dailyHighlights_media, function() 		{	dailyHighlights_media_collection.add(new Video(this));		});
     var dailyHighlights_media_view					= new VideoView({el: 		'#daily-hightlights-carousel-inner'});		
     var dailyHighlights_media_carousel_view			= new VideoView({el: 		'#daily-hightlights-carousel-indicators'});		
@@ -173,11 +173,10 @@ $(document).ready(function(){
 
 	var slotmedia = '';
 
-	if(slotUser && false) {
+	if(slotUser) {
 		$.get('/api/media/getSlots/2',function(response){
 			slotmedia = response.data;
 
-			var slotmedia_collection = new VideoCollection();
 			$.each(slotmedia,function(){slotmedia_collection.add(new Video(this))});
 
 			var slotmedia_view					= new VideoView({el: '#daily-hightlights-carousel-inner'});
@@ -198,5 +197,6 @@ $(document).ready(function(){
 		});
 	}
 });
-
+var slotmedia_collection = new VideoCollection();
+var dailyHighlights_media_collection			= new VideoCollection();
 </script>
