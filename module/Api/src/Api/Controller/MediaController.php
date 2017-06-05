@@ -38,24 +38,28 @@ class MediaController extends \Townspot\Controller\BaseRestfulController
     }
 
     public function getSlotsAction() {
+        $userMapper = new \Townspot\User\Mapper($this->getServiceLocator());
+        $code = 200;
+        $success = true;
         try {
             $id = $this->params()->fromRoute('id');
             $media = $this->getMapper()->getSlots($id);
-
-            $this->getResponse()
-                ->setCode(200)
-                ->setSuccess(true)
-                ->setData($media)
-                ->setCount(count($output));
+            $count = count($media);
+            $user = $userMapper->find($id)->toArray();
+            $output = compact('user','media');
         } catch(Exception $e) {
             $output = array_merge(array($e->getMessage(),$e->getFile(),$e->getLine()),$e->getTrace() );
-
-            $this->getResponse()
-                ->setCode(500)
-                ->setSuccess(false)
-                ->setData($output)
-                ->setCount(count($output));
+            $count = 0;
+            $success = false;
+            $code = 500;
         }
+        $this->getResponse()
+            ->setCode($code)
+            ->setSuccess($success)
+            ->setData($output)
+            ->setCount($count);
+
+
         return new JsonModel($this->getResponse()->build());
     }
 

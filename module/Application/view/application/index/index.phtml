@@ -167,17 +167,19 @@ $(document).ready(function(){
         });
 
 	var slotUser = 0;
+	var slotUserName = '';
 	<?php if($this->zfcUserIdentity()) : ?>
 		slotUser = <?= $this->zfcUserIdentity()->getId() ?>
-
-
 	<?php endif; ?>
 
 	var slotmedia = '';
 
 	if(slotUser) {
+
 		$.get('/api/media/getSlots/2',function(response){
-			slotmedia = response.data;
+			slotmedia = response.data.media;
+
+			var slotUserName = response.data.user.displayName;
 
 			$.each(slotmedia,function(){slotmedia_collection.add(new Video(this))});
 
