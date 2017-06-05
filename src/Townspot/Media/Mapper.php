@@ -66,7 +66,7 @@ class Mapper extends AbstractEntityMapper
 					'escaped_location' => urlencode($m->getLocation()),
 					'rate_up' => count($m->getRatings(1)),
 					'rate_down' => count($m->getRatings(0)),
-					'why_we_choose' => $m->getWhyWeCoose(),
+					'why_we_choose' => $m->getWhyWeChose(),
 //					'series_name' => $m->getSeries()->getName(),
 //					'series_link' => $m->getSeries()_link(),
 //					'image_source' => $m->getimage_source(),
