@@ -45,7 +45,7 @@ class Mapper extends AbstractEntityMapper
 	public function getStats() 
 	{
 		$sql  = "SELECT count(*) as user_count ";
-		$sql .= "FROM tsz.user";
+		$sql .= "FROM user";
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
 		$stmt->execute();
 		return $stmt->fetch();
@@ -78,7 +78,7 @@ class Mapper extends AbstractEntityMapper
 	public function findByType($type = null) 
 	{
 		$results = array();
-		$sql  = "SELECT user.user_id as id FROM tsz.user ";
+		$sql  = "SELECT user.user_id as id FROM user ";
 		$sql .= "JOIN user_role_linker on user.user_id = user_role_linker.user_id ";
 		$sql .= "WHERE user_role_linker.role_id='" . $type . "'";
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
@@ -260,7 +260,7 @@ class Mapper extends AbstractEntityMapper
         
 
 
-        $queue  = 'user.updated';
+        $queue  = $amqp['prefix'] . '/user.updated';
         $exchange =  'user';
 
         $conn = new AMQPStreamConnection(
@@ -272,7 +272,7 @@ class Mapper extends AbstractEntityMapper
         );
         $ch = $conn->channel();
         $ch->queue_declare($queue, false, true, false, false);
-        $ch->exchange_declare($exchange, 'direct', false, true, false);
+        $ch->exchange_declare($exchange, 'direct',true , true, false);
         $ch->queue_bind($queue, $exchange);
 
 

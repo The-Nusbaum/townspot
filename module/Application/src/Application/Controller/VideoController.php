@@ -724,7 +724,7 @@ class VideoController extends AbstractActionController
 					->set('views', $response['views_total'])
 					->set('url', $url);
 			} elseif(!$data->get('review_ok')) {
-				//do nothing
+				$data->set('source', 'internal');
 			} else {
 				if($data->get('source') == 'youtube') {
 					$url = $data->get('youtube_url');

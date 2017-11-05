@@ -333,8 +333,10 @@ class AjaxController extends AbstractActionController
 	}
 
     public function encodingFinishedAction() {
-        $encoding = new \Townspot\Encoding();
-        die($encoding->finished());
+	$f = fopen('/tmp/encfin','a');
+	fputs($f,'hit controller: '. print_r($_POST,1));
+        $encoding = new \Townspot\Encoding($this->getServiceLocator());
+        $encoding->finished();
     }
 
     public function popRandomAction() {

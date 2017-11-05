@@ -18,7 +18,7 @@ class Encoding {
             'video_codec'=>'libx264',
             'audio_codec'=>'dolby_heaac',
             'logo'=>array(
-                'logo_source'=>'sftp://undead:McXHT8g3ieiqPoJTFCNt@216.157.108.165/home/undead/watermark.png',
+                'logo_source'=>'sftp://undead:McXHT8g3ieiqPoJTFCNt@54.202.93.248/home/undead/watermark.png',
                 'logo_x'=>5,
                 'logo_y'=>5,
                 'logo_mode'=>1
@@ -35,7 +35,7 @@ class Encoding {
             'video_codec'=>'libx264',
             'audio_codec'=>'dolby_aac',
             'logo'=>array(
-                'logo_source'=>"sftp://undead:McXHT8g3ieiqPoJTFCNt@216.157.108.165/home/undead/watermark.png",
+                'logo_source'=>"sftp://undead:McXHT8g3ieiqPoJTFCNt@54.202.93.248/home/undead/watermark.png",
                 'logo_x'=>529,
                 'logo_y'=>334,
                 'logo_mode'=>1
@@ -53,7 +53,7 @@ class Encoding {
             'video_codec'=>'libx264',
             'audio_codec'=>'dolby_aac',
             'logo'=>array(
-                'logo_source'=>'sftp://undead:McXHT8g3ieiqPoJTFCNt@216.157.108.165/home/undead/watermark.png',
+                'logo_source'=>'sftp://undead:McXHT8g3ieiqPoJTFCNt@54.202.93.248/home/undead/watermark.png',
                 'logo_x'=>743,
                 'logo_y'=>454,
                 'logo_mode'=>1
@@ -124,7 +124,7 @@ class Encoding {
         $req->addChild('userid', self::ACCOUNT_ID);
         $req->addChild('userkey', self::ACCOUNT_KEY);
         $req->addChild('action', 'AddMedia');
-        $req->addChild('source', "sftp://undead:".$this->config['pass']."@".$this->config['host']."/media/raw/".$file);
+        $req->addChild('source', "sftp://undead:".$this->config['pass']."@".$this->config['host']."/efs/media/raw/".$file);
 
         $req->addChild('notify', 'http://'.$_SERVER['HTTP_HOST'] .'/encoding/finished');
         $req->addChild('notify_encoding_errors', 'http://'.$_SERVER['HTTP_HOST'] .'/encoding/error');
@@ -166,21 +166,23 @@ class Encoding {
         /**
          * Get the location of the video
          */
-
-        $req = new SimpleXMLElement('<?xml version="1.0"?><query></query>');
-        $req->addChild('userid', self::ACCOUNT_ID);
-        $req->addChild('userkey', self::ACCOUNT_KEY);
-        $req->addChild('action', 'GetMediaInfo');
-        $req->addChild('mediaid', $mediaId);
+$req = "<?xml version='1.0'?>
+<query>
+    <userid>14867</userid>
+    <userkey>122a235703a96cb63ff08689398f5d5f</userkey>
+    <action>getMediaInfo</action>
+    <mediaid>$mediaId</mediaid>
+</query>";
 
 
         // Sending API request
 
-        $res = $this->send($req->asXML());
+        $res = $this->send($req);
 
-        $response = new SimpleXMLElement($res);
+        preg_match('/<duration>(.+?)</',$res, $matches);
+	$duration = $matches[1];
 
-        return $response->video_duration;
+        return $duration;
     }
 
     /**
@@ -190,19 +192,30 @@ class Encoding {
      */
     public function finished()
     {
+	$f = fopen('/tmp/encfin','a');
         $amqp = $this->amqp;
+fputs($f,print_r($amqp,1) . "\n");
         if($xml = $_POST['xml']) {
-            $response = new SimpleXMLElement($xml);
+fputs($f,"post\n");
+//            fputs($f,prunt_r($response = new SimpleXMLElement($xml),1));
+	    preg_match('/<mediaid>(\d+)<\/mediaid><source>.*raw\/(.+?)\.mp4<\/source>/',$xml,$matches);
+	    $video_id = $matches[2];
+	    $media_id = $matches[1];
+            fputs($f,print_r($matches,1));
+//fputs($f,"xml\n");
         }
+//fputs($f,'2');die;
+//        $videoPath = explode('/',$response->source);
+//        $videoName = $videoPath[count($videoPath)-1];
+//        $videoNameParts = explode('.',$videoName);
+//        $video_id = $videoNameParts[0];
+fputs($f,'3 '. $video_id );
 
-        $videoPath = explode('/',$response->source);
-        $videoName = $videoPath[count($videoPath)-1];
-        $videoNameParts = explode('.',$videoName);
-        $video_id = $videoNameParts[0];
-
-        $queue  = 'encoding.finished';
+        $queue  = $amqp['prefix'] . '/encoding.finished';
+fputs($f,"$queue\n");
+error_reporting(E_ALL & ~E_DEPRECATED);
         $exchange =  'encoding';
-        $conn = new AMQPConnection(
+        $conn = new \PhpAmqpLib\Connection\AMQPConnection(
             $amqp['host'],
             $amqp['port'],
             $amqp['user'],
@@ -211,21 +224,21 @@ class Encoding {
         );
         $ch = $conn->channel();
         $ch->queue_declare($queue, false, true, false, false);
-        $ch->exchange_declare($exchange, 'direct', false, true, false);
+        $ch->exchange_declare($exchange, 'direct', true, true, false);
         $ch->queue_bind($queue, $exchange);
 
         $msg_body = json_encode(array(
             'id' => $video_id,
         ));
-        $msg = new AMQPMessage($msg_body, array('content_type' => 'text/plain', 'delivery_mode' => 2));
+        $msg = new \PhpAmqpLib\Message\AMQPMessage($msg_body, array('content_type' => 'text/plain', 'delivery_mode' => 2));
         $ch->basic_publish($msg, $exchange);
-
-        $mediaMapper = new \Townspot\Media\Mapper($this->serviceLocator);
+	$mediaMapper = new \Townspot\Media\Mapper($this->serviceLocator);
         $media = $mediaMapper->find($video_id);
+        $media->setDuration(
+		$this->getRuntime($media_id)
+	);
 
-        $media->SetDuration($this->getRuntime($response->mediaid));
-
-        $mediaMapper->setMedia($media)->save();
-        die;
+        $mediaMapper->setEntity($media)->save();
+        die('done');
     }
 }

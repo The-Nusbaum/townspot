@@ -157,7 +157,7 @@ class ConsoleController extends AbstractActionController
         if(empty($this->_amqp)) {
             $amqp = $this->getServiceLocator()->get('Config')['amqp'];
 
-            $queue  = 'cache.ping';
+            $queue  = $amqp['prefix'] . '/cache.ping';
             $exchange =  'cache';
 
             $conn = new AMQPStreamConnection(

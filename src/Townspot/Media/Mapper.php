@@ -329,7 +329,7 @@ class Mapper extends AbstractEntityMapper
         $sql .= "(SELECT count(*) from media_comment) as comment_count, ";
         $sql .= "(SELECT count(*) from rating where rating.rating=1) as up_rating_count, ";
         $sql .= "(SELECT count(*) from rating where rating.rating=-1) as down_rating_count ";
-		$sql .= "FROM tsz.media";
+		$sql .= "FROM media";
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
 		$stmt->execute();
 		return $stmt->fetch();
@@ -338,7 +338,7 @@ class Mapper extends AbstractEntityMapper
 	public function getTopStats($count = 10) 
 	{
 		$sql  = "SELECT id,title,views ";
-		$sql .= "FROM tsz.media ";
+		$sql .= "FROM media ";
 		$sql .= "ORDER BY views DESC ";
 		$sql .= "LIMIT " . $count;
 		$stmt = $this->getEntityManager()->getConnection()->prepare($sql);
@@ -505,7 +505,7 @@ class Mapper extends AbstractEntityMapper
         $amqp = $this->getServiceLocator()->get('Config')['amqp'];
         $encoding = $this->getServiceLocator()->get('Config')['encoding'];
 
-        $queue  = 'video.updated';
+        $queue  = $amqp['prefix'] . '/video.updated';
         $exchange =  'video';
 
         $conn = new AMQPStreamConnection(

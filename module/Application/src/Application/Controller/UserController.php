@@ -190,6 +190,8 @@ class UserController extends AbstractActionController
         $query->execute(array(':uid'=> $user->getId()));
         $oauths = $query->fetchAll();
 
+
+
         foreach($oauths as $oauth) {
             $el = $form->get("link_{$oauth['source']}");
             $label = ucfirst($oauth['source']);

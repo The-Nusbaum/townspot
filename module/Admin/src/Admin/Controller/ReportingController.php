@@ -47,11 +47,11 @@ class ReportingController extends AbstractActionController
   	$trackingMapper = new \Townspot\Tracking\Mapper($this->getServiceLocator());
 
   	$sql = "(
-				SELECT 'Today', count(*) as total FROM tsz.tracking where type = :type and created > curdate()
+				SELECT 'Today', count(*) as total FROM tracking where type = :type and created > curdate()
 			) union (
-				SELECT 'Last 30 Days', count(*) as total  FROM tsz.tracking where type = :type and created > curdate() - INTERVAL 30 day
+				SELECT 'Last 30 Days', count(*) as total  FROM tracking where type = :type and created > curdate() - INTERVAL 30 day
 			) union (
-				SELECT 'All time', count(*) as total FROM tsz.tracking where type = :type
+				SELECT 'All time', count(*) as total FROM tracking where type = :type
 			)";
 
   	$query = $trackingMapper->getEntityManager()->getConnection()->prepare($sql);
